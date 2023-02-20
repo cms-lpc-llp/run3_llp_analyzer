@@ -12,10 +12,14 @@ from collections import OrderedDict
 os.system("mkdir -p submit")
 os.system("mkdir -p log")
 executable = "runAnalyzer.sh"
-analyzer = 'llp_MuonSystem'
+analyzer = 'llp_MuonSystem_CA'
 filesPerJob = 1
 ntupler_version = 'V1p19/Data2022/'
-analyzer_version = 'v2'
+
+#ntupler_version = "V1p19/MC_Summer22EE/v1/sixie/"
+
+
+analyzer_version = 'v5'
 outputDirectoryBase="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/{0}/{1}/".format(ntupler_version, analyzer_version)
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')

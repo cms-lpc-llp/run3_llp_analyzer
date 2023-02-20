@@ -67,6 +67,8 @@ void TreeMuonSystemCombination::InitVariables()
         cscRechitCluster_match_RE12_0p4[i] = 0;
         cscRechitCluster_match_RB1_0p4[i] = 0;
         cscRechitClusterTimeSpreadWeightedAll[i] = -999.;
+        cscRechitClusterTime[i] = -999.;
+        cscRechitClusterTimeSpread[i] = -999.;
         cscRechitClusterEta[i] = -999.;
         cscRechitClusterPhi[i] = -999.;
         cscRechitClusterJetVetoPt[i] = 0.0;
@@ -424,6 +426,10 @@ void TreeMuonSystemCombination::InitTree()
 
   tree_->SetBranchAddress("cscRechitClusterTimeSpreadWeightedAll",             cscRechitClusterTimeSpreadWeightedAll);
 
+
+  tree_->SetBranchAddress("cscRechitClusterTime",             cscRechitClusterTime);
+  tree_->SetBranchAddress("cscRechitClusterTimeSpread",             cscRechitClusterTimeSpread);
+
   tree_->SetBranchAddress("cscRechitClusterEta",             cscRechitClusterEta);
   tree_->SetBranchAddress("cscRechitClusterPhi",             cscRechitClusterPhi);
 
@@ -615,7 +621,8 @@ void TreeMuonSystemCombination::CreateTree()
     tree_->Branch("cscRechitClusterTimeWeighted",             cscRechitClusterTimeWeighted,             "cscRechitClusterTimeWeighted[nCscRechitClusters]/F");
 
     tree_->Branch("cscRechitClusterTimeSpreadWeightedAll",             cscRechitClusterTimeSpreadWeightedAll,             "cscRechitClusterTimeSpreadWeightedAll[nCscRechitClusters]/F");
-
+    tree_->Branch("cscRechitClusterTime",             cscRechitClusterTime,             "cscRechitClusterTime[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterTimeSpread",             cscRechitClusterTimeSpread,             "cscRechitClusterTimeSpread[nCscRechitClusters]/F");
 
     tree_->Branch("cscRechitClusterPhi",             cscRechitClusterPhi,             "cscRechitClusterPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterEta",             cscRechitClusterEta,             "cscRechitClusterEta[nCscRechitClusters]/F");

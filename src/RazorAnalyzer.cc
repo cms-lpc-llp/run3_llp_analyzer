@@ -33,6 +33,7 @@ void RazorAnalyzer::EnableAll(){
     EnablePileup();
     EnableGenParticles();
     EnableLLP();
+    EnableMC();
 }
 
 

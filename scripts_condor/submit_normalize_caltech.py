@@ -13,7 +13,8 @@ os.system("mkdir -p log")
 executable = "normalize.sh"
 
 
-inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v2/"
+inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v5/"
+#inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/MC_Summer22EE/v1/sixie/v3/"
 outputDir=inputDir  + "/normalized/"
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')

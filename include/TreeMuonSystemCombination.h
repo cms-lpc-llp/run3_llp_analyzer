@@ -174,6 +174,8 @@ public:
   float         cscRechitClusterZ[N_MAX_CSC];   //[nCsc]
   float         cscRechitClusterTimeWeighted[N_MAX_CSC];
   float         cscRechitClusterTimeSpreadWeightedAll[N_MAX_CSC];
+  float         cscRechitClusterTime[N_MAX_CSC];
+  float         cscRechitClusterTimeSpread[N_MAX_CSC];
   float         cscRechitClusterEta[N_MAX_CSC];   //[nCsc]
   float         cscRechitClusterPhi[N_MAX_CSC];   //[nCsc]
   int           cscRechitClusterSize[N_MAX_CSC];

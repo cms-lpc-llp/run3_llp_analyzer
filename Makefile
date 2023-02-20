@@ -12,7 +12,7 @@ ANALYZERSH = $(ANALYZERS:cc=h)
 ANALYZERSOBJ = $(ANALYZERS:cc=o)
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
-UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/DBSCAN.cc ${SRCDIR}/TreeMuonSystemCombination.cc
+UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/DBSCAN.cc  $(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc
 UTILSOBJ = $(UTILS:cc=o)
 EXECUTABLES = NormalizeNtuple SkimNtuple $(RUNNERS)
 #EXECUTABLES = $(RUNNERS)

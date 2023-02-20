@@ -28,8 +28,13 @@ ROOTLDFLAGS  := $(shell $(ROOTCONFIG) --ldflags) $(shell $(ROOTCONFIG) --libs --
 CXXFLAGS     += $(ROOTCFLAGS)
 LDFLAGS      += $(ROOTLDFLAGS)
 
-LIBS = -lRooFitCore -lRooFit -lMinuit -lHtml -lMathMore -lPyROOT -lFoam -lRooStats -lTreePlayer -lTMVA
+# fast jet appde
+CXXFLAGS += $(shell fastjet-install/bin/fastjet-config --cxxflags) 
 
+
+
+LIBS = -lRooFitCore -lRooFit -lMinuit -lHtml -lMathMore -lPyROOT -lFoam -lRooStats -lTreePlayer -lTMVA
+LIBS += $(shell fastjet-install/bin/fastjet-config --libs) -I${PWD}/fastjet/lib
 ifneq ($(CMSSW_BASE),)
         ROOTFIT_INCLUDE := $(shell cd $(CMSSW_BASE); scram tool info roofitcore | grep INCLUDE= | sed 's|INCLUDE=||')
         ROOTFIT_LIBDIR := $(shell cd $(CMSSW_BASE); scram tool info roofitcore | grep LIBDIR= | sed 's|LIBDIR=||')

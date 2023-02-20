@@ -1,7 +1,7 @@
 ######################################
 ## Cross section in pb for datasets
 ##
-
+ggH_HToSSTobbbb_MH-125_MS-15_CTau1000_13p6TeV	4.858E+01
 # from XSDB, agrees with Tamas's number, except 1000pT, couldn't find on XSDB
 QCD_Pt-1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8               1.61
 QCD_Pt-120To170_MuEnrichedPt5_TuneCP5_13TeV-pythia8           21070.0

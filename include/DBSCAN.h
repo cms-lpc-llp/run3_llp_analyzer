@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <cmath>
+#include "fastjet/ClusterSequence.hh"
+#include "fastjet/ClusterSequence.hh"
+#include "fastjet/Selector.hh"
 using namespace std;
 
 #define UNCLASSIFIED -1
@@ -21,7 +24,7 @@ const double phi_corr[N_phicorr] = { 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.80, 0.85
 
 struct cscCluster
 {
-  float x, y, z, t, tTotal, tWeighted, eta, phi;//t is t_strip, tWire, tTotal is sum
+  float x, y, z, tTotal, tWeighted, eta, phi;//t is t_strip, tWire, tTotal is sum
   int nCscSegments;
   float jetVeto, calojetVeto, muonVeto;
   int maxChamber, maxChamberSegment, nChamber;
@@ -38,7 +41,7 @@ struct cscCluster
 
   float Me11Ratio, Me12Ratio;
   float MajorAxis, MinorAxis, EtaSpread, PhiSpread, EtaPhiSpread, XYSpread, DeltaRSpread;
-  float XSpread, YSpread, ZSpread, TSpread, RSpread, TSpreadWeighted, TSpreadWeightedAll;
+  float XSpread, YSpread, ZSpread, TSpread, RSpread, TSpreadWeightedAll;
 
 
   vector<int>segment_id;
@@ -75,7 +78,6 @@ public:
     vector<float>clusterX;
     vector<float>clusterY;
     vector<float>clusterZ;
-    vector<float>clusterTime;
     vector<float>clusterTimeWeighted;
     vector<float>clusterTimeTotal;
     vector<float>clusterMajorAxis;
@@ -87,7 +89,6 @@ public:
 
     vector<float>clusterZSpread;
     vector<float>clusterTimeSpread;
-    vector<float>clusterTimeSpreadWeighted;
     vector<float>clusterTimeSpreadWeightedAll;
     vector<float>clusterEtaPhiSpread;
     vector<float>clusterEtaSpread;

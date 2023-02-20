@@ -21,6 +21,7 @@ const double thePruneCut_ = 9.0;
 
 int DBSCAN::run()
 {
+    fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
     int clusterID = 1;
     vector<Point>::iterator iter;
     for(iter = m_points.begin(); iter != m_points.end(); ++iter)
@@ -45,7 +46,6 @@ void DBSCAN::clear_clusters(){
   clusterX.clear();
   clusterY.clear();
   clusterZ.clear();
-  clusterTime.clear();
   clusterTimeTotal.clear();
   clusterTimeWeighted.clear();
   clusterMajorAxis.clear();
@@ -56,7 +56,6 @@ void DBSCAN::clear_clusters(){
   clusterRSpread.clear();
   clusterZSpread.clear();
   clusterTimeSpread.clear();
-  clusterTimeSpreadWeighted.clear();
   clusterTimeSpreadWeightedAll.clear();
 
   clusterEtaPhiSpread.clear();
@@ -158,31 +157,9 @@ int DBSCAN::result(){
     avg_t = avg_t/size;
     avg_tWire = avg_tWire/size;
 
-    // prune wire time
-    //The wire times have a long tail that has to be pruned.  The strip times (tpeak) are fine
-    bool modified = true;
-    while (modified) {
-      modified = false;
-      double maxDiff = -1;
-      std::vector<float>::iterator maxHit;
-      for (std::vector<float>::iterator itWT = wireTimes.begin(); itWT != wireTimes.end(); ++itWT) {
-        float diff = fabs(*itWT - avg_tTotal);
-        if (diff > maxDiff) {
-          maxDiff = diff;
-          maxHit = itWT;
-        }
-      }
-      if (maxDiff > 26) {
-        int N = size + wireTimes.size();
-        avg_tTotal = (avg_tTotal * N - (*maxHit)) / (N - 1);
-        wireTimes.erase(maxHit);
-        modified = true;
-      }
-    }
-
     //new timing calculation, error weighted
     // https://github.com/cms-sw/cmssw/blob/master/RecoMuon/MuonIdentification/src/CSCTimingExtractor.cc
-    modified = false;
+    bool modified = false;
     double totalWeightTimeVtx = 0;
     double timeVtx = 0;
     double timeSpread = 0;
@@ -241,12 +218,9 @@ int DBSCAN::result(){
     clusterX.push_back(avg_x);
     clusterY.push_back(avg_y);
     clusterZ.push_back(avg_z);
-    clusterTime.push_back(avg_t);
     clusterTimeTotal.push_back(avg_tTotal);
     clusterSize.push_back(size);
-
     clusterTimeWeighted.push_back(timeVtx);
-    clusterTimeSpreadWeighted.push_back(timeSpread);
 
   }
   return 0;
@@ -275,7 +249,7 @@ int DBSCAN::clusterMoments()
           XSpread += (iter->x - clusterX[i]) * (iter->x - clusterX[i]);
           YSpread += (iter->y - clusterY[i]) * (iter->y - clusterY[i]);
           ZSpread += (iter->z - clusterZ[i]) * (iter->z - clusterZ[i]);
-          TSpread += (iter->t - clusterTime[i]) * (iter->t - clusterTime[i]);
+          TSpread += (iter->t - clusterTimeTotal[i]) * (iter->t - clusterTimeTotal[i]);
           TSpreadAll += (iter->t - clusterTimeWeighted[i]) * (iter->t - clusterTimeWeighted[i]);
           float radius = sqrt(pow(iter->x, 2) + pow(iter->y, 2));
           RSpread += pow(radius-sqrt(clusterX[i]*clusterX[i]+clusterY[i]*clusterY[i]),2);
@@ -422,7 +396,6 @@ void DBSCAN::sort_clusters()
     tmpCluster.z = clusterZ[i];
     tmpCluster.eta = clusterEta[i];
     tmpCluster.phi = clusterPhi[i];
-    tmpCluster.t = clusterTime[i];
     tmpCluster.tWeighted = clusterTimeWeighted[i];
     tmpCluster.tTotal = clusterTimeTotal[i];
 
@@ -436,7 +409,6 @@ void DBSCAN::sort_clusters()
     tmpCluster.YSpread = clusterYSpread[i];
     tmpCluster.ZSpread = clusterZSpread[i];
     tmpCluster.TSpread = clusterTimeSpread[i];
-    tmpCluster.TSpreadWeighted = clusterTimeSpreadWeighted[i];
     tmpCluster.TSpreadWeightedAll = clusterTimeSpreadWeightedAll[i];
 
     tmpCluster.EtaPhiSpread = clusterEtaPhiSpread[i];

@@ -1,4 +1,4 @@
-dir=/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v2/normalized/
+dir=/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v5/normalized/
 outputRoot=DisplacedJet-EXOCSCCluster_Run2022EFG-PromptReco-v1_goodLumi.root
 
 rm -f ${outputRoot}

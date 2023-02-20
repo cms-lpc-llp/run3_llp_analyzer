@@ -1,11 +1,11 @@
 //#include "fastjet/ClusterSequence.hh"
 //#include "fastjet/ClusterSequence.hh"
 //#include "fastjet/Selector.hh"
-#include "llp_MuonSystem.h"
+#include "llp_MuonSystem_CA.h"
 #include "RazorHelper.h"
 #include "TreeMuonSystemCombination.h"
 
-#include "DBSCAN.h"
+#include "CACluster.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
 #include "TMath.h"
@@ -88,7 +88,7 @@ struct largest_pt_jet
 } my_largest_pt_jet;
 
 
-void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, string analysisTag)
+void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename, string analysisTag)
 {
   //initialization: create one TTree for each analysis box
   cout << "Initializing..." << endl;
@@ -559,7 +559,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
 
 
 
-      vector<Point> points;
+      vector<Rechits> points;
       vector<int> cscRechitsClusterId;
       points.clear();
       int nCscRechitsChamberPlus11 = 0;
@@ -588,7 +588,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
         int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
 
         int layer = (cscRechitsDetId[i] & 07);
-        Point p;
+        Rechits p;
         p.phi = cscRechitsPhi[i];
         p.eta = cscRechitsEta[i];
         p.x = cscRechitsX[i];
@@ -644,24 +644,24 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
       if ( nCscRechitsChamberMinus42 > 50) MuonSystem->nCscRings++;
       //Do DBSCAN Clustering
 
-      int min_point = 50;  //minimum number of segments to call it a cluster
+      int min_point = 50;  //minimum number of Rechitss to call it a cluster
       float epsilon = 0.2; //cluster radius parameter
-      DBSCAN ds(min_point, epsilon, points);
+      CACluster ds(min_point, epsilon, points);
       ds.run();
-      ds.result();
+      // ds.result();
 
-      ds.clusterMoments();
-      ds.sort_clusters();
+      // ds.clusterMoments();
+      // ds.sort_clusters();
 
-      ds.merge_clusters();
-      ds.result();
-      ds.clusterMoments();
-      ds.sort_clusters();
+      // ds.merge_clusters();
+      // ds.result();
+      // ds.clusterMoments();
+      // ds.sort_clusters();
 
 
 
       MuonSystem->nCscRechitClusters = 0;
-      for ( auto &tmp : ds.CscCluster ) {
+      for ( auto &tmp : ds.clusters  ) {
           MuonSystem->cscRechitClusterX[MuonSystem->nCscRechitClusters] =tmp.x;
           MuonSystem->cscRechitClusterY[MuonSystem->nCscRechitClusters] =tmp.y;
           MuonSystem->cscRechitClusterZ[MuonSystem->nCscRechitClusters] =tmp.z;
@@ -674,31 +674,31 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
           MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters] =tmp.eta;
           MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters] = tmp.phi;
 
-          MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters] = tmp.nCscSegments;
+          MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters] = tmp.nhits;
 
-          MuonSystem->cscRechitClusterNRechitChamberPlus11[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus11;
-          MuonSystem->cscRechitClusterNRechitChamberPlus12[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus12;
-          MuonSystem->cscRechitClusterNRechitChamberPlus13[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus13;
-          MuonSystem->cscRechitClusterNRechitChamberPlus21[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus21;
-          MuonSystem->cscRechitClusterNRechitChamberPlus22[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus22;
-          MuonSystem->cscRechitClusterNRechitChamberPlus31[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus31;
-          MuonSystem->cscRechitClusterNRechitChamberPlus32[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus32;
-          MuonSystem->cscRechitClusterNRechitChamberPlus41[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus41;
-          MuonSystem->cscRechitClusterNRechitChamberPlus42[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberPlus42;
-          MuonSystem->cscRechitClusterNRechitChamberMinus11[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus11;
-          MuonSystem->cscRechitClusterNRechitChamberMinus12[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus12;
-          MuonSystem->cscRechitClusterNRechitChamberMinus13[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus13;
-          MuonSystem->cscRechitClusterNRechitChamberMinus21[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus21;
-          MuonSystem->cscRechitClusterNRechitChamberMinus22[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus22;
-          MuonSystem->cscRechitClusterNRechitChamberMinus31[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus31;
-          MuonSystem->cscRechitClusterNRechitChamberMinus32[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus32;
-          MuonSystem->cscRechitClusterNRechitChamberMinus41[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus41;
-          MuonSystem->cscRechitClusterNRechitChamberMinus42[MuonSystem->nCscRechitClusters] = tmp.nCscSegmentChamberMinus42;
+          MuonSystem->cscRechitClusterNRechitChamberPlus11[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus11;
+          MuonSystem->cscRechitClusterNRechitChamberPlus12[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus12;
+          MuonSystem->cscRechitClusterNRechitChamberPlus13[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus13;
+          MuonSystem->cscRechitClusterNRechitChamberPlus21[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus21;
+          MuonSystem->cscRechitClusterNRechitChamberPlus22[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus22;
+          MuonSystem->cscRechitClusterNRechitChamberPlus31[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus31;
+          MuonSystem->cscRechitClusterNRechitChamberPlus32[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus32;
+          MuonSystem->cscRechitClusterNRechitChamberPlus41[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus41;
+          MuonSystem->cscRechitClusterNRechitChamberPlus42[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberPlus42;
+          MuonSystem->cscRechitClusterNRechitChamberMinus11[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus11;
+          MuonSystem->cscRechitClusterNRechitChamberMinus12[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus12;
+          MuonSystem->cscRechitClusterNRechitChamberMinus13[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus13;
+          MuonSystem->cscRechitClusterNRechitChamberMinus21[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus21;
+          MuonSystem->cscRechitClusterNRechitChamberMinus22[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus22;
+          MuonSystem->cscRechitClusterNRechitChamberMinus31[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus31;
+          MuonSystem->cscRechitClusterNRechitChamberMinus32[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus32;
+          MuonSystem->cscRechitClusterNRechitChamberMinus41[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus41;
+          MuonSystem->cscRechitClusterNRechitChamberMinus42[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus42;
           MuonSystem->cscRechitClusterMaxChamber[MuonSystem->nCscRechitClusters] = tmp.maxChamber;
-          MuonSystem->cscRechitClusterMaxChamberRatio[MuonSystem->nCscRechitClusters] = 1.0*tmp.maxChamberSegment/tmp.nCscSegments;
+          MuonSystem->cscRechitClusterMaxChamberRatio[MuonSystem->nCscRechitClusters] = 1.0*tmp.maxChamberRechits/tmp.nhits;
           MuonSystem->cscRechitClusterNChamber[MuonSystem->nCscRechitClusters] = tmp.nChamber;
           MuonSystem->cscRechitClusterMaxStation[MuonSystem->nCscRechitClusters] = tmp.maxStation;
-          MuonSystem->cscRechitClusterMaxStationRatio[MuonSystem->nCscRechitClusters] = 1.0*tmp.maxStationSegment/tmp.nCscSegments;
+          MuonSystem->cscRechitClusterMaxStationRatio[MuonSystem->nCscRechitClusters] = 1.0*tmp.maxStationRechits/tmp.nhits;
 
           MuonSystem->cscRechitClusterNStation10[MuonSystem->nCscRechitClusters] = tmp.nStation10;
           MuonSystem->cscRechitClusterAvgStation10[MuonSystem->nCscRechitClusters] = tmp.avgStation10;
@@ -804,7 +804,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
       // cout<<"here"<<endl;
 
       for (int i = 0; i < nDtRechits; i++) {
-        Point p;
+        Rechits p;
 
         p.phi = dtRechitCorrectPhi[i];
         p.eta = dtRechitCorrectEta[i];
@@ -825,21 +825,21 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
       //Do DBSCAN Clustering
       int min_point_dt = 50;  //minimum number of segments to call it a cluster
       float epsilon_dt = 0.2; //cluster radius parameter
-      DBSCAN ds_dtRechit(min_point_dt, epsilon_dt, points);
+      CACluster ds_dtRechit(min_point_dt, epsilon_dt, points);
       ds_dtRechit.run();
-      ds_dtRechit.result();
-      ds_dtRechit.clusterMoments();
-      ds_dtRechit.sort_clusters();
-      ds_dtRechit.merge_clusters();
-      ds_dtRechit.result();
-      ds_dtRechit.clusterMoments();
-      ds_dtRechit.sort_clusters();
+      // ds_dtRechit.result();
+      // ds_dtRechit.clusterMoments();
+      // ds_dtRechit.sort_clusters();
+      // ds_dtRechit.merge_clusters();
+      // ds_dtRechit.result();
+      // ds_dtRechit.clusterMoments();
+      // ds_dtRechit.sort_clusters();
 
       // cout<<"here"<<endl;
 
       MuonSystem->nDtRechitClusters = 0;
 
-      for ( auto &tmp : ds_dtRechit.CscCluster ) {
+      for ( auto &tmp : ds_dtRechit.clusters  ) {
 
         //remove overlaps
         bool overlap = false;
@@ -860,7 +860,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
           else MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters] = 2;
           MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters] =tmp.eta;
           MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters] =tmp.phi;
-          MuonSystem->dtRechitClusterSize[MuonSystem->nDtRechitClusters] = tmp.nCscSegments;
+          MuonSystem->dtRechitClusterSize[MuonSystem->nDtRechitClusters] = tmp.nhits;
 
           unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
           default_random_engine generator (seed);
@@ -887,16 +887,16 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
                                                                               MuonSystem->dtRechitClusterNoiseHitStation4[MuonSystem->nDtRechitClusters];
 
 
-          MuonSystem->dtRechitClusterNHitStation1[MuonSystem->nDtRechitClusters] = tmp.nDtSegmentStation1;
-        	MuonSystem->dtRechitClusterNHitStation2[MuonSystem->nDtRechitClusters] = tmp.nDtSegmentStation2;
-        	MuonSystem->dtRechitClusterNHitStation3[MuonSystem->nDtRechitClusters] = tmp.nDtSegmentStation3;
-        	MuonSystem->dtRechitClusterNHitStation4[MuonSystem->nDtRechitClusters] = tmp.nDtSegmentStation4;
+          MuonSystem->dtRechitClusterNHitStation1[MuonSystem->nDtRechitClusters] = tmp.nDtRechitsStation1;
+        	MuonSystem->dtRechitClusterNHitStation2[MuonSystem->nDtRechitClusters] = tmp.nDtRechitsStation2;
+        	MuonSystem->dtRechitClusterNHitStation3[MuonSystem->nDtRechitClusters] = tmp.nDtRechitsStation3;
+        	MuonSystem->dtRechitClusterNHitStation4[MuonSystem->nDtRechitClusters] = tmp.nDtRechitsStation4;
 
         	MuonSystem->dtRechitClusterMaxChamber[MuonSystem->nDtRechitClusters] = tmp.maxChamber;
-        	MuonSystem->dtRechitClusterMaxChamberRatio[MuonSystem->nDtRechitClusters] = 1.0*tmp.maxChamberSegment/tmp.nCscSegments;
+        	MuonSystem->dtRechitClusterMaxChamberRatio[MuonSystem->nDtRechitClusters] = 1.0*tmp.maxChamberRechits/tmp.nhits;
         	MuonSystem->dtRechitClusterNChamber[MuonSystem->nDtRechitClusters] = tmp.nChamber;
         	MuonSystem->dtRechitClusterMaxStation[MuonSystem->nDtRechitClusters] = tmp.maxStation;
-        	MuonSystem->dtRechitClusterMaxStationRatio[MuonSystem->nDtRechitClusters] = 1.0*tmp.maxStationSegment/tmp.nCscSegments;
+        	MuonSystem->dtRechitClusterMaxStationRatio[MuonSystem->nDtRechitClusters] = 1.0*tmp.maxStationRechits/tmp.nhits;
           MuonSystem->dtRechitClusterNStation10[MuonSystem->nDtRechitClusters] = tmp.nStation10;
           MuonSystem->dtRechitClusterAvgStation10[MuonSystem->nDtRechitClusters] = tmp.avgStation10;
 
