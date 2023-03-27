@@ -7,6 +7,7 @@
 #include "fastjet/ClusterSequence.hh"
 #include "fastjet/Selector.hh"
 using namespace std;
+const double CA_MERGE_CLUSTER_DR = 0.6;
 
 
 
@@ -49,8 +50,12 @@ public:
     ~CACluster(){}
    
     vector<cluster> clusters;
-
+    int nClusters;
     int run();
+    void clusterProperties();
+    void sort_clusters();
+    void merge_clusters();
+
     double deltaPhi(double phi1, double phi2);
     double deltaR(double eta1, double phi1, double eta2, double phi2);
 

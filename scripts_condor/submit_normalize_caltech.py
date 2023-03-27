@@ -13,8 +13,8 @@ os.system("mkdir -p log")
 executable = "normalize.sh"
 
 
-inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v5/"
-#inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/MC_Summer22EE/v1/sixie/v3/"
+inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data2022/v10/"
+inputDir = "/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/MC_Summer22EE/v1/sixie/v10/"
 outputDir=inputDir  + "/normalized/"
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
@@ -60,7 +60,7 @@ for sample in datasetList.keys():
 
 
     tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
-    tmpCondorJDLFile.write("RequestMemory = 2000 \n")
+    tmpCondorJDLFile.write("RequestMemory = 4000 \n")
     tmpCondorJDLFile.write("RequestCpus = 1 \n")
     tmpCondorJDLFile.write("RequestDisk = 4 \n")
 

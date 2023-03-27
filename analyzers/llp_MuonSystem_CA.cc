@@ -648,15 +648,10 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       float epsilon = 0.2; //cluster radius parameter
       CACluster ds(min_point, epsilon, points);
       ds.run();
-      // ds.result();
-
-      // ds.clusterMoments();
-      // ds.sort_clusters();
-
-      // ds.merge_clusters();
-      // ds.result();
-      // ds.clusterMoments();
-      // ds.sort_clusters();
+      ds.clusterProperties();
+      ds.merge_clusters();
+      ds.clusterProperties();
+      ds.sort_clusters();
 
 
 
@@ -827,15 +822,12 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       float epsilon_dt = 0.2; //cluster radius parameter
       CACluster ds_dtRechit(min_point_dt, epsilon_dt, points);
       ds_dtRechit.run();
-      // ds_dtRechit.result();
-      // ds_dtRechit.clusterMoments();
-      // ds_dtRechit.sort_clusters();
-      // ds_dtRechit.merge_clusters();
-      // ds_dtRechit.result();
-      // ds_dtRechit.clusterMoments();
-      // ds_dtRechit.sort_clusters();
+      ds_dtRechit.clusterProperties();
+      ds_dtRechit.merge_clusters();
+      ds_dtRechit.clusterProperties();
 
-      // cout<<"here"<<endl;
+      ds_dtRechit.sort_clusters();
+
 
       MuonSystem->nDtRechitClusters = 0;
 
@@ -1052,7 +1044,7 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
           MuonSystem->nDtRechitClusters++;
         }
 
-      // if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
+      //if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1) continue;
 
       if(!isData && signalScan)
       {

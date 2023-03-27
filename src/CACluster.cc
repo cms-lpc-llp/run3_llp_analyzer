@@ -45,21 +45,35 @@ int CACluster::run()
   double ptmin = 0.0;
   std::vector<fastjet::PseudoJet> fjJets = clus_seq.inclusive_jets(ptmin);
 
+  nClusters = 0;
   // auto clusters = std::make_unique<RecHitClusterCollection>();
   for (auto const& fjJet : fjJets) {
     // skip if the cluster has too few rechits
     if (int(fjJet.constituents().size()) < nRechitMin_) continue;
-    cluster tmpCluster;
     // get the constituents from fastjet
     vector<Rechits> rechits;
     for (auto const& constituent : fjJet.constituents()) {
       auto index = constituent.user_index();
       if (index >= 0 && static_cast<unsigned int>(index) < m_points.size()) {
+        m_points[index].clusterID = nClusters;
         rechits.push_back(m_points[index]);
       }
     }
-   
+   nClusters++;
+  }
+}
+void CACluster::clusterProperties()
+{
+  
 
+  for (int i = 0; i < nClusters; i++){
+    cluster tmpCluster;
+    vector<Rechits> rechits;
+    for(int j = 0; j < m_points.size(); j++)
+    {
+      if (m_points[j].clusterID != i) continue;
+      rechits.push_back(m_points[j]);
+    }
 
     vector<float> wireTimes;
     vector<float> stripTimes;
@@ -293,9 +307,131 @@ int CACluster::run()
 
   }
 
-  sort(clusters.begin(), clusters.end(), largest_nhit_cluster);
 
 };
+void CACluster::sort_clusters() //only run sort after merg_clusters, or it will mess up the clusterID of the m_points
+{
+  sort(clusters.begin(), clusters.end(), largest_nhit_cluster);
+}
+
+void CACluster::merge_clusters()
+{
+  // clear all the cluster variables
+  //change cluster ID of points
+
+  // get the list of eta and phi of the clusters
+  vector<float> clusterEta;
+  vector<float> clusterPhi;
+  for(unsigned int j = 0; j < nClusters; j++){
+    clusterEta.push_back(clusters.at(j).eta);
+    clusterPhi.push_back(clusters.at(j).phi);
+
+  }
+  bool modified = true;
+  while(modified){
+    modified = false;
+    float mindR = 15;
+    int cluster1 = 999;
+    int cluster2 = 999;
+
+    for(unsigned int i = 0; i < nClusters; i++){ //find the min_deltaR between any two clusters
+      for(unsigned int j = i+1; j < nClusters; j++){
+        float current_dR = deltaR(clusters[i].eta, clusters[i].phi, clusters[j].eta, clusters[j].phi);
+        if(current_dR<mindR)
+        {
+          mindR = current_dR;
+          cluster1 = i;
+          cluster2 = j;
+        }
+      }
+    }
+    if (mindR < CA_MERGE_CLUSTER_DR){ //if min deltaR < the deltaR merging threshold, then merge the two clusters
+      vector<Rechits>::iterator iter;
+      float avg_x(0.0), avg_y(0.0), avg_z(0.0);
+      float avg_x_sl2(0.0), avg_y_sl2(0.0), avg_z_sl2(0.0);
+      float avg_eta(0.0), avg_phi(0.0);
+      int size(0), size_z(0), size_xy(0);
+
+      
+      for(iter = m_points.begin(); iter != m_points.end(); ++iter)
+      {
+        if ( iter->clusterID == cluster2 ){ //change the clusterID from cluster 2 to cluster1
+          iter->clusterID = cluster1;
+        }
+        if ( iter->clusterID > cluster2 )iter->clusterID = iter->clusterID-1; // change the cluster ID for all clusters beyond to ID-1
+
+        if (iter->clusterID == cluster1) //recalculate the eta/phi position of the new cluster
+        {
+
+            if ( iter->superlayer == 2) //for DT rechits that only have coordinates in Z
+            {
+              avg_x_sl2 +=  iter->x;
+              avg_y_sl2 +=  iter->y;
+              avg_z_sl2 +=  iter->z;
+              size_z++;
+            }
+            else if ( iter->superlayer == 1 ||  iter->superlayer == 3)
+            {
+              avg_x +=  iter->x;
+              avg_y +=  iter->y;
+              avg_z +=  iter->z;
+              size_xy ++;
+            }
+            else //csc or for DT "wrong" rechit coordinates
+            {
+              avg_x +=  iter->x;
+              avg_y +=  iter->y;
+              avg_z +=  iter->z;
+            
+            }
+            size ++;
+          }
+          if (size_xy > 0 && size_z > 0) //for DT correct position, calculate average Z using sl2 and average XY using sl1/3
+          {
+            avg_x = avg_x/size_xy;
+            avg_y = avg_y/size_xy;
+            avg_z = avg_z_sl2/size_z;
+          }
+          else if (size_xy == 0 && size_z == 0) //csc or DT wrong position
+          {
+            avg_x = avg_x/size;
+            avg_y = avg_y/size;
+            avg_z = avg_z/size;
+          }
+          else if (size_xy > 0 && size_z == 0)
+          {
+            avg_x = avg_x/size_xy;
+            avg_y = avg_y/size_xy;
+            avg_z = avg_z/size_xy;
+          }
+          else
+          {
+            avg_x = avg_x_sl2/size_z;
+            avg_y = avg_y_sl2/size_z;
+            avg_z = avg_z_sl2/size_z;
+          }
+
+          // calculate cluster eta and phi
+          avg_phi = atan(avg_y/avg_x);
+          if  (avg_x < 0.0) avg_phi = TMath::Pi() + avg_phi;
+
+          avg_phi = deltaPhi(avg_phi,0.0);
+          avg_eta = atan(sqrt(pow(avg_x,2)+pow(avg_y,2))/abs(avg_z));
+          avg_eta = -1.0*TMath::Sign(1.0, avg_z)*log(tan(avg_eta/2));
+
+      }
+      clusterEta.erase(clusterEta.begin() + cluster2);
+      clusterPhi.erase(clusterPhi.begin() + cluster2);
+      clusterEta[cluster1] = avg_eta;
+      clusterPhi[cluster1] = avg_phi;
+
+      nClusters--;
+      modified = true;
+    }
+  }
+  clusters.clear();
+}
+
 
 double CACluster::deltaPhi(double phi1, double phi2)
 {
@@ -310,3 +446,9 @@ double CACluster::deltaPhi(double phi1, double phi2)
   }
   return dphi;
 };
+
+double CACluster::deltaR(double eta1, double phi1, double eta2, double phi2) {
+  double dphi = deltaPhi(phi1,phi2);
+  double deta = eta1 - eta2;
+  return sqrt( dphi*dphi + deta*deta);
+}
