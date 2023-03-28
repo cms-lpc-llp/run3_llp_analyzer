@@ -150,6 +150,27 @@ public:
 
   float         dtRechitClusterMet_dPhi[N_MAX_CSC];
 
+  int         dtRechitClusternXY[N_MAX_CSC];
+  int         dtRechitClusternZ[N_MAX_CSC];
+  float         dtRechitClusterXSpread[N_MAX_CSC];
+  float         dtRechitClusterYSpread[N_MAX_CSC];
+  float         dtRechitClusterZSpread[N_MAX_CSC];
+  float         dtRechitClusterXYSpread[N_MAX_CSC];
+  float         dtRechitClusterRSpread[N_MAX_CSC];
+  float         dtRechitClusterEtaPhiSpread[N_MAX_CSC];
+  float         dtRechitClusterEtaSpread[N_MAX_CSC];
+  float         dtRechitClusterPhiSpread[N_MAX_CSC];
+  float         dtRechitClusterDeltaRSpread[N_MAX_CSC];
+  float         dtRechitClusterMajorAxis[N_MAX_CSC];
+  float         dtRechitClusterMinorAxis[N_MAX_CSC];
+  float         dtRechitClusterSkewX[N_MAX_CSC];
+  float         dtRechitClusterSkewY[N_MAX_CSC];
+  float         dtRechitClusterSkewZ[N_MAX_CSC];
+  float         dtRechitClusterKurtX[N_MAX_CSC];
+  float         dtRechitClusterKurtY[N_MAX_CSC];
+  float         dtRechitClusterKurtZ[N_MAX_CSC];
+
+
 
 
 
@@ -179,6 +200,25 @@ public:
   float         cscRechitClusterEta[N_MAX_CSC];   //[nCsc]
   float         cscRechitClusterPhi[N_MAX_CSC];   //[nCsc]
   int           cscRechitClusterSize[N_MAX_CSC];
+  int         cscRechitClusternXY[N_MAX_CSC];
+  int         cscRechitClusternZ[N_MAX_CSC];
+  float         cscRechitClusterXSpread[N_MAX_CSC];
+  float         cscRechitClusterYSpread[N_MAX_CSC];
+  float         cscRechitClusterZSpread[N_MAX_CSC];
+  float         cscRechitClusterXYSpread[N_MAX_CSC];
+  float         cscRechitClusterRSpread[N_MAX_CSC];
+  float         cscRechitClusterEtaPhiSpread[N_MAX_CSC];
+  float         cscRechitClusterEtaSpread[N_MAX_CSC];
+  float         cscRechitClusterPhiSpread[N_MAX_CSC];
+  float         cscRechitClusterDeltaRSpread[N_MAX_CSC];
+  float         cscRechitClusterMajorAxis[N_MAX_CSC];
+  float         cscRechitClusterMinorAxis[N_MAX_CSC];
+  float         cscRechitClusterSkewX[N_MAX_CSC];
+  float         cscRechitClusterSkewY[N_MAX_CSC];
+  float         cscRechitClusterSkewZ[N_MAX_CSC];
+  float         cscRechitClusterKurtX[N_MAX_CSC];
+  float         cscRechitClusterKurtY[N_MAX_CSC];
+  float         cscRechitClusterKurtZ[N_MAX_CSC];
 
 
 

@@ -22,7 +22,7 @@ const int nRechitMin_ = 50;
 const int nStationThres_ = 10;
 int CACluster::run()
 {
-  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
+  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.5);
   std::vector<fastjet::PseudoJet> fjInput;
   vector<Rechits>::iterator iter;
 
@@ -215,16 +215,12 @@ void CACluster::clusterProperties()
 
     tmpCluster.tWeighted = timeVtx;
 
-    // time spread calculation 
-    tmpCluster.TSpread = 0.0;
-    tmpCluster.TSpreadWeightedAll = 0.0;
-    for (auto const& rechit : rechits) 
-    {
-      tmpCluster.TSpreadWeightedAll += (rechit.t - tmpCluster.tWeighted) * (rechit.t - tmpCluster.tWeighted);
-      tmpCluster.TSpread += (rechit.t - tmpCluster.tTotal) * (rechit.t - tmpCluster.tTotal);
-    }
-    tmpCluster.TSpread = sqrt(tmpCluster.TSpread/tmpCluster.nhits);
-    tmpCluster.TSpreadWeightedAll = sqrt(tmpCluster.TSpreadWeightedAll/tmpCluster.nhits);
+    // time spread and momentum calculation 
+    float m11(0.0), m12(0.0), m22(0.0), p3_x(0.0), p4_x(0.0), p3_y(0.0), p4_y(0.0), p3_z(0.0), p4_z(0.0);
+    float XSpread(0.0), YSpread(0.0), ZSpread(0.0), TSpread(0.0),  TSpreadAll(0.0), XYSpread(0.0), RSpread(0.0), DeltaRSpread(0.0);
+    int nXY = 0;
+    int nZ = 0;
+
     tmpCluster.nCscRechitsChamberPlus11 = 0;
     tmpCluster.nCscRechitsChamberPlus12 = 0;
     tmpCluster.nCscRechitsChamberPlus13 = 0;
@@ -249,8 +245,59 @@ void CACluster::clusterProperties()
     tmpCluster.nDtRechitsStation3 = 0;
     tmpCluster.nDtRechitsStation4 = 0;
 
-  // number of rechits in each chamber/station 
-    for (auto const& rechit : rechits) {
+
+    for (auto const& rechit : rechits) 
+    {
+
+      m11 += (rechit.eta-tmpCluster.eta)*(rechit.eta-tmpCluster.eta);
+      m12 += (rechit.eta-tmpCluster.eta)* deltaPhi(rechit.phi,tmpCluster.phi);
+      m22 += deltaPhi(rechit.phi,tmpCluster.phi)*deltaPhi(rechit.phi,tmpCluster.phi);
+      DeltaRSpread +=  pow(deltaR(tmpCluster.eta, tmpCluster.phi, rechit.eta, rechit.phi),2);
+      
+      // DT superlayer 2 -> measures Z only
+      // DT superlayers 1 & 3 -> measure XY only
+      // CSCs -> take only one Z value per each station
+      
+      if(rechit.superlayer > 0){ //hit in DT
+	if(rechit.superlayer == 1 || rechit.superlayer == 3){ //XY information
+	  XYSpread += (rechit.x - tmpCluster.x)*(rechit.y - tmpCluster.y);
+	  XSpread += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	  YSpread += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	  float radius = sqrt(pow(rechit.x, 2) + pow(rechit.y, 2));
+	  RSpread += pow(radius-sqrt(tmpCluster.x*tmpCluster.x+tmpCluster.y*tmpCluster.y),2);
+	  p3_x += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	  p4_x += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	  p3_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	  p4_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	  nXY++;
+	}
+	else if(rechit.superlayer == 2){ //Z information
+	  ZSpread += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	  p3_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	  p4_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	  nZ++;
+	}
+      }else{ //hit in CSC
+	XYSpread += (rechit.x - tmpCluster.x)*(rechit.y - tmpCluster.y);
+	XSpread += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	YSpread += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	float radius = sqrt(pow(rechit.x, 2) + pow(rechit.y, 2));
+	RSpread += pow(radius-sqrt(tmpCluster.x*tmpCluster.x+tmpCluster.y*tmpCluster.y),2);
+	p3_x += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	p4_x += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
+	p3_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	p4_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
+	nXY++;
+	ZSpread += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	p3_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	p4_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
+	nZ++;
+      }
+
+      TSpread += (rechit.t - tmpCluster.tTotal) * (rechit.t - tmpCluster.tTotal);
+      TSpreadAll += (rechit.t - tmpCluster.tWeighted) * (rechit.t - tmpCluster.tWeighted);
+
+      // number of rechits in each chamber/station 
       if (rechit.chamber == 11) tmpCluster.nCscRechitsChamberPlus11++;
       if (rechit.chamber == 12) tmpCluster.nCscRechitsChamberPlus12++;
       if (rechit.chamber == 13) tmpCluster.nCscRechitsChamberPlus13++;
@@ -276,6 +323,31 @@ void CACluster::clusterProperties()
       if (abs(rechit.station) == 4) tmpCluster.nDtRechitsStation4++;
 
     }
+
+    float a = (m11+m22)/2;
+    float b = 0.5*sqrt((m11+m22)*(m11+m22)-4*(m11*m22-m12*m12));
+    tmpCluster.XSpread = sqrt(XSpread/(float)nXY);
+    tmpCluster.YSpread = sqrt(YSpread/(float)nXY);
+    tmpCluster.ZSpread = sqrt(ZSpread/(float)nZ);
+    tmpCluster.RSpread = sqrt(RSpread/(float)nXY);
+    tmpCluster.XYSpread = sqrt(abs(XYSpread)/nXY);
+    tmpCluster.SkewX = (p3_x/(float)nXY) / pow(XSpread/(float)nXY, 3/2);
+    tmpCluster.SkewY = (p3_y/(float)nXY) / pow(YSpread/(float)nXY, 3/2);
+    tmpCluster.SkewZ = (p3_z/(float)nZ) / pow(ZSpread/(float)nZ, 3/2);
+    tmpCluster.KurtX = (p4_x/(float)nXY) / (pow(XSpread/(float)nXY, 2)) - 3.0;
+    tmpCluster.KurtY = (p4_y/(float)nXY) / (pow(YSpread/(float)nXY, 2)) - 3.0;
+    tmpCluster.KurtZ = (p4_z/(float)nZ) / (pow(ZSpread/(float)nZ, 2)) - 3.0;
+    tmpCluster.nXY = nXY;
+    tmpCluster.nZ = nZ;
+    tmpCluster.DeltaRSpread = sqrt(DeltaRSpread/(float)tmpCluster.nhits);
+    tmpCluster.TSpread = sqrt(TSpread/(float)tmpCluster.nhits);
+    tmpCluster.TSpreadWeightedAll = sqrt(TSpreadAll/(float)tmpCluster.nhits);
+    tmpCluster.EtaSpread = sqrt(abs(m11)/(float)tmpCluster.nhits);
+    tmpCluster.EtaPhiSpread = sqrt(abs(m12)/(float)tmpCluster.nhits);
+    tmpCluster.PhiSpread = sqrt(abs(m22)/(float)tmpCluster.nhits);
+    tmpCluster.MajorAxis = sqrt((a+b)/(float)tmpCluster.nhits);
+    tmpCluster.MinorAxis = sqrt((a-b)/(float)tmpCluster.nhits);
+
 
     // Nstation avg station
     tmpCluster.nStation10 = 0;

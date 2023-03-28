@@ -25,8 +25,8 @@ struct cluster
   int nDtRechitsStation1,nDtRechitsStation2,nDtRechitsStation3,nDtRechitsStation4;
 
   float Me11Ratio, Me12Ratio;
-  float TSpread, TSpreadWeightedAll;
-
+  float XSpread, YSpread, ZSpread, RSpread, DeltaRSpread, XYSpread, TSpread, TSpreadWeightedAll, EtaSpread, EtaPhiSpread, PhiSpread, MajorAxis, MinorAxis, SkewX, SkewY, SkewZ, KurtX, KurtY, KurtZ;
+  int nXY, nZ;
 
 };
 
