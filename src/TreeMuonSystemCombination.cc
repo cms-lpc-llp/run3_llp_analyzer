@@ -208,6 +208,9 @@ void TreeMuonSystemCombination::InitVariables()
           dtRechitClusterNHitStation2[i] = -999;
           dtRechitClusterNHitStation3[i] = -999;
           dtRechitClusterNHitStation4[i] = -999;
+          dtRechitClusterNHitWheel0[i] = -999;
+          dtRechitClusterNHitWheel1[i] = -999;
+          dtRechitClusterNHitWheel2[i] = -999;
           dtRechitClusterMet_dPhi[i] = 999.;
 	  dtRechitClusternXY[i] = -999;
 	  dtRechitClusternZ[i] = -999;
@@ -416,7 +419,9 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("dtRechitClusterNHitStation3",             dtRechitClusterNHitStation3);
   tree_->SetBranchAddress("dtRechitClusterNHitStation4",             dtRechitClusterNHitStation4);
 
-
+  tree_->SetBranchAddress("dtRechitClusterNHitWheel0",             dtRechitClusterNHitWheel0);
+  tree_->SetBranchAddress("dtRechitClusterNHitWheel1",             dtRechitClusterNHitWheel1);
+  tree_->SetBranchAddress("dtRechitClusterNHitWheel2",             dtRechitClusterNHitWheel2);
 
   tree_->SetBranchAddress("dtRechitCluster_match_MB1hits_0p4",             dtRechitCluster_match_MB1hits_0p4);
   tree_->SetBranchAddress("dtRechitCluster_match_MB1hits_0p5",             dtRechitCluster_match_MB1hits_0p5);
@@ -849,6 +854,9 @@ void TreeMuonSystemCombination::CreateTree()
         tree_->Branch("dtRechitClusterNHitStation2",             dtRechitClusterNHitStation2,             "dtRechitClusterNHitStation2[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterNHitStation3",             dtRechitClusterNHitStation3,             "dtRechitClusterNHitStation3[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterNHitStation4",             dtRechitClusterNHitStation4,             "dtRechitClusterNHitStation4[nDtRechitClusters]/I");
+        tree_->Branch("dtRechitClusterNHitWheel0",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel0[nDtRechitClusters]/I");
+        tree_->Branch("dtRechitClusterNHitWheel1",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel1[nDtRechitClusters]/I");
+        tree_->Branch("dtRechitClusterNHitWheel2",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel2[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterMet_dPhi",             dtRechitClusterMet_dPhi,             "dtRechitClusterMet_dPhi[nDtRechitClusters]/F");
 
 

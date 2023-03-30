@@ -244,11 +244,13 @@ void CACluster::clusterProperties()
     tmpCluster.nDtRechitsStation2 = 0;
     tmpCluster.nDtRechitsStation3 = 0;
     tmpCluster.nDtRechitsStation4 = 0;
-
+    tmpCluster.nDtRechitsWheel0 = 0;    
+    tmpCluster.nDtRechitsWheel1 = 0;    
+    tmpCluster.nDtRechitsWheel2 = 0;    
 
     for (auto const& rechit : rechits) 
     {
-
+      
       m11 += (rechit.eta-tmpCluster.eta)*(rechit.eta-tmpCluster.eta);
       m12 += (rechit.eta-tmpCluster.eta)* deltaPhi(rechit.phi,tmpCluster.phi);
       m22 += deltaPhi(rechit.phi,tmpCluster.phi)*deltaPhi(rechit.phi,tmpCluster.phi);
@@ -259,6 +261,11 @@ void CACluster::clusterProperties()
       // CSCs -> take only one Z value per each station
       
       if(rechit.superlayer > 0){ //hit in DT
+	//save nhits per wheel
+	if(abs(rechit.z) < 126.8){tmpCluster.nDtRechitsWheel0++;}
+	else if(abs(rechit.z) > 126.8 && abs(rechit.z) < 395.4){tmpCluster.nDtRechitsWheel1++;}
+	else if(abs(rechit.z) > 395.4){tmpCluster.nDtRechitsWheel2++;}
+
 	if(rechit.superlayer == 1 || rechit.superlayer == 3){ //XY information
 	  XYSpread += (rechit.x - tmpCluster.x)*(rechit.y - tmpCluster.y);
 	  XSpread += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);

@@ -84,7 +84,9 @@ public:
   int           dtRechitClusterNHitStation2[N_MAX_CSC];
   int           dtRechitClusterNHitStation3[N_MAX_CSC];
   int           dtRechitClusterNHitStation4[N_MAX_CSC];
-
+  int           dtRechitClusterNHitWheel0[N_MAX_CSC];
+  int           dtRechitClusterNHitWheel1[N_MAX_CSC];
+  int           dtRechitClusterNHitWheel2[N_MAX_CSC];
 
   int           dtRechitCluster_match_MB1hits_0p4[N_MAX_CSC];
   int           dtRechitCluster_match_MB1hits_0p5[N_MAX_CSC];
