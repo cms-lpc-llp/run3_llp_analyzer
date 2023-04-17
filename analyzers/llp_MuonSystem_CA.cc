@@ -649,8 +649,8 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       CACluster ds(min_point, epsilon, points);
       ds.run();
       ds.clusterProperties();
-      ds.merge_clusters();
-      ds.clusterProperties();
+      //ds.merge_clusters();
+      //ds.clusterProperties();
       ds.sort_clusters();
 
 
@@ -842,8 +842,8 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       CACluster ds_dtRechit(min_point_dt, epsilon_dt, points);
       ds_dtRechit.run();
       ds_dtRechit.clusterProperties();
-      ds_dtRechit.merge_clusters();
-      ds_dtRechit.clusterProperties();
+      //ds_dtRechit.merge_clusters();
+      //ds_dtRechit.clusterProperties();
 
       ds_dtRechit.sort_clusters();
 

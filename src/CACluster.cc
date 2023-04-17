@@ -22,7 +22,7 @@ const int nRechitMin_ = 50;
 const int nStationThres_ = 10;
 int CACluster::run()
 {
-  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.5);
+  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.6);
   std::vector<fastjet::PseudoJet> fjInput;
   vector<Rechits>::iterator iter;
 
