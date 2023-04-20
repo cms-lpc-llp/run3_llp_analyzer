@@ -35,7 +35,7 @@ typedef struct Rechits_
     float x, y, z, t, twire;  // X, Y, Z position
     float eta,phi;
     float dirX, dirY, dirZ;
-  int station, chamber, layer, superlayer; //superlayer exists only for DT
+  int station, chamber, layer, superlayer, wheel; //superlayer and wheel exist only for DT
     int clusterID;  // clustered ID
 }Rechits;
 

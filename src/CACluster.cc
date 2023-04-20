@@ -262,9 +262,9 @@ void CACluster::clusterProperties()
       
       if(rechit.superlayer > 0){ //hit in DT
 	//save nhits per wheel
-	if(abs(rechit.z) < 126.8){tmpCluster.nDtRechitsWheel0++;}
-	else if(abs(rechit.z) > 126.8 && abs(rechit.z) < 395.4){tmpCluster.nDtRechitsWheel1++;}
-	else if(abs(rechit.z) > 395.4){tmpCluster.nDtRechitsWheel2++;}
+	if(abs(rechit.wheel) == 0){tmpCluster.nDtRechitsWheel0++;}
+	else if(abs(rechit.wheel) == 1){tmpCluster.nDtRechitsWheel1++;}
+	else if(abs(rechit.wheel) == 2){tmpCluster.nDtRechitsWheel2++;}
 
 	if(rechit.superlayer == 1 || rechit.superlayer == 3){ //XY information
 	  XYSpread += (rechit.x - tmpCluster.x)*(rechit.y - tmpCluster.y);
