@@ -22,11 +22,11 @@ struct cluster
   int nCscRechitsChamberPlus11, nCscRechitsChamberPlus12, nCscRechitsChamberPlus13, nCscRechitsChamberPlus21, nCscRechitsChamberPlus22, nCscRechitsChamberPlus31, nCscRechitsChamberPlus32, nCscRechitsChamberPlus41, nCscRechitsChamberPlus42;
   int nCscRechitsChamberMinus11, nCscRechitsChamberMinus12, nCscRechitsChamberMinus13, nCscRechitsChamberMinus21, nCscRechitsChamberMinus22, nCscRechitsChamberMinus31, nCscRechitsChamberMinus32, nCscRechitsChamberMinus41, nCscRechitsChamberMinus42;
 
-  int nDtRechitsStation1,nDtRechitsStation2,nDtRechitsStation3,nDtRechitsStation4;
+  int nDtRechitsStation1,nDtRechitsStation2,nDtRechitsStation3,nDtRechitsStation4,nDtRechitsWheel0,nDtRechitsWheel1,nDtRechitsWheel2;
 
   float Me11Ratio, Me12Ratio;
-  float TSpread, TSpreadWeightedAll;
-
+  float XSpread, YSpread, ZSpread, RSpread, DeltaRSpread, XYSpread, TSpread, TSpreadWeightedAll, EtaSpread, EtaPhiSpread, PhiSpread, MajorAxis, MinorAxis, SkewX, SkewY, SkewZ, KurtX, KurtY, KurtZ;
+  int nXY, nZ;
 
 };
 
@@ -35,7 +35,7 @@ typedef struct Rechits_
     float x, y, z, t, twire;  // X, Y, Z position
     float eta,phi;
     float dirX, dirY, dirZ;
-    int station, chamber, layer, superlayer; //superlayer exists only for DT
+  int station, chamber, layer, superlayer, wheel; //superlayer and wheel exist only for DT
     int clusterID;  // clustered ID
 }Rechits;
 
