@@ -62,6 +62,56 @@ int CACluster::run()
    nClusters++;
   }
 }
+
+vector<Rechits> CACluster::run_rechits()
+{
+  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.6);
+  std::vector<fastjet::PseudoJet> fjInput;
+  vector<Rechits>::iterator iter;
+
+  int recIt = 0;
+  for(iter = m_points.begin(); iter != m_points.end(); ++iter)
+  {      
+    
+    float x = (*iter).x;
+    float y = (*iter).y;
+    float z = (*iter).z;
+    float mag = sqrt(x*x + y*y + z*z);
+    fjInput.push_back(fastjet::PseudoJet(x, y, z, mag));
+    fjInput.back().set_user_index(recIt);
+    recIt++;
+  }
+  fastjet::ClusterSequence clus_seq(fjInput, jet_def);
+
+
+  //keep all the clusters
+  double ptmin = 0.0;
+  std::vector<fastjet::PseudoJet> fjJets = clus_seq.inclusive_jets(ptmin);
+
+  nClusters = 0;
+  vector<Rechits> rechitsExt;
+  // auto clusters = std::make_unique<RecHitClusterCollection>();
+  for (auto const& fjJet : fjJets) {
+    // skip if the cluster has too few rechits
+    if (int(fjJet.constituents().size()) < nRechitMin_) continue;
+    // get the constituents from fastjet
+    vector<Rechits> rechits;
+    for (auto const& constituent : fjJet.constituents()) {
+      auto index = constituent.user_index();
+      if (index >= 0 && static_cast<unsigned int>(index) < m_points.size()) {
+        m_points[index].clusterID = nClusters;
+        rechits.push_back(m_points[index]);
+        rechitsExt.push_back(m_points[index]);
+      }
+    }
+   nClusters++;
+  }
+
+  return rechitsExt;
+
+
+}
+
 void CACluster::clusterProperties()
 {
   
