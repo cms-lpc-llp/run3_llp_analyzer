@@ -10,8 +10,22 @@ Setup
     cmsrel CMSSW_10_6_30
     cd CMSSW_10_6_30/src
     cmsenv
-    git clone git@github.com:CMS-HSCP/llp_analyzer.git
-    cd llp_analyzer
+    git clone git clone https://github.com/cms-lpc-llp/run3_llp_analyzer.git
+    cd run3_llp_analyzer
+
+Install fastjet
+-------------
+    curl -O http://fastjet.fr/repo/fastjet-3.4.2.tar.gz
+    tar zxvf fastjet-3.4.2.tar.gz
+    cd fastjet-3.4.2/
+    ./configure --prefix=$PWD/../fastjet-install
+    make
+    make check
+    make install
+    cd ..
+
+Compile repository
+-------------
     make
   
 Defining a new analysis
