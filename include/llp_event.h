@@ -257,6 +257,9 @@ public :
    Int_t           cscRechitsWGroupsBX[20000];   //[ncscRechits]
    UInt_t          cscRechitsNWireGroups[20000];   //[ncscRechits]
    Int_t           cscRechitsDetId[20000];   //[ncscRechits]
+
+   Int_t           nCscClusteredRechits;
+
    Int_t           nCscRechitClusters;
    Float_t         cscRechitCluster_match_cscSegCluster_minDeltaR[10];   //[nCscRechitClusters]
    Int_t           cscRechitCluster_match_cscSegCluster_index[10];   //[nCscRechitClusters]
@@ -401,6 +404,7 @@ public :
    Int_t           dtRechitSector[20000];   //[nDtRechits]
    Int_t           dtRechitLayer[20000];   //[nDtRechits]
    Int_t           dtRechitSuperLayer[20000];   //[nDtRechits]
+   Int_t           nDtClusteredRechits;
    Int_t           nDtRechitClusters;
    Float_t         dtRechitCluster_match_gParticle_minDeltaR[20];   //[nDtRechitClusters]
    Int_t           dtRechitCluster_match_gParticle_index[20];   //[nDtRechitClusters]
