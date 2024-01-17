@@ -52,6 +52,7 @@ public:
     vector<cluster> clusters;
     int nClusters;
     int run();
+    vector<Rechits> run_rechits();
     void clusterProperties();
     void sort_clusters();
     void merge_clusters();
