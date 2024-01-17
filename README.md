@@ -7,8 +7,8 @@ Class for analyzing the 2015 razor ntuples
 Setup
 -------------
 
-    cmsrel CMSSW_10_6_30
-    cd CMSSW_10_6_30/src
+    cmsrel CMSSW_10_6_32
+    cd CMSSW_10_6_32/src
     cmsenv
     git clone git clone https://github.com/cms-lpc-llp/run3_llp_analyzer.git
     cd run3_llp_analyzer
