@@ -7,12 +7,27 @@ Class for analyzing the 2015 razor ntuples
 Setup
 -------------
 
-    cmsrel CMSSW_10_6_30
-    cd CMSSW_10_6_30/src
+    # envvar necessary to compile on non-slc7 (deprecated) environments
+    # Known to work on EL8 systems
+    SCRAM_ARCH=slc7_amd64_gcc700 cmsrel CMSSW_10_6_30
+
+    # Setup the CMSSW environment
+    cd CMSSW_10_6_30
     cmsenv
-    git clone git@github.com:CMS-HSCP/llp_analyzer.git
-    cd llp_analyzer
-    make
+
+    git clone git@github.com:cms-lpc-llp/run3_llp_analyzer.git
+
+    # Setup the fastjet environment
+    # This version is known to work, newer versions may also.
+    wget https://fastjet.fr/repo/fastjet-3.4.2.tar.gz
+    tar -zxvf fastjet-3.4.2.tar.gz
+    cd fastjet-3.4.2
+    ./configure --prefix=$(realpath ../run3_llp_analyzer/fastjet-install)
+
+    make -j && make install
+
+    cd ../run3_llp_analyzer
+    make -j
   
 Defining a new analysis
 -------------
