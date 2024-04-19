@@ -645,7 +645,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
       //Do DBSCAN Clustering
 
       int min_point = 50;  //minimum number of segments to call it a cluster
-      float epsilon = 0.2; //cluster radius parameter
+      float epsilon = 0.4; //cluster radius parameter
       DBSCAN ds(min_point, epsilon, points);
       ds.run();
       ds.result();

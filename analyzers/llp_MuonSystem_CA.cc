@@ -646,7 +646,7 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       //Do DBSCAN Clustering
 
       int min_point = 50;  //minimum number of Rechitss to call it a cluster
-      float epsilon = 0.2; //cluster radius parameter
+      float epsilon = 0.4; //cluster radius parameter
       CACluster ds(min_point, epsilon, points);
       ds.run();
       ds.clusterProperties();
