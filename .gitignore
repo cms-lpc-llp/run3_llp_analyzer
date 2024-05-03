@@ -1,5 +1,7 @@
 fastjet-install/
 bin/
+SkimNtuple
+NormalizeNtuple
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
