@@ -533,18 +533,18 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
 
         double half_sector = TMath::Pi()/12.0; //12 sector of DT in 360 degree
 
-        if (dtRechitPhi[i] < 1*half_sector && dtRechitPhi[i] >= 1*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][0]++;
-        if (dtRechitPhi[i] < 3*half_sector && dtRechitPhi[i] >= 1*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][1]++;
-        if (dtRechitPhi[i] < 5*half_sector && dtRechitPhi[i] >= 3*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][2]++;
-        if (dtRechitPhi[i] < 7*half_sector && dtRechitPhi[i] >= 5*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][3]++;
-        if (dtRechitPhi[i] < 9*half_sector && dtRechitPhi[i] >= 7*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][4]++;
-        if (dtRechitPhi[i] < 11*half_sector && dtRechitPhi[i] >= 9*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][5]++;
-        if (dtRechitPhi[i] < -11*half_sector && dtRechitPhi[i] >= 11*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][6]++;
-        if (dtRechitPhi[i] < -9*half_sector && dtRechitPhi[i] >= -11*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][7]++;
-        if (dtRechitPhi[i] < -7*half_sector && dtRechitPhi[i] >= -9*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][8]++;
-        if (dtRechitPhi[i] < -5*half_sector && dtRechitPhi[i] >= -7*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][9]++;
-        if (dtRechitPhi[i] < -3*half_sector && dtRechitPhi[i] >= -5*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][10]++;
-        if (dtRechitPhi[i] < -1*half_sector && dtRechitPhi[i] >= -3*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][11]++;
+        if (dtRechitCorrectPhi[i] < 1*half_sector && dtRechitCorrectPhi[i] >= 1*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][0]++;
+        if (dtRechitCorrectPhi[i] < 3*half_sector && dtRechitCorrectPhi[i] >= 1*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][1]++;
+        if (dtRechitCorrectPhi[i] < 5*half_sector && dtRechitCorrectPhi[i] >= 3*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][2]++;
+        if (dtRechitCorrectPhi[i] < 7*half_sector && dtRechitCorrectPhi[i] >= 5*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][3]++;
+        if (dtRechitCorrectPhi[i] < 9*half_sector && dtRechitCorrectPhi[i] >= 7*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][4]++;
+        if (dtRechitCorrectPhi[i] < 11*half_sector && dtRechitCorrectPhi[i] >= 9*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][5]++;
+        if (dtRechitCorrectPhi[i] < -11*half_sector && dtRechitCorrectPhi[i] >= 11*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][6]++;
+        if (dtRechitCorrectPhi[i] < -9*half_sector && dtRechitCorrectPhi[i] >= -11*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][7]++;
+        if (dtRechitCorrectPhi[i] < -7*half_sector && dtRechitCorrectPhi[i] >= -9*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][8]++;
+        if (dtRechitCorrectPhi[i] < -5*half_sector && dtRechitCorrectPhi[i] >= -7*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][9]++;
+        if (dtRechitCorrectPhi[i] < -3*half_sector && dtRechitCorrectPhi[i] >= -5*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][10]++;
+        if (dtRechitCorrectPhi[i] < -1*half_sector && dtRechitCorrectPhi[i] >= -3*half_sector )MuonSystem->nDTRechitsSector[dtRechitStation[i]-1][dtRechitWheel[i]+2][11]++;
 
       }
 
