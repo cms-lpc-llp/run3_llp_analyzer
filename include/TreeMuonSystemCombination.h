@@ -87,6 +87,7 @@ public:
   int           dtRechitClusterNHitWheel0[N_MAX_CSC];
   int           dtRechitClusterNHitWheel1[N_MAX_CSC];
   int           dtRechitClusterNHitWheel2[N_MAX_CSC];
+  int        		nDTRechitsSector[4][5][12];//[NStattion][NWheels][NSector]
 
   int           dtRechitCluster_match_MB1hits_0p4[N_MAX_CSC];
   int           dtRechitCluster_match_MB1hits_0p5[N_MAX_CSC];

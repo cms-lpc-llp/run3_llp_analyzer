@@ -235,6 +235,15 @@ void TreeMuonSystemCombination::InitVariables()
 
   }
 
+
+ for(int i = 0; i < 4; i++){
+    for(int j = 0; j < 5; j++){
+        for(int k = 0; k < 12; k++){
+	nDTRechitsSector[i][j][k] = 0;
+  // nDTSegSector[i][j][k] = 0;
+
+ 	}}}
+
    nGLLP = 0;
   for(int i = 0;i<N_MAX_LLP;i++)
   {
@@ -361,6 +370,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("dtRechitClusterNSegStation2",             &dtRechitClusterNSegStation2);
   tree_->SetBranchAddress("dtRechitClusterNSegStation3",             &dtRechitClusterNSegStation3);
   tree_->SetBranchAddress("dtRechitClusterNSegStation4",             &dtRechitClusterNSegStation4);
+  tree_->SetBranchAddress("nDTRechitsSector",                        nDTRechitsSector);
 
   tree_->SetBranchAddress("dtRechitClusterNOppositeSegStation1",             &dtRechitClusterNOppositeSegStation1);
   tree_->SetBranchAddress("dtRechitClusterNOppositeSegStation2",             &dtRechitClusterNOppositeSegStation2);
@@ -666,8 +676,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("Flag2_ecalBadCalibFilter",      &Flag2_ecalBadCalibFilter,     "Flag2_ecalBadCalibFilter/O");
   tree_->Branch("Flag2_eeBadScFilter",      &Flag2_eeBadScFilter,     "Flag2_eeBadScFilter/O");
   tree_->Branch("Flag2_all",      &Flag2_all,     "Flag2_all/O");
-
-
+  tree_->Branch("nDTRechitsSector",       nDTRechitsSector,       "nDTRechitsSector[4][5][12]/I");
 
   tree_->Branch("rho",         &rho,        "rho/F");
   tree_->Branch("met",         &met,        "met/F");         // MET
