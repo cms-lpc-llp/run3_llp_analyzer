@@ -12,9 +12,9 @@ ANALYZERSH = $(ANALYZERS:cc=h)
 ANALYZERSOBJ = $(ANALYZERS:cc=o)
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
-UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/DBSCAN.cc  $(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc
+UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc  $(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 
 UTILSOBJ = $(UTILS:cc=o)
-EXECUTABLES = NormalizeNtuple SkimNtuple $(RUNNERS)
+EXECUTABLES = MergeNtuples NormalizeNtuple SkimNtuple $(RUNNERS)
 #EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
 
@@ -43,6 +43,9 @@ $(SRCDIR)/SimpleTable.o: $(SRCDIR)/SimpleTable.cc
 $(SRCDIR)/llp_event.o: $(SRCDIR)/llp_event.C $(INCLUDEDIR)/llp_event.h
 	$(CXX) $(SRCDIR)/llp_event.C $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
+$(SRCDIR)/nano_events.o: $(SRCDIR)/nano_events.C $(INCLUDEDIR)/nano_events.h
+	$(CXX) $(SRCDIR)/nano_events.C $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+
 $(SRCDIR)/RazorAnalyzer.o: $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.cc
 	$(CXX) $(SRCDIR)/RazorAnalyzer.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
@@ -57,6 +60,7 @@ $(RUNNERS): $(BINDIR)/Run%: $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UT
 
 NormalizeNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/NormalizeNtuple.cc $(INCLUDEDIR)/rootdict.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-
 SkimNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/SkimNtuple.cc $(INCLUDEDIR)/rootdict.o
+	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+MergeNtuples: $(SRCDIR)/SimpleTable.o $(SRCDIR)/MergeNtuples.cc $(INCLUDEDIR)/rootdict.o $(SRCDIR)/llp_event.o $(SRCDIR)/nano_events.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
