@@ -6,6 +6,7 @@ TMP_PATH=/tmp/LLP_analyzer_tmpfiles
 BIN=../bin/Runllp_MuonSystem_CA
 N_JOBS=128
 RSYNC=
+LOCAL=
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -17,6 +18,8 @@ while [[ $# -gt 0 ]]; do
         echo "  -j, --jobs <number>     Number of parallel jobs, default 128"
         echo "  -c, --chunk <number>    Number of files per job, default 1"
         echo "  -b, --bin <path>        Path to the binary, default ../bin/Runllp_MuonSystem_CA"
+        echo "  --rsync <path>          Rsync path to the data, default none. Only usable if CHUNK_SIZE=1"
+        echo "  --local                 Use local path instead of xrootd. Use this if you are on LPC. Only usable if CHUNK_SIZE=1"
         exit 0
         ;;
     -o|--output)
@@ -47,6 +50,10 @@ while [[ $# -gt 0 ]]; do
         shift
         shift
         ;;
+    --local)
+        LOCAL="yes"
+        shift
+        ;;
     -|--)
         INP_LIST_FILES="${@:2}"
         break
@@ -68,6 +75,25 @@ echo "CHUNK_SIZE     = $CHUNK_SIZE"
 echo "TMP_PATH       = $TMP_PATH"
 echo "N_JOBS         = $N_JOBS"
 echo "BIN            = $BIN"
+echo "RSYNC          = $RSYNC"
+echo "LOCAL          = $LOCAL"
+
+if [ $CHUNK_SIZE -ne 1 ]; then
+    if [ -n "$RSYNC" ]; then
+        echo "RSYNC is only usable if CHUNK_SIZE=1" 1>&2
+        exit 1
+    fi
+    if [ -n "$LOCAL" ]; then
+        echo "LOCAL is only usable if CHUNK_SIZE=1" 1>&2
+        exit 1
+    fi
+fi
+
+if [ -n $LOCAL ] && [ -n $RSYNC ]; then
+    echo "LOCAL and RSYNC cannot be used together" 1>&2
+    exit 1
+fi
+
 
 function prepare_chunks {
     
@@ -124,7 +150,14 @@ function launch {
         fi
         echo $TMP_ROOT_FILE > $LIST_FILE
     fi
-    
+
+    if [ -n "$LOCAL" ]; then
+        prefix="root://cmsxrootd.fnal.gov/"
+        f=$(cat $LIST_FILE)
+        LOCAL_PATH=/eos/uscms/${f#$prefix}
+        echo $LOCAL_PATH > $LIST_FILE
+    fi
+
     mkdir -p $(dirname $FILE_OUT_PATH)
     $BIN $LIST_FILE -d=$IS_DATA -l=$LABEL -f=$FILE_OUT_PATH > ${LIST_FILE%.txt}.log 2>&1
     
