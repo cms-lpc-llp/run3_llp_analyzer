@@ -4,23 +4,27 @@ hostname
 echo "Job started"
 date
 start_time=`date +%s`
-analysisType=$1
-inputfilelist=$2
-isData=$3
-filePerJob=$4
-jobnumber=$5
-maxjob=$6
-sample=${inputfilelist##*/}
+inputNtupleList=$1
+ntuplePerJob=$2
+ntuple_index=$3
+maxNtupleJob=$4
+inputNanoList=$5
+nanoPerJob=$6
+nanoaod_index=$7
+maxNanoJob=$8
+total_jobnumber=$9
+sample=${inputNtupleList##*/}
 sample=${sample%.txt}
-outputfile=${sample}_Job${jobnumber}_of_${maxjob}.root
-outputDirectory=$7
-analyzerTag=$8
-CMSSW_BASE=$9
-homeDir=${10}
+
+maxjob=`python -c "print int(${maxNanoJob}*${maxNtupleJob})"`
+outputfile=${sample}_Job${total_jobnumber}_of_${maxjob}_NtupleJob${ntuple_index}_Of_${maxNtupleJob}_NanoJob${nanoaod_index}_Of_${maxNanoJob}.root
+outputDirectory=${10}
+CMSSW_BASE=${11}
+homeDir=${12}
 currentDir=`pwd`
-#user=${homeDir#*/data/}
 user=${homeDir#*/storage/user/}
-runDir=${currentDir}/${user}_${analyzerTag}/
+runDir=${currentDir}/${user}_MergeNtuple/
+
 
 rm -rf ${runDir}
 mkdir -p ${runDir}
@@ -39,34 +43,39 @@ then
 
 	cd ${runDir}
 	echo "entering directory: ${runDir}"
-	echo "${CMSSW_BASE}/src/run3_llp_analyzer/RazorRun"
-	if [ -f ${CMSSW_BASE}/src/run3_llp_analyzer/RazorRun ]
+	echo "${CMSSW_BASE}/src/run3_llp_analyzer/MergeNtuples"
+	if [ -f ${CMSSW_BASE}/src/run3_llp_analyzer/MergeNtuples ]
 	then
-		cp $CMSSW_BASE/src/run3_llp_analyzer/RazorRun ./
+		cp $CMSSW_BASE/src/run3_llp_analyzer/MergeNtuples ./
 		#get grid proxy
 		export X509_USER_PROXY=${homeDir}x509_proxy
 		echo "${homeDir}x509_proxy"
 		voms-proxy-info
 
 
+
 		#run the job
-		# echo "cat ${inputfilelist} | awk \"NR > (${jobnumber}*${filePerJob}) && NR <= ((${jobnumber}+1)*${filePerJob})\" > inputfilelistForThisJob_${jobnumber}.txt"
-		cat ${inputfilelist} | awk "NR > (${jobnumber}*${filePerJob}) && NR <= ((${jobnumber}+1)*${filePerJob})" > inputfilelistForThisJob_${jobnumber}.txt
+		cat ${inputNtupleList} | awk "NR > (${ntuple_index}*${ntuplePerJob}) && NR <= ((${ntuple_index}+1)*${ntuplePerJob})" > inputNtupleList.txt
+		cat ${inputNanoList} | awk "NR > (${nanoaod_index}*${nanoPerJob}) && NR <= ((${nanoaod_index}+1)*${nanoPerJob})" > inputNanoList.txt
 		echo ""
 		echo "************************************"
-		echo "Running on these input files:"
-		cat inputfilelistForThisJob_${jobnumber}.txt
+		echo "Running on these input NTUPLE files:"
+		cat inputNtupleList.txt
 		echo "************************************"
 		echo ""
-		echo " "; echo "Starting razor run job now"; echo " ";
-		if [ ${analysisType} == "MakeMCPileupDistribution" ]
-		then
-			echo "./RazorRun inputfilelistForThisJob_${jobnumber}.txt ${analysisType} -f=${outputfile}"
-			./RazorRun inputfilelistForThisJob_${jobnumber}.txt ${analysisType} -f=${outputfile}
-		else
-			echo ./RazorRun inputfilelistForThisJob_${jobnumber}.txt ${analysisType} -d=${isData}  -f=${outputfile} -l=${analyzerTag}
-			./RazorRun inputfilelistForThisJob_${jobnumber}.txt ${analysisType} -d=${isData}  -f=${outputfile} -l=${analyzerTag}
-		fi
+
+		echo ""
+		echo "************************************"
+		echo "Running on these input NANOAOD files:"
+		cat inputNanoList.txt
+		echo "************************************"
+		echo ""
+
+
+		echo " "; echo "Starting MergeNtuples job now"; echo " ";
+		echo ./MergeNtuples inputNtupleList.txt inputNanoList.txt ${outputfile} ""
+		./MergeNtuples inputNtupleList.txt inputNanoList.txt ${outputfile} ""
+		
 
 		echo ${outputfile}
 		echo ${outputDirectory}
@@ -74,7 +83,7 @@ then
 		echo "Output ROOT files: "
 		cat output.txt
 		##^_^##
-		echo "RazorRun_T2 finished"
+		echo "MergeNtuple finished"
 		date
 
 		sleep 2
@@ -97,7 +106,7 @@ then
 		done <"output.txt"
 
 	else
-		echo echo "WWWWYYYY ============= failed to access file RazorRun_T2, job anandoned"
+		echo echo "WWWWYYYY ============= failed to access file MergeNtuple, job anandoned"
 	fi
 
 else
