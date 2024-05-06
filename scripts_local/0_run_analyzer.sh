@@ -5,8 +5,7 @@ CHUNK_SIZE=1
 TMP_PATH=/tmp/LLP_analyzer_tmpfiles
 BIN=../bin/Runllp_MuonSystem_CA
 N_JOBS=128
-RSYNC=
-LOCAL=
+SYNC=
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -46,12 +45,12 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     --rsync)
-        RSYNC="$2"
+        SYNC="$2"
         shift
         shift
         ;;
     --local)
-        LOCAL="yes"
+        SYNC="_local_"
         shift
         ;;
     -|--)
@@ -75,22 +74,10 @@ echo "CHUNK_SIZE     = $CHUNK_SIZE"
 echo "TMP_PATH       = $TMP_PATH"
 echo "N_JOBS         = $N_JOBS"
 echo "BIN            = $BIN"
-echo "RSYNC          = $RSYNC"
-echo "LOCAL          = $LOCAL"
+echo "SYNC           = $SYNC"
 
-if [ $CHUNK_SIZE -ne 1 ]; then
-    if [ -n "$RSYNC" ]; then
-        echo "RSYNC is only usable if CHUNK_SIZE=1" 1>&2
-        exit 1
-    fi
-    if [ -n "$LOCAL" ]; then
-        echo "LOCAL is only usable if CHUNK_SIZE=1" 1>&2
-        exit 1
-    fi
-fi
-
-if [ -n $LOCAL ] && [ -n $RSYNC ]; then
-    echo "LOCAL and RSYNC cannot be used together" 1>&2
+if [ $CHUNK_SIZE -ne 1 ] && [ -n "$SYNC" ]; then
+    echo "LOCAL and RSYNC cannot be used with CHUNK_SIZE > 1" 1>&2
     exit 1
 fi
 
@@ -132,7 +119,7 @@ function launch {
     LIST_FILE=$1
     OUT_PATH=$2
     BIN=$3
-    RSYNC=$4
+    SYNC=$4
     # read config from the same path, contains IS_DATA, LABEL, YEAR
     source $(dirname $LIST_FILE)/config.env
     FILE_OUT_PATH=$OUT_PATH/$(basename $(dirname $LIST_FILE))/$(basename ${LIST_FILE%.txt}).root
@@ -141,22 +128,20 @@ function launch {
         return
     fi
 
-    if [ -n "$RSYNC" ]; then
+    if [ -n "$SYNC" ]; then
         prefix="root://cmsxrootd.fnal.gov/"
         f=$(cat $LIST_FILE)
-        TMP_ROOT_FILE=${LIST_FILE%.txt}.root
-        if [ ! -f $TMP_ROOT_FILE ]; then
-            rsync -a $RSYNC${f#$prefix} $TMP_ROOT_FILE > /dev/null 2> >(grep -i -v 'Warning: Permanently')
+        if [ "$SYNC" == "_local_" ]; then
+            LOCAL_ROOT_PATH=/eos/uscms/${f#$prefix}
+        else
+            LOCAL_ROOT_PATH=${LIST_FILE%.txt}.root
+            if [ ! -f $LOCAL_ROOT_PATH ]; then
+                rsync -a $SYNC/${f#$prefix} $LOCAL_ROOT_PATH > /dev/null 2> >(grep -i -v 'Warning: Permanently')
+            fi
         fi
-        echo $TMP_ROOT_FILE > $LIST_FILE
+        echo $LOCAL_ROOT_PATH > $LIST_FILE
     fi
 
-    if [ -n "$LOCAL" ]; then
-        prefix="root://cmsxrootd.fnal.gov/"
-        f=$(cat $LIST_FILE)
-        LOCAL_PATH=/eos/uscms/${f#$prefix}
-        echo $LOCAL_PATH > $LIST_FILE
-    fi
 
     mkdir -p $(dirname $FILE_OUT_PATH)
     $BIN $LIST_FILE -d=$IS_DATA -l=$LABEL -f=$FILE_OUT_PATH > ${LIST_FILE%.txt}.log 2>&1
@@ -167,8 +152,8 @@ function launch {
     else
         rm $LIST_FILE
         rm ${LIST_FILE%.txt}.log
-        if [ -n "$RSYNC" ]; then
-            rm $TMP_ROOT_FILE
+        if [ -n "$SYNC" ] && [ "$SYNC" != "_local_" ]; then
+            rm $LOCAL_ROOT_PATH
         fi
     fi
 }
@@ -179,4 +164,4 @@ for INP_LIST in $INP_LIST_FILES; do
     prepare_chunks $INP_LIST $TMP_PATH $CHUNK_SIZE
 done
 
-ls $TMP_PATH/*/*.txt | parallel -j $N_JOBS --progress launch {} $OUT_PATH $BIN $RSYNC
+ls $TMP_PATH/*/*.txt | parallel -j $N_JOBS --progress launch {} $OUT_PATH $BIN $SYNC
