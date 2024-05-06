@@ -93,10 +93,19 @@ int main(int argc, char *argv[])
       // checks root file structure and add first file
       std::cout << "[INFO]: loading file: " << curNtupleName.c_str() << std::endl;
       TFile *f_0 = TFile::Open(curNtupleName.c_str());
-      f_0->ls();
-      ntupleChain->SetName("llp");
+      if( f_0->GetDirectory("ntuples") )
+      {
+        ntupleChain->SetName("ntuples/llp");
+        std::cout << "[INFO]: default configuration for tchain" << std::endl;
+      }
+      else
+      {
+        ntupleChain->SetName("llp");
+        std::cout << "[INFO]: alternative configuration for tchain"<< std::endl;
+      }
       ntupleChain->Add(curNtupleName.c_str());
       delete f_0;
+
     }
     else 
     {
