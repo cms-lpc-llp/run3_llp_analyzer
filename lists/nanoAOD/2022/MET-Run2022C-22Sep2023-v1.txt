@@ -1,0 +1,10 @@
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/f1403b1f-8b8f-427d-bd42-624a19dc8f99.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/0f42e1f1-651c-4a0b-8f63-3be2c7fe50bd.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/23ce0e89-ab9b-4c2f-bd78-93e708e68b1f.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/105ae8d3-c48f-4ba1-b3e0-e0d956eb22f0.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/f2d510d4-4d8e-4569-adcb-d1e9dc33caaf.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/afbe7d44-0afe-4bf3-8149-e5e521abb1a9.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/835d7396-6f5e-4d27-b3d8-938f47e2eda5.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/154cd7d4-98b0-453b-8365-ef467992dec5.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/50000/55e8036c-400d-467a-b7c4-ff8f4f276220.root
+root://cmsxrootd.fnal.gov//store/data/Run2022C/MET/NANOAOD/22Sep2023-v1/40000/e1db8483-8f32-45e8-a2b9-645af7fe80be.root

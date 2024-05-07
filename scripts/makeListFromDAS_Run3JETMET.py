@@ -10,6 +10,9 @@ import sys
 
 datasets = [
 ## based on recommendation as of May 5 2024
+'/MET/Run2022A-22Sep2023-v1/NANOAOD',
+'/MET/Run2022B-22Sep2023-v1/NANOAOD',
+'/MET/Run2022C-22Sep2023-v1/NANOAOD',
 '/JetMET/Run2022C-22Sep2023-v1/NANOAOD',
 '/JetMET/Run2022D-22Sep2023-v1/NANOAOD',
 '/JetMET/Run2022E-22Sep2023-v1/NANOAOD',
