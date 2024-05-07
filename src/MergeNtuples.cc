@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
   {
     ntupleChain->GetEntry(n);
     if (n % 10000 == 0) cout << "Event " << n << "\n";
-      
+
     bool matchFound = false;
     for (uint m = 0; m < eventList2.size(); m++)
     {
@@ -223,6 +223,11 @@ int main(int argc, char *argv[])
   outputTree->Branch("nDtRechits", &nDtRechits, "nDtRechits/I");
   outputTree->Branch("nRpc", &nRpc, "nRpc/I");
 
+  outputTree->SetBranchAddress("nCscSeg",&nCscSeg);
+  outputTree->SetBranchAddress("nCscRechits",&nCscRechits);
+  outputTree->SetBranchAddress("nDtSeg",&nDtSeg);
+  outputTree->SetBranchAddress("nDtRechits",&nDtRechits);
+  outputTree->SetBranchAddress("nRpc",&nRpc);
   ////////////////////////////////////////////////
   ///// Float for rechits related variables
   ////////////////////////////////////////////////
@@ -237,13 +242,15 @@ int main(int argc, char *argv[])
     ntuple.cscRechitsPhi,ntuple.cscRechitsEta,ntuple.cscRechitsX,ntuple.cscRechitsY,ntuple.cscRechitsZ,ntuple.cscRechitsTpeak,ntuple.cscRechitsTwire,
     ntuple.dtRechitCorrectX,ntuple.dtRechitCorrectY,ntuple.dtRechitCorrectZ,ntuple.dtRechitCorrectEta,ntuple.dtRechitCorrectPhi,
   };
-  Float_t addBranchesInputVarFloat[numFloatBranches][N_MAX_RECHITS] = {0};
+  Float_t addBranchesInputVarFloat[numFloatBranches][N_MAX_RECHITS];
 
   for (int i = 0; i < numFloatBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesFloat[i] << "\n";
     if (string(addBranchNamesFloat[i]).find("cscRechits") != std::string::npos) outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nCscRechits]/F", addBranchNamesFloat[i]));
     if (string(addBranchNamesFloat[i]).find("dtRechit") != std::string::npos) outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nDtRechits]/F", addBranchNamesFloat[i]));
+    outputTree->SetBranchAddress(addBranchNamesFloat[i],addBranchesInputVarFloat[i]);
+
   }
 
 
@@ -251,16 +258,16 @@ int main(int argc, char *argv[])
   ///// Float for segment related variables
   ////////////////////////////////////////////////
 
-  int numFloatSegBranches = 14;
+  int numFloatSegBranches = 11;
 
   const char *addBranchNamesFloatSeg[numFloatSegBranches]{
   "cscSegPhi", "cscSegEta", 
-  "dtSegPhi","dtSegEta","dtSegX","dtSegY","dtSegZ",
+  "dtSegPhi","dtSegEta", 
     "rpcPhi","rpcEta","rpcX","rpcY","rpcZ","rpcT","rpcTError"
   };
   Float_t *addBranchesRazorVarFloatSeg[numFloatSegBranches]{
   ntuple.cscSegPhi,ntuple.cscSegEta,
-  ntuple.dtSegPhi,ntuple.dtSegEta,ntuple.dtSegX,ntuple.dtSegY,ntuple.dtSegZ,
+  ntuple.dtSegPhi,ntuple.dtSegEta,
     ntuple.rpcPhi,ntuple.rpcEta,ntuple.rpcX,ntuple.rpcY,ntuple.rpcZ, ntuple.rpcT, ntuple.rpcTError
   };
   Float_t addBranchesInputVarFloatSeg[numFloatSegBranches][N_MAX_SEGMENT];
@@ -271,6 +278,8 @@ int main(int argc, char *argv[])
     if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != std::string::npos) outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nCscSeg]/F", addBranchNamesFloatSeg[i]));
     if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != std::string::npos) outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nDtSeg]/F", addBranchNamesFloatSeg[i]));
     if (string(addBranchNamesFloatSeg[i]).find("rpc") != std::string::npos) outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nRpc]/F", addBranchNamesFloatSeg[i]));
+    outputTree->SetBranchAddress(addBranchNamesFloatSeg[i],addBranchesInputVarFloatSeg[i]);
+
   }
   ////////////////////////////////////////////////
   /////integer for rechits related variables
@@ -283,18 +292,19 @@ int main(int argc, char *argv[])
     ntuple.cscRechitsChamber,ntuple.cscRechitsStation,ntuple.cscRechitsDetId,
     ntuple.dtRechitStation,ntuple.dtRechitWheel,ntuple.dtRechitSuperLayer};
   
-  Int_t addBranchesInputVarInt[numIntBranches][N_MAX_RECHITS] = {0};
+  Int_t addBranchesInputVarInt[numIntBranches][N_MAX_RECHITS];
 
   for (int i = 0; i < numIntBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesInt[i] << "\n";
     if (string(addBranchNamesInt[i]).find("cscRechits") != std::string::npos) outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nCscRechits]/I", addBranchNamesInt[i]));
     else if (string(addBranchNamesInt[i]).find("dtRechit") != std::string::npos) outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nDtRechits]/I", addBranchNamesInt[i]));
+    outputTree->SetBranchAddress(addBranchNamesInt[i],addBranchesInputVarInt[i]);
   }
 
-  ////////////////////////////////////////////////
-  /////integer for segments related variables
-  ////////////////////////////////////////////////
+  // ////////////////////////////////////////////////
+  // /////integer for segments related variables
+  // ////////////////////////////////////////////////
 
   int numIntSegBranches = 11;
   const char *addBranchNamesIntSeg[numIntSegBranches]{
@@ -307,7 +317,7 @@ int main(int argc, char *argv[])
     ntuple.rpcBx,ntuple.rpcRegion,ntuple.rpcRing,ntuple.rpcSector,ntuple.rpcStation, ntuple.rpcLayer
   
   };
-  Int_t addBranchesInputVarIntSeg[numIntSegBranches][N_MAX_SEGMENT] = {0};
+  Int_t addBranchesInputVarIntSeg[numIntSegBranches][N_MAX_SEGMENT];
 
   for (int i = 0; i < numIntSegBranches; i++)
   {
@@ -315,6 +325,8 @@ int main(int argc, char *argv[])
     if (string(addBranchNamesIntSeg[i]).find("cscSeg") != std::string::npos) outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nCscSeg]/I", addBranchNamesIntSeg[i]));
     else if (string(addBranchNamesIntSeg[i]).find("dtSeg") != std::string::npos) outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nDtSeg]/I", addBranchNamesIntSeg[i]));
     else if (string(addBranchNamesIntSeg[i]).find("rpc") != std::string::npos) outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nRpc]/I", addBranchNamesIntSeg[i]));
+    outputTree->SetBranchAddress(addBranchNamesIntSeg[i],addBranchesInputVarIntSeg[i]);
+
   }
 
 
