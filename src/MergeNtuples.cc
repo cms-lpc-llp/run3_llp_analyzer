@@ -16,31 +16,14 @@
 
 #include <vector>
 #include "TString.h"
-using namespace std;
 
 #define N_MAX_RECHITS 20000
 #define N_MAX_SEGMENT 1000
 
-std::string ParseCommandLine(int argc, char *argv[], std::string opt)
-{
-  for (int i = 1; i < argc; i++)
-  {
-    std::string tmp(argv[i]);
-    if (tmp.find(opt) != std::string::npos)
-    {
-      if (tmp.find("=") != std::string::npos)
-        return tmp.substr(tmp.find_last_of("=") + 1);
-      if (tmp.find("--") != std::string::npos)
-        return "yes";
-    }
-  }
-
-  return "";
-};
-
 // get list of files to open, add normalization branch to the tree in each file
 int main(int argc, char *argv[])
 {
+  using namespace std;
   // parse input list to get names of ROOT files
   if (argc < 4)
   {
@@ -66,10 +49,6 @@ int main(int argc, char *argv[])
   ////////////////////////
   TChain *ntupleChain = new TChain();
 
-  // TFile* f_0 = TFile::Open( filenameNTuplers.c_str() );
-  // ntupleChain->SetName("llp");
-  // ntupleChain->Add(filenameNTuplers.c_str());
-  // delete f_0;
   string curNtupleName;
   cout << "filenameNTuplerList.c_str() = " << filenameNTuplerList.c_str() << endl;
   ifstream inputNtuple(filenameNTuplerList.c_str());
