@@ -14,7 +14,7 @@ RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
 UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc  $(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 
 UTILSOBJ = $(UTILS:cc=o)
-EXECUTABLES = MergeNtuples NormalizeNtuple SkimNtuple $(RUNNERS)
+EXECUTABLES = MergeNtuples NormalizeNtuple SkimNtuple $(RUNNERS) CacheNtuples
 #EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
 
@@ -61,6 +61,8 @@ $(RUNNERS): $(BINDIR)/Run%: $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UT
 NormalizeNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/NormalizeNtuple.cc $(INCLUDEDIR)/rootdict.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 SkimNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/SkimNtuple.cc $(INCLUDEDIR)/rootdict.o
+	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+CacheNtuples: $(SRCDIR)/CacheNtuples.cc $(INCLUDEDIR)/rootdict.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 MergeNtuples: $(SRCDIR)/SimpleTable.o $(SRCDIR)/MergeNtuples.cc $(INCLUDEDIR)/rootdict.o $(SRCDIR)/llp_event.o $(SRCDIR)/nano_events.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
