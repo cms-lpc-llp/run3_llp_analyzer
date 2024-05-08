@@ -15,22 +15,13 @@
 #define N_MAX_RECHITS 20000
 #define N_MAX_SEGMENT 1000
 
-std::string ParseCommandLine(int argc, char *argv[], std::string opt)
+std::string get_cache_path(std::string path_inp, std::string dir_out)
 {
-  for (int i = 1; i < argc; i++)
-  {
-    std::string tmp(argv[i]);
-    if (tmp.find(opt) != std::string::npos)
-    {
-      if (tmp.find("=") != std::string::npos)
-        return tmp.substr(tmp.find_last_of("=") + 1);
-      if (tmp.find("--") != std::string::npos)
-        return "yes";
-    }
-  }
-
-  return "";
-};
+  std::regex e("^.*/(.*)/(.*)/(.*)/(.*\\.root)$");
+  std::string result = std::regex_replace(path_inp, e, "$1_$2_$3_$4");
+  std::string path_out = dir_out + "/" + result;
+  return path_out;
+}
 
 int main(int argc, char **argv)
 {
@@ -49,10 +40,7 @@ int main(int argc, char **argv)
   if (stat(path_out.c_str(), &buffer) != 0)
     mkdir(path_out.c_str(), 0750);
 
-  std::regex e("^.*/(.*)/(.*)/(.*)/(.*\\.root)$");
-  std::string result = std::regex_replace(path_inp, e, "$1_$2_$3_$4");
-  path_out = path_out + "/" + result;
-
+  path_out = get_cache_path(path_inp, path_out);
   cout << "cache path: " << path_out << endl;
 
   TFile *inp_file = TFile::Open(path_inp.c_str(), "READ");
