@@ -74,7 +74,7 @@ function get_json_path {
     ERA=${RUN:7:1}
 
     if [ $YEAR -eq 2022 ]; then
-        JSON_NAME=Cert_Collisions2022_era${ERA}_*_Golden.json
+        JSON_NAME=Cert_Collisions2022_*_Golden.json
     elif [ $YEAR -eq 2023 ]; then
         JSON_NAME=Cert_Collisions2023_*_Golden.json
     else
@@ -110,6 +110,10 @@ if [ $CMSSW_VERSION != "CMSSW_9_4_4" ]; then
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     cd $_CMSSW_BASE
     cmsenv
+    if [ $? -ne 0 ]; then
+        echo "CMSSW_9_9_4 is not activated, and it does not exist at specified path $_CMSSW_BASE, exiting"
+        exit 1
+    fi
     cd -
 fi
 

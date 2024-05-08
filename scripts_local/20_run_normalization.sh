@@ -82,7 +82,7 @@ function launch {
     INP_PATH=$(realpath $1)
     BIN=$(realpath $2)
     LUMI=$3
-    TMP_PATH=$4
+    TMP_PATH=$(realpath $4)
 
     mkdir -p $TMP_PATH
 
