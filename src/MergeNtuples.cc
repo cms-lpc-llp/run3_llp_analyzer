@@ -255,9 +255,9 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numFloatBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesFloat[i] << "\n";
-    if (string(addBranchNamesFloat[i]).find("cscRechits") != std::string::npos)
+    if (string(addBranchNamesFloat[i]).find("cscRechits") != string::npos)
       outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nCscRechits]/F", addBranchNamesFloat[i]));
-    if (string(addBranchNamesFloat[i]).find("dtRechit") != std::string::npos)
+    if (string(addBranchNamesFloat[i]).find("dtRechit") != string::npos)
       outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nDtRechits]/F", addBranchNamesFloat[i]));
     outputTree->SetBranchAddress(addBranchNamesFloat[i], addBranchesInputVarFloat[i]);
   }
@@ -281,11 +281,11 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numFloatSegBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesFloatSeg[i] << "\n";
-    if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nCscSeg]/F", addBranchNamesFloatSeg[i]));
-    if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nDtSeg]/F", addBranchNamesFloatSeg[i]));
-    if (string(addBranchNamesFloatSeg[i]).find("rpc") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("rpc") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nRpc]/F", addBranchNamesFloatSeg[i]));
     outputTree->SetBranchAddress(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i]);
   }
@@ -305,9 +305,9 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numIntBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesInt[i] << "\n";
-    if (string(addBranchNamesInt[i]).find("cscRechits") != std::string::npos)
+    if (string(addBranchNamesInt[i]).find("cscRechits") != string::npos)
       outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nCscRechits]/I", addBranchNamesInt[i]));
-    else if (string(addBranchNamesInt[i]).find("dtRechit") != std::string::npos)
+    else if (string(addBranchNamesInt[i]).find("dtRechit") != string::npos)
       outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nDtRechits]/I", addBranchNamesInt[i]));
     outputTree->SetBranchAddress(addBranchNamesInt[i], addBranchesInputVarInt[i]);
   }
@@ -331,11 +331,11 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numIntSegBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesIntSeg[i] << "\n";
-    if (string(addBranchNamesIntSeg[i]).find("cscSeg") != std::string::npos)
+    if (string(addBranchNamesIntSeg[i]).find("cscSeg") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nCscSeg]/I", addBranchNamesIntSeg[i]));
-    else if (string(addBranchNamesIntSeg[i]).find("dtSeg") != std::string::npos)
+    else if (string(addBranchNamesIntSeg[i]).find("dtSeg") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nDtSeg]/I", addBranchNamesIntSeg[i]));
-    else if (string(addBranchNamesIntSeg[i]).find("rpc") != std::string::npos)
+    else if (string(addBranchNamesIntSeg[i]).find("rpc") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nRpc]/I", addBranchNamesIntSeg[i]));
     outputTree->SetBranchAddress(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i]);
   }
