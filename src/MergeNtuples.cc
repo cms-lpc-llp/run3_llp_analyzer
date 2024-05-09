@@ -9,6 +9,7 @@
 #include <TRandom3.h>
 #include "TTreeFormula.h"
 #include <iostream>
+#include <regex>
 #include "nano_events.h"
 #include "llp_event.h"
 #include "TreeMuonSystemCombination.h"
@@ -20,36 +21,54 @@
 #define N_MAX_RECHITS 20000
 #define N_MAX_SEGMENT 1000
 
+using namespace std;
+
+string get_cache_path(string path_inp, string dir_out)
+{
+  regex e("^.*/(.*)/(.*)/(.*)/(.*\\.root)$");
+  string result = regex_replace(path_inp, e, "$1_$2_$3_$4");
+  string path_out = dir_out + "/" + result;
+  return path_out;
+}
+
+map<pair<uint, ulong>, ulong> get_event_index_map(TChain *chain)
+{
+  map<pair<uint, ulong>, ulong> eventIdxMap;
+  uint32_t run;
+  ULong64_t event;
+  chain->SetBranchAddress("run", &run);
+  chain->SetBranchAddress("event", &event);
+  for (UInt_t m = 0; m < chain->GetEntries(); m++)
+  {
+    chain->GetEntry(m);
+    eventIdxMap[make_pair(run, event)] = m;
+  }
+  return eventIdxMap;
+}
+
 // get list of files to open, add normalization branch to the tree in each file
 int main(int argc, char *argv[])
 {
-  using namespace std;
   // parse input list to get names of ROOT files
   if (argc < 4)
   {
-    cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [isData]" << endl;
+    cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [cache_dir]" << endl;
     return -1;
   }
   // string filenameNTuplers(argv[1]);
   string filenameNTuplerList(argv[1]);
   string filenameNanoAODList(argv[2]);
-  string outputfilename(argv[3]);
-  string analysisTag(argv[4]); // analysisTag
-
-  if (analysisTag == "")
-  {
-    analysisTag = "Razor2016_80X";
-  }
-
-  // create output file
-  TFile *outputFile = new TFile(outputfilename.c_str(), "RECREATE");
+  string outputFileName(argv[3]);
+  string cacheDir(argv[4]);
 
   ////////////////////////
   ////// Load ntuples
   ////////////////////////
   TChain *ntupleChain = new TChain();
+  TChain *ntupleCacheChain = new TChain();
 
   string curNtupleName;
+  string curNtupleCacheName;
   cout << "filenameNTuplerList.c_str() = " << filenameNTuplerList.c_str() << endl;
   ifstream inputNtuple(filenameNTuplerList.c_str());
   int NtuplesLoaded = 0;
@@ -60,33 +79,37 @@ int main(int argc, char *argv[])
   }
   while (getline(inputNtuple, curNtupleName))
   {
+    curNtupleCacheName = get_cache_path(curNtupleName, cacheDir);
     cout << "curFileName = " << curNtupleName << endl;
     if (NtuplesLoaded == 0)
     {
       // checks root file structure and add first file
-      std::cout << "[INFO]: loading file: " << curNtupleName.c_str() << std::endl;
+      cout << "[INFO]: loading file: " << curNtupleName.c_str() << endl;
       TFile *f_0 = TFile::Open(curNtupleName.c_str());
       if (f_0->GetDirectory("ntuples"))
       {
         ntupleChain->SetName("ntuples/llp");
-        std::cout << "[INFO]: default configuration for tchain" << std::endl;
+        cout << "[INFO]: default configuration for tchain" << endl;
       }
       else
       {
         ntupleChain->SetName("llp");
-        std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
+        cout << "[INFO]: alternative configuration for tchain" << endl;
       }
       ntupleChain->Add(curNtupleName.c_str());
+      ntupleCacheChain->SetName("events");
+      ntupleCacheChain->Add(curNtupleCacheName.c_str());
       delete f_0;
     }
     else
     {
       // Addind remaining files after file structure is decided
       ntupleChain->Add(curNtupleName.c_str());
+      ntupleCacheChain->Add(curNtupleCacheName.c_str());
     }
     NtuplesLoaded++;
   }
-  std::cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events" << endl;
+  cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events" << endl;
   if (ntupleChain == NULL)
     return -1;
 
@@ -94,7 +117,10 @@ int main(int argc, char *argv[])
   ////// Load nanoAOD files
   ////////////////////////
   TChain *nanoChain = new TChain();
+  TChain *nanoCacheChain = new TChain();
+
   string curFileName;
+  string curCacheName;
   ifstream inputFile(filenameNanoAODList.c_str());
   int NFilesLoaded = 0;
   if (!inputFile)
@@ -105,88 +131,73 @@ int main(int argc, char *argv[])
 
   while (getline(inputFile, curFileName))
   {
+    curCacheName = get_cache_path(curFileName, cacheDir);
     cout << "curFileName = " << curFileName << endl;
     if (NFilesLoaded == 0)
     {
       // checks root file structure and add first file
-      std::cout << "[INFO]: loading file: " << curFileName.c_str() << std::endl;
+      cout << "[INFO]: loading file: " << curFileName.c_str() << endl;
       TFile *f_0 = TFile::Open(curFileName.c_str());
       f_0->ls();
       nanoChain->SetName("Events");
       nanoChain->Add(curFileName.c_str());
       delete f_0;
+      nanoCacheChain->SetName("events");
+      nanoCacheChain->Add(curCacheName.c_str());
     }
     else
     {
       // Addind remaining files after file structure is decided
       nanoChain->Add(curFileName.c_str());
+      nanoCacheChain->Add(curCacheName.c_str());
     }
     NFilesLoaded++;
   }
-  std::cout << "Loaded nanoAOD: " << NFilesLoaded << " files and " << nanoChain->GetEntries() << " events" << endl;
+  cout << "Loaded nanoAOD: " << NFilesLoaded << " files and " << nanoChain->GetEntries() << " events" << endl;
   if (nanoChain == NULL)
     return -1;
-
-  uint NEventsTree1 = ntupleChain->GetEntries();
-  uint NEventsTree2 = nanoChain->GetEntries();
 
   //*****************************************************************************************
   // Make map of event number in tree 1 to event number in tree 2
   //*****************************************************************************************
-  int nMatchedEvents = 0;
-  std::map<uint, uint> EventIndexToEventIndexMap;
 
+  vector<pair<ulong, ulong>> indexPair; // nTuple - AOD idx pair
   nano_events nano = nano_events(nanoChain);
   llp_event ntuple = llp_event(ntupleChain);
 
   // loop over tree2
-  std::vector<std::pair<uint, ulong>> eventList2;
-  std::vector<bool> matchedevent;
+  cout << "building AOD tree index map" << endl;
+  auto nTupleIdxMap = get_event_index_map(ntupleCacheChain);
 
-  cout << "building nanoAOD tree index map" << endl;
-  for (UInt_t m = 0; m < NEventsTree2; m++)
+  cout << "building NTuple tree index map" << endl;
+  auto AODIdxMap = get_event_index_map(nanoCacheChain);
+
+  // find intersection of the two maps
+  for (auto it = nTupleIdxMap.begin(); it != nTupleIdxMap.end(); it++)
   {
-    if (m % 10000 == 0)
-      cout << "Processing entry " << m << endl;
-    nano.fChain->GetEntry(m);
-    std::pair<uint, ulong> p(nano.run, nano.event);
-    eventList2.push_back(p);
-  }
-
-  cout << "Looping over ntuple tree to find matched events" << endl;
-  ;
-  // loop over tree1
-  for (uint n = 0; n < NEventsTree1; n++)
-  {
-    ntupleChain->GetEntry(n);
-    if (n % 10000 == 0)
-      cout << "Event " << n << "\n";
-
-    bool matchFound = false;
-    for (uint m = 0; m < eventList2.size(); m++)
+    if (AODIdxMap.find(it->first) != AODIdxMap.end())
     {
-      if (eventList2[m].first != ntuple.runNum)
-        continue;
-      if (eventList2[m].second != ntuple.eventNum)
-        continue;
-      EventIndexToEventIndexMap[n] = m;
-      matchFound = true;
-      nMatchedEvents++;
+      indexPair.push_back(make_pair(it->second, AODIdxMap[it->first]));
     }
-
-    if (matchFound)
-      matchedevent.push_back(true);
-    else
-      matchedevent.push_back(false);
   }
 
-  cout << "Matched events    = " << nMatchedEvents << " / " << NEventsTree1 << " \n";
-  cout << "Un-Matched events = " << NEventsTree1 - nMatchedEvents << " / " << NEventsTree1 << " \n";
+  ulong nMatchedEvents = indexPair.size();
+  ulong NEventsTreeNTuple = ntupleChain->GetEntries();
+
+  cout << "Matched events    = " << nMatchedEvents << " / " << NEventsTreeNTuple << " \n";
+  cout << "Un-Matched events = " << NEventsTreeNTuple - nMatchedEvents << " / " << NEventsTreeNTuple << " \n";
+  if (nMatchedEvents == 0)
+  {
+    cout << "No matched events found. Exiting..." << endl;
+    return 0;
+  }
   //*****************************************************************************************
   // Produce Output Tree
   //*****************************************************************************************
 
   // clone tree with 0 entries, copy all the branch addresses only
+
+  TFile *outputFile = new TFile(outputFileName.c_str(), "RECREATE");
   outputFile->cd();
   TTree *outputTree = nanoChain->CloneTree(0);
 
@@ -239,9 +250,9 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numFloatBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesFloat[i] << "\n";
-    if (string(addBranchNamesFloat[i]).find("cscRechits") != std::string::npos)
+    if (string(addBranchNamesFloat[i]).find("cscRechits") != string::npos)
       outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nCscRechits]/F", addBranchNamesFloat[i]));
-    if (string(addBranchNamesFloat[i]).find("dtRechit") != std::string::npos)
+    if (string(addBranchNamesFloat[i]).find("dtRechit") != string::npos)
       outputTree->Branch(addBranchNamesFloat[i], addBranchesInputVarFloat[i], TString::Format("%s[nDtRechits]/F", addBranchNamesFloat[i]));
   }
 
@@ -264,11 +275,11 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numFloatSegBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesFloatSeg[i] << "\n";
-    if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nCscSeg]/F", addBranchNamesFloatSeg[i]));
-    if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nDtSeg]/F", addBranchNamesFloatSeg[i]));
-    if (string(addBranchNamesFloatSeg[i]).find("rpc") != std::string::npos)
+    if (string(addBranchNamesFloatSeg[i]).find("rpc") != string::npos)
       outputTree->Branch(addBranchNamesFloatSeg[i], addBranchesInputVarFloatSeg[i], TString::Format("%s[nRpc]/F", addBranchNamesFloatSeg[i]));
   }
   ////////////////////////////////////////////////
@@ -287,9 +298,9 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numIntBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesInt[i] << "\n";
-    if (string(addBranchNamesInt[i]).find("cscRechits") != std::string::npos)
+    if (string(addBranchNamesInt[i]).find("cscRechits") != string::npos)
       outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nCscRechits]/I", addBranchNamesInt[i]));
-    else if (string(addBranchNamesInt[i]).find("dtRechit") != std::string::npos)
+    else if (string(addBranchNamesInt[i]).find("dtRechit") != string::npos)
       outputTree->Branch(addBranchNamesInt[i], addBranchesInputVarInt[i], TString::Format("%s[nDtRechits]/I", addBranchNamesInt[i]));
   }
 
@@ -312,11 +323,11 @@ int main(int argc, char *argv[])
   for (int i = 0; i < numIntSegBranches; i++)
   {
     cout << "Adding Branch: " << addBranchNamesIntSeg[i] << "\n";
-    if (string(addBranchNamesIntSeg[i]).find("cscSeg") != std::string::npos)
+    if (string(addBranchNamesIntSeg[i]).find("cscSeg") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nCscSeg]/I", addBranchNamesIntSeg[i]));
-    else if (string(addBranchNamesIntSeg[i]).find("dtSeg") != std::string::npos)
+    else if (string(addBranchNamesIntSeg[i]).find("dtSeg") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nDtSeg]/I", addBranchNamesIntSeg[i]));
-    else if (string(addBranchNamesIntSeg[i]).find("rpc") != std::string::npos)
+    else if (string(addBranchNamesIntSeg[i]).find("rpc") != string::npos)
       outputTree->Branch(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i], TString::Format("%s[nRpc]/I", addBranchNamesIntSeg[i]));
   }
 
@@ -324,15 +335,14 @@ int main(int argc, char *argv[])
   /////// FILL OUTPUT TREE
   /////////////////////////////////////////////////////
 
-  for (uint n = 0; n < NEventsTree1; n++)
+  for (auto it : indexPair)
   {
+    auto n = it.first;
+    auto m = it.second;
     if (n % 10000 == 0)
       cout << "Processing entry " << n << "\n";
 
-    // Check if found a match
-    if (!matchedevent[n])
-      continue;
-    nanoChain->GetEntry(EventIndexToEventIndexMap[n]);
+    nanoChain->GetEntry(m);
     ntupleChain->GetEntry(n);
 
     // fill the new added branches
@@ -346,9 +356,9 @@ int main(int argc, char *argv[])
     for (int i = 0; i < numFloatBranches; i++)
     {
       int temp_nhits = 0;
-      if (string(addBranchNamesFloat[i]).find("cscRechits") != std::string::npos)
+      if (string(addBranchNamesFloat[i]).find("cscRechits") != string::npos)
         temp_nhits = nCscRechits;
-      if (string(addBranchNamesFloat[i]).find("dtRechit") != std::string::npos)
+      if (string(addBranchNamesFloat[i]).find("dtRechit") != string::npos)
         temp_nhits = nDtRechits;
       for (int j = 0; j < temp_nhits; j++)
         addBranchesInputVarFloat[i][j] = addBranchesRazorVarFloat[i][j];
@@ -357,11 +367,11 @@ int main(int argc, char *argv[])
     for (int i = 0; i < numFloatSegBranches; i++)
     {
       int temp_nhits = 0;
-      if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != std::string::npos)
+      if (string(addBranchNamesFloatSeg[i]).find("cscSeg") != string::npos)
         temp_nhits = nCscSeg;
-      if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != std::string::npos)
+      if (string(addBranchNamesFloatSeg[i]).find("dtSeg") != string::npos)
         temp_nhits = nDtSeg;
-      if (string(addBranchNamesFloatSeg[i]).find("rpc") != std::string::npos)
+      if (string(addBranchNamesFloatSeg[i]).find("rpc") != string::npos)
         temp_nhits = nRpc;
       for (int j = 0; j < temp_nhits; j++)
         addBranchesInputVarFloatSeg[i][j] = addBranchesRazorVarFloatSeg[i][j];
@@ -370,9 +380,9 @@ int main(int argc, char *argv[])
     for (int i = 0; i < numIntBranches; i++)
     {
       int temp_nhits = 0;
-      if (string(addBranchNamesInt[i]).find("cscRechits") != std::string::npos)
+      if (string(addBranchNamesInt[i]).find("cscRechits") != string::npos)
         temp_nhits = nCscRechits;
-      if (string(addBranchNamesInt[i]).find("dtRechit") != std::string::npos)
+      if (string(addBranchNamesInt[i]).find("dtRechit") != string::npos)
         temp_nhits = nDtRechits;
       for (int j = 0; j < temp_nhits; j++)
         addBranchesInputVarInt[i][j] = addBranchesRazorVarInt[i][j];
@@ -381,11 +391,11 @@ int main(int argc, char *argv[])
     for (int i = 0; i < numIntSegBranches; i++)
     {
       int temp_nhits = 0;
-      if (string(addBranchNamesIntSeg[i]).find("cscSeg") != std::string::npos)
+      if (string(addBranchNamesIntSeg[i]).find("cscSeg") != string::npos)
         temp_nhits = nCscSeg;
-      if (string(addBranchNamesIntSeg[i]).find("dtSeg") != std::string::npos)
+      if (string(addBranchNamesIntSeg[i]).find("dtSeg") != string::npos)
         temp_nhits = nDtSeg;
-      if (string(addBranchNamesIntSeg[i]).find("rpc") != std::string::npos)
+      if (string(addBranchNamesIntSeg[i]).find("rpc") != string::npos)
         temp_nhits = nRpc;
       for (int j = 0; j < temp_nhits; j++)
         addBranchesInputVarIntSeg[i][j] = addBranchesRazorVarIntSeg[i][j];
