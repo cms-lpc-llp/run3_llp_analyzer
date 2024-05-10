@@ -1,0 +1,5 @@
+root://cmsxrootd.fnal.gov//store/data/Run2022A/DisplacedJet/NANOAOD/22Sep2023-v1/2530000/a4b0be88-fd6d-478a-b374-6361edaeea09.root
+root://cmsxrootd.fnal.gov//store/data/Run2022A/DisplacedJet/NANOAOD/22Sep2023-v1/2530000/d83d75c4-7249-4742-8141-67dfe583680f.root
+root://cmsxrootd.fnal.gov//store/data/Run2022A/DisplacedJet/NANOAOD/22Sep2023-v1/2530000/2d2839fa-12b0-453e-b987-75b0c6ce142f.root
+root://cmsxrootd.fnal.gov//store/data/Run2022A/DisplacedJet/NANOAOD/22Sep2023-v1/2530000/227a7fd2-234a-457b-93c8-2104822e3350.root
+root://cmsxrootd.fnal.gov//store/data/Run2022A/DisplacedJet/NANOAOD/22Sep2023-v1/2530000/0339db6b-a20e-4b8f-b327-dcd6864c345e.root
