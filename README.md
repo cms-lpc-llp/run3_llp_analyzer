@@ -10,8 +10,8 @@ Setup
     cmsrel CMSSW_10_6_30
     cd CMSSW_10_6_30/src
     cmsenv
-    git clone git@github.com:CMS-HSCP/llp_analyzer.git
-    cd llp_analyzer
+    git clone git@github.com:cms-lpc-llp/run3_llp_analyzer.git run3_llp_analyzer
+    cd run3_llp_analyzer
     make
   
 Defining a new analysis
@@ -39,7 +39,7 @@ The "options" are the following:
 
 
 ## Run the llp_analyzer
-    ./RazorRun_T2 <list of input files> llp_MuonSystem -d=${isData} -n=${option} -f=${outputfile} -l=${tag}
+    ./RazorRun <list of input files> llp_MuonSystem -d=${isData} -n=${option} -f=${outputfile} -l=${tag}
 * ```isData``` is ```yes``` or ```no```
 * ```option``` is currently not used
 * ```tag``` is currently not used
