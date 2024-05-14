@@ -1,6 +1,3 @@
-[submodule "downstream_script"]
-	path = downstream_script
-	url = ./downstream_script
-[submodule "run3_llp_analyzer_downstream_scripts"]
+[submodule "downstream_scripts"]
 	path = downstream_scripts
 	url = git@github.com:cms-lpc-llp/run3_llp_analyzer_downstream_scripts
