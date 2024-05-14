@@ -144,14 +144,13 @@ function prepare_chunks {
 
 function argsgen {
     TMP_PATH=$(realpath $1)
-    OUT_DIR=$(realpath $2)
     for dir in $(ls $TMP_PATH); do
         if [ ! -d $TMP_PATH/$dir/ntuple ] || [ ! -d $TMP_PATH/$dir/nano ]; then
             continue
         fi
         for ntuple_f in $(ls $TMP_PATH/$dir/ntuple); do
             for nano_f in $(ls $TMP_PATH/$dir/nano); do
-                echo "$TMP_PATH/$dir/ntuple/$ntuple_f $TMP_PATH/$dir/nano/$nano_f $OUT_DIR"
+                echo "$TMP_PATH/$dir/ntuple/$ntuple_f $TMP_PATH/$dir/nano/$nano_f"
             done
         done
     done
@@ -161,7 +160,15 @@ function launch {
     BIN=$1
     LIST_NTUPLE=$2
     LIST_NANO=$3
-    OUT_DIR=$4
+    CACHE_PATH=$4
+    OUT_DIR=$5
+
+    YEAR_ERA_VERSION=$(basename $(dirname $(dirname $LIST_NTUPLE)))
+    NUMBERS="$(basename $LIST_NTUPLE .txt)-$(basename $LIST_NANO .txt)"
+    mkdir -p $OUT_DIR/$YEAR_ERA_VERSION
+    OUT_PATH="$OUT_DIR/$YEAR_ERA_VERSION/$NUMBERS.root"
+
+    echo $BIN $LIST_NTUPLE $LIST_NANO $CACHE_PATH $OUT_PATH
 }
 
 
@@ -173,4 +180,6 @@ for NTUPLE_LIST in $NTUPLES; do
     prepare_chunks $NTUPLE_LIST $TMP_PATH $BSZ_NTUPLE ntuple
 done
 
-argsgen $TMP_PATH $CACHE | wc -l
+export -f launch
+
+argsgen $TMP_PATH $CACHE | parallel -j $N_JOBS --eta --bar launch $BIN

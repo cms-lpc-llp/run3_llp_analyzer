@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   // parse input list to get names of ROOT files
   if (argc < 4)
   {
-    cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [cache_dir]" << endl;
+    cerr << "usage MergeNtuple [inp_ntuple_list] [inp_nano_list] [output_file] [cache_dir]" << endl;
     return -1;
   }
   // string filenameNTuplers(argv[1]);
