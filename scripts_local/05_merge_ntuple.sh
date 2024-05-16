@@ -2,12 +2,13 @@
 
 CACHE=./cache
 N_JOBS=128
-BIN=../CacheNtuples
-BSZ_NTUPLE=1
+BIN=../MergeNtuples
+BSZ_NTUPLE=50
 TMP_PATH=/tmp/MergeNtuples
-BSZ_NANO=10
+BSZ_NANO=5
 NANOS=""
 NTUPLES=""
+OUT_DIR=./output
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -22,6 +23,8 @@ while [[ $# -gt 0 ]]; do
         echo "  -t, --tmp_path <path>           Path for storing the temporary files, defaults to /tmp/MergeNtuples"
         echo "  -nt, --ntuple <paths>           Paths to the ntuple files"
         echo "  -na, --nano <paths>             Paths to the nano files"
+        echo "  -o, --out_dir <path>            Path for storing the output files, defaults to ./output"
+        echo "  -l, --local <path>              Replace path prefix by this, useful if everything presents locally"
         exit 0
         ;;
     -B1|--batch_ntuple)
@@ -49,6 +52,16 @@ while [[ $# -gt 0 ]]; do
         shift
         shift
         ;;
+    -l|--local)
+        LOCAL="$2"
+        shift
+        shift
+        ;;
+    -o|--out-dir)
+        OUT_DIR="$2"
+        shift
+        shift
+        ;;
     -na|--nano)
         shift
         while [[ $# -gt 0 ]]; do
@@ -57,7 +70,7 @@ while [[ $# -gt 0 ]]; do
                 break
                 ;;
             *)
-                NTUPLES="$NTUPLES $1"
+                NANOS="$NANOS $1"
                 shift
                 ;;
             esac
@@ -71,7 +84,7 @@ while [[ $# -gt 0 ]]; do
                 break
                 ;;
             *)
-                NANOS="$NANOS $1"
+                NTUPLES="$NTUPLES $1"
                 shift
                 ;;
             esac
@@ -117,11 +130,12 @@ function prepare_chunks {
     TMP_PATH=$(realpath $2)
     CHUNK_SIZE=$3
     TYPE=$4
+    LOCAL=$5
 
     YEAR_ERA=$(echo $FILE | grep -oP "(?<=Run)[0-9]{4}[A-Z]")
     VERSION=$(echo $FILE | grep -oP '(?<=(\-|_)v)(?<!v[0-9]\-v)[0-9]')
 
-    LOCAL_TMP_PATH=$TMP_PATH/$YEAR_ERA-v$VERSION/$TYPE
+    LOCAL_TMP_PATH=$TMP_PATH/$YEAR_ERA/$TYPE
     mkdir -p $LOCAL_TMP_PATH
 
     i=0
@@ -135,9 +149,15 @@ function prepare_chunks {
             chunk=()
         fi
     done < "$FILE"
+
     if (( ${#chunk[@]} > 0 )); then
         i=$((i+1))
-        printf "$i %s\n" "${chunk[@]}" > $LOCAL_TMP_PATH/$i.txt
+        printf "%s\n" "${chunk[@]}" > $LOCAL_TMP_PATH/$i.txt
+    fi
+
+    if [ ! -z $LOCAL ]; then
+        sed -i "s|/eos/uscms|$LOCAL|" $LOCAL_TMP_PATH/*.txt
+        sed -i "s|root://cmsxrootd.fnal.gov/|$LOCAL|" $LOCAL_TMP_PATH/*.txt
     fi
     
 }
@@ -163,23 +183,43 @@ function launch {
     CACHE_PATH=$4
     OUT_DIR=$5
 
-    YEAR_ERA_VERSION=$(basename $(dirname $(dirname $LIST_NTUPLE)))
-    NUMBERS="$(basename $LIST_NTUPLE .txt)-$(basename $LIST_NANO .txt)"
-    mkdir -p $OUT_DIR/$YEAR_ERA_VERSION
-    OUT_PATH="$OUT_DIR/$YEAR_ERA_VERSION/$NUMBERS.root"
 
-    echo $BIN $LIST_NTUPLE $LIST_NANO $CACHE_PATH $OUT_PATH
+    YEAR_ERA_VERSION=$(basename $(dirname $(dirname $LIST_NTUPLE)))
+    FNAME="$(basename $LIST_NTUPLE .txt)-$(basename $LIST_NANO .txt)"
+    
+    mkdir -p $OUT_DIR/$YEAR_ERA_VERSION
+    OUT_PATH="$OUT_DIR/$YEAR_ERA_VERSION/$FNAME.root"
+
+    if [ -f $OUT_PATH ] || [ -f $OUT_PATH.nomatch ]; then
+        return
+    fi
+
+    $BIN $LIST_NTUPLE $LIST_NANO $OUT_PATH $CACHE_PATH > $OUT_DIR/$YEAR_ERA_VERSION/$FNAME.log 2>&1
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to merge $LIST_NTUPLE and $LIST_NANO" 1>&2
+        echo "Fauled to merge $LIST_NTUPLE and $LIST_NANO" >> $OUT_DIR/failed.log
+        rm $OUT_PATH
+        exit 1
+    fi
+
+
+    if [ ! -f $OUT_PATH ]; then
+        touch $OUT_PATH.nomatch
+    fi
+
+    rm $OUT_DIR/$YEAR_ERA_VERSION/$FNAME.log
 }
 
 
 for NANO_LIST in $NANOS; do
-    prepare_chunks $NANO_LIST $TMP_PATH $BSZ_NANO nano
+    prepare_chunks $NANO_LIST $TMP_PATH $BSZ_NANO nano $LOCAL
 done
 
 for NTUPLE_LIST in $NTUPLES; do
-    prepare_chunks $NTUPLE_LIST $TMP_PATH $BSZ_NTUPLE ntuple
+    prepare_chunks $NTUPLE_LIST $TMP_PATH $BSZ_NTUPLE ntuple $LOCAL
 done
 
 export -f launch
 
-argsgen $TMP_PATH $CACHE | parallel -j $N_JOBS --eta --bar launch $BIN
+argsgen $TMP_PATH | parallel -j $N_JOBS --colsep ' ' --eta --bar launch $BIN {1} {2} $CACHE $OUT_DIR

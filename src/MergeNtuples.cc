@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     {
       // checks root file structure and add first file
       cout << "[INFO]: loading file: " << curNtupleName.c_str() << endl;
-      TFile *f_0 = TFile::Open(curNtupleName.c_str());
+      TFile *f_0 = TFile::Open(curNtupleName.c_str(), "READ");
       if (f_0->GetDirectory("ntuples"))
       {
         ntupleChain->SetName("ntuples/llp");
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
     {
       // checks root file structure and add first file
       cout << "[INFO]: loading file: " << curFileName.c_str() << endl;
-      TFile *f_0 = TFile::Open(curFileName.c_str());
+      TFile *f_0 = TFile::Open(curFileName.c_str(), "READ");
       f_0->ls();
       nanoChain->SetName("Events");
       nanoChain->Add(curFileName.c_str());
@@ -175,11 +175,16 @@ int main(int argc, char *argv[])
   // find intersection of the two maps
   for (auto it = nTupleIdxMap.begin(); it != nTupleIdxMap.end(); it++)
   {
-    if (AODIdxMap.find(it->first) != AODIdxMap.end())
+    if (AODIdxMap.count(it->first) > 0)
     {
       indexPair.push_back(make_pair(it->second, AODIdxMap[it->first]));
     }
   }
+
+  cout << "Sorting ... " << endl;
+
+  sort(indexPair.begin(), indexPair.end(), [](const pair<ulong, ulong> &left, const pair<ulong, ulong> &right)
+       { return left.second < right.second; });
 
   ulong nMatchedEvents = indexPair.size();
   ulong NEventsTreeNTuple = ntupleChain->GetEntries();
@@ -414,10 +419,14 @@ int main(int argc, char *argv[])
   }
   // save information
   cout << "Filled Total of " << outputTree->GetEntries() << " Matched Events\n";
-  cout << "Writing output trees..." << endl;
+  cout << "Writing output trees...\n";
   outputFile->cd();
+  cout << "CD done\n";
 
   outputTree->Write();
+  cout << "Write done\n";
   outputFile->Close();
+  cout << "Close done\n";
   delete outputFile;
+  return 0;
 }
