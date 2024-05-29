@@ -374,7 +374,7 @@ int main(int argc, char *argv[])
         temp_nhits = nCscRechits;
       if (string(addBranchNamesFloat[i]).find("dtRechit") != string::npos)
         temp_nhits = nDtRechits;
-      for (int j = 0; j < temp_nhits; j++)
+      for (int j = 0; j < min(temp_nhits, N_MAX_RECHITS); j++)
         addBranchesInputVarFloat[i][j] = addBranchesRazorVarFloat[i][j];
     }
 
@@ -387,7 +387,7 @@ int main(int argc, char *argv[])
         temp_nhits = nDtSeg;
       if (string(addBranchNamesFloatSeg[i]).find("rpc") != string::npos)
         temp_nhits = nRpc;
-      for (int j = 0; j < temp_nhits; j++)
+      for (int j = 0; j < min(temp_nhits, N_MAX_RECHITS); j++)
         addBranchesInputVarFloatSeg[i][j] = addBranchesRazorVarFloatSeg[i][j];
     }
 
@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
         temp_nhits = nCscRechits;
       if (string(addBranchNamesInt[i]).find("dtRechit") != string::npos)
         temp_nhits = nDtRechits;
-      for (int j = 0; j < temp_nhits; j++)
+      for (int j = 0; j < min(temp_nhits, N_MAX_RECHITS); j++)
         addBranchesInputVarInt[i][j] = addBranchesRazorVarInt[i][j];
     }
 
