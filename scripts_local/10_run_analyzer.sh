@@ -38,6 +38,8 @@ while [[ $# -gt 0 ]]; do
         ;;
     -c|--chunk)
         CHUNK_SIZE="$2"
+        shift
+        shift
         ;;
     -b|--bin)
         BIN="$2"

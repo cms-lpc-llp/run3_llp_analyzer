@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  bool is_merged = false; // NANO AOD merged file has different layout
   while (getline(inputFile, curFileName))
   {
     if (NFilesLoaded == 0)
@@ -147,15 +148,21 @@ int main(int argc, char *argv[])
         checks root file structure and add first file
       */
       TFile *f_0 = TFile::Open(curFileName.c_str());
-      if (f_0->GetDirectory("ntuples"))
+      is_merged = f_0->Get("Events") != NULL;
+      if (is_merged)
+      {
+        theChain->SetName("Events");
+        std::cout << "[INFO]: using master chain at /Events" << std::endl;
+      }
+      else if (f_0->GetDirectory("ntuples"))
       {
         theChain->SetName("ntuples/llp");
-        std::cout << "[INFO]: default configuration for tchain" << std::endl;
+        std::cout << "[INFO]: using master chain at /ntuples/llp" << std::endl;
       }
       else
       {
         theChain->SetName("HSCParticleAnalyzer/BaseName/HscpCandidates");
-        std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
+        std::cout << "[INFO]: using master chain at HSCParticleAnalyzer/BaseName/HscpCandidates" << std::endl;
       }
       theChain->Add(curFileName.c_str());
       delete f_0;
@@ -171,12 +178,20 @@ int main(int argc, char *argv[])
   if (theChain == NULL)
     return -1;
 
-  llp_MuonSystem_CA analyzer(theChain);
-
   //------ EXECUTE ------//
   cout << "Executing llp_MuonSystem_CA..." << endl;
-  analyzer.EnableAll();
-  analyzer.Analyze(isData, option, outputFileName, label);
+  if (is_merged)
+  {
+    llp_MuonSystem_CA analyzer(theChain);
+    analyzer.EnableAll();
+    analyzer.Analyze(isData, option, outputFileName, label);
+  }
+  else
+  {
+    llp_MuonSystem_CAM analyzer(theChain);
+    analyzer.EnableAll();
+    analyzer.Analyze(isData, option, outputFileName, label);
+  }
   cout << "Process completed!" << endl;
   cerr << "------------------------------" << endl; // present so that an empty .err file corresponds to a failed job
 
