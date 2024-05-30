@@ -1,9 +1,13 @@
+.vscode
+*.ipynb
+*.root
+
 fastjet-install/
 bin/
 SkimNtuple
 NormalizeNtuple
 MergeNtuples
-CacheNtuple
+CacheNtuples
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
