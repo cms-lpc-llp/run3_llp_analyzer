@@ -14,3197 +14,3204 @@
 
 // Header file for the classes stored in the TTree if any.
 
-class nano_events {
-public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-   Int_t           fCurrent; //!current Tree number in a TChain
+class nano_events
+{
+public:
+   TTree *fChain;  //! pointer to the analyzed TTree or TChain
+   Int_t fCurrent; //! current Tree number in a TChain
 
-// Fixed size dimensions of array or collections stored in the TTree if any.
+   // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
-   UInt_t          run;
-   UInt_t          luminosityBlock;
-   ULong64_t       event;
-   UInt_t          bunchCrossing;
-   Char_t          BeamSpot_type;
-   Float_t         BeamSpot_sigmaZ;
-   Float_t         BeamSpot_sigmaZError;
-   Float_t         BeamSpot_z;
-   Float_t         BeamSpot_zError;
-   Int_t           nboostedTau;
-   UChar_t         boostedTau_idAntiEle2018[4];   //[nboostedTau]
-   UChar_t         boostedTau_idAntiMu[4];   //[nboostedTau]
-   UChar_t         boostedTau_idMVAnewDM2017v2[4];   //[nboostedTau]
-   UChar_t         boostedTau_idMVAoldDM2017v2[4];   //[nboostedTau]
-   Short_t         boostedTau_jetIdx[4];   //[nboostedTau]
-   Short_t         boostedTau_rawAntiEleCat2018[4];   //[nboostedTau]
-   Int_t           boostedTau_charge[4];   //[nboostedTau]
-   Int_t           boostedTau_decayMode[4];   //[nboostedTau]
-   Float_t         boostedTau_chargedIso[4];   //[nboostedTau]
-   Float_t         boostedTau_eta[4];   //[nboostedTau]
-   Float_t         boostedTau_leadTkDeltaEta[4];   //[nboostedTau]
-   Float_t         boostedTau_leadTkDeltaPhi[4];   //[nboostedTau]
-   Float_t         boostedTau_leadTkPtOverTauPt[4];   //[nboostedTau]
-   Float_t         boostedTau_mass[4];   //[nboostedTau]
-   Float_t         boostedTau_neutralIso[4];   //[nboostedTau]
-   Float_t         boostedTau_phi[4];   //[nboostedTau]
-   Float_t         boostedTau_photonsOutsideSignalCone[4];   //[nboostedTau]
-   Float_t         boostedTau_pt[4];   //[nboostedTau]
-   Float_t         boostedTau_puCorr[4];   //[nboostedTau]
-   Float_t         boostedTau_rawAntiEle2018[4];   //[nboostedTau]
-   Float_t         boostedTau_rawIso[4];   //[nboostedTau]
-   Float_t         boostedTau_rawIsodR03[4];   //[nboostedTau]
-   Float_t         boostedTau_rawMVAnewDM2017v2[4];   //[nboostedTau]
-   Float_t         boostedTau_rawMVAoldDM2017v2[4];   //[nboostedTau]
-   Float_t         CaloMET_phi;
-   Float_t         CaloMET_pt;
-   Float_t         CaloMET_sumEt;
-   Float_t         ChsMET_phi;
-   Float_t         ChsMET_pt;
-   Float_t         ChsMET_sumEt;
-   Int_t           nCorrT1METJet;
-   Float_t         CorrT1METJet_area[47];   //[nCorrT1METJet]
-   Float_t         CorrT1METJet_eta[47];   //[nCorrT1METJet]
-   Float_t         CorrT1METJet_muonSubtrFactor[47];   //[nCorrT1METJet]
-   Float_t         CorrT1METJet_phi[47];   //[nCorrT1METJet]
-   Float_t         CorrT1METJet_rawPt[47];   //[nCorrT1METJet]
-   Float_t         DeepMETResolutionTune_phi;
-   Float_t         DeepMETResolutionTune_pt;
-   Float_t         DeepMETResponseTune_phi;
-   Float_t         DeepMETResponseTune_pt;
-   Int_t           nElectron;
-   Char_t          Electron_seediEtaOriX[8];   //[nElectron]
-   Bool_t          Electron_convVeto[8];   //[nElectron]
-   UChar_t         Electron_cutBased[8];   //[nElectron]
-   Bool_t          Electron_cutBased_HEEP[8];   //[nElectron]
-   Bool_t          Electron_isPFcand[8];   //[nElectron]
-   UChar_t         Electron_jetNDauCharged[8];   //[nElectron]
-   UChar_t         Electron_lostHits[8];   //[nElectron]
-   Bool_t          Electron_mvaIso_WP80[8];   //[nElectron]
-   Bool_t          Electron_mvaIso_WP90[8];   //[nElectron]
-   Bool_t          Electron_mvaNoIso_WP80[8];   //[nElectron]
-   Bool_t          Electron_mvaNoIso_WP90[8];   //[nElectron]
-   UChar_t         Electron_seedGain[8];   //[nElectron]
-   UChar_t         Electron_tightCharge[8];   //[nElectron]
-   Short_t         Electron_jetIdx[8];   //[nElectron]
-   Short_t         Electron_photonIdx[8];   //[nElectron]
-   Short_t         Electron_svIdx[8];   //[nElectron]
-   Short_t         Electron_fsrPhotonIdx[8];   //[nElectron]
-   Int_t           Electron_charge[8];   //[nElectron]
-   Int_t           Electron_pdgId[8];   //[nElectron]
-   Int_t           Electron_seediPhiOriY[8];   //[nElectron]
-   Int_t           Electron_vidNestedWPBitmap[8];   //[nElectron]
-   Int_t           Electron_vidNestedWPBitmapHEEP[8];   //[nElectron]
-   Float_t         Electron_deltaEtaSC[8];   //[nElectron]
-   Float_t         Electron_dr03EcalRecHitSumEt[8];   //[nElectron]
-   Float_t         Electron_dr03HcalDepth1TowerSumEt[8];   //[nElectron]
-   Float_t         Electron_dr03TkSumPt[8];   //[nElectron]
-   Float_t         Electron_dr03TkSumPtHEEP[8];   //[nElectron]
-   Float_t         Electron_dxy[8];   //[nElectron]
-   Float_t         Electron_dxyErr[8];   //[nElectron]
-   Float_t         Electron_dz[8];   //[nElectron]
-   Float_t         Electron_dzErr[8];   //[nElectron]
-   Float_t         Electron_eInvMinusPInv[8];   //[nElectron]
-   Float_t         Electron_energyErr[8];   //[nElectron]
-   Float_t         Electron_eta[8];   //[nElectron]
-   Float_t         Electron_hoe[8];   //[nElectron]
-   Float_t         Electron_ip3d[8];   //[nElectron]
-   Float_t         Electron_jetPtRelv2[8];   //[nElectron]
-   Float_t         Electron_jetRelIso[8];   //[nElectron]
-   Float_t         Electron_mass[8];   //[nElectron]
-   Float_t         Electron_miniPFRelIso_all[8];   //[nElectron]
-   Float_t         Electron_miniPFRelIso_chg[8];   //[nElectron]
-   Float_t         Electron_mvaHZZIso[8];   //[nElectron]
-   Float_t         Electron_mvaIso[8];   //[nElectron]
-   Float_t         Electron_mvaNoIso[8];   //[nElectron]
-   Float_t         Electron_pfRelIso03_all[8];   //[nElectron]
-   Float_t         Electron_pfRelIso03_chg[8];   //[nElectron]
-   Float_t         Electron_phi[8];   //[nElectron]
-   Float_t         Electron_pt[8];   //[nElectron]
-   Float_t         Electron_r9[8];   //[nElectron]
-   Float_t         Electron_scEtOverPt[8];   //[nElectron]
-   Float_t         Electron_sieie[8];   //[nElectron]
-   Float_t         Electron_sip3d[8];   //[nElectron]
-   Float_t         Electron_mvaTTH[8];   //[nElectron]
-   Int_t           nFatJet;
-   UChar_t         FatJet_jetId[8];   //[nFatJet]
-   UChar_t         FatJet_nConstituents[8];   //[nFatJet]
-   Short_t         FatJet_subJetIdx1[8];   //[nFatJet]
-   Short_t         FatJet_subJetIdx2[8];   //[nFatJet]
-   Short_t         FatJet_electronIdx3SJ[8];   //[nFatJet]
-   Short_t         FatJet_muonIdx3SJ[8];   //[nFatJet]
-   Float_t         FatJet_area[8];   //[nFatJet]
-   Float_t         FatJet_btagDDBvLV2[8];   //[nFatJet]
-   Float_t         FatJet_btagDDCvBV2[8];   //[nFatJet]
-   Float_t         FatJet_btagDDCvLV2[8];   //[nFatJet]
-   Float_t         FatJet_btagDeepB[8];   //[nFatJet]
-   Float_t         FatJet_btagHbb[8];   //[nFatJet]
-   Float_t         FatJet_eta[8];   //[nFatJet]
-   Float_t         FatJet_mass[8];   //[nFatJet]
-   Float_t         FatJet_msoftdrop[8];   //[nFatJet]
-   Float_t         FatJet_n2b1[8];   //[nFatJet]
-   Float_t         FatJet_n3b1[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_H4qvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_HbbvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_HccvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_QCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_TvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_WvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNetWithMass_ZvsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_QCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_QCD0HF[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_QCD1HF[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_QCD2HF[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XbbVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XccVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XggVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XqqVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XteVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XtmVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_XttVsQCD[8];   //[nFatJet]
-   Float_t         FatJet_particleNet_massCorr[8];   //[nFatJet]
-   Float_t         FatJet_phi[8];   //[nFatJet]
-   Float_t         FatJet_pt[8];   //[nFatJet]
-   Float_t         FatJet_rawFactor[8];   //[nFatJet]
-   Float_t         FatJet_tau1[8];   //[nFatJet]
-   Float_t         FatJet_tau2[8];   //[nFatJet]
-   Float_t         FatJet_tau3[8];   //[nFatJet]
-   Float_t         FatJet_tau4[8];   //[nFatJet]
-   Float_t         FatJet_lsf3[8];   //[nFatJet]
-   Int_t           nFsrPhoton;
-   Short_t         FsrPhoton_electronIdx[4];   //[nFsrPhoton]
-   Short_t         FsrPhoton_muonIdx[4];   //[nFsrPhoton]
-   Float_t         FsrPhoton_dROverEt2[4];   //[nFsrPhoton]
-   Float_t         FsrPhoton_eta[4];   //[nFsrPhoton]
-   Float_t         FsrPhoton_phi[4];   //[nFsrPhoton]
-   Float_t         FsrPhoton_pt[4];   //[nFsrPhoton]
-   Float_t         FsrPhoton_relIso03[4];   //[nFsrPhoton]
-   Int_t           nIsoTrack;
-   Bool_t          IsoTrack_isHighPurityTrack[14];   //[nIsoTrack]
-   Bool_t          IsoTrack_isPFcand[14];   //[nIsoTrack]
-   Bool_t          IsoTrack_isFromLostTrack[14];   //[nIsoTrack]
-   Short_t         IsoTrack_charge[14];   //[nIsoTrack]
-   Short_t         IsoTrack_fromPV[14];   //[nIsoTrack]
-   Int_t           IsoTrack_pdgId[14];   //[nIsoTrack]
-   Float_t         IsoTrack_dxy[14];   //[nIsoTrack]
-   Float_t         IsoTrack_dz[14];   //[nIsoTrack]
-   Float_t         IsoTrack_eta[14];   //[nIsoTrack]
-   Float_t         IsoTrack_pfRelIso03_all[14];   //[nIsoTrack]
-   Float_t         IsoTrack_pfRelIso03_chg[14];   //[nIsoTrack]
-   Float_t         IsoTrack_phi[14];   //[nIsoTrack]
-   Float_t         IsoTrack_pt[14];   //[nIsoTrack]
-   Float_t         IsoTrack_miniPFRelIso_all[14];   //[nIsoTrack]
-   Float_t         IsoTrack_miniPFRelIso_chg[14];   //[nIsoTrack]
-   Int_t           nJet;
-   UChar_t         Jet_jetId[64];   //[nJet]
-   UChar_t         Jet_nConstituents[64];   //[nJet]
-   UChar_t         Jet_nElectrons[64];   //[nJet]
-   UChar_t         Jet_nMuons[64];   //[nJet]
-   UChar_t         Jet_nSVs[64];   //[nJet]
-   Short_t         Jet_electronIdx1[64];   //[nJet]
-   Short_t         Jet_electronIdx2[64];   //[nJet]
-   Short_t         Jet_muonIdx1[64];   //[nJet]
-   Short_t         Jet_muonIdx2[64];   //[nJet]
-   Short_t         Jet_svIdx1[64];   //[nJet]
-   Short_t         Jet_svIdx2[64];   //[nJet]
-   Int_t           Jet_hfadjacentEtaStripsSize[64];   //[nJet]
-   Int_t           Jet_hfcentralEtaStripSize[64];   //[nJet]
-   Float_t         Jet_PNetRegPtRawCorr[64];   //[nJet]
-   Float_t         Jet_PNetRegPtRawCorrNeutrino[64];   //[nJet]
-   Float_t         Jet_PNetRegPtRawRes[64];   //[nJet]
-   Float_t         Jet_area[64];   //[nJet]
-   Float_t         Jet_btagDeepFlavB[64];   //[nJet]
-   Float_t         Jet_btagDeepFlavCvB[64];   //[nJet]
-   Float_t         Jet_btagDeepFlavCvL[64];   //[nJet]
-   Float_t         Jet_btagDeepFlavQG[64];   //[nJet]
-   Float_t         Jet_btagPNetB[64];   //[nJet]
-   Float_t         Jet_btagPNetCvB[64];   //[nJet]
-   Float_t         Jet_btagPNetCvL[64];   //[nJet]
-   Float_t         Jet_btagPNetQvG[64];   //[nJet]
-   Float_t         Jet_btagPNetTauVJet[64];   //[nJet]
-   Float_t         Jet_btagRobustParTAK4B[64];   //[nJet]
-   Float_t         Jet_btagRobustParTAK4CvB[64];   //[nJet]
-   Float_t         Jet_btagRobustParTAK4CvL[64];   //[nJet]
-   Float_t         Jet_btagRobustParTAK4QG[64];   //[nJet]
-   Float_t         Jet_chEmEF[64];   //[nJet]
-   Float_t         Jet_chHEF[64];   //[nJet]
-   Float_t         Jet_eta[64];   //[nJet]
-   Float_t         Jet_hfsigmaEtaEta[64];   //[nJet]
-   Float_t         Jet_hfsigmaPhiPhi[64];   //[nJet]
-   Float_t         Jet_mass[64];   //[nJet]
-   Float_t         Jet_muEF[64];   //[nJet]
-   Float_t         Jet_muonSubtrFactor[64];   //[nJet]
-   Float_t         Jet_neEmEF[64];   //[nJet]
-   Float_t         Jet_neHEF[64];   //[nJet]
-   Float_t         Jet_phi[64];   //[nJet]
-   Float_t         Jet_pt[64];   //[nJet]
-   Float_t         Jet_rawFactor[64];   //[nJet]
-   Int_t           nLowPtElectron;
-   Bool_t          LowPtElectron_convVeto[11];   //[nLowPtElectron]
-   UChar_t         LowPtElectron_convWP[11];   //[nLowPtElectron]
-   UChar_t         LowPtElectron_lostHits[11];   //[nLowPtElectron]
-   Short_t         LowPtElectron_electronIdx[11];   //[nLowPtElectron]
-   Short_t         LowPtElectron_photonIdx[11];   //[nLowPtElectron]
-   Int_t           LowPtElectron_charge[11];   //[nLowPtElectron]
-   Int_t           LowPtElectron_pdgId[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_ID[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_convVtxRadius[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_deltaEtaSC[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_dxy[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_dxyErr[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_dz[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_dzErr[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_eInvMinusPInv[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_energyErr[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_eta[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_hoe[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_mass[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_miniPFRelIso_all[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_miniPFRelIso_chg[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_phi[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_pt[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_ptbiased[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_r9[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_scEtOverPt[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_sieie[11];   //[nLowPtElectron]
-   Float_t         LowPtElectron_unbiased[11];   //[nLowPtElectron]
-   Float_t         MET_MetUnclustEnUpDeltaX;
-   Float_t         MET_MetUnclustEnUpDeltaY;
-   Float_t         MET_covXX;
-   Float_t         MET_covXY;
-   Float_t         MET_covYY;
-   Float_t         MET_phi;
-   Float_t         MET_pt;
-   Float_t         MET_significance;
-   Float_t         MET_sumEt;
-   Float_t         MET_sumPtUnclustered;
-   Int_t           nProton_multiRP;
-   UChar_t         Proton_multiRP_arm[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_t[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_thetaX[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_thetaY[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_time[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_timeUnc[1];   //[nProton_multiRP]
-   Float_t         Proton_multiRP_xi[1];   //[nProton_multiRP]
-   Int_t           nMuon;
-   UChar_t         Muon_highPtId[36];   //[nMuon]
-   Bool_t          Muon_highPurity[36];   //[nMuon]
-   Bool_t          Muon_inTimeMuon[36];   //[nMuon]
-   Bool_t          Muon_isGlobal[36];   //[nMuon]
-   Bool_t          Muon_isPFcand[36];   //[nMuon]
-   Bool_t          Muon_isStandalone[36];   //[nMuon]
-   Bool_t          Muon_isTracker[36];   //[nMuon]
-   UChar_t         Muon_jetNDauCharged[36];   //[nMuon]
-   Bool_t          Muon_looseId[36];   //[nMuon]
-   Bool_t          Muon_mediumId[36];   //[nMuon]
-   Bool_t          Muon_mediumPromptId[36];   //[nMuon]
-   UChar_t         Muon_miniIsoId[36];   //[nMuon]
-   UChar_t         Muon_multiIsoId[36];   //[nMuon]
-   UChar_t         Muon_mvaMuID_WP[36];   //[nMuon]
-   UChar_t         Muon_nStations[36];   //[nMuon]
-   UChar_t         Muon_nTrackerLayers[36];   //[nMuon]
-   UChar_t         Muon_pfIsoId[36];   //[nMuon]
-   UChar_t         Muon_puppiIsoId[36];   //[nMuon]
-   Bool_t          Muon_softId[36];   //[nMuon]
-   Bool_t          Muon_softMvaId[36];   //[nMuon]
-   UChar_t         Muon_tightCharge[36];   //[nMuon]
-   Bool_t          Muon_tightId[36];   //[nMuon]
-   UChar_t         Muon_tkIsoId[36];   //[nMuon]
-   Bool_t          Muon_triggerIdLoose[36];   //[nMuon]
-   Short_t         Muon_jetIdx[36];   //[nMuon]
-   Short_t         Muon_svIdx[36];   //[nMuon]
-   Short_t         Muon_fsrPhotonIdx[36];   //[nMuon]
-   Int_t           Muon_charge[36];   //[nMuon]
-   Int_t           Muon_pdgId[36];   //[nMuon]
-   Float_t         Muon_dxy[36];   //[nMuon]
-   Float_t         Muon_dxyErr[36];   //[nMuon]
-   Float_t         Muon_dxybs[36];   //[nMuon]
-   Float_t         Muon_dz[36];   //[nMuon]
-   Float_t         Muon_dzErr[36];   //[nMuon]
-   Float_t         Muon_eta[36];   //[nMuon]
-   Float_t         Muon_ip3d[36];   //[nMuon]
-   Float_t         Muon_jetPtRelv2[36];   //[nMuon]
-   Float_t         Muon_jetRelIso[36];   //[nMuon]
-   Float_t         Muon_mass[36];   //[nMuon]
-   Float_t         Muon_miniPFRelIso_all[36];   //[nMuon]
-   Float_t         Muon_miniPFRelIso_chg[36];   //[nMuon]
-   Float_t         Muon_mvaMuID[36];   //[nMuon]
-   Float_t         Muon_pfRelIso03_all[36];   //[nMuon]
-   Float_t         Muon_pfRelIso03_chg[36];   //[nMuon]
-   Float_t         Muon_pfRelIso04_all[36];   //[nMuon]
-   Float_t         Muon_phi[36];   //[nMuon]
-   Float_t         Muon_pt[36];   //[nMuon]
-   Float_t         Muon_ptErr[36];   //[nMuon]
-   Float_t         Muon_segmentComp[36];   //[nMuon]
-   Float_t         Muon_sip3d[36];   //[nMuon]
-   Float_t         Muon_softMva[36];   //[nMuon]
-   Float_t         Muon_tkRelIso[36];   //[nMuon]
-   Float_t         Muon_tunepRelPt[36];   //[nMuon]
-   Float_t         Muon_bsConstrainedChi2[36];   //[nMuon]
-   Float_t         Muon_bsConstrainedPt[36];   //[nMuon]
-   Float_t         Muon_bsConstrainedPtErr[36];   //[nMuon]
-   Float_t         Muon_mvaLowPt[36];   //[nMuon]
-   Float_t         Muon_mvaTTH[36];   //[nMuon]
-   Int_t           nPhoton;
-   Char_t          Photon_seediEtaOriX[15];   //[nPhoton]
-   UChar_t         Photon_cutBased[15];   //[nPhoton]
-   Bool_t          Photon_electronVeto[15];   //[nPhoton]
-   Bool_t          Photon_hasConversionTracks[15];   //[nPhoton]
-   Bool_t          Photon_isScEtaEB[15];   //[nPhoton]
-   Bool_t          Photon_isScEtaEE[15];   //[nPhoton]
-   Bool_t          Photon_mvaID_WP80[15];   //[nPhoton]
-   Bool_t          Photon_mvaID_WP90[15];   //[nPhoton]
-   Bool_t          Photon_pixelSeed[15];   //[nPhoton]
-   UChar_t         Photon_seedGain[15];   //[nPhoton]
-   Short_t         Photon_electronIdx[15];   //[nPhoton]
-   Short_t         Photon_jetIdx[15];   //[nPhoton]
-   Int_t           Photon_seediPhiOriY[15];   //[nPhoton]
-   Int_t           Photon_vidNestedWPBitmap[15];   //[nPhoton]
-   Float_t         Photon_ecalPFClusterIso[15];   //[nPhoton]
-   Float_t         Photon_energyErr[15];   //[nPhoton]
-   Float_t         Photon_energyRaw[15];   //[nPhoton]
-   Float_t         Photon_esEffSigmaRR[15];   //[nPhoton]
-   Float_t         Photon_esEnergyOverRawE[15];   //[nPhoton]
-   Float_t         Photon_eta[15];   //[nPhoton]
-   Float_t         Photon_etaWidth[15];   //[nPhoton]
-   Float_t         Photon_haloTaggerMVAVal[15];   //[nPhoton]
-   Float_t         Photon_hcalPFClusterIso[15];   //[nPhoton]
-   Float_t         Photon_hoe[15];   //[nPhoton]
-   Float_t         Photon_hoe_PUcorr[15];   //[nPhoton]
-   Float_t         Photon_mvaID[15];   //[nPhoton]
-   Float_t         Photon_pfChargedIso[15];   //[nPhoton]
-   Float_t         Photon_pfChargedIsoPFPV[15];   //[nPhoton]
-   Float_t         Photon_pfChargedIsoWorstVtx[15];   //[nPhoton]
-   Float_t         Photon_pfPhoIso03[15];   //[nPhoton]
-   Float_t         Photon_pfRelIso03_all_quadratic[15];   //[nPhoton]
-   Float_t         Photon_pfRelIso03_chg_quadratic[15];   //[nPhoton]
-   Float_t         Photon_phi[15];   //[nPhoton]
-   Float_t         Photon_phiWidth[15];   //[nPhoton]
-   Float_t         Photon_pt[15];   //[nPhoton]
-   Float_t         Photon_r9[15];   //[nPhoton]
-   Float_t         Photon_s4[15];   //[nPhoton]
-   Float_t         Photon_sieie[15];   //[nPhoton]
-   Float_t         Photon_sieip[15];   //[nPhoton]
-   Float_t         Photon_sipip[15];   //[nPhoton]
-   Float_t         Photon_trkSumPtHollowConeDR03[15];   //[nPhoton]
-   Float_t         Photon_trkSumPtSolidConeDR04[15];   //[nPhoton]
-   Float_t         Photon_x_calo[15];   //[nPhoton]
-   Float_t         Photon_y_calo[15];   //[nPhoton]
-   Float_t         Photon_z_calo[15];   //[nPhoton]
-   Int_t           nPPSLocalTrack;
-   Int_t           PPSLocalTrack_multiRPProtonIdx[1];   //[nPPSLocalTrack]
-   Int_t           PPSLocalTrack_singleRPProtonIdx[1];   //[nPPSLocalTrack]
-   Int_t           PPSLocalTrack_decRPId[1];   //[nPPSLocalTrack]
-   Int_t           PPSLocalTrack_rpType[1];   //[nPPSLocalTrack]
-   Float_t         PPSLocalTrack_x[1];   //[nPPSLocalTrack]
-   Float_t         PPSLocalTrack_y[1];   //[nPPSLocalTrack]
-   Float_t         PPSLocalTrack_time[1];   //[nPPSLocalTrack]
-   Float_t         PPSLocalTrack_timeUnc[1];   //[nPPSLocalTrack]
-   Float_t         PuppiMET_phi;
-   Float_t         PuppiMET_phiJERDown;
-   Float_t         PuppiMET_phiJERUp;
-   Float_t         PuppiMET_phiJESDown;
-   Float_t         PuppiMET_phiJESUp;
-   Float_t         PuppiMET_phiUnclusteredDown;
-   Float_t         PuppiMET_phiUnclusteredUp;
-   Float_t         PuppiMET_pt;
-   Float_t         PuppiMET_ptJERDown;
-   Float_t         PuppiMET_ptJERUp;
-   Float_t         PuppiMET_ptJESDown;
-   Float_t         PuppiMET_ptJESUp;
-   Float_t         PuppiMET_ptUnclusteredDown;
-   Float_t         PuppiMET_ptUnclusteredUp;
-   Float_t         PuppiMET_sumEt;
-   Float_t         RawMET_phi;
-   Float_t         RawMET_pt;
-   Float_t         RawMET_sumEt;
-   Float_t         RawPuppiMET_phi;
-   Float_t         RawPuppiMET_pt;
-   Float_t         RawPuppiMET_sumEt;
-   Float_t         Rho_fixedGridRhoAll;
-   Float_t         Rho_fixedGridRhoFastjetAll;
-   Float_t         Rho_fixedGridRhoFastjetCentral;
-   Float_t         Rho_fixedGridRhoFastjetCentralCalo;
-   Float_t         Rho_fixedGridRhoFastjetCentralChargedPileUp;
-   Float_t         Rho_fixedGridRhoFastjetCentralNeutral;
-   Int_t           nSoftActivityJet;
-   Float_t         SoftActivityJet_eta[6];   //[nSoftActivityJet]
-   Float_t         SoftActivityJet_phi[6];   //[nSoftActivityJet]
-   Float_t         SoftActivityJet_pt[6];   //[nSoftActivityJet]
-   Int_t           SoftActivityJetNjets10;
-   Int_t           SoftActivityJetNjets2;
-   Int_t           SoftActivityJetNjets5;
-   Float_t         SoftActivityJetHT;
-   Float_t         SoftActivityJetHT10;
-   Float_t         SoftActivityJetHT2;
-   Float_t         SoftActivityJetHT5;
-   Int_t           nProton_singleRP;
-   Short_t         Proton_singleRP_decRPId[1];   //[nProton_singleRP]
-   Float_t         Proton_singleRP_thetaY[1];   //[nProton_singleRP]
-   Float_t         Proton_singleRP_xi[1];   //[nProton_singleRP]
-   Int_t           nSubJet;
-   Float_t         SubJet_btagDeepB[14];   //[nSubJet]
-   Float_t         SubJet_eta[14];   //[nSubJet]
-   Float_t         SubJet_mass[14];   //[nSubJet]
-   Float_t         SubJet_n2b1[14];   //[nSubJet]
-   Float_t         SubJet_n3b1[14];   //[nSubJet]
-   Float_t         SubJet_phi[14];   //[nSubJet]
-   Float_t         SubJet_pt[14];   //[nSubJet]
-   Float_t         SubJet_rawFactor[14];   //[nSubJet]
-   Float_t         SubJet_tau1[14];   //[nSubJet]
-   Float_t         SubJet_tau2[14];   //[nSubJet]
-   Float_t         SubJet_tau3[14];   //[nSubJet]
-   Float_t         SubJet_tau4[14];   //[nSubJet]
-   Int_t           nTau;
-   UChar_t         Tau_decayMode[9];   //[nTau]
-   Bool_t          Tau_idAntiEleDeadECal[9];   //[nTau]
-   UChar_t         Tau_idAntiMu[9];   //[nTau]
-   Bool_t          Tau_idDecayModeNewDMs[9];   //[nTau]
-   Bool_t          Tau_idDecayModeOldDMs[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2017v2p1VSe[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2017v2p1VSjet[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2017v2p1VSmu[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2018v2p5VSe[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2018v2p5VSjet[9];   //[nTau]
-   UChar_t         Tau_idDeepTau2018v2p5VSmu[9];   //[nTau]
-   UChar_t         Tau_nSVs[9];   //[nTau]
-   Short_t         Tau_charge[9];   //[nTau]
-   Short_t         Tau_decayModePNet[9];   //[nTau]
-   Short_t         Tau_eleIdx[9];   //[nTau]
-   Short_t         Tau_jetIdx[9];   //[nTau]
-   Short_t         Tau_muIdx[9];   //[nTau]
-   Short_t         Tau_svIdx1[9];   //[nTau]
-   Short_t         Tau_svIdx2[9];   //[nTau]
-   Float_t         Tau_chargedIso[9];   //[nTau]
-   Float_t         Tau_dxy[9];   //[nTau]
-   Float_t         Tau_dz[9];   //[nTau]
-   Float_t         Tau_eta[9];   //[nTau]
-   Float_t         Tau_leadTkDeltaEta[9];   //[nTau]
-   Float_t         Tau_leadTkDeltaPhi[9];   //[nTau]
-   Float_t         Tau_leadTkPtOverTauPt[9];   //[nTau]
-   Float_t         Tau_mass[9];   //[nTau]
-   Float_t         Tau_neutralIso[9];   //[nTau]
-   Float_t         Tau_phi[9];   //[nTau]
-   Float_t         Tau_photonsOutsideSignalCone[9];   //[nTau]
-   Float_t         Tau_probDM0PNet[9];   //[nTau]
-   Float_t         Tau_probDM10PNet[9];   //[nTau]
-   Float_t         Tau_probDM11PNet[9];   //[nTau]
-   Float_t         Tau_probDM1PNet[9];   //[nTau]
-   Float_t         Tau_probDM2PNet[9];   //[nTau]
-   Float_t         Tau_pt[9];   //[nTau]
-   Float_t         Tau_ptCorrPNet[9];   //[nTau]
-   Float_t         Tau_puCorr[9];   //[nTau]
-   Float_t         Tau_qConfPNet[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2017v2p1VSe[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2017v2p1VSjet[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2017v2p1VSmu[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2018v2p5VSe[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2018v2p5VSjet[9];   //[nTau]
-   Float_t         Tau_rawDeepTau2018v2p5VSmu[9];   //[nTau]
-   Float_t         Tau_rawIso[9];   //[nTau]
-   Float_t         Tau_rawIsodR03[9];   //[nTau]
-   Float_t         Tau_rawPNetVSe[9];   //[nTau]
-   Float_t         Tau_rawPNetVSjet[9];   //[nTau]
-   Float_t         Tau_rawPNetVSmu[9];   //[nTau]
-   Float_t         TkMET_phi;
-   Float_t         TkMET_pt;
-   Float_t         TkMET_sumEt;
-   Int_t           nTrigObj;
-   Short_t         TrigObj_l1charge[76];   //[nTrigObj]
-   UShort_t        TrigObj_id[76];   //[nTrigObj]
-   Int_t           TrigObj_l1iso[76];   //[nTrigObj]
-   Int_t           TrigObj_filterBits[76];   //[nTrigObj]
-   Float_t         TrigObj_pt[76];   //[nTrigObj]
-   Float_t         TrigObj_eta[76];   //[nTrigObj]
-   Float_t         TrigObj_phi[76];   //[nTrigObj]
-   Float_t         TrigObj_l1pt[76];   //[nTrigObj]
-   Float_t         TrigObj_l1pt_2[76];   //[nTrigObj]
-   Float_t         TrigObj_l2pt[76];   //[nTrigObj]
-   Int_t           nOtherPV;
-   Float_t         OtherPV_z[3];   //[nOtherPV]
-   Float_t         OtherPV_score[3];   //[nOtherPV]
-   UChar_t         PV_npvs;
-   UChar_t         PV_npvsGood;
-   Float_t         PV_ndof;
-   Float_t         PV_x;
-   Float_t         PV_y;
-   Float_t         PV_z;
-   Float_t         PV_chi2;
-   Float_t         PV_score;
-   Int_t           nSV;
-   Short_t         SV_charge[18];   //[nSV]
-   Float_t         SV_dlen[18];   //[nSV]
-   Float_t         SV_dlenSig[18];   //[nSV]
-   Float_t         SV_dxy[18];   //[nSV]
-   Float_t         SV_dxySig[18];   //[nSV]
-   Float_t         SV_pAngle[18];   //[nSV]
-   UChar_t         SV_ntracks[18];   //[nSV]
-   Float_t         SV_chi2[18];   //[nSV]
-   Float_t         SV_eta[18];   //[nSV]
-   Float_t         SV_mass[18];   //[nSV]
-   Float_t         SV_ndof[18];   //[nSV]
-   Float_t         SV_phi[18];   //[nSV]
-   Float_t         SV_pt[18];   //[nSV]
-   Float_t         SV_x[18];   //[nSV]
-   Float_t         SV_y[18];   //[nSV]
-   Float_t         SV_z[18];   //[nSV]
-   Bool_t          Flag_HBHENoiseFilter;
-   Bool_t          Flag_HBHENoiseIsoFilter;
-   Bool_t          Flag_CSCTightHaloFilter;
-   Bool_t          Flag_CSCTightHaloTrkMuUnvetoFilter;
-   Bool_t          Flag_CSCTightHalo2015Filter;
-   Bool_t          Flag_globalTightHalo2016Filter;
-   Bool_t          Flag_globalSuperTightHalo2016Filter;
-   Bool_t          Flag_HcalStripHaloFilter;
-   Bool_t          Flag_hcalLaserEventFilter;
-   Bool_t          Flag_EcalDeadCellTriggerPrimitiveFilter;
-   Bool_t          Flag_EcalDeadCellBoundaryEnergyFilter;
-   Bool_t          Flag_ecalBadCalibFilter;
-   Bool_t          Flag_goodVertices;
-   Bool_t          Flag_eeBadScFilter;
-   Bool_t          Flag_ecalLaserCorrFilter;
-   Bool_t          Flag_trkPOGFilters;
-   Bool_t          Flag_chargedHadronTrackResolutionFilter;
-   Bool_t          Flag_muonBadTrackFilter;
-   Bool_t          Flag_BadChargedCandidateFilter;
-   Bool_t          Flag_BadPFMuonFilter;
-   Bool_t          Flag_BadPFMuonDzFilter;
-   Bool_t          Flag_hfNoisyHitsFilter;
-   Bool_t          Flag_BadChargedCandidateSummer16Filter;
-   Bool_t          Flag_BadPFMuonSummer16Filter;
-   Bool_t          Flag_trkPOG_manystripclus53X;
-   Bool_t          Flag_trkPOG_toomanystripclus53X;
-   Bool_t          Flag_trkPOG_logErrorTooManyClusters;
-   Bool_t          Flag_METFilters;
-   Bool_t          L1_AlwaysTrue;
-   Bool_t          L1_BPTX_AND_Ref1_VME;
-   Bool_t          L1_BPTX_AND_Ref3_VME;
-   Bool_t          L1_BPTX_AND_Ref4_VME;
-   Bool_t          L1_BPTX_BeamGas_B1_VME;
-   Bool_t          L1_BPTX_BeamGas_B2_VME;
-   Bool_t          L1_BPTX_BeamGas_Ref1_VME;
-   Bool_t          L1_BPTX_BeamGas_Ref2_VME;
-   Bool_t          L1_BPTX_NotOR_VME;
-   Bool_t          L1_BPTX_OR_Ref3_VME;
-   Bool_t          L1_BPTX_OR_Ref4_VME;
-   Bool_t          L1_BPTX_RefAND_VME;
-   Bool_t          L1_BptxMinus;
-   Bool_t          L1_BptxOR;
-   Bool_t          L1_BptxPlus;
-   Bool_t          L1_BptxXOR;
-   Bool_t          L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;
-   Bool_t          L1_DoubleEG10_er1p2_dR_Max0p6;
-   Bool_t          L1_DoubleEG10p5_er1p2_dR_Max0p6;
-   Bool_t          L1_DoubleEG11_er1p2_dR_Max0p6;
-   Bool_t          L1_DoubleEG4_er1p2_dR_Max0p9;
-   Bool_t          L1_DoubleEG4p5_er1p2_dR_Max0p9;
-   Bool_t          L1_DoubleEG5_er1p2_dR_Max0p9;
-   Bool_t          L1_DoubleEG5p5_er1p2_dR_Max0p8;
-   Bool_t          L1_DoubleEG6_er1p2_dR_Max0p8;
-   Bool_t          L1_DoubleEG6p5_er1p2_dR_Max0p8;
-   Bool_t          L1_DoubleEG7_er1p2_dR_Max0p8;
-   Bool_t          L1_DoubleEG7p5_er1p2_dR_Max0p7;
-   Bool_t          L1_DoubleEG8_er1p2_dR_Max0p7;
-   Bool_t          L1_DoubleEG8er2p5_HTT260er;
-   Bool_t          L1_DoubleEG8er2p5_HTT280er;
-   Bool_t          L1_DoubleEG8er2p5_HTT300er;
-   Bool_t          L1_DoubleEG8er2p5_HTT320er;
-   Bool_t          L1_DoubleEG8er2p5_HTT340er;
-   Bool_t          L1_DoubleEG8p5_er1p2_dR_Max0p7;
-   Bool_t          L1_DoubleEG9_er1p2_dR_Max0p7;
-   Bool_t          L1_DoubleEG9p5_er1p2_dR_Max0p6;
-   Bool_t          L1_DoubleEG_15_10_er2p5;
-   Bool_t          L1_DoubleEG_20_10_er2p5;
-   Bool_t          L1_DoubleEG_22_10_er2p5;
-   Bool_t          L1_DoubleEG_25_12_er2p5;
-   Bool_t          L1_DoubleEG_25_14_er2p5;
-   Bool_t          L1_DoubleEG_27_14_er2p5;
-   Bool_t          L1_DoubleEG_LooseIso16_LooseIso12_er1p5;
-   Bool_t          L1_DoubleEG_LooseIso18_LooseIso12_er1p5;
-   Bool_t          L1_DoubleEG_LooseIso20_10_er2p5;
-   Bool_t          L1_DoubleEG_LooseIso20_LooseIso12_er1p5;
-   Bool_t          L1_DoubleEG_LooseIso22_10_er2p5;
-   Bool_t          L1_DoubleEG_LooseIso22_12_er2p5;
-   Bool_t          L1_DoubleEG_LooseIso22_LooseIso12_er1p5;
-   Bool_t          L1_DoubleEG_LooseIso25_12_er2p5;
-   Bool_t          L1_DoubleEG_LooseIso25_LooseIso12_er1p5;
-   Bool_t          L1_DoubleIsoTau26er2p1_Jet55_RmOvlp_dR0p5;
-   Bool_t          L1_DoubleIsoTau26er2p1_Jet70_RmOvlp_dR0p5;
-   Bool_t          L1_DoubleIsoTau28er2p1;
-   Bool_t          L1_DoubleIsoTau28er2p1_Mass_Max80;
-   Bool_t          L1_DoubleIsoTau28er2p1_Mass_Max90;
-   Bool_t          L1_DoubleIsoTau30er2p1;
-   Bool_t          L1_DoubleIsoTau30er2p1_Mass_Max80;
-   Bool_t          L1_DoubleIsoTau30er2p1_Mass_Max90;
-   Bool_t          L1_DoubleIsoTau32er2p1;
-   Bool_t          L1_DoubleIsoTau34er2p1;
-   Bool_t          L1_DoubleIsoTau35er2p1;
-   Bool_t          L1_DoubleIsoTau36er2p1;
-   Bool_t          L1_DoubleJet100er2p3_dEta_Max1p6;
-   Bool_t          L1_DoubleJet100er2p5;
-   Bool_t          L1_DoubleJet112er2p3_dEta_Max1p6;
-   Bool_t          L1_DoubleJet120er2p5;
-   Bool_t          L1_DoubleJet150er2p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min150_dEta_Max1p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min200_dEta_Max1p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min250_dEta_Max1p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min300_dEta_Max1p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min330_dEta_Max1p5;
-   Bool_t          L1_DoubleJet30er2p5_Mass_Min360_dEta_Max1p5;
-   Bool_t          L1_DoubleJet35_Mass_Min450_IsoTau45_RmOvlp;
-   Bool_t          L1_DoubleJet35_Mass_Min450_IsoTau45er2p1_RmOvlp_dR0p5;
-   Bool_t          L1_DoubleJet40er2p5;
-   Bool_t          L1_DoubleJet_100_30_DoubleJet30_Mass_Min620;
-   Bool_t          L1_DoubleJet_110_35_DoubleJet35_Mass_Min620;
-   Bool_t          L1_DoubleJet_115_40_DoubleJet40_Mass_Min620;
-   Bool_t          L1_DoubleJet_115_40_DoubleJet40_Mass_Min620_Jet60TT28;
-   Bool_t          L1_DoubleJet_120_45_DoubleJet45_Mass_Min620;
-   Bool_t          L1_DoubleJet_120_45_DoubleJet45_Mass_Min620_Jet60TT28;
-   Bool_t          L1_DoubleJet_80_30_Mass_Min420_DoubleMu0_SQ;
-   Bool_t          L1_DoubleJet_80_30_Mass_Min420_IsoTau40_RmOvlp;
-   Bool_t          L1_DoubleJet_80_30_Mass_Min420_Mu8;
-   Bool_t          L1_DoubleJet_90_30_DoubleJet30_Mass_Min620;
-   Bool_t          L1_DoubleLLPJet40;
-   Bool_t          L1_DoubleLooseIsoEG22er2p1;
-   Bool_t          L1_DoubleLooseIsoEG24er2p1;
-   Bool_t          L1_DoubleMu0;
-   Bool_t          L1_DoubleMu0_Mass_Min1;
-   Bool_t          L1_DoubleMu0_OQ;
-   Bool_t          L1_DoubleMu0_SQ;
-   Bool_t          L1_DoubleMu0_SQ_OS;
-   Bool_t          L1_DoubleMu0_Upt15_Upt7;
-   Bool_t          L1_DoubleMu0_Upt5_Upt5;
-   Bool_t          L1_DoubleMu0_Upt6_IP_Min1_Upt4;
-   Bool_t          L1_DoubleMu0_dR_Max1p6_Jet90er2p5_dR_Max0p8;
-   Bool_t          L1_DoubleMu0er1p4_OQ_OS_dEta_Max1p6;
-   Bool_t          L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4;
-   Bool_t          L1_DoubleMu0er1p5_SQ;
-   Bool_t          L1_DoubleMu0er1p5_SQ_OS;
-   Bool_t          L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4;
-   Bool_t          L1_DoubleMu0er1p5_SQ_dR_Max1p4;
-   Bool_t          L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p5;
-   Bool_t          L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p6;
-   Bool_t          L1_DoubleMu0er2p0_SQ_OS_dR_Max1p4;
-   Bool_t          L1_DoubleMu0er2p0_SQ_dEta_Max1p5;
-   Bool_t          L1_DoubleMu0er2p0_SQ_dEta_Max1p6;
-   Bool_t          L1_DoubleMu0er2p0_SQ_dR_Max1p4;
-   Bool_t          L1_DoubleMu18er2p1_SQ;
-   Bool_t          L1_DoubleMu3_OS_er2p3_Mass_Max14_DoubleEG7p5_er2p1_Mass_Max20;
-   Bool_t          L1_DoubleMu3_SQ_ETMHF50_HTT60er;
-   Bool_t          L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5;
-   Bool_t          L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5_OR_DoubleJet40er2p5;
-   Bool_t          L1_DoubleMu3_SQ_ETMHF60_Jet60er2p5;
-   Bool_t          L1_DoubleMu3_SQ_HTT220er;
-   Bool_t          L1_DoubleMu3_SQ_HTT240er;
-   Bool_t          L1_DoubleMu3_SQ_HTT260er;
-   Bool_t          L1_DoubleMu3_dR_Max1p6_Jet90er2p5_dR_Max0p8;
-   Bool_t          L1_DoubleMu3er2p0_SQ_OS_dR_Max1p4;
-   Bool_t          L1_DoubleMu4_SQ_EG9er2p5;
-   Bool_t          L1_DoubleMu4_SQ_OS;
-   Bool_t          L1_DoubleMu4_SQ_OS_dR_Max1p2;
-   Bool_t          L1_DoubleMu4p5_SQ_OS;
-   Bool_t          L1_DoubleMu4p5_SQ_OS_dR_Max1p2;
-   Bool_t          L1_DoubleMu4p5er2p0_SQ_OS;
-   Bool_t          L1_DoubleMu4p5er2p0_SQ_OS_Mass_7to18;
-   Bool_t          L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7;
-   Bool_t          L1_DoubleMu5_OS_er2p3_Mass_8to14_DoubleEG3er2p1_Mass_Max20;
-   Bool_t          L1_DoubleMu5_SQ_EG9er2p5;
-   Bool_t          L1_DoubleMu8_SQ;
-   Bool_t          L1_DoubleMu9_SQ;
-   Bool_t          L1_DoubleMu_12_5;
-   Bool_t          L1_DoubleMu_15_5_SQ;
-   Bool_t          L1_DoubleMu_15_7;
-   Bool_t          L1_DoubleMu_15_7_Mass_Min1;
-   Bool_t          L1_DoubleMu_15_7_SQ;
-   Bool_t          L1_DoubleTau70er2p1;
-   Bool_t          L1_ETM120;
-   Bool_t          L1_ETM150;
-   Bool_t          L1_ETMHF100;
-   Bool_t          L1_ETMHF100_HTT60er;
-   Bool_t          L1_ETMHF110;
-   Bool_t          L1_ETMHF110_HTT60er;
-   Bool_t          L1_ETMHF110_HTT60er_NotSecondBunchInTrain;
-   Bool_t          L1_ETMHF120;
-   Bool_t          L1_ETMHF120_HTT60er;
-   Bool_t          L1_ETMHF120_NotSecondBunchInTrain;
-   Bool_t          L1_ETMHF130;
-   Bool_t          L1_ETMHF130_HTT60er;
-   Bool_t          L1_ETMHF140;
-   Bool_t          L1_ETMHF150;
-   Bool_t          L1_ETMHF70;
-   Bool_t          L1_ETMHF70_HTT60er;
-   Bool_t          L1_ETMHF80;
-   Bool_t          L1_ETMHF80_HTT60er;
-   Bool_t          L1_ETMHF90;
-   Bool_t          L1_ETMHF90_HTT60er;
-   Bool_t          L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p1;
-   Bool_t          L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p6;
-   Bool_t          L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p1;
-   Bool_t          L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p6;
-   Bool_t          L1_ETT1200;
-   Bool_t          L1_ETT1600;
-   Bool_t          L1_ETT2000;
-   Bool_t          L1_FirstBunchAfterTrain;
-   Bool_t          L1_FirstBunchBeforeTrain;
-   Bool_t          L1_FirstBunchInTrain;
-   Bool_t          L1_FirstCollisionInOrbit;
-   Bool_t          L1_FirstCollisionInTrain;
-   Bool_t          L1_HCAL_LaserMon_Trig;
-   Bool_t          L1_HCAL_LaserMon_Veto;
-   Bool_t          L1_HTT120_SingleLLPJet40;
-   Bool_t          L1_HTT120er;
-   Bool_t          L1_HTT160_SingleLLPJet50;
-   Bool_t          L1_HTT160er;
-   Bool_t          L1_HTT200_SingleLLPJet60;
-   Bool_t          L1_HTT200er;
-   Bool_t          L1_HTT240_SingleLLPJet70;
-   Bool_t          L1_HTT255er;
-   Bool_t          L1_HTT280er;
-   Bool_t          L1_HTT280er_QuadJet_70_55_40_35_er2p5;
-   Bool_t          L1_HTT320er;
-   Bool_t          L1_HTT320er_QuadJet_70_55_40_40_er2p5;
-   Bool_t          L1_HTT320er_QuadJet_80_60_er2p1_45_40_er2p3;
-   Bool_t          L1_HTT320er_QuadJet_80_60_er2p1_50_45_er2p3;
-   Bool_t          L1_HTT360er;
-   Bool_t          L1_HTT400er;
-   Bool_t          L1_HTT450er;
-   Bool_t          L1_IsoEG32er2p5_Mt40;
-   Bool_t          L1_IsoTau52er2p1_QuadJet36er2p5;
-   Bool_t          L1_IsolatedBunch;
-   Bool_t          L1_LastBunchInTrain;
-   Bool_t          L1_LastCollisionInTrain;
-   Bool_t          L1_LooseIsoEG22er2p1_IsoTau26er2p1_dR_Min0p3;
-   Bool_t          L1_LooseIsoEG22er2p1_Tau70er2p1_dR_Min0p3;
-   Bool_t          L1_LooseIsoEG24er2p1_HTT100er;
-   Bool_t          L1_LooseIsoEG24er2p1_IsoTau27er2p1_dR_Min0p3;
-   Bool_t          L1_LooseIsoEG26er2p1_HTT100er;
-   Bool_t          L1_LooseIsoEG26er2p1_Jet34er2p5_dR_Min0p3;
-   Bool_t          L1_LooseIsoEG28er2p1_HTT100er;
-   Bool_t          L1_LooseIsoEG28er2p1_Jet34er2p5_dR_Min0p3;
-   Bool_t          L1_LooseIsoEG30er2p1_HTT100er;
-   Bool_t          L1_LooseIsoEG30er2p1_Jet34er2p5_dR_Min0p3;
-   Bool_t          L1_MinimumBiasHF0;
-   Bool_t          L1_MinimumBiasHF0_AND_BptxAND;
-   Bool_t          L1_Mu10er2p3_Jet32er2p3_dR_Max0p4_DoubleJet32er2p3_dEta_Max1p6;
-   Bool_t          L1_Mu12er2p3_Jet40er2p1_dR_Max0p4_DoubleJet40er2p1_dEta_Max1p6;
-   Bool_t          L1_Mu12er2p3_Jet40er2p3_dR_Max0p4_DoubleJet40er2p3_dEta_Max1p6;
-   Bool_t          L1_Mu18er2p1_Tau24er2p1;
-   Bool_t          L1_Mu18er2p1_Tau26er2p1;
-   Bool_t          L1_Mu18er2p1_Tau26er2p1_Jet55;
-   Bool_t          L1_Mu18er2p1_Tau26er2p1_Jet70;
-   Bool_t          L1_Mu20_EG10er2p5;
-   Bool_t          L1_Mu22er2p1_IsoTau28er2p1;
-   Bool_t          L1_Mu22er2p1_IsoTau30er2p1;
-   Bool_t          L1_Mu22er2p1_IsoTau32er2p1;
-   Bool_t          L1_Mu22er2p1_IsoTau34er2p1;
-   Bool_t          L1_Mu22er2p1_IsoTau36er2p1;
-   Bool_t          L1_Mu22er2p1_IsoTau40er2p1;
-   Bool_t          L1_Mu22er2p1_Tau70er2p1;
-   Bool_t          L1_Mu3_Jet120er2p5_dR_Max0p4;
-   Bool_t          L1_Mu3_Jet120er2p5_dR_Max0p8;
-   Bool_t          L1_Mu3_Jet16er2p5_dR_Max0p4;
-   Bool_t          L1_Mu3_Jet30er2p5;
-   Bool_t          L1_Mu3_Jet35er2p5_dR_Max0p4;
-   Bool_t          L1_Mu3_Jet60er2p5_dR_Max0p4;
-   Bool_t          L1_Mu3_Jet80er2p5_dR_Max0p4;
-   Bool_t          L1_Mu3er1p5_Jet100er2p5_ETMHF40;
-   Bool_t          L1_Mu3er1p5_Jet100er2p5_ETMHF50;
-   Bool_t          L1_Mu5_EG23er2p5;
-   Bool_t          L1_Mu5_LooseIsoEG20er2p5;
-   Bool_t          L1_Mu6_DoubleEG10er2p5;
-   Bool_t          L1_Mu6_DoubleEG12er2p5;
-   Bool_t          L1_Mu6_DoubleEG15er2p5;
-   Bool_t          L1_Mu6_DoubleEG17er2p5;
-   Bool_t          L1_Mu6_HTT240er;
-   Bool_t          L1_Mu6_HTT250er;
-   Bool_t          L1_Mu7_EG20er2p5;
-   Bool_t          L1_Mu7_EG23er2p5;
-   Bool_t          L1_Mu7_LooseIsoEG20er2p5;
-   Bool_t          L1_Mu7_LooseIsoEG23er2p5;
-   Bool_t          L1_NotBptxOR;
-   Bool_t          L1_QuadJet60er2p5;
-   Bool_t          L1_QuadJet_95_75_65_20_DoubleJet_75_65_er2p5_Jet20_FWD3p0;
-   Bool_t          L1_QuadMu0;
-   Bool_t          L1_QuadMu0_OQ;
-   Bool_t          L1_QuadMu0_SQ;
-   Bool_t          L1_SecondBunchInTrain;
-   Bool_t          L1_SecondLastBunchInTrain;
-   Bool_t          L1_SingleEG10er2p5;
-   Bool_t          L1_SingleEG15er2p5;
-   Bool_t          L1_SingleEG26er2p5;
-   Bool_t          L1_SingleEG28_FWD2p5;
-   Bool_t          L1_SingleEG28er1p5;
-   Bool_t          L1_SingleEG28er2p1;
-   Bool_t          L1_SingleEG28er2p5;
-   Bool_t          L1_SingleEG34er2p5;
-   Bool_t          L1_SingleEG36er2p5;
-   Bool_t          L1_SingleEG38er2p5;
-   Bool_t          L1_SingleEG40er2p5;
-   Bool_t          L1_SingleEG42er2p5;
-   Bool_t          L1_SingleEG45er2p5;
-   Bool_t          L1_SingleEG50;
-   Bool_t          L1_SingleEG60;
-   Bool_t          L1_SingleEG8er2p5;
-   Bool_t          L1_SingleIsoEG24er1p5;
-   Bool_t          L1_SingleIsoEG24er2p1;
-   Bool_t          L1_SingleIsoEG26er1p5;
-   Bool_t          L1_SingleIsoEG26er2p1;
-   Bool_t          L1_SingleIsoEG26er2p5;
-   Bool_t          L1_SingleIsoEG28_FWD2p5;
-   Bool_t          L1_SingleIsoEG28er1p5;
-   Bool_t          L1_SingleIsoEG28er2p1;
-   Bool_t          L1_SingleIsoEG28er2p5;
-   Bool_t          L1_SingleIsoEG30er2p1;
-   Bool_t          L1_SingleIsoEG30er2p5;
-   Bool_t          L1_SingleIsoEG32er2p1;
-   Bool_t          L1_SingleIsoEG32er2p5;
-   Bool_t          L1_SingleIsoEG34er2p5;
-   Bool_t          L1_SingleIsoTau32er2p1;
-   Bool_t          L1_SingleJet10erHE;
-   Bool_t          L1_SingleJet120;
-   Bool_t          L1_SingleJet120_FWD3p0;
-   Bool_t          L1_SingleJet120er2p5;
-   Bool_t          L1_SingleJet12erHE;
-   Bool_t          L1_SingleJet140er2p5;
-   Bool_t          L1_SingleJet140er2p5_ETMHF70;
-   Bool_t          L1_SingleJet140er2p5_ETMHF80;
-   Bool_t          L1_SingleJet140er2p5_ETMHF90;
-   Bool_t          L1_SingleJet160er2p5;
-   Bool_t          L1_SingleJet180;
-   Bool_t          L1_SingleJet180er2p5;
-   Bool_t          L1_SingleJet200;
-   Bool_t          L1_SingleJet20er2p5_NotBptxOR;
-   Bool_t          L1_SingleJet20er2p5_NotBptxOR_3BX;
-   Bool_t          L1_SingleJet35;
-   Bool_t          L1_SingleJet35_FWD3p0;
-   Bool_t          L1_SingleJet35er2p5;
-   Bool_t          L1_SingleJet43er2p5_NotBptxOR_3BX;
-   Bool_t          L1_SingleJet46er2p5_NotBptxOR_3BX;
-   Bool_t          L1_SingleJet60;
-   Bool_t          L1_SingleJet60_FWD3p0;
-   Bool_t          L1_SingleJet60er2p5;
-   Bool_t          L1_SingleJet8erHE;
-   Bool_t          L1_SingleJet90;
-   Bool_t          L1_SingleJet90_FWD3p0;
-   Bool_t          L1_SingleJet90er2p5;
-   Bool_t          L1_SingleLooseIsoEG26er1p5;
-   Bool_t          L1_SingleLooseIsoEG26er2p5;
-   Bool_t          L1_SingleLooseIsoEG28_FWD2p5;
-   Bool_t          L1_SingleLooseIsoEG28er1p5;
-   Bool_t          L1_SingleLooseIsoEG28er2p1;
-   Bool_t          L1_SingleLooseIsoEG28er2p5;
-   Bool_t          L1_SingleLooseIsoEG30er1p5;
-   Bool_t          L1_SingleLooseIsoEG30er2p5;
-   Bool_t          L1_SingleMu0_BMTF;
-   Bool_t          L1_SingleMu0_DQ;
-   Bool_t          L1_SingleMu0_EMTF;
-   Bool_t          L1_SingleMu0_OMTF;
-   Bool_t          L1_SingleMu10er1p5;
-   Bool_t          L1_SingleMu12_DQ_BMTF;
-   Bool_t          L1_SingleMu12_DQ_EMTF;
-   Bool_t          L1_SingleMu12_DQ_OMTF;
-   Bool_t          L1_SingleMu12er1p5;
-   Bool_t          L1_SingleMu14er1p5;
-   Bool_t          L1_SingleMu15_DQ;
-   Bool_t          L1_SingleMu16er1p5;
-   Bool_t          L1_SingleMu18;
-   Bool_t          L1_SingleMu18er1p5;
-   Bool_t          L1_SingleMu20;
-   Bool_t          L1_SingleMu22;
-   Bool_t          L1_SingleMu22_BMTF;
-   Bool_t          L1_SingleMu22_DQ;
-   Bool_t          L1_SingleMu22_EMTF;
-   Bool_t          L1_SingleMu22_OMTF;
-   Bool_t          L1_SingleMu22_OQ;
-   Bool_t          L1_SingleMu25;
-   Bool_t          L1_SingleMu3;
-   Bool_t          L1_SingleMu5;
-   Bool_t          L1_SingleMu6er1p5;
-   Bool_t          L1_SingleMu7;
-   Bool_t          L1_SingleMu7_DQ;
-   Bool_t          L1_SingleMu7er1p5;
-   Bool_t          L1_SingleMu8er1p5;
-   Bool_t          L1_SingleMu9er1p5;
-   Bool_t          L1_SingleMuCosmics;
-   Bool_t          L1_SingleMuCosmics_BMTF;
-   Bool_t          L1_SingleMuCosmics_EMTF;
-   Bool_t          L1_SingleMuCosmics_OMTF;
-   Bool_t          L1_SingleMuOpen;
-   Bool_t          L1_SingleMuOpen_NotBptxOR;
-   Bool_t          L1_SingleMuOpen_er1p1_NotBptxOR_3BX;
-   Bool_t          L1_SingleMuOpen_er1p4_NotBptxOR_3BX;
-   Bool_t          L1_SingleMuShower_Nominal;
-   Bool_t          L1_SingleMuShower_Tight;
-   Bool_t          L1_SingleTau120er2p1;
-   Bool_t          L1_SingleTau130er2p1;
-   Bool_t          L1_SingleTau70er2p1;
-   Bool_t          L1_TOTEM_1;
-   Bool_t          L1_TOTEM_2;
-   Bool_t          L1_TOTEM_3;
-   Bool_t          L1_TOTEM_4;
-   Bool_t          L1_TripleEG16er2p5;
-   Bool_t          L1_TripleEG_16_12_8_er2p5;
-   Bool_t          L1_TripleEG_16_15_8_er2p5;
-   Bool_t          L1_TripleEG_18_17_8_er2p5;
-   Bool_t          L1_TripleEG_18_18_12_er2p5;
-   Bool_t          L1_TripleJet_100_80_70_DoubleJet_80_70_er2p5;
-   Bool_t          L1_TripleJet_105_85_75_DoubleJet_85_75_er2p5;
-   Bool_t          L1_TripleJet_95_75_65_DoubleJet_75_65_er2p5;
-   Bool_t          L1_TripleMu0;
-   Bool_t          L1_TripleMu0_OQ;
-   Bool_t          L1_TripleMu0_SQ;
-   Bool_t          L1_TripleMu3;
-   Bool_t          L1_TripleMu3_SQ;
-   Bool_t          L1_TripleMu_2SQ_1p5SQ_0OQ;
-   Bool_t          L1_TripleMu_2SQ_1p5SQ_0OQ_Mass_Max12;
-   Bool_t          L1_TripleMu_3SQ_2p5SQ_0OQ_Mass_Max12;
-   Bool_t          L1_TripleMu_5SQ_3SQ_0OQ;
-   Bool_t          L1_TripleMu_5SQ_3SQ_0OQ_DoubleMu_5_3_SQ_OS_Mass_Max9;
-   Bool_t          L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9;
-   Bool_t          L1_TripleMu_5_3_3;
-   Bool_t          L1_TripleMu_5_3_3_SQ;
-   Bool_t          L1_TripleMu_5_3p5_2p5;
-   Bool_t          L1_TripleMu_5_3p5_2p5_DoubleMu_5_2p5_OS_Mass_5to17;
-   Bool_t          L1_TripleMu_5_3p5_2p5_OQ_DoubleMu_5_2p5_OQ_OS_Mass_5to17;
-   Bool_t          L1_TripleMu_5_4_2p5_DoubleMu_5_2p5_OS_Mass_5to17;
-   Bool_t          L1_TripleMu_5_5_3;
-   Bool_t          L1_UnpairedBunchBptxMinus;
-   Bool_t          L1_UnpairedBunchBptxPlus;
-   Bool_t          L1_ZeroBias;
-   Bool_t          L1_ZeroBias_copy;
-   Bool_t          L1_UnprefireableEvent;
-   Bool_t          L1Reco_step;
-   Bool_t          Flag_HBHENoiseFilter_pRECO;
-   Bool_t          Flag_HBHENoiseIsoFilter_pRECO;
-   Bool_t          Flag_CSCTightHaloFilter_pRECO;
-   Bool_t          Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;
-   Bool_t          Flag_CSCTightHalo2015Filter_pRECO;
-   Bool_t          Flag_globalTightHalo2016Filter_pRECO;
-   Bool_t          Flag_globalSuperTightHalo2016Filter_pRECO;
-   Bool_t          Flag_HcalStripHaloFilter_pRECO;
-   Bool_t          Flag_hcalLaserEventFilter_pRECO;
-   Bool_t          Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;
-   Bool_t          Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;
-   Bool_t          Flag_ecalBadCalibFilter_pRECO;
-   Bool_t          Flag_goodVertices_pRECO;
-   Bool_t          Flag_eeBadScFilter_pRECO;
-   Bool_t          Flag_ecalLaserCorrFilter_pRECO;
-   Bool_t          Flag_trkPOGFilters_pRECO;
-   Bool_t          Flag_chargedHadronTrackResolutionFilter_pRECO;
-   Bool_t          Flag_muonBadTrackFilter_pRECO;
-   Bool_t          Flag_BadChargedCandidateFilter_pRECO;
-   Bool_t          Flag_BadPFMuonFilter_pRECO;
-   Bool_t          Flag_BadPFMuonDzFilter_pRECO;
-   Bool_t          Flag_hfNoisyHitsFilter_pRECO;
-   Bool_t          Flag_BadChargedCandidateSummer16Filter_pRECO;
-   Bool_t          Flag_BadPFMuonSummer16Filter_pRECO;
-   Bool_t          Flag_trkPOG_manystripclus53X_pRECO;
-   Bool_t          Flag_trkPOG_toomanystripclus53X_pRECO;
-   Bool_t          Flag_trkPOG_logErrorTooManyClusters_pRECO;
-   Bool_t          Flag_METFilters_pRECO;
-   Bool_t          HLTriggerFirstPath;
-   Bool_t          HLT_AK8PFJet360_TrimMass30;
-   Bool_t          HLT_AK8PFJet380_TrimMass30;
-   Bool_t          HLT_AK8PFJet400_TrimMass30;
-   Bool_t          HLT_AK8PFJet420_TrimMass30;
-   Bool_t          HLT_AK8PFJet400_MassSD30;
-   Bool_t          HLT_AK8PFJet420_MassSD30;
-   Bool_t          HLT_AK8PFJet450_MassSD30;
-   Bool_t          HLT_AK8DiPFJet250_250_MassSD30;
-   Bool_t          HLT_AK8DiPFJet250_250_MassSD50;
-   Bool_t          HLT_AK8DiPFJet260_260_MassSD30;
-   Bool_t          HLT_AK8DiPFJet270_270_MassSD30;
-   Bool_t          HLT_AK8PFHT750_TrimMass50;
-   Bool_t          HLT_AK8PFHT800_TrimMass50;
-   Bool_t          HLT_AK8PFHT850_TrimMass50;
-   Bool_t          HLT_AK8PFHT900_TrimMass50;
-   Bool_t          HLT_CaloJet500_NoJetID;
-   Bool_t          HLT_CaloJet550_NoJetID;
-   Bool_t          HLT_DoubleMu5_Upsilon_DoubleEle3_CaloIdL_TrackIdL;
-   Bool_t          HLT_DoubleMu3_DoubleEle7p5_CaloIdL_TrackIdL_Upsilon;
-   Bool_t          HLT_Trimuon5_3p5_2_Upsilon_Muon;
-   Bool_t          HLT_TrimuonOpen_5_3p5_2_Upsilon_Muon;
-   Bool_t          HLT_DoubleEle25_CaloIdL_MW;
-   Bool_t          HLT_DoubleEle27_CaloIdL_MW;
-   Bool_t          HLT_DoubleEle33_CaloIdL_MW;
-   Bool_t          HLT_DoubleEle24_eta2p1_WPTight_Gsf;
-   Bool_t          HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350;
-   Bool_t          HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350;
-   Bool_t          HLT_Mu27_Ele37_CaloIdL_MW;
-   Bool_t          HLT_Mu37_Ele27_CaloIdL_MW;
-   Bool_t          HLT_Mu37_TkMu27;
-   Bool_t          HLT_DoubleMu4_3_Bs;
-   Bool_t          HLT_DoubleMu4_3_Jpsi;
-   Bool_t          HLT_DoubleMu4_3_LowMass;
-   Bool_t          HLT_DoubleMu4_LowMass_Displaced;
-   Bool_t          HLT_Mu0_L1DoubleMu;
-   Bool_t          HLT_Mu4_L1DoubleMu;
-   Bool_t          HLT_DoubleMu4_3_Photon4_BsToMMG;
-   Bool_t          HLT_DoubleMu4_3_Displaced_Photon4_BsToMMG;
-   Bool_t          HLT_DoubleMu3_Trk_Tau3mu;
-   Bool_t          HLT_DoubleMu3_TkMu_DsTau3Mu;
-   Bool_t          HLT_DoubleMu4_Mass3p8_DZ_PFHT350;
-   Bool_t          HLT_DoubleMu4_MuMuTrk_Displaced;
-   Bool_t          HLT_Mu3_PFJet40;
-   Bool_t          HLT_Mu7p5_L2Mu2_Jpsi;
-   Bool_t          HLT_Mu7p5_L2Mu2_Upsilon;
-   Bool_t          HLT_Mu3_L1SingleMu5orSingleMu7;
-   Bool_t          HLT_DoublePhoton33_CaloIdL;
-   Bool_t          HLT_DoublePhoton70;
-   Bool_t          HLT_DoublePhoton85;
-   Bool_t          HLT_Ele15_WPLoose_Gsf;
-   Bool_t          HLT_Ele20_WPLoose_Gsf;
-   Bool_t          HLT_DiEle27_WPTightCaloOnly_L1DoubleEG;
-   Bool_t          HLT_Ele27_WPTight_Gsf;
-   Bool_t          HLT_Ele28_WPTight_Gsf;
-   Bool_t          HLT_Ele30_WPTight_Gsf;
-   Bool_t          HLT_Ele32_WPTight_Gsf;
-   Bool_t          HLT_Ele35_WPTight_Gsf;
-   Bool_t          HLT_Ele35_WPTight_Gsf_L1EGMT;
-   Bool_t          HLT_Ele38_WPTight_Gsf;
-   Bool_t          HLT_Ele40_WPTight_Gsf;
-   Bool_t          HLT_Ele32_WPTight_Gsf_L1DoubleEG;
-   Bool_t          HLT_HT300_Beamspot;
-   Bool_t          HLT_ZeroBias_Beamspot;
-   Bool_t          HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1;
-   Bool_t          HLT_IsoMu20;
-   Bool_t          HLT_IsoMu24;
-   Bool_t          HLT_IsoMu24_eta2p1;
-   Bool_t          HLT_IsoMu27;
-   Bool_t          HLT_UncorrectedJetE30_NoBPTX;
-   Bool_t          HLT_UncorrectedJetE30_NoBPTX3BX;
-   Bool_t          HLT_UncorrectedJetE60_NoBPTX3BX;
-   Bool_t          HLT_UncorrectedJetE70_NoBPTX3BX;
-   Bool_t          HLT_L1SingleMu18;
-   Bool_t          HLT_L1SingleMu25;
-   Bool_t          HLT_L1SingleMuCosmics;
-   Bool_t          HLT_L2Mu10_NoVertex_NoBPTX3BX;
-   Bool_t          HLT_L2Mu10_NoVertex_NoBPTX;
-   Bool_t          HLT_L2Mu45_NoVertex_3Sta_NoBPTX3BX;
-   Bool_t          HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX;
-   Bool_t          HLT_L2Mu23NoVtx_2Cha;
-   Bool_t          HLT_L2Mu23NoVtx_2Cha_CosmicSeed;
-   Bool_t          HLT_DoubleL2Mu30NoVtx_2Cha_CosmicSeed_Eta2p4;
-   Bool_t          HLT_DoubleL2Mu30NoVtx_2Cha_Eta2p4;
-   Bool_t          HLT_DoubleL2Mu50;
-   Bool_t          HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed;
-   Bool_t          HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed;
-   Bool_t          HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_Eta2p4;
-   Bool_t          HLT_DoubleL2Mu23NoVtx_2Cha;
-   Bool_t          HLT_DoubleL2Mu25NoVtx_2Cha;
-   Bool_t          HLT_DoubleL2Mu25NoVtx_2Cha_Eta2p4;
-   Bool_t          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;
-   Bool_t          HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL;
-   Bool_t          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;
-   Bool_t          HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ;
-   Bool_t          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8;
-   Bool_t          HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8;
-   Bool_t          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8;
-   Bool_t          HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8;
-   Bool_t          HLT_Mu25_TkMu0_Onia;
-   Bool_t          HLT_Mu30_TkMu0_Psi;
-   Bool_t          HLT_Mu30_TkMu0_Upsilon;
-   Bool_t          HLT_Mu20_TkMu0_Phi;
-   Bool_t          HLT_Mu25_TkMu0_Phi;
-   Bool_t          HLT_Mu15;
-   Bool_t          HLT_Mu20;
-   Bool_t          HLT_Mu27;
-   Bool_t          HLT_Mu50;
-   Bool_t          HLT_Mu55;
-   Bool_t          HLT_CascadeMu100;
-   Bool_t          HLT_HighPtTkMu100;
-   Bool_t          HLT_DiPFJetAve40;
-   Bool_t          HLT_DiPFJetAve60;
-   Bool_t          HLT_DiPFJetAve80;
-   Bool_t          HLT_DiPFJetAve140;
-   Bool_t          HLT_DiPFJetAve200;
-   Bool_t          HLT_DiPFJetAve260;
-   Bool_t          HLT_DiPFJetAve320;
-   Bool_t          HLT_DiPFJetAve400;
-   Bool_t          HLT_DiPFJetAve500;
-   Bool_t          HLT_DiPFJetAve60_HFJEC;
-   Bool_t          HLT_DiPFJetAve80_HFJEC;
-   Bool_t          HLT_DiPFJetAve100_HFJEC;
-   Bool_t          HLT_DiPFJetAve160_HFJEC;
-   Bool_t          HLT_DiPFJetAve220_HFJEC;
-   Bool_t          HLT_DiPFJetAve300_HFJEC;
-   Bool_t          HLT_AK8PFJet40;
-   Bool_t          HLT_AK8PFJet60;
-   Bool_t          HLT_AK8PFJet80;
-   Bool_t          HLT_AK8PFJet140;
-   Bool_t          HLT_AK8PFJet200;
-   Bool_t          HLT_AK8PFJet260;
-   Bool_t          HLT_AK8PFJet320;
-   Bool_t          HLT_AK8PFJet400;
-   Bool_t          HLT_AK8PFJet450;
-   Bool_t          HLT_AK8PFJet500;
-   Bool_t          HLT_AK8PFJet550;
-   Bool_t          HLT_PFJet40;
-   Bool_t          HLT_PFJet60;
-   Bool_t          HLT_PFJet80;
-   Bool_t          HLT_PFJet140;
-   Bool_t          HLT_PFJet200;
-   Bool_t          HLT_PFJet260;
-   Bool_t          HLT_PFJet320;
-   Bool_t          HLT_PFJet400;
-   Bool_t          HLT_PFJet450;
-   Bool_t          HLT_PFJet500;
-   Bool_t          HLT_PFJet550;
-   Bool_t          HLT_PFJetFwd15;
-   Bool_t          HLT_PFJetFwd25;
-   Bool_t          HLT_PFJetFwd40;
-   Bool_t          HLT_PFJetFwd60;
-   Bool_t          HLT_PFJetFwd80;
-   Bool_t          HLT_PFJetFwd140;
-   Bool_t          HLT_PFJetFwd200;
-   Bool_t          HLT_PFJetFwd260;
-   Bool_t          HLT_PFJetFwd320;
-   Bool_t          HLT_PFJetFwd400;
-   Bool_t          HLT_PFJetFwd450;
-   Bool_t          HLT_PFJetFwd500;
-   Bool_t          HLT_AK8PFJetFwd15;
-   Bool_t          HLT_AK8PFJetFwd25;
-   Bool_t          HLT_AK8PFJetFwd40;
-   Bool_t          HLT_AK8PFJetFwd60;
-   Bool_t          HLT_AK8PFJetFwd80;
-   Bool_t          HLT_AK8PFJetFwd140;
-   Bool_t          HLT_AK8PFJetFwd200;
-   Bool_t          HLT_AK8PFJetFwd260;
-   Bool_t          HLT_AK8PFJetFwd320;
-   Bool_t          HLT_AK8PFJetFwd400;
-   Bool_t          HLT_AK8PFJetFwd450;
-   Bool_t          HLT_AK8PFJetFwd500;
-   Bool_t          HLT_PFHT180;
-   Bool_t          HLT_PFHT250;
-   Bool_t          HLT_PFHT370;
-   Bool_t          HLT_PFHT430;
-   Bool_t          HLT_PFHT510;
-   Bool_t          HLT_PFHT590;
-   Bool_t          HLT_PFHT680;
-   Bool_t          HLT_PFHT780;
-   Bool_t          HLT_PFHT890;
-   Bool_t          HLT_PFHT1050;
-   Bool_t          HLT_PFHT500_PFMET100_PFMHT100_IDTight;
-   Bool_t          HLT_PFHT500_PFMET110_PFMHT110_IDTight;
-   Bool_t          HLT_PFHT700_PFMET85_PFMHT85_IDTight;
-   Bool_t          HLT_PFHT800_PFMET75_PFMHT75_IDTight;
-   Bool_t          HLT_PFMET110_PFMHT110_IDTight;
-   Bool_t          HLT_PFMET120_PFMHT120_IDTight;
-   Bool_t          HLT_PFMET130_PFMHT130_IDTight;
-   Bool_t          HLT_PFMET140_PFMHT140_IDTight;
-   Bool_t          HLT_PFMET120_PFMHT120_IDTight_PFHT60;
-   Bool_t          HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
-   Bool_t          HLT_PFMETTypeOne120_PFMHT120_IDTight_PFHT60;
-   Bool_t          HLT_PFMETTypeOne110_PFMHT110_IDTight;
-   Bool_t          HLT_PFMETTypeOne120_PFMHT120_IDTight;
-   Bool_t          HLT_PFMETTypeOne130_PFMHT130_IDTight;
-   Bool_t          HLT_PFMETTypeOne140_PFMHT140_IDTight;
-   Bool_t          HLT_PFMETNoMu110_PFMHTNoMu110_IDTight;
-   Bool_t          HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
-   Bool_t          HLT_PFMETNoMu130_PFMHTNoMu130_IDTight;
-   Bool_t          HLT_PFMETNoMu140_PFMHTNoMu140_IDTight;
-   Bool_t          HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_FilterHF;
-   Bool_t          HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_FilterHF;
-   Bool_t          HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_FilterHF;
-   Bool_t          HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_FilterHF;
-   Bool_t          HLT_L1ETMHadSeeds;
-   Bool_t          HLT_CaloMHT90;
-   Bool_t          HLT_CaloMET90_NotCleaned;
-   Bool_t          HLT_CaloMET350_NotCleaned;
-   Bool_t          HLT_PFMET200_NotCleaned;
-   Bool_t          HLT_PFMET250_NotCleaned;
-   Bool_t          HLT_PFMET300_NotCleaned;
-   Bool_t          HLT_PFMET200_BeamHaloCleaned;
-   Bool_t          HLT_PFMETTypeOne200_BeamHaloCleaned;
-   Bool_t          HLT_MET105_IsoTrk50;
-   Bool_t          HLT_MET120_IsoTrk50;
-   Bool_t          HLT_SingleJet30_Mu12_SinglePFJet40;
-   Bool_t          HLT_Mu12eta2p3;
-   Bool_t          HLT_Mu12eta2p3_PFJet40;
-   Bool_t          HLT_Mu12_DoublePFJets40_PFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets100_PFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets200_PFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets350_PFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets40_PFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets100_PFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets200_PFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets350_PFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepCSV_p71;
-   Bool_t          HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepCSV_p71;
-   Bool_t          HLT_Mu12_DoublePFJets40_PFBTagDeepJet_p71;
-   Bool_t          HLT_Mu12_DoublePFJets100_PFBTagDeepJet_p71;
-   Bool_t          HLT_Mu12_DoublePFJets200_PFBTagDeepJet_p71;
-   Bool_t          HLT_Mu12_DoublePFJets350_PFBTagDeepJet_p71;
-   Bool_t          HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepJet_p71;
-   Bool_t          HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets40_PFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets100_PFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets200_PFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets350_PFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepJet_p71;
-   Bool_t          HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepJet_p71;
-   Bool_t          HLT_Photon300_NoHE;
-   Bool_t          HLT_Mu8_TrkIsoVVL;
-   Bool_t          HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ;
-   Bool_t          HLT_Mu8_DiEle12_CaloIdL_TrackIdL;
-   Bool_t          HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ;
-   Bool_t          HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
-   Bool_t          HLT_Mu17_TrkIsoVVL;
-   Bool_t          HLT_Mu19_TrkIsoVVL;
-   Bool_t          HLT_BTagMu_AK4DiJet20_Mu5;
-   Bool_t          HLT_BTagMu_AK4DiJet40_Mu5;
-   Bool_t          HLT_BTagMu_AK4DiJet70_Mu5;
-   Bool_t          HLT_BTagMu_AK4DiJet110_Mu5;
-   Bool_t          HLT_BTagMu_AK4DiJet170_Mu5;
-   Bool_t          HLT_BTagMu_AK4Jet300_Mu5;
-   Bool_t          HLT_BTagMu_AK8DiJet170_Mu5;
-   Bool_t          HLT_BTagMu_AK8Jet170_DoubleMu5;
-   Bool_t          HLT_BTagMu_AK8Jet300_Mu5;
-   Bool_t          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
-   Bool_t          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL;
-   Bool_t          HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
-   Bool_t          HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
-   Bool_t          HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
-   Bool_t          HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
-   Bool_t          HLT_Photon20;
-   Bool_t          HLT_Photon33;
-   Bool_t          HLT_Photon50;
-   Bool_t          HLT_Photon75;
-   Bool_t          HLT_Photon90;
-   Bool_t          HLT_Photon120;
-   Bool_t          HLT_Photon150;
-   Bool_t          HLT_Photon175;
-   Bool_t          HLT_Photon200;
-   Bool_t          HLT_Photon30EB_TightID_TightIso;
-   Bool_t          HLT_Photon110EB_TightID_TightIso;
-   Bool_t          HLT_Photon100EBHE10;
-   Bool_t          HLT_Photon50_R9Id90_HE10_IsoM;
-   Bool_t          HLT_Photon75_R9Id90_HE10_IsoM;
-   Bool_t          HLT_Photon90_R9Id90_HE10_IsoM;
-   Bool_t          HLT_Photon120_R9Id90_HE10_IsoM;
-   Bool_t          HLT_Photon165_R9Id90_HE10_IsoM;
-   Bool_t          HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90;
-   Bool_t          HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95;
-   Bool_t          HLT_Photon35_TwoProngs35;
-   Bool_t          HLT_IsoMu24_TwoProngs35;
-   Bool_t          HLT_Dimuon0_Jpsi_L1_NoOS;
-   Bool_t          HLT_Dimuon0_Jpsi_NoVertexing_NoOS;
-   Bool_t          HLT_Dimuon0_Jpsi;
-   Bool_t          HLT_Dimuon0_Jpsi_NoVertexing;
-   Bool_t          HLT_Dimuon0_Jpsi_L1_4R_0er1p5R;
-   Bool_t          HLT_Dimuon0_Jpsi_NoVertexing_L1_4R_0er1p5R;
-   Bool_t          HLT_Dimuon0_Jpsi3p5_Muon2;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_4p5;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_5;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_4p5NoOS;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_4p5er2p0;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_4p5er2p0M;
-   Bool_t          HLT_Dimuon0_Upsilon_NoVertexing;
-   Bool_t          HLT_Dimuon0_Upsilon_L1_5M;
-   Bool_t          HLT_Dimuon0_LowMass_L1_0er1p5R;
-   Bool_t          HLT_Dimuon0_LowMass_L1_0er1p5;
-   Bool_t          HLT_Dimuon0_LowMass;
-   Bool_t          HLT_Dimuon0_LowMass_L1_4;
-   Bool_t          HLT_Dimuon0_LowMass_L1_4R;
-   Bool_t          HLT_Dimuon0_LowMass_L1_TM530;
-   Bool_t          HLT_Dimuon0_Upsilon_Muon_L1_TM0;
-   Bool_t          HLT_Dimuon0_Upsilon_Muon_NoL1Mass;
-   Bool_t          HLT_TripleMu_5_3_3_Mass3p8_DZ;
-   Bool_t          HLT_TripleMu_10_5_5_DZ;
-   Bool_t          HLT_TripleMu_12_10_5;
-   Bool_t          HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15;
-   Bool_t          HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_Charge1;
-   Bool_t          HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15;
-   Bool_t          HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1;
-   Bool_t          HLT_DoubleMu3_DZ_PFMET50_PFMHT60;
-   Bool_t          HLT_DoubleMu3_DZ_PFMET70_PFMHT70;
-   Bool_t          HLT_DoubleMu3_DZ_PFMET90_PFMHT90;
-   Bool_t          HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass;
-   Bool_t          HLT_DoubleMu4_Jpsi_Displaced;
-   Bool_t          HLT_DoubleMu4_Jpsi_NoVertexing;
-   Bool_t          HLT_DoubleMu4_JpsiTrkTrk_Displaced;
-   Bool_t          HLT_DoubleMu4_JpsiTrk_Bc;
-   Bool_t          HLT_DoubleMu43NoFiltersNoVtx;
-   Bool_t          HLT_DoubleMu48NoFiltersNoVtx;
-   Bool_t          HLT_Mu43NoFiltersNoVtx_Photon43_CaloIdL;
-   Bool_t          HLT_Mu48NoFiltersNoVtx_Photon48_CaloIdL;
-   Bool_t          HLT_Mu38NoFiltersNoVtxDisplaced_Photon38_CaloIdL;
-   Bool_t          HLT_Mu43NoFiltersNoVtxDisplaced_Photon43_CaloIdL;
-   Bool_t          HLT_HT425;
-   Bool_t          HLT_HT430_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT500_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT430_DisplacedDijet60_DisplacedTrack;
-   Bool_t          HLT_HT400_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT650_DisplacedDijet60_Inclusive;
-   Bool_t          HLT_HT550_DisplacedDijet60_Inclusive;
-   Bool_t          HLT_DiJet110_35_Mjj650_PFMET110;
-   Bool_t          HLT_DiJet110_35_Mjj650_PFMET120;
-   Bool_t          HLT_DiJet110_35_Mjj650_PFMET130;
-   Bool_t          HLT_TripleJet110_35_35_Mjj650_PFMET110;
-   Bool_t          HLT_TripleJet110_35_35_Mjj650_PFMET120;
-   Bool_t          HLT_TripleJet110_35_35_Mjj650_PFMET130;
-   Bool_t          HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned;
-   Bool_t          HLT_Ele28_eta2p1_WPTight_Gsf_HT150;
-   Bool_t          HLT_Ele28_HighEta_SC20_Mass55;
-   Bool_t          HLT_Ele15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;
-   Bool_t          HLT_Ele15_IsoVVVL_PFHT450_PFMET50;
-   Bool_t          HLT_Ele15_IsoVVVL_PFHT450;
-   Bool_t          HLT_Ele50_IsoVVVL_PFHT450;
-   Bool_t          HLT_Ele15_IsoVVVL_PFHT600;
-   Bool_t          HLT_Mu4_TrkIsoVVL_DiPFJet90_40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;
-   Bool_t          HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;
-   Bool_t          HLT_Mu10_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT350_PFMETNoMu60;
-   Bool_t          HLT_Mu15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;
-   Bool_t          HLT_Mu15_IsoVVVL_PFHT450_PFMET50;
-   Bool_t          HLT_Mu15_IsoVVVL_PFHT450;
-   Bool_t          HLT_Mu50_IsoVVVL_PFHT450;
-   Bool_t          HLT_Mu15_IsoVVVL_PFHT600;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMET70_PFMHT70_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMET80_PFMHT80_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMET90_PFMHT90_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMET100_PFMHT100_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu70_PFMHTNoMu70_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu80_PFMHTNoMu80_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu90_PFMHTNoMu90_IDTight;
-   Bool_t          HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu100_PFMHTNoMu100_IDTight;
-   Bool_t          HLT_Dimuon10_PsiPrime_Barrel_Seagulls;
-   Bool_t          HLT_Dimuon20_Jpsi_Barrel_Seagulls;
-   Bool_t          HLT_Dimuon10_Upsilon_y1p4;
-   Bool_t          HLT_Dimuon12_Upsilon_y1p4;
-   Bool_t          HLT_Dimuon14_Phi_Barrel_Seagulls;
-   Bool_t          HLT_Dimuon25_Jpsi;
-   Bool_t          HLT_Dimuon14_PsiPrime;
-   Bool_t          HLT_Dimuon14_PsiPrime_noCorrL1;
-   Bool_t          HLT_Dimuon18_PsiPrime;
-   Bool_t          HLT_Dimuon18_PsiPrime_noCorrL1;
-   Bool_t          HLT_Dimuon24_Upsilon_noCorrL1;
-   Bool_t          HLT_Dimuon24_Phi_noCorrL1;
-   Bool_t          HLT_Dimuon25_Jpsi_noCorrL1;
-   Bool_t          HLT_DiMu4_Ele9_CaloIdL_TrackIdL_DZ_Mass3p8;
-   Bool_t          HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ;
-   Bool_t          HLT_DiMu9_Ele9_CaloIdL_TrackIdL;
-   Bool_t          HLT_DoubleIsoMu20_eta2p1;
-   Bool_t          HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx;
-   Bool_t          HLT_Mu8;
-   Bool_t          HLT_Mu17;
-   Bool_t          HLT_Mu19;
-   Bool_t          HLT_Mu17_Photon30_IsoCaloId;
-   Bool_t          HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30;
-   Bool_t          HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30;
-   Bool_t          HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30;
-   Bool_t          HLT_Ele8_CaloIdM_TrackIdM_PFJet30;
-   Bool_t          HLT_Ele17_CaloIdM_TrackIdM_PFJet30;
-   Bool_t          HLT_Ele23_CaloIdM_TrackIdM_PFJet30;
-   Bool_t          HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165;
-   Bool_t          HLT_Ele115_CaloIdVT_GsfTrkIdT;
-   Bool_t          HLT_Ele135_CaloIdVT_GsfTrkIdT;
-   Bool_t          HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5;
-   Bool_t          HLT_PFHT330PT30_QuadPFJet_75_60_45_40;
-   Bool_t          HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94;
-   Bool_t          HLT_PFHT400_SixPFJet32;
-   Bool_t          HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59;
-   Bool_t          HLT_PFHT450_SixPFJet36;
-   Bool_t          HLT_PFHT400_FivePFJet_100_100_60_30_30;
-   Bool_t          HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepCSV_4p5;
-   Bool_t          HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepCSV_4p5;
-   Bool_t          HLT_PFHT350;
-   Bool_t          HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_PFHT350MinPFJet15;
-   Bool_t          HLT_ECALHT800;
-   Bool_t          HLT_DiSC30_18_EIso_AND_HE_Mass70;
-   Bool_t          HLT_Physics;
-   Bool_t          HLT_Random;
-   Bool_t          HLT_ZeroBias;
-   Bool_t          HLT_ZeroBias_Alignment;
-   Bool_t          HLT_EphemeralZeroBias;
-   Bool_t          HLT_EphemeralPhysics;
-   Bool_t          HLT_Photon20_HoverELoose;
-   Bool_t          HLT_Photon30_HoverELoose;
-   Bool_t          HLT_EcalCalibration;
-   Bool_t          HLT_HcalCalibration;
-   Bool_t          HLT_L1UnpairedBunchBptxMinus;
-   Bool_t          HLT_L1UnpairedBunchBptxPlus;
-   Bool_t          HLT_L1NotBptxOR;
-   Bool_t          HLT_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;
-   Bool_t          HLT_CDC_L2cosmic_10_er1p0;
-   Bool_t          HLT_CDC_L2cosmic_5p5_er1p0;
-   Bool_t          HLT_HcalNZS;
-   Bool_t          HLT_HcalPhiSym;
-   Bool_t          HLT_HcalIsolatedbunch;
-   Bool_t          HLT_IsoTrackHB;
-   Bool_t          HLT_IsoTrackHE;
-   Bool_t          HLT_ZeroBias_FirstCollisionAfterAbortGap;
-   Bool_t          HLT_ZeroBias_IsolatedBunches;
-   Bool_t          HLT_ZeroBias_FirstCollisionInTrain;
-   Bool_t          HLT_ZeroBias_LastCollisionInTrain;
-   Bool_t          HLT_ZeroBias_FirstBXAfterTrain;
-   Bool_t          HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
-   Bool_t          HLT_VBF_DoubleMediumDeepTauPFTauHPS20_eta2p1;
-   Bool_t          HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3;
-   Bool_t          HLT_PFMET100_PFMHT100_IDTight_PFHT60;
-   Bool_t          HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60;
-   Bool_t          HLT_PFMETTypeOne100_PFMHT100_IDTight_PFHT60;
-   Bool_t          HLT_Mu18_Mu9_SameSign;
-   Bool_t          HLT_DoubleMu2_Jpsi_DoubleTrk1_Phi1p05;
-   Bool_t          HLT_DoubleMu3_DCA_PFMET50_PFMHT60;
-   Bool_t          HLT_TripleMu_5_3_3_Mass3p8_DCA;
-   Bool_t          HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
-   Bool_t          HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
-   Bool_t          HLT_QuadPFJet103_88_75_15_PFBTagDeepCSV_1p3_VBF2;
-   Bool_t          HLT_QuadPFJet105_88_76_15_PFBTagDeepCSV_1p3_VBF2;
-   Bool_t          HLT_QuadPFJet111_90_80_15_PFBTagDeepCSV_1p3_VBF2;
-   Bool_t          HLT_QuadPFJet103_88_75_15;
-   Bool_t          HLT_QuadPFJet105_88_76_15;
-   Bool_t          HLT_QuadPFJet111_90_80_15;
-   Bool_t          HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_Mass55;
-   Bool_t          HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId;
-   Bool_t          HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
-   Bool_t          HLT_DoubleMediumDeepTauPFTauHPS35_L2NN_eta2p1;
-   Bool_t          HLT_Ele24_eta2p1_WPTight_Gsf_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;
-   Bool_t          HLT_IsoMu20_eta2p1_LooseDeepTauPFTauHPS27_eta2p1_CrossL1;
-   Bool_t          HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS180_eta2p1;
-   Bool_t          HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS35_L2NN_eta2p1_CrossL1;
-   Bool_t          HLT_LooseDeepTauPFTauHPS180_L2NN_eta2p1;
-   Bool_t          HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepJet_4p5;
-   Bool_t          HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepJet_4p5;
-   Bool_t          HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepJet_4p5;
-   Bool_t          HLT_PFHT400_SixPFJet32_DoublePFBTagDeepJet_2p94;
-   Bool_t          HLT_PFHT450_SixPFJet36_PFBTagDeepJet_1p59;
-   Bool_t          HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
-   Bool_t          HLT_QuadPFJet103_88_75_15_PFBTagDeepJet_1p3_VBF2;
-   Bool_t          HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
-   Bool_t          HLT_QuadPFJet105_88_76_15_PFBTagDeepJet_1p3_VBF2;
-   Bool_t          HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
-   Bool_t          HLT_QuadPFJet111_90_80_15_PFBTagDeepJet_1p3_VBF2;
-   Bool_t          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepJet_1p5;
-   Bool_t          HLT_QuadPFJet70_50_40_30;
-   Bool_t          HLT_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;
-   Bool_t          HLT_QuadPFJet70_50_40_35_PFBTagParticleNet_2BTagSum0p65;
-   Bool_t          HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65;
-   Bool_t          HLT_AK8PFJet230_SoftDropMass40;
-   Bool_t          HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;
-   Bool_t          HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetBB0p35;
-   Bool_t          HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetBB0p35;
-   Bool_t          HLT_AK8PFJet400_SoftDropMass40;
-   Bool_t          HLT_AK8PFJet425_SoftDropMass40;
-   Bool_t          HLT_AK8PFJet450_SoftDropMass40;
-   Bool_t          HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
-   Bool_t          HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
-   Bool_t          HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
-   Bool_t          HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60;
-   Bool_t          HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_CrossL1;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60_CrossL1;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75_CrossL1;
-   Bool_t          HLT_DoublePFJets40_Mass500_MediumDeepTauPFTauHPS45_L2NN_MediumDeepTauPFTauHPS20_eta2p1;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS20_eta2p1_SingleL1;
-   Bool_t          HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS45_L2NN_eta2p1_CrossL1;
-   Bool_t          HLT_DoubleL2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
-   Bool_t          HLT_DoubleL2Mu12NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
-   Bool_t          HLT_DoubleL2Mu14NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
-   Bool_t          HLT_DoubleL3Mu16_10NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_DoubleL3Mu18_10NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_DoubleL3Mu20_10NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_L2Mu10NoVtx_2Cha;
-   Bool_t          HLT_L2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
-   Bool_t          HLT_L3Mu10NoVtx;
-   Bool_t          HLT_L3Mu10NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_DoubleL3dTksMu16_10NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_L3dTksMu10_NoVtx_DxyMin0p01cm;
-   Bool_t          HLT_Mu20NoFiltersNoVtxDisplaced_Photon20_CaloCustomId;
-   Bool_t          HLT_DoubleMediumChargedIsoDisplacedPFTauHPS32_Trk1_eta2p1;
-   Bool_t          HLT_HT430_DelayedJet40_DoubleDelay0p5nsTrackless;
-   Bool_t          HLT_HT430_DelayedJet40_DoubleDelay1nsInclusive;
-   Bool_t          HLT_HT430_DelayedJet40_SingleDelay1nsTrackless;
-   Bool_t          HLT_HT430_DelayedJet40_SingleDelay2nsInclusive;
-   Bool_t          HLT_L1Mu6HT240;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet30_Inclusive0PtrkShortSig5;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet30_Inclusive1PtrkShortSig5_DisplacedLoose;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet35_Inclusive0PtrkShortSig5;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet35_Inclusive1PtrkShortSig5_DisplacedLoose;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet40_Inclusive0PtrkShortSig5;
-   Bool_t          HLT_Mu6HT240_DisplacedDijet40_Inclusive1PtrkShortSig5_DisplacedLoose;
-   Bool_t          HLT_HT430_DisplacedDijet30_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_HT430_DisplacedDijet35_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_HT430_DisplacedDijet40_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_CaloMET60_DTCluster50;
-   Bool_t          HLT_CaloMET60_DTClusterNoMB1S50;
-   Bool_t          HLT_L1MET_DTCluster50;
-   Bool_t          HLT_L1MET_DTClusterNoMB1S50;
-   Bool_t          HLT_CscCluster_Loose;
-   Bool_t          HLT_CscCluster_Medium;
-   Bool_t          HLT_CscCluster_Tight;
-   Bool_t          HLT_L1CSCShower_DTCluster50;
-   Bool_t          HLT_L1CSCShower_DTCluster75;
-   Bool_t          HLT_PFMET105_IsoTrk50;
-   Bool_t          HLT_PFMET110_PFJet100;
-   Bool_t          HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DisplacedDijet60_DisplacedTrack;
-   Bool_t          HLT_HT270_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
-   Bool_t          HLT_HT320_L1SingleLLPJet_DisplacedDijet60_Inclusive;
-   Bool_t          HLT_HT420_L1SingleLLPJet_DisplacedDijet60_Inclusive;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay1nsTrackless;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay2nsInclusive;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay0p5nsTrackless;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay1nsInclusive;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DisplacedDijet30_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DisplacedDijet35_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_HT200_L1SingleLLPJet_DisplacedDijet40_Inclusive1PtrkShortSig5;
-   Bool_t          HLT_DiPhoton10Time1p4ns;
-   Bool_t          HLT_DiPhoton10Time1p6ns;
-   Bool_t          HLT_DiPhoton10Time1p8ns;
-   Bool_t          HLT_DiPhoton10Time2ns;
-   Bool_t          HLT_DiPhoton10sminlt0p1;
-   Bool_t          HLT_DiPhoton10sminlt0p12;
-   Bool_t          HLT_DiPhoton10_CaloIdL;
-   Bool_t          HLT_DoubleEle4_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle4p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle5p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle6_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle6p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle7_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle7p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle8_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle8p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle9_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle9p5_eta1p22_mMax6;
-   Bool_t          HLT_DoubleEle10_eta1p22_mMax6;
-   Bool_t          HLT_Diphoton20_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;
-   Bool_t          HLT_Diphoton20_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;
-   Bool_t          HLT_Diphoton22_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;
-   Bool_t          HLT_Diphoton22_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;
-   Bool_t          HLT_ExpressMuons;
-   Bool_t          HLT_OnlineMonitorGroup;
-   Bool_t          HLT_PPSMaxTracksPerArm1;
-   Bool_t          HLT_PPSMaxTracksPerRP4;
-   Bool_t          HLTriggerFinalPath;
+   UInt_t run;
+   UInt_t luminosityBlock;
+   ULong64_t event;
+   UInt_t bunchCrossing;
+   Char_t BeamSpot_type;
+   Float_t BeamSpot_sigmaZ;
+   Float_t BeamSpot_sigmaZError;
+   Float_t BeamSpot_z;
+   Float_t BeamSpot_zError;
+   Int_t nboostedTau;
+   UChar_t boostedTau_idAntiEle2018[4];            //[nboostedTau]
+   UChar_t boostedTau_idAntiMu[4];                 //[nboostedTau]
+   UChar_t boostedTau_idMVAnewDM2017v2[4];         //[nboostedTau]
+   UChar_t boostedTau_idMVAoldDM2017v2[4];         //[nboostedTau]
+   Short_t boostedTau_jetIdx[4];                   //[nboostedTau]
+   Short_t boostedTau_rawAntiEleCat2018[4];        //[nboostedTau]
+   Int_t boostedTau_charge[4];                     //[nboostedTau]
+   Int_t boostedTau_decayMode[4];                  //[nboostedTau]
+   Float_t boostedTau_chargedIso[4];               //[nboostedTau]
+   Float_t boostedTau_eta[4];                      //[nboostedTau]
+   Float_t boostedTau_leadTkDeltaEta[4];           //[nboostedTau]
+   Float_t boostedTau_leadTkDeltaPhi[4];           //[nboostedTau]
+   Float_t boostedTau_leadTkPtOverTauPt[4];        //[nboostedTau]
+   Float_t boostedTau_mass[4];                     //[nboostedTau]
+   Float_t boostedTau_neutralIso[4];               //[nboostedTau]
+   Float_t boostedTau_phi[4];                      //[nboostedTau]
+   Float_t boostedTau_photonsOutsideSignalCone[4]; //[nboostedTau]
+   Float_t boostedTau_pt[4];                       //[nboostedTau]
+   Float_t boostedTau_puCorr[4];                   //[nboostedTau]
+   Float_t boostedTau_rawAntiEle2018[4];           //[nboostedTau]
+   Float_t boostedTau_rawIso[4];                   //[nboostedTau]
+   Float_t boostedTau_rawIsodR03[4];               //[nboostedTau]
+   Float_t boostedTau_rawMVAnewDM2017v2[4];        //[nboostedTau]
+   Float_t boostedTau_rawMVAoldDM2017v2[4];        //[nboostedTau]
+   Float_t CaloMET_phi;
+   Float_t CaloMET_pt;
+   Float_t CaloMET_sumEt;
+   Float_t ChsMET_phi;
+   Float_t ChsMET_pt;
+   Float_t ChsMET_sumEt;
+   Int_t nCorrT1METJet;
+   Float_t CorrT1METJet_area[47];            //[nCorrT1METJet]
+   Float_t CorrT1METJet_eta[47];             //[nCorrT1METJet]
+   Float_t CorrT1METJet_muonSubtrFactor[47]; //[nCorrT1METJet]
+   Float_t CorrT1METJet_phi[47];             //[nCorrT1METJet]
+   Float_t CorrT1METJet_rawPt[47];           //[nCorrT1METJet]
+   Float_t DeepMETResolutionTune_phi;
+   Float_t DeepMETResolutionTune_pt;
+   Float_t DeepMETResponseTune_phi;
+   Float_t DeepMETResponseTune_pt;
+   Int_t nElectron;
+   Char_t Electron_seediEtaOriX[8];              //[nElectron]
+   Bool_t Electron_convVeto[8];                  //[nElectron]
+   UChar_t Electron_cutBased[8];                 //[nElectron]
+   Bool_t Electron_cutBased_HEEP[8];             //[nElectron]
+   Bool_t Electron_isPFcand[8];                  //[nElectron]
+   UChar_t Electron_jetNDauCharged[8];           //[nElectron]
+   UChar_t Electron_lostHits[8];                 //[nElectron]
+   Bool_t Electron_mvaIso_WP80[8];               //[nElectron]
+   Bool_t Electron_mvaIso_WP90[8];               //[nElectron]
+   Bool_t Electron_mvaNoIso_WP80[8];             //[nElectron]
+   Bool_t Electron_mvaNoIso_WP90[8];             //[nElectron]
+   UChar_t Electron_seedGain[8];                 //[nElectron]
+   UChar_t Electron_tightCharge[8];              //[nElectron]
+   Short_t Electron_jetIdx[8];                   //[nElectron]
+   Short_t Electron_photonIdx[8];                //[nElectron]
+   Short_t Electron_svIdx[8];                    //[nElectron]
+   Short_t Electron_fsrPhotonIdx[8];             //[nElectron]
+   Int_t Electron_charge[8];                     //[nElectron]
+   Int_t Electron_pdgId[8];                      //[nElectron]
+   Int_t Electron_seediPhiOriY[8];               //[nElectron]
+   Int_t Electron_vidNestedWPBitmap[8];          //[nElectron]
+   Int_t Electron_vidNestedWPBitmapHEEP[8];      //[nElectron]
+   Float_t Electron_deltaEtaSC[8];               //[nElectron]
+   Float_t Electron_dr03EcalRecHitSumEt[8];      //[nElectron]
+   Float_t Electron_dr03HcalDepth1TowerSumEt[8]; //[nElectron]
+   Float_t Electron_dr03TkSumPt[8];              //[nElectron]
+   Float_t Electron_dr03TkSumPtHEEP[8];          //[nElectron]
+   Float_t Electron_dxy[8];                      //[nElectron]
+   Float_t Electron_dxyErr[8];                   //[nElectron]
+   Float_t Electron_dz[8];                       //[nElectron]
+   Float_t Electron_dzErr[8];                    //[nElectron]
+   Float_t Electron_eInvMinusPInv[8];            //[nElectron]
+   Float_t Electron_energyErr[8];                //[nElectron]
+   Float_t Electron_eta[8];                      //[nElectron]
+   Float_t Electron_hoe[8];                      //[nElectron]
+   Float_t Electron_ip3d[8];                     //[nElectron]
+   Float_t Electron_jetPtRelv2[8];               //[nElectron]
+   Float_t Electron_jetRelIso[8];                //[nElectron]
+   Float_t Electron_mass[8];                     //[nElectron]
+   Float_t Electron_miniPFRelIso_all[8];         //[nElectron]
+   Float_t Electron_miniPFRelIso_chg[8];         //[nElectron]
+   Float_t Electron_mvaHZZIso[8];                //[nElectron]
+   Float_t Electron_mvaIso[8];                   //[nElectron]
+   Float_t Electron_mvaNoIso[8];                 //[nElectron]
+   Float_t Electron_pfRelIso03_all[8];           //[nElectron]
+   Float_t Electron_pfRelIso03_chg[8];           //[nElectron]
+   Float_t Electron_phi[8];                      //[nElectron]
+   Float_t Electron_pt[8];                       //[nElectron]
+   Float_t Electron_r9[8];                       //[nElectron]
+   Float_t Electron_scEtOverPt[8];               //[nElectron]
+   Float_t Electron_sieie[8];                    //[nElectron]
+   Float_t Electron_sip3d[8];                    //[nElectron]
+   Float_t Electron_mvaTTH[8];                   //[nElectron]
+   Int_t nFatJet;
+   UChar_t FatJet_jetId[8];                        //[nFatJet]
+   UChar_t FatJet_nConstituents[8];                //[nFatJet]
+   Short_t FatJet_subJetIdx1[8];                   //[nFatJet]
+   Short_t FatJet_subJetIdx2[8];                   //[nFatJet]
+   Short_t FatJet_electronIdx3SJ[8];               //[nFatJet]
+   Short_t FatJet_muonIdx3SJ[8];                   //[nFatJet]
+   Float_t FatJet_area[8];                         //[nFatJet]
+   Float_t FatJet_btagDDBvLV2[8];                  //[nFatJet]
+   Float_t FatJet_btagDDCvBV2[8];                  //[nFatJet]
+   Float_t FatJet_btagDDCvLV2[8];                  //[nFatJet]
+   Float_t FatJet_btagDeepB[8];                    //[nFatJet]
+   Float_t FatJet_btagHbb[8];                      //[nFatJet]
+   Float_t FatJet_eta[8];                          //[nFatJet]
+   Float_t FatJet_mass[8];                         //[nFatJet]
+   Float_t FatJet_msoftdrop[8];                    //[nFatJet]
+   Float_t FatJet_n2b1[8];                         //[nFatJet]
+   Float_t FatJet_n3b1[8];                         //[nFatJet]
+   Float_t FatJet_particleNetWithMass_H4qvsQCD[8]; //[nFatJet]
+   Float_t FatJet_particleNetWithMass_HbbvsQCD[8]; //[nFatJet]
+   Float_t FatJet_particleNetWithMass_HccvsQCD[8]; //[nFatJet]
+   Float_t FatJet_particleNetWithMass_QCD[8];      //[nFatJet]
+   Float_t FatJet_particleNetWithMass_TvsQCD[8];   //[nFatJet]
+   Float_t FatJet_particleNetWithMass_WvsQCD[8];   //[nFatJet]
+   Float_t FatJet_particleNetWithMass_ZvsQCD[8];   //[nFatJet]
+   Float_t FatJet_particleNet_QCD[8];              //[nFatJet]
+   Float_t FatJet_particleNet_QCD0HF[8];           //[nFatJet]
+   Float_t FatJet_particleNet_QCD1HF[8];           //[nFatJet]
+   Float_t FatJet_particleNet_QCD2HF[8];           //[nFatJet]
+   Float_t FatJet_particleNet_XbbVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XccVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XggVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XqqVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XteVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XtmVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_XttVsQCD[8];         //[nFatJet]
+   Float_t FatJet_particleNet_massCorr[8];         //[nFatJet]
+   Float_t FatJet_phi[8];                          //[nFatJet]
+   Float_t FatJet_pt[8];                           //[nFatJet]
+   Float_t FatJet_rawFactor[8];                    //[nFatJet]
+   Float_t FatJet_tau1[8];                         //[nFatJet]
+   Float_t FatJet_tau2[8];                         //[nFatJet]
+   Float_t FatJet_tau3[8];                         //[nFatJet]
+   Float_t FatJet_tau4[8];                         //[nFatJet]
+   Float_t FatJet_lsf3[8];                         //[nFatJet]
+   Int_t nFsrPhoton;
+   Short_t FsrPhoton_electronIdx[4]; //[nFsrPhoton]
+   Short_t FsrPhoton_muonIdx[4];     //[nFsrPhoton]
+   Float_t FsrPhoton_dROverEt2[4];   //[nFsrPhoton]
+   Float_t FsrPhoton_eta[4];         //[nFsrPhoton]
+   Float_t FsrPhoton_phi[4];         //[nFsrPhoton]
+   Float_t FsrPhoton_pt[4];          //[nFsrPhoton]
+   Float_t FsrPhoton_relIso03[4];    //[nFsrPhoton]
+   Int_t nIsoTrack;
+   Bool_t IsoTrack_isHighPurityTrack[14]; //[nIsoTrack]
+   Bool_t IsoTrack_isPFcand[14];          //[nIsoTrack]
+   Bool_t IsoTrack_isFromLostTrack[14];   //[nIsoTrack]
+   Short_t IsoTrack_charge[14];           //[nIsoTrack]
+   Short_t IsoTrack_fromPV[14];           //[nIsoTrack]
+   Int_t IsoTrack_pdgId[14];              //[nIsoTrack]
+   Float_t IsoTrack_dxy[14];              //[nIsoTrack]
+   Float_t IsoTrack_dz[14];               //[nIsoTrack]
+   Float_t IsoTrack_eta[14];              //[nIsoTrack]
+   Float_t IsoTrack_pfRelIso03_all[14];   //[nIsoTrack]
+   Float_t IsoTrack_pfRelIso03_chg[14];   //[nIsoTrack]
+   Float_t IsoTrack_phi[14];              //[nIsoTrack]
+   Float_t IsoTrack_pt[14];               //[nIsoTrack]
+   Float_t IsoTrack_miniPFRelIso_all[14]; //[nIsoTrack]
+   Float_t IsoTrack_miniPFRelIso_chg[14]; //[nIsoTrack]
+   Int_t nJet;
+   UChar_t Jet_jetId[64];                    //[nJet]
+   UChar_t Jet_nConstituents[64];            //[nJet]
+   UChar_t Jet_nElectrons[64];               //[nJet]
+   UChar_t Jet_nMuons[64];                   //[nJet]
+   UChar_t Jet_nSVs[64];                     //[nJet]
+   Short_t Jet_electronIdx1[64];             //[nJet]
+   Short_t Jet_electronIdx2[64];             //[nJet]
+   Short_t Jet_muonIdx1[64];                 //[nJet]
+   Short_t Jet_muonIdx2[64];                 //[nJet]
+   Short_t Jet_svIdx1[64];                   //[nJet]
+   Short_t Jet_svIdx2[64];                   //[nJet]
+   Int_t Jet_hfadjacentEtaStripsSize[64];    //[nJet]
+   Int_t Jet_hfcentralEtaStripSize[64];      //[nJet]
+   Float_t Jet_PNetRegPtRawCorr[64];         //[nJet]
+   Float_t Jet_PNetRegPtRawCorrNeutrino[64]; //[nJet]
+   Float_t Jet_PNetRegPtRawRes[64];          //[nJet]
+   Float_t Jet_area[64];                     //[nJet]
+   Float_t Jet_btagDeepFlavB[64];            //[nJet]
+   Float_t Jet_btagDeepFlavCvB[64];          //[nJet]
+   Float_t Jet_btagDeepFlavCvL[64];          //[nJet]
+   Float_t Jet_btagDeepFlavQG[64];           //[nJet]
+   Float_t Jet_btagPNetB[64];                //[nJet]
+   Float_t Jet_btagPNetCvB[64];              //[nJet]
+   Float_t Jet_btagPNetCvL[64];              //[nJet]
+   Float_t Jet_btagPNetQvG[64];              //[nJet]
+   Float_t Jet_btagPNetTauVJet[64];          //[nJet]
+   Float_t Jet_btagRobustParTAK4B[64];       //[nJet]
+   Float_t Jet_btagRobustParTAK4CvB[64];     //[nJet]
+   Float_t Jet_btagRobustParTAK4CvL[64];     //[nJet]
+   Float_t Jet_btagRobustParTAK4QG[64];      //[nJet]
+   Float_t Jet_chEmEF[64];                   //[nJet]
+   Float_t Jet_chHEF[64];                    //[nJet]
+   Float_t Jet_eta[64];                      //[nJet]
+   Float_t Jet_hfsigmaEtaEta[64];            //[nJet]
+   Float_t Jet_hfsigmaPhiPhi[64];            //[nJet]
+   Float_t Jet_mass[64];                     //[nJet]
+   Float_t Jet_muEF[64];                     //[nJet]
+   Float_t Jet_muonSubtrFactor[64];          //[nJet]
+   Float_t Jet_neEmEF[64];                   //[nJet]
+   Float_t Jet_neHEF[64];                    //[nJet]
+   Float_t Jet_phi[64];                      //[nJet]
+   Float_t Jet_pt[64];                       //[nJet]
+   Float_t Jet_rawFactor[64];                //[nJet]
+   Int_t nLowPtElectron;
+   Bool_t LowPtElectron_convVeto[11];          //[nLowPtElectron]
+   UChar_t LowPtElectron_convWP[11];           //[nLowPtElectron]
+   UChar_t LowPtElectron_lostHits[11];         //[nLowPtElectron]
+   Short_t LowPtElectron_electronIdx[11];      //[nLowPtElectron]
+   Short_t LowPtElectron_photonIdx[11];        //[nLowPtElectron]
+   Int_t LowPtElectron_charge[11];             //[nLowPtElectron]
+   Int_t LowPtElectron_pdgId[11];              //[nLowPtElectron]
+   Float_t LowPtElectron_ID[11];               //[nLowPtElectron]
+   Float_t LowPtElectron_convVtxRadius[11];    //[nLowPtElectron]
+   Float_t LowPtElectron_deltaEtaSC[11];       //[nLowPtElectron]
+   Float_t LowPtElectron_dxy[11];              //[nLowPtElectron]
+   Float_t LowPtElectron_dxyErr[11];           //[nLowPtElectron]
+   Float_t LowPtElectron_dz[11];               //[nLowPtElectron]
+   Float_t LowPtElectron_dzErr[11];            //[nLowPtElectron]
+   Float_t LowPtElectron_eInvMinusPInv[11];    //[nLowPtElectron]
+   Float_t LowPtElectron_energyErr[11];        //[nLowPtElectron]
+   Float_t LowPtElectron_eta[11];              //[nLowPtElectron]
+   Float_t LowPtElectron_hoe[11];              //[nLowPtElectron]
+   Float_t LowPtElectron_mass[11];             //[nLowPtElectron]
+   Float_t LowPtElectron_miniPFRelIso_all[11]; //[nLowPtElectron]
+   Float_t LowPtElectron_miniPFRelIso_chg[11]; //[nLowPtElectron]
+   Float_t LowPtElectron_phi[11];              //[nLowPtElectron]
+   Float_t LowPtElectron_pt[11];               //[nLowPtElectron]
+   Float_t LowPtElectron_ptbiased[11];         //[nLowPtElectron]
+   Float_t LowPtElectron_r9[11];               //[nLowPtElectron]
+   Float_t LowPtElectron_scEtOverPt[11];       //[nLowPtElectron]
+   Float_t LowPtElectron_sieie[11];            //[nLowPtElectron]
+   Float_t LowPtElectron_unbiased[11];         //[nLowPtElectron]
+   Float_t MET_MetUnclustEnUpDeltaX;
+   Float_t MET_MetUnclustEnUpDeltaY;
+   Float_t MET_covXX;
+   Float_t MET_covXY;
+   Float_t MET_covYY;
+   Float_t MET_phi;
+   Float_t MET_pt;
+   Float_t MET_significance;
+   Float_t MET_sumEt;
+   Float_t MET_sumPtUnclustered;
+   Int_t nProton_multiRP;
+   UChar_t Proton_multiRP_arm[1];     //[nProton_multiRP]
+   Float_t Proton_multiRP_t[1];       //[nProton_multiRP]
+   Float_t Proton_multiRP_thetaX[1];  //[nProton_multiRP]
+   Float_t Proton_multiRP_thetaY[1];  //[nProton_multiRP]
+   Float_t Proton_multiRP_time[1];    //[nProton_multiRP]
+   Float_t Proton_multiRP_timeUnc[1]; //[nProton_multiRP]
+   Float_t Proton_multiRP_xi[1];      //[nProton_multiRP]
+   Int_t nMuon;
+   UChar_t Muon_highPtId[36];           //[nMuon]
+   Bool_t Muon_highPurity[36];          //[nMuon]
+   Bool_t Muon_inTimeMuon[36];          //[nMuon]
+   Bool_t Muon_isGlobal[36];            //[nMuon]
+   Bool_t Muon_isPFcand[36];            //[nMuon]
+   Bool_t Muon_isStandalone[36];        //[nMuon]
+   Bool_t Muon_isTracker[36];           //[nMuon]
+   UChar_t Muon_jetNDauCharged[36];     //[nMuon]
+   Bool_t Muon_looseId[36];             //[nMuon]
+   Bool_t Muon_mediumId[36];            //[nMuon]
+   Bool_t Muon_mediumPromptId[36];      //[nMuon]
+   UChar_t Muon_miniIsoId[36];          //[nMuon]
+   UChar_t Muon_multiIsoId[36];         //[nMuon]
+   UChar_t Muon_mvaMuID_WP[36];         //[nMuon]
+   UChar_t Muon_nStations[36];          //[nMuon]
+   UChar_t Muon_nTrackerLayers[36];     //[nMuon]
+   UChar_t Muon_pfIsoId[36];            //[nMuon]
+   UChar_t Muon_puppiIsoId[36];         //[nMuon]
+   Bool_t Muon_softId[36];              //[nMuon]
+   Bool_t Muon_softMvaId[36];           //[nMuon]
+   UChar_t Muon_tightCharge[36];        //[nMuon]
+   Bool_t Muon_tightId[36];             //[nMuon]
+   UChar_t Muon_tkIsoId[36];            //[nMuon]
+   Bool_t Muon_triggerIdLoose[36];      //[nMuon]
+   Short_t Muon_jetIdx[36];             //[nMuon]
+   Short_t Muon_svIdx[36];              //[nMuon]
+   Short_t Muon_fsrPhotonIdx[36];       //[nMuon]
+   Int_t Muon_charge[36];               //[nMuon]
+   Int_t Muon_pdgId[36];                //[nMuon]
+   Float_t Muon_dxy[36];                //[nMuon]
+   Float_t Muon_dxyErr[36];             //[nMuon]
+   Float_t Muon_dxybs[36];              //[nMuon]
+   Float_t Muon_dz[36];                 //[nMuon]
+   Float_t Muon_dzErr[36];              //[nMuon]
+   Float_t Muon_eta[36];                //[nMuon]
+   Float_t Muon_ip3d[36];               //[nMuon]
+   Float_t Muon_jetPtRelv2[36];         //[nMuon]
+   Float_t Muon_jetRelIso[36];          //[nMuon]
+   Float_t Muon_mass[36];               //[nMuon]
+   Float_t Muon_miniPFRelIso_all[36];   //[nMuon]
+   Float_t Muon_miniPFRelIso_chg[36];   //[nMuon]
+   Float_t Muon_mvaMuID[36];            //[nMuon]
+   Float_t Muon_pfRelIso03_all[36];     //[nMuon]
+   Float_t Muon_pfRelIso03_chg[36];     //[nMuon]
+   Float_t Muon_pfRelIso04_all[36];     //[nMuon]
+   Float_t Muon_phi[36];                //[nMuon]
+   Float_t Muon_pt[36];                 //[nMuon]
+   Float_t Muon_ptErr[36];              //[nMuon]
+   Float_t Muon_segmentComp[36];        //[nMuon]
+   Float_t Muon_sip3d[36];              //[nMuon]
+   Float_t Muon_softMva[36];            //[nMuon]
+   Float_t Muon_tkRelIso[36];           //[nMuon]
+   Float_t Muon_tunepRelPt[36];         //[nMuon]
+   Float_t Muon_bsConstrainedChi2[36];  //[nMuon]
+   Float_t Muon_bsConstrainedPt[36];    //[nMuon]
+   Float_t Muon_bsConstrainedPtErr[36]; //[nMuon]
+   Float_t Muon_mvaLowPt[36];           //[nMuon]
+   Float_t Muon_mvaTTH[36];             //[nMuon]
+   Int_t nPhoton;
+   Char_t Photon_seediEtaOriX[15];              //[nPhoton]
+   UChar_t Photon_cutBased[15];                 //[nPhoton]
+   Bool_t Photon_electronVeto[15];              //[nPhoton]
+   Bool_t Photon_hasConversionTracks[15];       //[nPhoton]
+   Bool_t Photon_isScEtaEB[15];                 //[nPhoton]
+   Bool_t Photon_isScEtaEE[15];                 //[nPhoton]
+   Bool_t Photon_mvaID_WP80[15];                //[nPhoton]
+   Bool_t Photon_mvaID_WP90[15];                //[nPhoton]
+   Bool_t Photon_pixelSeed[15];                 //[nPhoton]
+   UChar_t Photon_seedGain[15];                 //[nPhoton]
+   Short_t Photon_electronIdx[15];              //[nPhoton]
+   Short_t Photon_jetIdx[15];                   //[nPhoton]
+   Int_t Photon_seediPhiOriY[15];               //[nPhoton]
+   Int_t Photon_vidNestedWPBitmap[15];          //[nPhoton]
+   Float_t Photon_ecalPFClusterIso[15];         //[nPhoton]
+   Float_t Photon_energyErr[15];                //[nPhoton]
+   Float_t Photon_energyRaw[15];                //[nPhoton]
+   Float_t Photon_esEffSigmaRR[15];             //[nPhoton]
+   Float_t Photon_esEnergyOverRawE[15];         //[nPhoton]
+   Float_t Photon_eta[15];                      //[nPhoton]
+   Float_t Photon_etaWidth[15];                 //[nPhoton]
+   Float_t Photon_haloTaggerMVAVal[15];         //[nPhoton]
+   Float_t Photon_hcalPFClusterIso[15];         //[nPhoton]
+   Float_t Photon_hoe[15];                      //[nPhoton]
+   Float_t Photon_hoe_PUcorr[15];               //[nPhoton]
+   Float_t Photon_mvaID[15];                    //[nPhoton]
+   Float_t Photon_pfChargedIso[15];             //[nPhoton]
+   Float_t Photon_pfChargedIsoPFPV[15];         //[nPhoton]
+   Float_t Photon_pfChargedIsoWorstVtx[15];     //[nPhoton]
+   Float_t Photon_pfPhoIso03[15];               //[nPhoton]
+   Float_t Photon_pfRelIso03_all_quadratic[15]; //[nPhoton]
+   Float_t Photon_pfRelIso03_chg_quadratic[15]; //[nPhoton]
+   Float_t Photon_phi[15];                      //[nPhoton]
+   Float_t Photon_phiWidth[15];                 //[nPhoton]
+   Float_t Photon_pt[15];                       //[nPhoton]
+   Float_t Photon_r9[15];                       //[nPhoton]
+   Float_t Photon_s4[15];                       //[nPhoton]
+   Float_t Photon_sieie[15];                    //[nPhoton]
+   Float_t Photon_sieip[15];                    //[nPhoton]
+   Float_t Photon_sipip[15];                    //[nPhoton]
+   Float_t Photon_trkSumPtHollowConeDR03[15];   //[nPhoton]
+   Float_t Photon_trkSumPtSolidConeDR04[15];    //[nPhoton]
+   Float_t Photon_x_calo[15];                   //[nPhoton]
+   Float_t Photon_y_calo[15];                   //[nPhoton]
+   Float_t Photon_z_calo[15];                   //[nPhoton]
+   Int_t nPPSLocalTrack;
+   Int_t PPSLocalTrack_multiRPProtonIdx[1];  //[nPPSLocalTrack]
+   Int_t PPSLocalTrack_singleRPProtonIdx[1]; //[nPPSLocalTrack]
+   Int_t PPSLocalTrack_decRPId[1];           //[nPPSLocalTrack]
+   Int_t PPSLocalTrack_rpType[1];            //[nPPSLocalTrack]
+   Float_t PPSLocalTrack_x[1];               //[nPPSLocalTrack]
+   Float_t PPSLocalTrack_y[1];               //[nPPSLocalTrack]
+   Float_t PPSLocalTrack_time[1];            //[nPPSLocalTrack]
+   Float_t PPSLocalTrack_timeUnc[1];         //[nPPSLocalTrack]
+   Float_t PuppiMET_phi;
+   Float_t PuppiMET_phiJERDown;
+   Float_t PuppiMET_phiJERUp;
+   Float_t PuppiMET_phiJESDown;
+   Float_t PuppiMET_phiJESUp;
+   Float_t PuppiMET_phiUnclusteredDown;
+   Float_t PuppiMET_phiUnclusteredUp;
+   Float_t PuppiMET_pt;
+   Float_t PuppiMET_ptJERDown;
+   Float_t PuppiMET_ptJERUp;
+   Float_t PuppiMET_ptJESDown;
+   Float_t PuppiMET_ptJESUp;
+   Float_t PuppiMET_ptUnclusteredDown;
+   Float_t PuppiMET_ptUnclusteredUp;
+   Float_t PuppiMET_sumEt;
+   Float_t RawMET_phi;
+   Float_t RawMET_pt;
+   Float_t RawMET_sumEt;
+   Float_t RawPuppiMET_phi;
+   Float_t RawPuppiMET_pt;
+   Float_t RawPuppiMET_sumEt;
+   Float_t Rho_fixedGridRhoAll;
+   Float_t Rho_fixedGridRhoFastjetAll;
+   Float_t Rho_fixedGridRhoFastjetCentral;
+   Float_t Rho_fixedGridRhoFastjetCentralCalo;
+   Float_t Rho_fixedGridRhoFastjetCentralChargedPileUp;
+   Float_t Rho_fixedGridRhoFastjetCentralNeutral;
+   Int_t nSoftActivityJet;
+   Float_t SoftActivityJet_eta[6]; //[nSoftActivityJet]
+   Float_t SoftActivityJet_phi[6]; //[nSoftActivityJet]
+   Float_t SoftActivityJet_pt[6];  //[nSoftActivityJet]
+   Int_t SoftActivityJetNjets10;
+   Int_t SoftActivityJetNjets2;
+   Int_t SoftActivityJetNjets5;
+   Float_t SoftActivityJetHT;
+   Float_t SoftActivityJetHT10;
+   Float_t SoftActivityJetHT2;
+   Float_t SoftActivityJetHT5;
+   Int_t nProton_singleRP;
+   Short_t Proton_singleRP_decRPId[1]; //[nProton_singleRP]
+   Float_t Proton_singleRP_thetaY[1];  //[nProton_singleRP]
+   Float_t Proton_singleRP_xi[1];      //[nProton_singleRP]
+   Int_t nSubJet;
+   Float_t SubJet_btagDeepB[14]; //[nSubJet]
+   Float_t SubJet_eta[14];       //[nSubJet]
+   Float_t SubJet_mass[14];      //[nSubJet]
+   Float_t SubJet_n2b1[14];      //[nSubJet]
+   Float_t SubJet_n3b1[14];      //[nSubJet]
+   Float_t SubJet_phi[14];       //[nSubJet]
+   Float_t SubJet_pt[14];        //[nSubJet]
+   Float_t SubJet_rawFactor[14]; //[nSubJet]
+   Float_t SubJet_tau1[14];      //[nSubJet]
+   Float_t SubJet_tau2[14];      //[nSubJet]
+   Float_t SubJet_tau3[14];      //[nSubJet]
+   Float_t SubJet_tau4[14];      //[nSubJet]
+   Int_t nTau;
+   UChar_t Tau_decayMode[9];                //[nTau]
+   Bool_t Tau_idAntiEleDeadECal[9];         //[nTau]
+   UChar_t Tau_idAntiMu[9];                 //[nTau]
+   Bool_t Tau_idDecayModeNewDMs[9];         //[nTau]
+   Bool_t Tau_idDecayModeOldDMs[9];         //[nTau]
+   UChar_t Tau_idDeepTau2017v2p1VSe[9];     //[nTau]
+   UChar_t Tau_idDeepTau2017v2p1VSjet[9];   //[nTau]
+   UChar_t Tau_idDeepTau2017v2p1VSmu[9];    //[nTau]
+   UChar_t Tau_idDeepTau2018v2p5VSe[9];     //[nTau]
+   UChar_t Tau_idDeepTau2018v2p5VSjet[9];   //[nTau]
+   UChar_t Tau_idDeepTau2018v2p5VSmu[9];    //[nTau]
+   UChar_t Tau_nSVs[9];                     //[nTau]
+   Short_t Tau_charge[9];                   //[nTau]
+   Short_t Tau_decayModePNet[9];            //[nTau]
+   Short_t Tau_eleIdx[9];                   //[nTau]
+   Short_t Tau_jetIdx[9];                   //[nTau]
+   Short_t Tau_muIdx[9];                    //[nTau]
+   Short_t Tau_svIdx1[9];                   //[nTau]
+   Short_t Tau_svIdx2[9];                   //[nTau]
+   Float_t Tau_chargedIso[9];               //[nTau]
+   Float_t Tau_dxy[9];                      //[nTau]
+   Float_t Tau_dz[9];                       //[nTau]
+   Float_t Tau_eta[9];                      //[nTau]
+   Float_t Tau_leadTkDeltaEta[9];           //[nTau]
+   Float_t Tau_leadTkDeltaPhi[9];           //[nTau]
+   Float_t Tau_leadTkPtOverTauPt[9];        //[nTau]
+   Float_t Tau_mass[9];                     //[nTau]
+   Float_t Tau_neutralIso[9];               //[nTau]
+   Float_t Tau_phi[9];                      //[nTau]
+   Float_t Tau_photonsOutsideSignalCone[9]; //[nTau]
+   Float_t Tau_probDM0PNet[9];              //[nTau]
+   Float_t Tau_probDM10PNet[9];             //[nTau]
+   Float_t Tau_probDM11PNet[9];             //[nTau]
+   Float_t Tau_probDM1PNet[9];              //[nTau]
+   Float_t Tau_probDM2PNet[9];              //[nTau]
+   Float_t Tau_pt[9];                       //[nTau]
+   Float_t Tau_ptCorrPNet[9];               //[nTau]
+   Float_t Tau_puCorr[9];                   //[nTau]
+   Float_t Tau_qConfPNet[9];                //[nTau]
+   Float_t Tau_rawDeepTau2017v2p1VSe[9];    //[nTau]
+   Float_t Tau_rawDeepTau2017v2p1VSjet[9];  //[nTau]
+   Float_t Tau_rawDeepTau2017v2p1VSmu[9];   //[nTau]
+   Float_t Tau_rawDeepTau2018v2p5VSe[9];    //[nTau]
+   Float_t Tau_rawDeepTau2018v2p5VSjet[9];  //[nTau]
+   Float_t Tau_rawDeepTau2018v2p5VSmu[9];   //[nTau]
+   Float_t Tau_rawIso[9];                   //[nTau]
+   Float_t Tau_rawIsodR03[9];               //[nTau]
+   Float_t Tau_rawPNetVSe[9];               //[nTau]
+   Float_t Tau_rawPNetVSjet[9];             //[nTau]
+   Float_t Tau_rawPNetVSmu[9];              //[nTau]
+   Float_t TkMET_phi;
+   Float_t TkMET_pt;
+   Float_t TkMET_sumEt;
+   Int_t nTrigObj;
+   Short_t TrigObj_l1charge[76]; //[nTrigObj]
+   UShort_t TrigObj_id[76];      //[nTrigObj]
+   Int_t TrigObj_l1iso[76];      //[nTrigObj]
+   Int_t TrigObj_filterBits[76]; //[nTrigObj]
+   Float_t TrigObj_pt[76];       //[nTrigObj]
+   Float_t TrigObj_eta[76];      //[nTrigObj]
+   Float_t TrigObj_phi[76];      //[nTrigObj]
+   Float_t TrigObj_l1pt[76];     //[nTrigObj]
+   Float_t TrigObj_l1pt_2[76];   //[nTrigObj]
+   Float_t TrigObj_l2pt[76];     //[nTrigObj]
+   Int_t nOtherPV;
+   Float_t OtherPV_z[3];     //[nOtherPV]
+   Float_t OtherPV_score[3]; //[nOtherPV]
+   UChar_t PV_npvs;
+   UChar_t PV_npvsGood;
+   Float_t PV_ndof;
+   Float_t PV_x;
+   Float_t PV_y;
+   Float_t PV_z;
+   Float_t PV_chi2;
+   Float_t PV_score;
+   Int_t nSV;
+   Short_t SV_charge[18];  //[nSV]
+   Float_t SV_dlen[18];    //[nSV]
+   Float_t SV_dlenSig[18]; //[nSV]
+   Float_t SV_dxy[18];     //[nSV]
+   Float_t SV_dxySig[18];  //[nSV]
+   Float_t SV_pAngle[18];  //[nSV]
+   UChar_t SV_ntracks[18]; //[nSV]
+   Float_t SV_chi2[18];    //[nSV]
+   Float_t SV_eta[18];     //[nSV]
+   Float_t SV_mass[18];    //[nSV]
+   Float_t SV_ndof[18];    //[nSV]
+   Float_t SV_phi[18];     //[nSV]
+   Float_t SV_pt[18];      //[nSV]
+   Float_t SV_x[18];       //[nSV]
+   Float_t SV_y[18];       //[nSV]
+   Float_t SV_z[18];       //[nSV]
+   Bool_t Flag_HBHENoiseFilter;
+   Bool_t Flag_HBHENoiseIsoFilter;
+   Bool_t Flag_CSCTightHaloFilter;
+   Bool_t Flag_CSCTightHaloTrkMuUnvetoFilter;
+   Bool_t Flag_CSCTightHalo2015Filter;
+   Bool_t Flag_globalTightHalo2016Filter;
+   Bool_t Flag_globalSuperTightHalo2016Filter;
+   Bool_t Flag_HcalStripHaloFilter;
+   Bool_t Flag_hcalLaserEventFilter;
+   Bool_t Flag_EcalDeadCellTriggerPrimitiveFilter;
+   Bool_t Flag_EcalDeadCellBoundaryEnergyFilter;
+   Bool_t Flag_ecalBadCalibFilter;
+   Bool_t Flag_goodVertices;
+   Bool_t Flag_eeBadScFilter;
+   Bool_t Flag_ecalLaserCorrFilter;
+   Bool_t Flag_trkPOGFilters;
+   Bool_t Flag_chargedHadronTrackResolutionFilter;
+   Bool_t Flag_muonBadTrackFilter;
+   Bool_t Flag_BadChargedCandidateFilter;
+   Bool_t Flag_BadPFMuonFilter;
+   Bool_t Flag_BadPFMuonDzFilter;
+   Bool_t Flag_hfNoisyHitsFilter;
+   Bool_t Flag_BadChargedCandidateSummer16Filter;
+   Bool_t Flag_BadPFMuonSummer16Filter;
+   Bool_t Flag_trkPOG_manystripclus53X;
+   Bool_t Flag_trkPOG_toomanystripclus53X;
+   Bool_t Flag_trkPOG_logErrorTooManyClusters;
+   Bool_t Flag_METFilters;
+   Bool_t L1_AlwaysTrue;
+   Bool_t L1_BPTX_AND_Ref1_VME;
+   Bool_t L1_BPTX_AND_Ref3_VME;
+   Bool_t L1_BPTX_AND_Ref4_VME;
+   Bool_t L1_BPTX_BeamGas_B1_VME;
+   Bool_t L1_BPTX_BeamGas_B2_VME;
+   Bool_t L1_BPTX_BeamGas_Ref1_VME;
+   Bool_t L1_BPTX_BeamGas_Ref2_VME;
+   Bool_t L1_BPTX_NotOR_VME;
+   Bool_t L1_BPTX_OR_Ref3_VME;
+   Bool_t L1_BPTX_OR_Ref4_VME;
+   Bool_t L1_BPTX_RefAND_VME;
+   Bool_t L1_BptxMinus;
+   Bool_t L1_BptxOR;
+   Bool_t L1_BptxPlus;
+   Bool_t L1_BptxXOR;
+   Bool_t L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;
+   Bool_t L1_DoubleEG10_er1p2_dR_Max0p6;
+   Bool_t L1_DoubleEG10p5_er1p2_dR_Max0p6;
+   Bool_t L1_DoubleEG11_er1p2_dR_Max0p6;
+   Bool_t L1_DoubleEG4_er1p2_dR_Max0p9;
+   Bool_t L1_DoubleEG4p5_er1p2_dR_Max0p9;
+   Bool_t L1_DoubleEG5_er1p2_dR_Max0p9;
+   Bool_t L1_DoubleEG5p5_er1p2_dR_Max0p8;
+   Bool_t L1_DoubleEG6_er1p2_dR_Max0p8;
+   Bool_t L1_DoubleEG6p5_er1p2_dR_Max0p8;
+   Bool_t L1_DoubleEG7_er1p2_dR_Max0p8;
+   Bool_t L1_DoubleEG7p5_er1p2_dR_Max0p7;
+   Bool_t L1_DoubleEG8_er1p2_dR_Max0p7;
+   Bool_t L1_DoubleEG8er2p5_HTT260er;
+   Bool_t L1_DoubleEG8er2p5_HTT280er;
+   Bool_t L1_DoubleEG8er2p5_HTT300er;
+   Bool_t L1_DoubleEG8er2p5_HTT320er;
+   Bool_t L1_DoubleEG8er2p5_HTT340er;
+   Bool_t L1_DoubleEG8p5_er1p2_dR_Max0p7;
+   Bool_t L1_DoubleEG9_er1p2_dR_Max0p7;
+   Bool_t L1_DoubleEG9p5_er1p2_dR_Max0p6;
+   Bool_t L1_DoubleEG_15_10_er2p5;
+   Bool_t L1_DoubleEG_20_10_er2p5;
+   Bool_t L1_DoubleEG_22_10_er2p5;
+   Bool_t L1_DoubleEG_25_12_er2p5;
+   Bool_t L1_DoubleEG_25_14_er2p5;
+   Bool_t L1_DoubleEG_27_14_er2p5;
+   Bool_t L1_DoubleEG_LooseIso16_LooseIso12_er1p5;
+   Bool_t L1_DoubleEG_LooseIso18_LooseIso12_er1p5;
+   Bool_t L1_DoubleEG_LooseIso20_10_er2p5;
+   Bool_t L1_DoubleEG_LooseIso20_LooseIso12_er1p5;
+   Bool_t L1_DoubleEG_LooseIso22_10_er2p5;
+   Bool_t L1_DoubleEG_LooseIso22_12_er2p5;
+   Bool_t L1_DoubleEG_LooseIso22_LooseIso12_er1p5;
+   Bool_t L1_DoubleEG_LooseIso25_12_er2p5;
+   Bool_t L1_DoubleEG_LooseIso25_LooseIso12_er1p5;
+   Bool_t L1_DoubleIsoTau26er2p1_Jet55_RmOvlp_dR0p5;
+   Bool_t L1_DoubleIsoTau26er2p1_Jet70_RmOvlp_dR0p5;
+   Bool_t L1_DoubleIsoTau28er2p1;
+   Bool_t L1_DoubleIsoTau28er2p1_Mass_Max80;
+   Bool_t L1_DoubleIsoTau28er2p1_Mass_Max90;
+   Bool_t L1_DoubleIsoTau30er2p1;
+   Bool_t L1_DoubleIsoTau30er2p1_Mass_Max80;
+   Bool_t L1_DoubleIsoTau30er2p1_Mass_Max90;
+   Bool_t L1_DoubleIsoTau32er2p1;
+   Bool_t L1_DoubleIsoTau34er2p1;
+   Bool_t L1_DoubleIsoTau35er2p1;
+   Bool_t L1_DoubleIsoTau36er2p1;
+   Bool_t L1_DoubleJet100er2p3_dEta_Max1p6;
+   Bool_t L1_DoubleJet100er2p5;
+   Bool_t L1_DoubleJet112er2p3_dEta_Max1p6;
+   Bool_t L1_DoubleJet120er2p5;
+   Bool_t L1_DoubleJet150er2p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min150_dEta_Max1p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min200_dEta_Max1p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min250_dEta_Max1p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min300_dEta_Max1p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min330_dEta_Max1p5;
+   Bool_t L1_DoubleJet30er2p5_Mass_Min360_dEta_Max1p5;
+   Bool_t L1_DoubleJet35_Mass_Min450_IsoTau45_RmOvlp;
+   Bool_t L1_DoubleJet35_Mass_Min450_IsoTau45er2p1_RmOvlp_dR0p5;
+   Bool_t L1_DoubleJet40er2p5;
+   Bool_t L1_DoubleJet_100_30_DoubleJet30_Mass_Min620;
+   Bool_t L1_DoubleJet_110_35_DoubleJet35_Mass_Min620;
+   Bool_t L1_DoubleJet_115_40_DoubleJet40_Mass_Min620;
+   Bool_t L1_DoubleJet_115_40_DoubleJet40_Mass_Min620_Jet60TT28;
+   Bool_t L1_DoubleJet_120_45_DoubleJet45_Mass_Min620;
+   Bool_t L1_DoubleJet_120_45_DoubleJet45_Mass_Min620_Jet60TT28;
+   Bool_t L1_DoubleJet_80_30_Mass_Min420_DoubleMu0_SQ;
+   Bool_t L1_DoubleJet_80_30_Mass_Min420_IsoTau40_RmOvlp;
+   Bool_t L1_DoubleJet_80_30_Mass_Min420_Mu8;
+   Bool_t L1_DoubleJet_90_30_DoubleJet30_Mass_Min620;
+   Bool_t L1_DoubleLLPJet40;
+   Bool_t L1_DoubleLooseIsoEG22er2p1;
+   Bool_t L1_DoubleLooseIsoEG24er2p1;
+   Bool_t L1_DoubleMu0;
+   Bool_t L1_DoubleMu0_Mass_Min1;
+   Bool_t L1_DoubleMu0_OQ;
+   Bool_t L1_DoubleMu0_SQ;
+   Bool_t L1_DoubleMu0_SQ_OS;
+   Bool_t L1_DoubleMu0_Upt15_Upt7;
+   Bool_t L1_DoubleMu0_Upt5_Upt5;
+   Bool_t L1_DoubleMu0_Upt6_IP_Min1_Upt4;
+   Bool_t L1_DoubleMu0_dR_Max1p6_Jet90er2p5_dR_Max0p8;
+   Bool_t L1_DoubleMu0er1p4_OQ_OS_dEta_Max1p6;
+   Bool_t L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4;
+   Bool_t L1_DoubleMu0er1p5_SQ;
+   Bool_t L1_DoubleMu0er1p5_SQ_OS;
+   Bool_t L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4;
+   Bool_t L1_DoubleMu0er1p5_SQ_dR_Max1p4;
+   Bool_t L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p5;
+   Bool_t L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p6;
+   Bool_t L1_DoubleMu0er2p0_SQ_OS_dR_Max1p4;
+   Bool_t L1_DoubleMu0er2p0_SQ_dEta_Max1p5;
+   Bool_t L1_DoubleMu0er2p0_SQ_dEta_Max1p6;
+   Bool_t L1_DoubleMu0er2p0_SQ_dR_Max1p4;
+   Bool_t L1_DoubleMu18er2p1_SQ;
+   Bool_t L1_DoubleMu3_OS_er2p3_Mass_Max14_DoubleEG7p5_er2p1_Mass_Max20;
+   Bool_t L1_DoubleMu3_SQ_ETMHF50_HTT60er;
+   Bool_t L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5;
+   Bool_t L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5_OR_DoubleJet40er2p5;
+   Bool_t L1_DoubleMu3_SQ_ETMHF60_Jet60er2p5;
+   Bool_t L1_DoubleMu3_SQ_HTT220er;
+   Bool_t L1_DoubleMu3_SQ_HTT240er;
+   Bool_t L1_DoubleMu3_SQ_HTT260er;
+   Bool_t L1_DoubleMu3_dR_Max1p6_Jet90er2p5_dR_Max0p8;
+   Bool_t L1_DoubleMu3er2p0_SQ_OS_dR_Max1p4;
+   Bool_t L1_DoubleMu4_SQ_EG9er2p5;
+   Bool_t L1_DoubleMu4_SQ_OS;
+   Bool_t L1_DoubleMu4_SQ_OS_dR_Max1p2;
+   Bool_t L1_DoubleMu4p5_SQ_OS;
+   Bool_t L1_DoubleMu4p5_SQ_OS_dR_Max1p2;
+   Bool_t L1_DoubleMu4p5er2p0_SQ_OS;
+   Bool_t L1_DoubleMu4p5er2p0_SQ_OS_Mass_7to18;
+   Bool_t L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7;
+   Bool_t L1_DoubleMu5_OS_er2p3_Mass_8to14_DoubleEG3er2p1_Mass_Max20;
+   Bool_t L1_DoubleMu5_SQ_EG9er2p5;
+   Bool_t L1_DoubleMu8_SQ;
+   Bool_t L1_DoubleMu9_SQ;
+   Bool_t L1_DoubleMu_12_5;
+   Bool_t L1_DoubleMu_15_5_SQ;
+   Bool_t L1_DoubleMu_15_7;
+   Bool_t L1_DoubleMu_15_7_Mass_Min1;
+   Bool_t L1_DoubleMu_15_7_SQ;
+   Bool_t L1_DoubleTau70er2p1;
+   Bool_t L1_ETM120;
+   Bool_t L1_ETM150;
+   Bool_t L1_ETMHF100;
+   Bool_t L1_ETMHF100_HTT60er;
+   Bool_t L1_ETMHF110;
+   Bool_t L1_ETMHF110_HTT60er;
+   Bool_t L1_ETMHF110_HTT60er_NotSecondBunchInTrain;
+   Bool_t L1_ETMHF120;
+   Bool_t L1_ETMHF120_HTT60er;
+   Bool_t L1_ETMHF120_NotSecondBunchInTrain;
+   Bool_t L1_ETMHF130;
+   Bool_t L1_ETMHF130_HTT60er;
+   Bool_t L1_ETMHF140;
+   Bool_t L1_ETMHF150;
+   Bool_t L1_ETMHF70;
+   Bool_t L1_ETMHF70_HTT60er;
+   Bool_t L1_ETMHF80;
+   Bool_t L1_ETMHF80_HTT60er;
+   Bool_t L1_ETMHF90;
+   Bool_t L1_ETMHF90_HTT60er;
+   Bool_t L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p1;
+   Bool_t L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p6;
+   Bool_t L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p1;
+   Bool_t L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p6;
+   Bool_t L1_ETT1200;
+   Bool_t L1_ETT1600;
+   Bool_t L1_ETT2000;
+   Bool_t L1_FirstBunchAfterTrain;
+   Bool_t L1_FirstBunchBeforeTrain;
+   Bool_t L1_FirstBunchInTrain;
+   Bool_t L1_FirstCollisionInOrbit;
+   Bool_t L1_FirstCollisionInTrain;
+   Bool_t L1_HCAL_LaserMon_Trig;
+   Bool_t L1_HCAL_LaserMon_Veto;
+   Bool_t L1_HTT120_SingleLLPJet40;
+   Bool_t L1_HTT120er;
+   Bool_t L1_HTT160_SingleLLPJet50;
+   Bool_t L1_HTT160er;
+   Bool_t L1_HTT200_SingleLLPJet60;
+   Bool_t L1_HTT200er;
+   Bool_t L1_HTT240_SingleLLPJet70;
+   Bool_t L1_HTT255er;
+   Bool_t L1_HTT280er;
+   Bool_t L1_HTT280er_QuadJet_70_55_40_35_er2p5;
+   Bool_t L1_HTT320er;
+   Bool_t L1_HTT320er_QuadJet_70_55_40_40_er2p5;
+   Bool_t L1_HTT320er_QuadJet_80_60_er2p1_45_40_er2p3;
+   Bool_t L1_HTT320er_QuadJet_80_60_er2p1_50_45_er2p3;
+   Bool_t L1_HTT360er;
+   Bool_t L1_HTT400er;
+   Bool_t L1_HTT450er;
+   Bool_t L1_IsoEG32er2p5_Mt40;
+   Bool_t L1_IsoTau52er2p1_QuadJet36er2p5;
+   Bool_t L1_IsolatedBunch;
+   Bool_t L1_LastBunchInTrain;
+   Bool_t L1_LastCollisionInTrain;
+   Bool_t L1_LooseIsoEG22er2p1_IsoTau26er2p1_dR_Min0p3;
+   Bool_t L1_LooseIsoEG22er2p1_Tau70er2p1_dR_Min0p3;
+   Bool_t L1_LooseIsoEG24er2p1_HTT100er;
+   Bool_t L1_LooseIsoEG24er2p1_IsoTau27er2p1_dR_Min0p3;
+   Bool_t L1_LooseIsoEG26er2p1_HTT100er;
+   Bool_t L1_LooseIsoEG26er2p1_Jet34er2p5_dR_Min0p3;
+   Bool_t L1_LooseIsoEG28er2p1_HTT100er;
+   Bool_t L1_LooseIsoEG28er2p1_Jet34er2p5_dR_Min0p3;
+   Bool_t L1_LooseIsoEG30er2p1_HTT100er;
+   Bool_t L1_LooseIsoEG30er2p1_Jet34er2p5_dR_Min0p3;
+   Bool_t L1_MinimumBiasHF0;
+   Bool_t L1_MinimumBiasHF0_AND_BptxAND;
+   Bool_t L1_Mu10er2p3_Jet32er2p3_dR_Max0p4_DoubleJet32er2p3_dEta_Max1p6;
+   Bool_t L1_Mu12er2p3_Jet40er2p1_dR_Max0p4_DoubleJet40er2p1_dEta_Max1p6;
+   Bool_t L1_Mu12er2p3_Jet40er2p3_dR_Max0p4_DoubleJet40er2p3_dEta_Max1p6;
+   Bool_t L1_Mu18er2p1_Tau24er2p1;
+   Bool_t L1_Mu18er2p1_Tau26er2p1;
+   Bool_t L1_Mu18er2p1_Tau26er2p1_Jet55;
+   Bool_t L1_Mu18er2p1_Tau26er2p1_Jet70;
+   Bool_t L1_Mu20_EG10er2p5;
+   Bool_t L1_Mu22er2p1_IsoTau28er2p1;
+   Bool_t L1_Mu22er2p1_IsoTau30er2p1;
+   Bool_t L1_Mu22er2p1_IsoTau32er2p1;
+   Bool_t L1_Mu22er2p1_IsoTau34er2p1;
+   Bool_t L1_Mu22er2p1_IsoTau36er2p1;
+   Bool_t L1_Mu22er2p1_IsoTau40er2p1;
+   Bool_t L1_Mu22er2p1_Tau70er2p1;
+   Bool_t L1_Mu3_Jet120er2p5_dR_Max0p4;
+   Bool_t L1_Mu3_Jet120er2p5_dR_Max0p8;
+   Bool_t L1_Mu3_Jet16er2p5_dR_Max0p4;
+   Bool_t L1_Mu3_Jet30er2p5;
+   Bool_t L1_Mu3_Jet35er2p5_dR_Max0p4;
+   Bool_t L1_Mu3_Jet60er2p5_dR_Max0p4;
+   Bool_t L1_Mu3_Jet80er2p5_dR_Max0p4;
+   Bool_t L1_Mu3er1p5_Jet100er2p5_ETMHF40;
+   Bool_t L1_Mu3er1p5_Jet100er2p5_ETMHF50;
+   Bool_t L1_Mu5_EG23er2p5;
+   Bool_t L1_Mu5_LooseIsoEG20er2p5;
+   Bool_t L1_Mu6_DoubleEG10er2p5;
+   Bool_t L1_Mu6_DoubleEG12er2p5;
+   Bool_t L1_Mu6_DoubleEG15er2p5;
+   Bool_t L1_Mu6_DoubleEG17er2p5;
+   Bool_t L1_Mu6_HTT240er;
+   Bool_t L1_Mu6_HTT250er;
+   Bool_t L1_Mu7_EG20er2p5;
+   Bool_t L1_Mu7_EG23er2p5;
+   Bool_t L1_Mu7_LooseIsoEG20er2p5;
+   Bool_t L1_Mu7_LooseIsoEG23er2p5;
+   Bool_t L1_NotBptxOR;
+   Bool_t L1_QuadJet60er2p5;
+   Bool_t L1_QuadJet_95_75_65_20_DoubleJet_75_65_er2p5_Jet20_FWD3p0;
+   Bool_t L1_QuadMu0;
+   Bool_t L1_QuadMu0_OQ;
+   Bool_t L1_QuadMu0_SQ;
+   Bool_t L1_SecondBunchInTrain;
+   Bool_t L1_SecondLastBunchInTrain;
+   Bool_t L1_SingleEG10er2p5;
+   Bool_t L1_SingleEG15er2p5;
+   Bool_t L1_SingleEG26er2p5;
+   Bool_t L1_SingleEG28_FWD2p5;
+   Bool_t L1_SingleEG28er1p5;
+   Bool_t L1_SingleEG28er2p1;
+   Bool_t L1_SingleEG28er2p5;
+   Bool_t L1_SingleEG34er2p5;
+   Bool_t L1_SingleEG36er2p5;
+   Bool_t L1_SingleEG38er2p5;
+   Bool_t L1_SingleEG40er2p5;
+   Bool_t L1_SingleEG42er2p5;
+   Bool_t L1_SingleEG45er2p5;
+   Bool_t L1_SingleEG50;
+   Bool_t L1_SingleEG60;
+   Bool_t L1_SingleEG8er2p5;
+   Bool_t L1_SingleIsoEG24er1p5;
+   Bool_t L1_SingleIsoEG24er2p1;
+   Bool_t L1_SingleIsoEG26er1p5;
+   Bool_t L1_SingleIsoEG26er2p1;
+   Bool_t L1_SingleIsoEG26er2p5;
+   Bool_t L1_SingleIsoEG28_FWD2p5;
+   Bool_t L1_SingleIsoEG28er1p5;
+   Bool_t L1_SingleIsoEG28er2p1;
+   Bool_t L1_SingleIsoEG28er2p5;
+   Bool_t L1_SingleIsoEG30er2p1;
+   Bool_t L1_SingleIsoEG30er2p5;
+   Bool_t L1_SingleIsoEG32er2p1;
+   Bool_t L1_SingleIsoEG32er2p5;
+   Bool_t L1_SingleIsoEG34er2p5;
+   Bool_t L1_SingleIsoTau32er2p1;
+   Bool_t L1_SingleJet10erHE;
+   Bool_t L1_SingleJet120;
+   Bool_t L1_SingleJet120_FWD3p0;
+   Bool_t L1_SingleJet120er2p5;
+   Bool_t L1_SingleJet12erHE;
+   Bool_t L1_SingleJet140er2p5;
+   Bool_t L1_SingleJet140er2p5_ETMHF70;
+   Bool_t L1_SingleJet140er2p5_ETMHF80;
+   Bool_t L1_SingleJet140er2p5_ETMHF90;
+   Bool_t L1_SingleJet160er2p5;
+   Bool_t L1_SingleJet180;
+   Bool_t L1_SingleJet180er2p5;
+   Bool_t L1_SingleJet200;
+   Bool_t L1_SingleJet20er2p5_NotBptxOR;
+   Bool_t L1_SingleJet20er2p5_NotBptxOR_3BX;
+   Bool_t L1_SingleJet35;
+   Bool_t L1_SingleJet35_FWD3p0;
+   Bool_t L1_SingleJet35er2p5;
+   Bool_t L1_SingleJet43er2p5_NotBptxOR_3BX;
+   Bool_t L1_SingleJet46er2p5_NotBptxOR_3BX;
+   Bool_t L1_SingleJet60;
+   Bool_t L1_SingleJet60_FWD3p0;
+   Bool_t L1_SingleJet60er2p5;
+   Bool_t L1_SingleJet8erHE;
+   Bool_t L1_SingleJet90;
+   Bool_t L1_SingleJet90_FWD3p0;
+   Bool_t L1_SingleJet90er2p5;
+   Bool_t L1_SingleLooseIsoEG26er1p5;
+   Bool_t L1_SingleLooseIsoEG26er2p5;
+   Bool_t L1_SingleLooseIsoEG28_FWD2p5;
+   Bool_t L1_SingleLooseIsoEG28er1p5;
+   Bool_t L1_SingleLooseIsoEG28er2p1;
+   Bool_t L1_SingleLooseIsoEG28er2p5;
+   Bool_t L1_SingleLooseIsoEG30er1p5;
+   Bool_t L1_SingleLooseIsoEG30er2p5;
+   Bool_t L1_SingleMu0_BMTF;
+   Bool_t L1_SingleMu0_DQ;
+   Bool_t L1_SingleMu0_EMTF;
+   Bool_t L1_SingleMu0_OMTF;
+   Bool_t L1_SingleMu10er1p5;
+   Bool_t L1_SingleMu12_DQ_BMTF;
+   Bool_t L1_SingleMu12_DQ_EMTF;
+   Bool_t L1_SingleMu12_DQ_OMTF;
+   Bool_t L1_SingleMu12er1p5;
+   Bool_t L1_SingleMu14er1p5;
+   Bool_t L1_SingleMu15_DQ;
+   Bool_t L1_SingleMu16er1p5;
+   Bool_t L1_SingleMu18;
+   Bool_t L1_SingleMu18er1p5;
+   Bool_t L1_SingleMu20;
+   Bool_t L1_SingleMu22;
+   Bool_t L1_SingleMu22_BMTF;
+   Bool_t L1_SingleMu22_DQ;
+   Bool_t L1_SingleMu22_EMTF;
+   Bool_t L1_SingleMu22_OMTF;
+   Bool_t L1_SingleMu22_OQ;
+   Bool_t L1_SingleMu25;
+   Bool_t L1_SingleMu3;
+   Bool_t L1_SingleMu5;
+   Bool_t L1_SingleMu6er1p5;
+   Bool_t L1_SingleMu7;
+   Bool_t L1_SingleMu7_DQ;
+   Bool_t L1_SingleMu7er1p5;
+   Bool_t L1_SingleMu8er1p5;
+   Bool_t L1_SingleMu9er1p5;
+   Bool_t L1_SingleMuCosmics;
+   Bool_t L1_SingleMuCosmics_BMTF;
+   Bool_t L1_SingleMuCosmics_EMTF;
+   Bool_t L1_SingleMuCosmics_OMTF;
+   Bool_t L1_SingleMuOpen;
+   Bool_t L1_SingleMuOpen_NotBptxOR;
+   Bool_t L1_SingleMuOpen_er1p1_NotBptxOR_3BX;
+   Bool_t L1_SingleMuOpen_er1p4_NotBptxOR_3BX;
+   Bool_t L1_SingleMuShower_Nominal;
+   Bool_t L1_SingleMuShower_Tight;
+   Bool_t L1_SingleTau120er2p1;
+   Bool_t L1_SingleTau130er2p1;
+   Bool_t L1_SingleTau70er2p1;
+   Bool_t L1_TOTEM_1;
+   Bool_t L1_TOTEM_2;
+   Bool_t L1_TOTEM_3;
+   Bool_t L1_TOTEM_4;
+   Bool_t L1_TripleEG16er2p5;
+   Bool_t L1_TripleEG_16_12_8_er2p5;
+   Bool_t L1_TripleEG_16_15_8_er2p5;
+   Bool_t L1_TripleEG_18_17_8_er2p5;
+   Bool_t L1_TripleEG_18_18_12_er2p5;
+   Bool_t L1_TripleJet_100_80_70_DoubleJet_80_70_er2p5;
+   Bool_t L1_TripleJet_105_85_75_DoubleJet_85_75_er2p5;
+   Bool_t L1_TripleJet_95_75_65_DoubleJet_75_65_er2p5;
+   Bool_t L1_TripleMu0;
+   Bool_t L1_TripleMu0_OQ;
+   Bool_t L1_TripleMu0_SQ;
+   Bool_t L1_TripleMu3;
+   Bool_t L1_TripleMu3_SQ;
+   Bool_t L1_TripleMu_2SQ_1p5SQ_0OQ;
+   Bool_t L1_TripleMu_2SQ_1p5SQ_0OQ_Mass_Max12;
+   Bool_t L1_TripleMu_3SQ_2p5SQ_0OQ_Mass_Max12;
+   Bool_t L1_TripleMu_5SQ_3SQ_0OQ;
+   Bool_t L1_TripleMu_5SQ_3SQ_0OQ_DoubleMu_5_3_SQ_OS_Mass_Max9;
+   Bool_t L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9;
+   Bool_t L1_TripleMu_5_3_3;
+   Bool_t L1_TripleMu_5_3_3_SQ;
+   Bool_t L1_TripleMu_5_3p5_2p5;
+   Bool_t L1_TripleMu_5_3p5_2p5_DoubleMu_5_2p5_OS_Mass_5to17;
+   Bool_t L1_TripleMu_5_3p5_2p5_OQ_DoubleMu_5_2p5_OQ_OS_Mass_5to17;
+   Bool_t L1_TripleMu_5_4_2p5_DoubleMu_5_2p5_OS_Mass_5to17;
+   Bool_t L1_TripleMu_5_5_3;
+   Bool_t L1_UnpairedBunchBptxMinus;
+   Bool_t L1_UnpairedBunchBptxPlus;
+   Bool_t L1_ZeroBias;
+   Bool_t L1_ZeroBias_copy;
+   Bool_t L1_UnprefireableEvent;
+   Bool_t L1Reco_step;
+   Bool_t Flag_HBHENoiseFilter_pRECO;
+   Bool_t Flag_HBHENoiseIsoFilter_pRECO;
+   Bool_t Flag_CSCTightHaloFilter_pRECO;
+   Bool_t Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;
+   Bool_t Flag_CSCTightHalo2015Filter_pRECO;
+   Bool_t Flag_globalTightHalo2016Filter_pRECO;
+   Bool_t Flag_globalSuperTightHalo2016Filter_pRECO;
+   Bool_t Flag_HcalStripHaloFilter_pRECO;
+   Bool_t Flag_hcalLaserEventFilter_pRECO;
+   Bool_t Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;
+   Bool_t Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;
+   Bool_t Flag_ecalBadCalibFilter_pRECO;
+   Bool_t Flag_goodVertices_pRECO;
+   Bool_t Flag_eeBadScFilter_pRECO;
+   Bool_t Flag_ecalLaserCorrFilter_pRECO;
+   Bool_t Flag_trkPOGFilters_pRECO;
+   Bool_t Flag_chargedHadronTrackResolutionFilter_pRECO;
+   Bool_t Flag_muonBadTrackFilter_pRECO;
+   Bool_t Flag_BadChargedCandidateFilter_pRECO;
+   Bool_t Flag_BadPFMuonFilter_pRECO;
+   Bool_t Flag_BadPFMuonDzFilter_pRECO;
+   Bool_t Flag_hfNoisyHitsFilter_pRECO;
+   Bool_t Flag_BadChargedCandidateSummer16Filter_pRECO;
+   Bool_t Flag_BadPFMuonSummer16Filter_pRECO;
+   Bool_t Flag_trkPOG_manystripclus53X_pRECO;
+   Bool_t Flag_trkPOG_toomanystripclus53X_pRECO;
+   Bool_t Flag_trkPOG_logErrorTooManyClusters_pRECO;
+   Bool_t Flag_METFilters_pRECO;
+   Bool_t HLTriggerFirstPath;
+   Bool_t HLT_AK8PFJet360_TrimMass30;
+   Bool_t HLT_AK8PFJet380_TrimMass30;
+   Bool_t HLT_AK8PFJet400_TrimMass30;
+   Bool_t HLT_AK8PFJet420_TrimMass30;
+   Bool_t HLT_AK8PFJet400_MassSD30;
+   Bool_t HLT_AK8PFJet420_MassSD30;
+   Bool_t HLT_AK8PFJet450_MassSD30;
+   Bool_t HLT_AK8DiPFJet250_250_MassSD30;
+   Bool_t HLT_AK8DiPFJet250_250_MassSD50;
+   Bool_t HLT_AK8DiPFJet260_260_MassSD30;
+   Bool_t HLT_AK8DiPFJet270_270_MassSD30;
+   Bool_t HLT_AK8PFHT750_TrimMass50;
+   Bool_t HLT_AK8PFHT800_TrimMass50;
+   Bool_t HLT_AK8PFHT850_TrimMass50;
+   Bool_t HLT_AK8PFHT900_TrimMass50;
+   Bool_t HLT_CaloJet500_NoJetID;
+   Bool_t HLT_CaloJet550_NoJetID;
+   Bool_t HLT_DoubleMu5_Upsilon_DoubleEle3_CaloIdL_TrackIdL;
+   Bool_t HLT_DoubleMu3_DoubleEle7p5_CaloIdL_TrackIdL_Upsilon;
+   Bool_t HLT_Trimuon5_3p5_2_Upsilon_Muon;
+   Bool_t HLT_TrimuonOpen_5_3p5_2_Upsilon_Muon;
+   Bool_t HLT_DoubleEle25_CaloIdL_MW;
+   Bool_t HLT_DoubleEle27_CaloIdL_MW;
+   Bool_t HLT_DoubleEle33_CaloIdL_MW;
+   Bool_t HLT_DoubleEle24_eta2p1_WPTight_Gsf;
+   Bool_t HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350;
+   Bool_t HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350;
+   Bool_t HLT_Mu27_Ele37_CaloIdL_MW;
+   Bool_t HLT_Mu37_Ele27_CaloIdL_MW;
+   Bool_t HLT_Mu37_TkMu27;
+   Bool_t HLT_DoubleMu4_3_Bs;
+   Bool_t HLT_DoubleMu4_3_Jpsi;
+   Bool_t HLT_DoubleMu4_3_LowMass;
+   Bool_t HLT_DoubleMu4_LowMass_Displaced;
+   Bool_t HLT_Mu0_L1DoubleMu;
+   Bool_t HLT_Mu4_L1DoubleMu;
+   Bool_t HLT_DoubleMu4_3_Photon4_BsToMMG;
+   Bool_t HLT_DoubleMu4_3_Displaced_Photon4_BsToMMG;
+   Bool_t HLT_DoubleMu3_Trk_Tau3mu;
+   Bool_t HLT_DoubleMu3_TkMu_DsTau3Mu;
+   Bool_t HLT_DoubleMu4_Mass3p8_DZ_PFHT350;
+   Bool_t HLT_DoubleMu4_MuMuTrk_Displaced;
+   Bool_t HLT_Mu3_PFJet40;
+   Bool_t HLT_Mu7p5_L2Mu2_Jpsi;
+   Bool_t HLT_Mu7p5_L2Mu2_Upsilon;
+   Bool_t HLT_Mu3_L1SingleMu5orSingleMu7;
+   Bool_t HLT_DoublePhoton33_CaloIdL;
+   Bool_t HLT_DoublePhoton70;
+   Bool_t HLT_DoublePhoton85;
+   Bool_t HLT_Ele15_WPLoose_Gsf;
+   Bool_t HLT_Ele20_WPLoose_Gsf;
+   Bool_t HLT_DiEle27_WPTightCaloOnly_L1DoubleEG;
+   Bool_t HLT_Ele27_WPTight_Gsf;
+   Bool_t HLT_Ele28_WPTight_Gsf;
+   Bool_t HLT_Ele30_WPTight_Gsf;
+   Bool_t HLT_Ele32_WPTight_Gsf;
+   Bool_t HLT_Ele35_WPTight_Gsf;
+   Bool_t HLT_Ele35_WPTight_Gsf_L1EGMT;
+   Bool_t HLT_Ele38_WPTight_Gsf;
+   Bool_t HLT_Ele40_WPTight_Gsf;
+   Bool_t HLT_Ele32_WPTight_Gsf_L1DoubleEG;
+   Bool_t HLT_HT300_Beamspot;
+   Bool_t HLT_ZeroBias_Beamspot;
+   Bool_t HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1;
+   Bool_t HLT_IsoMu20;
+   Bool_t HLT_IsoMu24;
+   Bool_t HLT_IsoMu24_eta2p1;
+   Bool_t HLT_IsoMu27;
+   Bool_t HLT_UncorrectedJetE30_NoBPTX;
+   Bool_t HLT_UncorrectedJetE30_NoBPTX3BX;
+   Bool_t HLT_UncorrectedJetE60_NoBPTX3BX;
+   Bool_t HLT_UncorrectedJetE70_NoBPTX3BX;
+   Bool_t HLT_L1SingleMu18;
+   Bool_t HLT_L1SingleMu25;
+   Bool_t HLT_L1SingleMuCosmics;
+   Bool_t HLT_L2Mu10_NoVertex_NoBPTX3BX;
+   Bool_t HLT_L2Mu10_NoVertex_NoBPTX;
+   Bool_t HLT_L2Mu45_NoVertex_3Sta_NoBPTX3BX;
+   Bool_t HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX;
+   Bool_t HLT_L2Mu23NoVtx_2Cha;
+   Bool_t HLT_L2Mu23NoVtx_2Cha_CosmicSeed;
+   Bool_t HLT_DoubleL2Mu30NoVtx_2Cha_CosmicSeed_Eta2p4;
+   Bool_t HLT_DoubleL2Mu30NoVtx_2Cha_Eta2p4;
+   Bool_t HLT_DoubleL2Mu50;
+   Bool_t HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed;
+   Bool_t HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed;
+   Bool_t HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_Eta2p4;
+   Bool_t HLT_DoubleL2Mu23NoVtx_2Cha;
+   Bool_t HLT_DoubleL2Mu25NoVtx_2Cha;
+   Bool_t HLT_DoubleL2Mu25NoVtx_2Cha_Eta2p4;
+   Bool_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;
+   Bool_t HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL;
+   Bool_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;
+   Bool_t HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ;
+   Bool_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8;
+   Bool_t HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8;
+   Bool_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8;
+   Bool_t HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8;
+   Bool_t HLT_Mu25_TkMu0_Onia;
+   Bool_t HLT_Mu30_TkMu0_Psi;
+   Bool_t HLT_Mu30_TkMu0_Upsilon;
+   Bool_t HLT_Mu20_TkMu0_Phi;
+   Bool_t HLT_Mu25_TkMu0_Phi;
+   Bool_t HLT_Mu15;
+   Bool_t HLT_Mu20;
+   Bool_t HLT_Mu27;
+   Bool_t HLT_Mu50;
+   Bool_t HLT_Mu55;
+   Bool_t HLT_CascadeMu100;
+   Bool_t HLT_HighPtTkMu100;
+   Bool_t HLT_DiPFJetAve40;
+   Bool_t HLT_DiPFJetAve60;
+   Bool_t HLT_DiPFJetAve80;
+   Bool_t HLT_DiPFJetAve140;
+   Bool_t HLT_DiPFJetAve200;
+   Bool_t HLT_DiPFJetAve260;
+   Bool_t HLT_DiPFJetAve320;
+   Bool_t HLT_DiPFJetAve400;
+   Bool_t HLT_DiPFJetAve500;
+   Bool_t HLT_DiPFJetAve60_HFJEC;
+   Bool_t HLT_DiPFJetAve80_HFJEC;
+   Bool_t HLT_DiPFJetAve100_HFJEC;
+   Bool_t HLT_DiPFJetAve160_HFJEC;
+   Bool_t HLT_DiPFJetAve220_HFJEC;
+   Bool_t HLT_DiPFJetAve300_HFJEC;
+   Bool_t HLT_AK8PFJet40;
+   Bool_t HLT_AK8PFJet60;
+   Bool_t HLT_AK8PFJet80;
+   Bool_t HLT_AK8PFJet140;
+   Bool_t HLT_AK8PFJet200;
+   Bool_t HLT_AK8PFJet260;
+   Bool_t HLT_AK8PFJet320;
+   Bool_t HLT_AK8PFJet400;
+   Bool_t HLT_AK8PFJet450;
+   Bool_t HLT_AK8PFJet500;
+   Bool_t HLT_AK8PFJet550;
+   Bool_t HLT_PFJet40;
+   Bool_t HLT_PFJet60;
+   Bool_t HLT_PFJet80;
+   Bool_t HLT_PFJet140;
+   Bool_t HLT_PFJet200;
+   Bool_t HLT_PFJet260;
+   Bool_t HLT_PFJet320;
+   Bool_t HLT_PFJet400;
+   Bool_t HLT_PFJet450;
+   Bool_t HLT_PFJet500;
+   Bool_t HLT_PFJet550;
+   Bool_t HLT_PFJetFwd15;
+   Bool_t HLT_PFJetFwd25;
+   Bool_t HLT_PFJetFwd40;
+   Bool_t HLT_PFJetFwd60;
+   Bool_t HLT_PFJetFwd80;
+   Bool_t HLT_PFJetFwd140;
+   Bool_t HLT_PFJetFwd200;
+   Bool_t HLT_PFJetFwd260;
+   Bool_t HLT_PFJetFwd320;
+   Bool_t HLT_PFJetFwd400;
+   Bool_t HLT_PFJetFwd450;
+   Bool_t HLT_PFJetFwd500;
+   Bool_t HLT_AK8PFJetFwd15;
+   Bool_t HLT_AK8PFJetFwd25;
+   Bool_t HLT_AK8PFJetFwd40;
+   Bool_t HLT_AK8PFJetFwd60;
+   Bool_t HLT_AK8PFJetFwd80;
+   Bool_t HLT_AK8PFJetFwd140;
+   Bool_t HLT_AK8PFJetFwd200;
+   Bool_t HLT_AK8PFJetFwd260;
+   Bool_t HLT_AK8PFJetFwd320;
+   Bool_t HLT_AK8PFJetFwd400;
+   Bool_t HLT_AK8PFJetFwd450;
+   Bool_t HLT_AK8PFJetFwd500;
+   Bool_t HLT_PFHT180;
+   Bool_t HLT_PFHT250;
+   Bool_t HLT_PFHT370;
+   Bool_t HLT_PFHT430;
+   Bool_t HLT_PFHT510;
+   Bool_t HLT_PFHT590;
+   Bool_t HLT_PFHT680;
+   Bool_t HLT_PFHT780;
+   Bool_t HLT_PFHT890;
+   Bool_t HLT_PFHT1050;
+   Bool_t HLT_PFHT500_PFMET100_PFMHT100_IDTight;
+   Bool_t HLT_PFHT500_PFMET110_PFMHT110_IDTight;
+   Bool_t HLT_PFHT700_PFMET85_PFMHT85_IDTight;
+   Bool_t HLT_PFHT800_PFMET75_PFMHT75_IDTight;
+   Bool_t HLT_PFMET110_PFMHT110_IDTight;
+   Bool_t HLT_PFMET120_PFMHT120_IDTight;
+   Bool_t HLT_PFMET130_PFMHT130_IDTight;
+   Bool_t HLT_PFMET140_PFMHT140_IDTight;
+   Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60;
+   Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
+   Bool_t HLT_PFMETTypeOne120_PFMHT120_IDTight_PFHT60;
+   Bool_t HLT_PFMETTypeOne110_PFMHT110_IDTight;
+   Bool_t HLT_PFMETTypeOne120_PFMHT120_IDTight;
+   Bool_t HLT_PFMETTypeOne130_PFMHT130_IDTight;
+   Bool_t HLT_PFMETTypeOne140_PFMHT140_IDTight;
+   Bool_t HLT_PFMETNoMu110_PFMHTNoMu110_IDTight;
+   Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
+   Bool_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight;
+   Bool_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight;
+   Bool_t HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_FilterHF;
+   Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_FilterHF;
+   Bool_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_FilterHF;
+   Bool_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_FilterHF;
+   Bool_t HLT_L1ETMHadSeeds;
+   Bool_t HLT_CaloMHT90;
+   Bool_t HLT_CaloMET90_NotCleaned;
+   Bool_t HLT_CaloMET350_NotCleaned;
+   Bool_t HLT_PFMET200_NotCleaned;
+   Bool_t HLT_PFMET250_NotCleaned;
+   Bool_t HLT_PFMET300_NotCleaned;
+   Bool_t HLT_PFMET200_BeamHaloCleaned;
+   Bool_t HLT_PFMETTypeOne200_BeamHaloCleaned;
+   Bool_t HLT_MET105_IsoTrk50;
+   Bool_t HLT_MET120_IsoTrk50;
+   Bool_t HLT_SingleJet30_Mu12_SinglePFJet40;
+   Bool_t HLT_Mu12eta2p3;
+   Bool_t HLT_Mu12eta2p3_PFJet40;
+   Bool_t HLT_Mu12_DoublePFJets40_PFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets100_PFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets200_PFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets350_PFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets40_PFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets100_PFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets200_PFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets350_PFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepCSV_p71;
+   Bool_t HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepCSV_p71;
+   Bool_t HLT_Mu12_DoublePFJets40_PFBTagDeepJet_p71;
+   Bool_t HLT_Mu12_DoublePFJets100_PFBTagDeepJet_p71;
+   Bool_t HLT_Mu12_DoublePFJets200_PFBTagDeepJet_p71;
+   Bool_t HLT_Mu12_DoublePFJets350_PFBTagDeepJet_p71;
+   Bool_t HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepJet_p71;
+   Bool_t HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets40_PFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets100_PFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets200_PFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets350_PFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepJet_p71;
+   Bool_t HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepJet_p71;
+   Bool_t HLT_Photon300_NoHE;
+   Bool_t HLT_Mu8_TrkIsoVVL;
+   Bool_t HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ;
+   Bool_t HLT_Mu8_DiEle12_CaloIdL_TrackIdL;
+   Bool_t HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ;
+   Bool_t HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
+   Bool_t HLT_Mu17_TrkIsoVVL;
+   Bool_t HLT_Mu19_TrkIsoVVL;
+   Bool_t HLT_BTagMu_AK4DiJet20_Mu5;
+   Bool_t HLT_BTagMu_AK4DiJet40_Mu5;
+   Bool_t HLT_BTagMu_AK4DiJet70_Mu5;
+   Bool_t HLT_BTagMu_AK4DiJet110_Mu5;
+   Bool_t HLT_BTagMu_AK4DiJet170_Mu5;
+   Bool_t HLT_BTagMu_AK4Jet300_Mu5;
+   Bool_t HLT_BTagMu_AK8DiJet170_Mu5;
+   Bool_t HLT_BTagMu_AK8Jet170_DoubleMu5;
+   Bool_t HLT_BTagMu_AK8Jet300_Mu5;
+   Bool_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
+   Bool_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL;
+   Bool_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;
+   Bool_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;
+   Bool_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;
+   Bool_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;
+   Bool_t HLT_Photon20;
+   Bool_t HLT_Photon33;
+   Bool_t HLT_Photon50;
+   Bool_t HLT_Photon75;
+   Bool_t HLT_Photon90;
+   Bool_t HLT_Photon120;
+   Bool_t HLT_Photon150;
+   Bool_t HLT_Photon175;
+   Bool_t HLT_Photon200;
+   Bool_t HLT_Photon30EB_TightID_TightIso;
+   Bool_t HLT_Photon110EB_TightID_TightIso;
+   Bool_t HLT_Photon100EBHE10;
+   Bool_t HLT_Photon50_R9Id90_HE10_IsoM;
+   Bool_t HLT_Photon75_R9Id90_HE10_IsoM;
+   Bool_t HLT_Photon90_R9Id90_HE10_IsoM;
+   Bool_t HLT_Photon120_R9Id90_HE10_IsoM;
+   Bool_t HLT_Photon165_R9Id90_HE10_IsoM;
+   Bool_t HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90;
+   Bool_t HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95;
+   Bool_t HLT_Photon35_TwoProngs35;
+   Bool_t HLT_IsoMu24_TwoProngs35;
+   Bool_t HLT_Dimuon0_Jpsi_L1_NoOS;
+   Bool_t HLT_Dimuon0_Jpsi_NoVertexing_NoOS;
+   Bool_t HLT_Dimuon0_Jpsi;
+   Bool_t HLT_Dimuon0_Jpsi_NoVertexing;
+   Bool_t HLT_Dimuon0_Jpsi_L1_4R_0er1p5R;
+   Bool_t HLT_Dimuon0_Jpsi_NoVertexing_L1_4R_0er1p5R;
+   Bool_t HLT_Dimuon0_Jpsi3p5_Muon2;
+   Bool_t HLT_Dimuon0_Upsilon_L1_4p5;
+   Bool_t HLT_Dimuon0_Upsilon_L1_5;
+   Bool_t HLT_Dimuon0_Upsilon_L1_4p5NoOS;
+   Bool_t HLT_Dimuon0_Upsilon_L1_4p5er2p0;
+   Bool_t HLT_Dimuon0_Upsilon_L1_4p5er2p0M;
+   Bool_t HLT_Dimuon0_Upsilon_NoVertexing;
+   Bool_t HLT_Dimuon0_Upsilon_L1_5M;
+   Bool_t HLT_Dimuon0_LowMass_L1_0er1p5R;
+   Bool_t HLT_Dimuon0_LowMass_L1_0er1p5;
+   Bool_t HLT_Dimuon0_LowMass;
+   Bool_t HLT_Dimuon0_LowMass_L1_4;
+   Bool_t HLT_Dimuon0_LowMass_L1_4R;
+   Bool_t HLT_Dimuon0_LowMass_L1_TM530;
+   Bool_t HLT_Dimuon0_Upsilon_Muon_L1_TM0;
+   Bool_t HLT_Dimuon0_Upsilon_Muon_NoL1Mass;
+   Bool_t HLT_TripleMu_5_3_3_Mass3p8_DZ;
+   Bool_t HLT_TripleMu_10_5_5_DZ;
+   Bool_t HLT_TripleMu_12_10_5;
+   Bool_t HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15;
+   Bool_t HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_Charge1;
+   Bool_t HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15;
+   Bool_t HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1;
+   Bool_t HLT_DoubleMu3_DZ_PFMET50_PFMHT60;
+   Bool_t HLT_DoubleMu3_DZ_PFMET70_PFMHT70;
+   Bool_t HLT_DoubleMu3_DZ_PFMET90_PFMHT90;
+   Bool_t HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass;
+   Bool_t HLT_DoubleMu4_Jpsi_Displaced;
+   Bool_t HLT_DoubleMu4_Jpsi_NoVertexing;
+   Bool_t HLT_DoubleMu4_JpsiTrkTrk_Displaced;
+   Bool_t HLT_DoubleMu4_JpsiTrk_Bc;
+   Bool_t HLT_DoubleMu43NoFiltersNoVtx;
+   Bool_t HLT_DoubleMu48NoFiltersNoVtx;
+   Bool_t HLT_Mu43NoFiltersNoVtx_Photon43_CaloIdL;
+   Bool_t HLT_Mu48NoFiltersNoVtx_Photon48_CaloIdL;
+   Bool_t HLT_Mu38NoFiltersNoVtxDisplaced_Photon38_CaloIdL;
+   Bool_t HLT_Mu43NoFiltersNoVtxDisplaced_Photon43_CaloIdL;
+   Bool_t HLT_HT425;
+   Bool_t HLT_HT430_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT500_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT430_DisplacedDijet60_DisplacedTrack;
+   Bool_t HLT_HT400_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT650_DisplacedDijet60_Inclusive;
+   Bool_t HLT_HT550_DisplacedDijet60_Inclusive;
+   Bool_t HLT_DiJet110_35_Mjj650_PFMET110;
+   Bool_t HLT_DiJet110_35_Mjj650_PFMET120;
+   Bool_t HLT_DiJet110_35_Mjj650_PFMET130;
+   Bool_t HLT_TripleJet110_35_35_Mjj650_PFMET110;
+   Bool_t HLT_TripleJet110_35_35_Mjj650_PFMET120;
+   Bool_t HLT_TripleJet110_35_35_Mjj650_PFMET130;
+   Bool_t HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned;
+   Bool_t HLT_Ele28_eta2p1_WPTight_Gsf_HT150;
+   Bool_t HLT_Ele28_HighEta_SC20_Mass55;
+   Bool_t HLT_Ele15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;
+   Bool_t HLT_Ele15_IsoVVVL_PFHT450_PFMET50;
+   Bool_t HLT_Ele15_IsoVVVL_PFHT450;
+   Bool_t HLT_Ele50_IsoVVVL_PFHT450;
+   Bool_t HLT_Ele15_IsoVVVL_PFHT600;
+   Bool_t HLT_Mu4_TrkIsoVVL_DiPFJet90_40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;
+   Bool_t HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;
+   Bool_t HLT_Mu10_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT350_PFMETNoMu60;
+   Bool_t HLT_Mu15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;
+   Bool_t HLT_Mu15_IsoVVVL_PFHT450_PFMET50;
+   Bool_t HLT_Mu15_IsoVVVL_PFHT450;
+   Bool_t HLT_Mu50_IsoVVVL_PFHT450;
+   Bool_t HLT_Mu15_IsoVVVL_PFHT600;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMET70_PFMHT70_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMET80_PFMHT80_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMET90_PFMHT90_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMET100_PFMHT100_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu70_PFMHTNoMu70_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu80_PFMHTNoMu80_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu90_PFMHTNoMu90_IDTight;
+   Bool_t HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu100_PFMHTNoMu100_IDTight;
+   Bool_t HLT_Dimuon10_PsiPrime_Barrel_Seagulls;
+   Bool_t HLT_Dimuon20_Jpsi_Barrel_Seagulls;
+   Bool_t HLT_Dimuon10_Upsilon_y1p4;
+   Bool_t HLT_Dimuon12_Upsilon_y1p4;
+   Bool_t HLT_Dimuon14_Phi_Barrel_Seagulls;
+   Bool_t HLT_Dimuon25_Jpsi;
+   Bool_t HLT_Dimuon14_PsiPrime;
+   Bool_t HLT_Dimuon14_PsiPrime_noCorrL1;
+   Bool_t HLT_Dimuon18_PsiPrime;
+   Bool_t HLT_Dimuon18_PsiPrime_noCorrL1;
+   Bool_t HLT_Dimuon24_Upsilon_noCorrL1;
+   Bool_t HLT_Dimuon24_Phi_noCorrL1;
+   Bool_t HLT_Dimuon25_Jpsi_noCorrL1;
+   Bool_t HLT_DiMu4_Ele9_CaloIdL_TrackIdL_DZ_Mass3p8;
+   Bool_t HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ;
+   Bool_t HLT_DiMu9_Ele9_CaloIdL_TrackIdL;
+   Bool_t HLT_DoubleIsoMu20_eta2p1;
+   Bool_t HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx;
+   Bool_t HLT_Mu8;
+   Bool_t HLT_Mu17;
+   Bool_t HLT_Mu19;
+   Bool_t HLT_Mu17_Photon30_IsoCaloId;
+   Bool_t HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30;
+   Bool_t HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30;
+   Bool_t HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30;
+   Bool_t HLT_Ele8_CaloIdM_TrackIdM_PFJet30;
+   Bool_t HLT_Ele17_CaloIdM_TrackIdM_PFJet30;
+   Bool_t HLT_Ele23_CaloIdM_TrackIdM_PFJet30;
+   Bool_t HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165;
+   Bool_t HLT_Ele115_CaloIdVT_GsfTrkIdT;
+   Bool_t HLT_Ele135_CaloIdVT_GsfTrkIdT;
+   Bool_t HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5;
+   Bool_t HLT_PFHT330PT30_QuadPFJet_75_60_45_40;
+   Bool_t HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94;
+   Bool_t HLT_PFHT400_SixPFJet32;
+   Bool_t HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59;
+   Bool_t HLT_PFHT450_SixPFJet36;
+   Bool_t HLT_PFHT400_FivePFJet_100_100_60_30_30;
+   Bool_t HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepCSV_4p5;
+   Bool_t HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepCSV_4p5;
+   Bool_t HLT_PFHT350;
+   Bool_t HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_PFHT350MinPFJet15;
+   Bool_t HLT_ECALHT800;
+   Bool_t HLT_DiSC30_18_EIso_AND_HE_Mass70;
+   Bool_t HLT_Physics;
+   Bool_t HLT_Random;
+   Bool_t HLT_ZeroBias;
+   Bool_t HLT_ZeroBias_Alignment;
+   Bool_t HLT_EphemeralZeroBias;
+   Bool_t HLT_EphemeralPhysics;
+   Bool_t HLT_Photon20_HoverELoose;
+   Bool_t HLT_Photon30_HoverELoose;
+   Bool_t HLT_EcalCalibration;
+   Bool_t HLT_HcalCalibration;
+   Bool_t HLT_L1UnpairedBunchBptxMinus;
+   Bool_t HLT_L1UnpairedBunchBptxPlus;
+   Bool_t HLT_L1NotBptxOR;
+   Bool_t HLT_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;
+   Bool_t HLT_CDC_L2cosmic_10_er1p0;
+   Bool_t HLT_CDC_L2cosmic_5p5_er1p0;
+   Bool_t HLT_HcalNZS;
+   Bool_t HLT_HcalPhiSym;
+   Bool_t HLT_HcalIsolatedbunch;
+   Bool_t HLT_IsoTrackHB;
+   Bool_t HLT_IsoTrackHE;
+   Bool_t HLT_ZeroBias_FirstCollisionAfterAbortGap;
+   Bool_t HLT_ZeroBias_IsolatedBunches;
+   Bool_t HLT_ZeroBias_FirstCollisionInTrain;
+   Bool_t HLT_ZeroBias_LastCollisionInTrain;
+   Bool_t HLT_ZeroBias_FirstBXAfterTrain;
+   Bool_t HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;
+   Bool_t HLT_VBF_DoubleMediumDeepTauPFTauHPS20_eta2p1;
+   Bool_t HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3;
+   Bool_t HLT_PFMET100_PFMHT100_IDTight_PFHT60;
+   Bool_t HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60;
+   Bool_t HLT_PFMETTypeOne100_PFMHT100_IDTight_PFHT60;
+   Bool_t HLT_Mu18_Mu9_SameSign;
+   Bool_t HLT_DoubleMu2_Jpsi_DoubleTrk1_Phi1p05;
+   Bool_t HLT_DoubleMu3_DCA_PFMET50_PFMHT60;
+   Bool_t HLT_TripleMu_5_3_3_Mass3p8_DCA;
+   Bool_t HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
+   Bool_t HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
+   Bool_t HLT_QuadPFJet103_88_75_15_PFBTagDeepCSV_1p3_VBF2;
+   Bool_t HLT_QuadPFJet105_88_76_15_PFBTagDeepCSV_1p3_VBF2;
+   Bool_t HLT_QuadPFJet111_90_80_15_PFBTagDeepCSV_1p3_VBF2;
+   Bool_t HLT_QuadPFJet103_88_75_15;
+   Bool_t HLT_QuadPFJet105_88_76_15;
+   Bool_t HLT_QuadPFJet111_90_80_15;
+   Bool_t HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_Mass55;
+   Bool_t HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId;
+   Bool_t HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
+   Bool_t HLT_DoubleMediumDeepTauPFTauHPS35_L2NN_eta2p1;
+   Bool_t HLT_Ele24_eta2p1_WPTight_Gsf_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;
+   Bool_t HLT_IsoMu20_eta2p1_LooseDeepTauPFTauHPS27_eta2p1_CrossL1;
+   Bool_t HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS180_eta2p1;
+   Bool_t HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS35_L2NN_eta2p1_CrossL1;
+   Bool_t HLT_LooseDeepTauPFTauHPS180_L2NN_eta2p1;
+   Bool_t HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepJet_4p5;
+   Bool_t HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepJet_4p5;
+   Bool_t HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepJet_4p5;
+   Bool_t HLT_PFHT400_SixPFJet32_DoublePFBTagDeepJet_2p94;
+   Bool_t HLT_PFHT450_SixPFJet36_PFBTagDeepJet_1p59;
+   Bool_t HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
+   Bool_t HLT_QuadPFJet103_88_75_15_PFBTagDeepJet_1p3_VBF2;
+   Bool_t HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
+   Bool_t HLT_QuadPFJet105_88_76_15_PFBTagDeepJet_1p3_VBF2;
+   Bool_t HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;
+   Bool_t HLT_QuadPFJet111_90_80_15_PFBTagDeepJet_1p3_VBF2;
+   Bool_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepJet_1p5;
+   Bool_t HLT_QuadPFJet70_50_40_30;
+   Bool_t HLT_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;
+   Bool_t HLT_QuadPFJet70_50_40_35_PFBTagParticleNet_2BTagSum0p65;
+   Bool_t HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65;
+   Bool_t HLT_AK8PFJet230_SoftDropMass40;
+   Bool_t HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;
+   Bool_t HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetBB0p35;
+   Bool_t HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetBB0p35;
+   Bool_t HLT_AK8PFJet400_SoftDropMass40;
+   Bool_t HLT_AK8PFJet425_SoftDropMass40;
+   Bool_t HLT_AK8PFJet450_SoftDropMass40;
+   Bool_t HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
+   Bool_t HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
+   Bool_t HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
+   Bool_t HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60;
+   Bool_t HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_CrossL1;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60_CrossL1;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75_CrossL1;
+   Bool_t HLT_DoublePFJets40_Mass500_MediumDeepTauPFTauHPS45_L2NN_MediumDeepTauPFTauHPS20_eta2p1;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS20_eta2p1_SingleL1;
+   Bool_t HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS45_L2NN_eta2p1_CrossL1;
+   Bool_t HLT_DoubleL2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
+   Bool_t HLT_DoubleL2Mu12NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
+   Bool_t HLT_DoubleL2Mu14NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
+   Bool_t HLT_DoubleL3Mu16_10NoVtx_DxyMin0p01cm;
+   Bool_t HLT_DoubleL3Mu18_10NoVtx_DxyMin0p01cm;
+   Bool_t HLT_DoubleL3Mu20_10NoVtx_DxyMin0p01cm;
+   Bool_t HLT_L2Mu10NoVtx_2Cha;
+   Bool_t HLT_L2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
+   Bool_t HLT_L3Mu10NoVtx;
+   Bool_t HLT_L3Mu10NoVtx_DxyMin0p01cm;
+   Bool_t HLT_DoubleL3dTksMu16_10NoVtx_DxyMin0p01cm;
+   Bool_t HLT_L3dTksMu10_NoVtx_DxyMin0p01cm;
+   Bool_t HLT_Mu20NoFiltersNoVtxDisplaced_Photon20_CaloCustomId;
+   Bool_t HLT_DoubleMediumChargedIsoDisplacedPFTauHPS32_Trk1_eta2p1;
+   Bool_t HLT_HT430_DelayedJet40_DoubleDelay0p5nsTrackless;
+   Bool_t HLT_HT430_DelayedJet40_DoubleDelay1nsInclusive;
+   Bool_t HLT_HT430_DelayedJet40_SingleDelay1nsTrackless;
+   Bool_t HLT_HT430_DelayedJet40_SingleDelay2nsInclusive;
+   Bool_t HLT_L1Mu6HT240;
+   Bool_t HLT_Mu6HT240_DisplacedDijet30_Inclusive0PtrkShortSig5;
+   Bool_t HLT_Mu6HT240_DisplacedDijet30_Inclusive1PtrkShortSig5_DisplacedLoose;
+   Bool_t HLT_Mu6HT240_DisplacedDijet35_Inclusive0PtrkShortSig5;
+   Bool_t HLT_Mu6HT240_DisplacedDijet35_Inclusive1PtrkShortSig5_DisplacedLoose;
+   Bool_t HLT_Mu6HT240_DisplacedDijet40_Inclusive0PtrkShortSig5;
+   Bool_t HLT_Mu6HT240_DisplacedDijet40_Inclusive1PtrkShortSig5_DisplacedLoose;
+   Bool_t HLT_HT430_DisplacedDijet30_Inclusive1PtrkShortSig5;
+   Bool_t HLT_HT430_DisplacedDijet35_Inclusive1PtrkShortSig5;
+   Bool_t HLT_HT430_DisplacedDijet40_Inclusive1PtrkShortSig5;
+   Bool_t HLT_CaloMET60_DTCluster50;
+   Bool_t HLT_CaloMET60_DTClusterNoMB1S50;
+   Bool_t HLT_L1MET_DTCluster50;
+   Bool_t HLT_L1MET_DTClusterNoMB1S50;
+   Bool_t HLT_CscCluster_Loose;
+   Bool_t HLT_CscCluster_Medium;
+   Bool_t HLT_CscCluster_Tight;
+   Bool_t HLT_L1CSCShower_DTCluster50;
+   Bool_t HLT_L1CSCShower_DTCluster75;
+   Bool_t HLT_PFMET105_IsoTrk50;
+   Bool_t HLT_PFMET110_PFJet100;
+   Bool_t HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT200_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT200_L1SingleLLPJet_DisplacedDijet60_DisplacedTrack;
+   Bool_t HLT_HT270_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
+   Bool_t HLT_HT320_L1SingleLLPJet_DisplacedDijet60_Inclusive;
+   Bool_t HLT_HT420_L1SingleLLPJet_DisplacedDijet60_Inclusive;
+   Bool_t HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay1nsTrackless;
+   Bool_t HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay2nsInclusive;
+   Bool_t HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay0p5nsTrackless;
+   Bool_t HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay1nsInclusive;
+   Bool_t HLT_HT200_L1SingleLLPJet_DisplacedDijet30_Inclusive1PtrkShortSig5;
+   Bool_t HLT_HT200_L1SingleLLPJet_DisplacedDijet35_Inclusive1PtrkShortSig5;
+   Bool_t HLT_HT200_L1SingleLLPJet_DisplacedDijet40_Inclusive1PtrkShortSig5;
+   Bool_t HLT_DiPhoton10Time1p4ns;
+   Bool_t HLT_DiPhoton10Time1p6ns;
+   Bool_t HLT_DiPhoton10Time1p8ns;
+   Bool_t HLT_DiPhoton10Time2ns;
+   Bool_t HLT_DiPhoton10sminlt0p1;
+   Bool_t HLT_DiPhoton10sminlt0p12;
+   Bool_t HLT_DiPhoton10_CaloIdL;
+   Bool_t HLT_DoubleEle4_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle4p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle5p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle6_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle6p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle7_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle7p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle8_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle8p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle9_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle9p5_eta1p22_mMax6;
+   Bool_t HLT_DoubleEle10_eta1p22_mMax6;
+   Bool_t HLT_Diphoton20_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;
+   Bool_t HLT_Diphoton20_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;
+   Bool_t HLT_Diphoton22_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;
+   Bool_t HLT_Diphoton22_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;
+   Bool_t HLT_ExpressMuons;
+   Bool_t HLT_OnlineMonitorGroup;
+   Bool_t HLT_PPSMaxTracksPerArm1;
+   Bool_t HLT_PPSMaxTracksPerRP4;
+   Bool_t HLTriggerFinalPath;
 
    // List of branches
-   TBranch        *b_run;   //!
-   TBranch        *b_luminosityBlock;   //!
-   TBranch        *b_event;   //!
-   TBranch        *b_bunchCrossing;   //!
-   TBranch        *b_BeamSpot_type;   //!
-   TBranch        *b_BeamSpot_sigmaZ;   //!
-   TBranch        *b_BeamSpot_sigmaZError;   //!
-   TBranch        *b_BeamSpot_z;   //!
-   TBranch        *b_BeamSpot_zError;   //!
-   TBranch        *b_nboostedTau;   //!
-   TBranch        *b_boostedTau_idAntiEle2018;   //!
-   TBranch        *b_boostedTau_idAntiMu;   //!
-   TBranch        *b_boostedTau_idMVAnewDM2017v2;   //!
-   TBranch        *b_boostedTau_idMVAoldDM2017v2;   //!
-   TBranch        *b_boostedTau_jetIdx;   //!
-   TBranch        *b_boostedTau_rawAntiEleCat2018;   //!
-   TBranch        *b_boostedTau_charge;   //!
-   TBranch        *b_boostedTau_decayMode;   //!
-   TBranch        *b_boostedTau_chargedIso;   //!
-   TBranch        *b_boostedTau_eta;   //!
-   TBranch        *b_boostedTau_leadTkDeltaEta;   //!
-   TBranch        *b_boostedTau_leadTkDeltaPhi;   //!
-   TBranch        *b_boostedTau_leadTkPtOverTauPt;   //!
-   TBranch        *b_boostedTau_mass;   //!
-   TBranch        *b_boostedTau_neutralIso;   //!
-   TBranch        *b_boostedTau_phi;   //!
-   TBranch        *b_boostedTau_photonsOutsideSignalCone;   //!
-   TBranch        *b_boostedTau_pt;   //!
-   TBranch        *b_boostedTau_puCorr;   //!
-   TBranch        *b_boostedTau_rawAntiEle2018;   //!
-   TBranch        *b_boostedTau_rawIso;   //!
-   TBranch        *b_boostedTau_rawIsodR03;   //!
-   TBranch        *b_boostedTau_rawMVAnewDM2017v2;   //!
-   TBranch        *b_boostedTau_rawMVAoldDM2017v2;   //!
-   TBranch        *b_CaloMET_phi;   //!
-   TBranch        *b_CaloMET_pt;   //!
-   TBranch        *b_CaloMET_sumEt;   //!
-   TBranch        *b_ChsMET_phi;   //!
-   TBranch        *b_ChsMET_pt;   //!
-   TBranch        *b_ChsMET_sumEt;   //!
-   TBranch        *b_nCorrT1METJet;   //!
-   TBranch        *b_CorrT1METJet_area;   //!
-   TBranch        *b_CorrT1METJet_eta;   //!
-   TBranch        *b_CorrT1METJet_muonSubtrFactor;   //!
-   TBranch        *b_CorrT1METJet_phi;   //!
-   TBranch        *b_CorrT1METJet_rawPt;   //!
-   TBranch        *b_DeepMETResolutionTune_phi;   //!
-   TBranch        *b_DeepMETResolutionTune_pt;   //!
-   TBranch        *b_DeepMETResponseTune_phi;   //!
-   TBranch        *b_DeepMETResponseTune_pt;   //!
-   TBranch        *b_nElectron;   //!
-   TBranch        *b_Electron_seediEtaOriX;   //!
-   TBranch        *b_Electron_convVeto;   //!
-   TBranch        *b_Electron_cutBased;   //!
-   TBranch        *b_Electron_cutBased_HEEP;   //!
-   TBranch        *b_Electron_isPFcand;   //!
-   TBranch        *b_Electron_jetNDauCharged;   //!
-   TBranch        *b_Electron_lostHits;   //!
-   TBranch        *b_Electron_mvaIso_WP80;   //!
-   TBranch        *b_Electron_mvaIso_WP90;   //!
-   TBranch        *b_Electron_mvaNoIso_WP80;   //!
-   TBranch        *b_Electron_mvaNoIso_WP90;   //!
-   TBranch        *b_Electron_seedGain;   //!
-   TBranch        *b_Electron_tightCharge;   //!
-   TBranch        *b_Electron_jetIdx;   //!
-   TBranch        *b_Electron_photonIdx;   //!
-   TBranch        *b_Electron_svIdx;   //!
-   TBranch        *b_Electron_fsrPhotonIdx;   //!
-   TBranch        *b_Electron_charge;   //!
-   TBranch        *b_Electron_pdgId;   //!
-   TBranch        *b_Electron_seediPhiOriY;   //!
-   TBranch        *b_Electron_vidNestedWPBitmap;   //!
-   TBranch        *b_Electron_vidNestedWPBitmapHEEP;   //!
-   TBranch        *b_Electron_deltaEtaSC;   //!
-   TBranch        *b_Electron_dr03EcalRecHitSumEt;   //!
-   TBranch        *b_Electron_dr03HcalDepth1TowerSumEt;   //!
-   TBranch        *b_Electron_dr03TkSumPt;   //!
-   TBranch        *b_Electron_dr03TkSumPtHEEP;   //!
-   TBranch        *b_Electron_dxy;   //!
-   TBranch        *b_Electron_dxyErr;   //!
-   TBranch        *b_Electron_dz;   //!
-   TBranch        *b_Electron_dzErr;   //!
-   TBranch        *b_Electron_eInvMinusPInv;   //!
-   TBranch        *b_Electron_energyErr;   //!
-   TBranch        *b_Electron_eta;   //!
-   TBranch        *b_Electron_hoe;   //!
-   TBranch        *b_Electron_ip3d;   //!
-   TBranch        *b_Electron_jetPtRelv2;   //!
-   TBranch        *b_Electron_jetRelIso;   //!
-   TBranch        *b_Electron_mass;   //!
-   TBranch        *b_Electron_miniPFRelIso_all;   //!
-   TBranch        *b_Electron_miniPFRelIso_chg;   //!
-   TBranch        *b_Electron_mvaHZZIso;   //!
-   TBranch        *b_Electron_mvaIso;   //!
-   TBranch        *b_Electron_mvaNoIso;   //!
-   TBranch        *b_Electron_pfRelIso03_all;   //!
-   TBranch        *b_Electron_pfRelIso03_chg;   //!
-   TBranch        *b_Electron_phi;   //!
-   TBranch        *b_Electron_pt;   //!
-   TBranch        *b_Electron_r9;   //!
-   TBranch        *b_Electron_scEtOverPt;   //!
-   TBranch        *b_Electron_sieie;   //!
-   TBranch        *b_Electron_sip3d;   //!
-   TBranch        *b_Electron_mvaTTH;   //!
-   TBranch        *b_nFatJet;   //!
-   TBranch        *b_FatJet_jetId;   //!
-   TBranch        *b_FatJet_nConstituents;   //!
-   TBranch        *b_FatJet_subJetIdx1;   //!
-   TBranch        *b_FatJet_subJetIdx2;   //!
-   TBranch        *b_FatJet_electronIdx3SJ;   //!
-   TBranch        *b_FatJet_muonIdx3SJ;   //!
-   TBranch        *b_FatJet_area;   //!
-   TBranch        *b_FatJet_btagDDBvLV2;   //!
-   TBranch        *b_FatJet_btagDDCvBV2;   //!
-   TBranch        *b_FatJet_btagDDCvLV2;   //!
-   TBranch        *b_FatJet_btagDeepB;   //!
-   TBranch        *b_FatJet_btagHbb;   //!
-   TBranch        *b_FatJet_eta;   //!
-   TBranch        *b_FatJet_mass;   //!
-   TBranch        *b_FatJet_msoftdrop;   //!
-   TBranch        *b_FatJet_n2b1;   //!
-   TBranch        *b_FatJet_n3b1;   //!
-   TBranch        *b_FatJet_particleNetWithMass_H4qvsQCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_HbbvsQCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_HccvsQCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_QCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_TvsQCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_WvsQCD;   //!
-   TBranch        *b_FatJet_particleNetWithMass_ZvsQCD;   //!
-   TBranch        *b_FatJet_particleNet_QCD;   //!
-   TBranch        *b_FatJet_particleNet_QCD0HF;   //!
-   TBranch        *b_FatJet_particleNet_QCD1HF;   //!
-   TBranch        *b_FatJet_particleNet_QCD2HF;   //!
-   TBranch        *b_FatJet_particleNet_XbbVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XccVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XggVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XqqVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XteVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XtmVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_XttVsQCD;   //!
-   TBranch        *b_FatJet_particleNet_massCorr;   //!
-   TBranch        *b_FatJet_phi;   //!
-   TBranch        *b_FatJet_pt;   //!
-   TBranch        *b_FatJet_rawFactor;   //!
-   TBranch        *b_FatJet_tau1;   //!
-   TBranch        *b_FatJet_tau2;   //!
-   TBranch        *b_FatJet_tau3;   //!
-   TBranch        *b_FatJet_tau4;   //!
-   TBranch        *b_FatJet_lsf3;   //!
-   TBranch        *b_nFsrPhoton;   //!
-   TBranch        *b_FsrPhoton_electronIdx;   //!
-   TBranch        *b_FsrPhoton_muonIdx;   //!
-   TBranch        *b_FsrPhoton_dROverEt2;   //!
-   TBranch        *b_FsrPhoton_eta;   //!
-   TBranch        *b_FsrPhoton_phi;   //!
-   TBranch        *b_FsrPhoton_pt;   //!
-   TBranch        *b_FsrPhoton_relIso03;   //!
-   TBranch        *b_nIsoTrack;   //!
-   TBranch        *b_IsoTrack_isHighPurityTrack;   //!
-   TBranch        *b_IsoTrack_isPFcand;   //!
-   TBranch        *b_IsoTrack_isFromLostTrack;   //!
-   TBranch        *b_IsoTrack_charge;   //!
-   TBranch        *b_IsoTrack_fromPV;   //!
-   TBranch        *b_IsoTrack_pdgId;   //!
-   TBranch        *b_IsoTrack_dxy;   //!
-   TBranch        *b_IsoTrack_dz;   //!
-   TBranch        *b_IsoTrack_eta;   //!
-   TBranch        *b_IsoTrack_pfRelIso03_all;   //!
-   TBranch        *b_IsoTrack_pfRelIso03_chg;   //!
-   TBranch        *b_IsoTrack_phi;   //!
-   TBranch        *b_IsoTrack_pt;   //!
-   TBranch        *b_IsoTrack_miniPFRelIso_all;   //!
-   TBranch        *b_IsoTrack_miniPFRelIso_chg;   //!
-   TBranch        *b_nJet;   //!
-   TBranch        *b_Jet_jetId;   //!
-   TBranch        *b_Jet_nConstituents;   //!
-   TBranch        *b_Jet_nElectrons;   //!
-   TBranch        *b_Jet_nMuons;   //!
-   TBranch        *b_Jet_nSVs;   //!
-   TBranch        *b_Jet_electronIdx1;   //!
-   TBranch        *b_Jet_electronIdx2;   //!
-   TBranch        *b_Jet_muonIdx1;   //!
-   TBranch        *b_Jet_muonIdx2;   //!
-   TBranch        *b_Jet_svIdx1;   //!
-   TBranch        *b_Jet_svIdx2;   //!
-   TBranch        *b_Jet_hfadjacentEtaStripsSize;   //!
-   TBranch        *b_Jet_hfcentralEtaStripSize;   //!
-   TBranch        *b_Jet_PNetRegPtRawCorr;   //!
-   TBranch        *b_Jet_PNetRegPtRawCorrNeutrino;   //!
-   TBranch        *b_Jet_PNetRegPtRawRes;   //!
-   TBranch        *b_Jet_area;   //!
-   TBranch        *b_Jet_btagDeepFlavB;   //!
-   TBranch        *b_Jet_btagDeepFlavCvB;   //!
-   TBranch        *b_Jet_btagDeepFlavCvL;   //!
-   TBranch        *b_Jet_btagDeepFlavQG;   //!
-   TBranch        *b_Jet_btagPNetB;   //!
-   TBranch        *b_Jet_btagPNetCvB;   //!
-   TBranch        *b_Jet_btagPNetCvL;   //!
-   TBranch        *b_Jet_btagPNetQvG;   //!
-   TBranch        *b_Jet_btagPNetTauVJet;   //!
-   TBranch        *b_Jet_btagRobustParTAK4B;   //!
-   TBranch        *b_Jet_btagRobustParTAK4CvB;   //!
-   TBranch        *b_Jet_btagRobustParTAK4CvL;   //!
-   TBranch        *b_Jet_btagRobustParTAK4QG;   //!
-   TBranch        *b_Jet_chEmEF;   //!
-   TBranch        *b_Jet_chHEF;   //!
-   TBranch        *b_Jet_eta;   //!
-   TBranch        *b_Jet_hfsigmaEtaEta;   //!
-   TBranch        *b_Jet_hfsigmaPhiPhi;   //!
-   TBranch        *b_Jet_mass;   //!
-   TBranch        *b_Jet_muEF;   //!
-   TBranch        *b_Jet_muonSubtrFactor;   //!
-   TBranch        *b_Jet_neEmEF;   //!
-   TBranch        *b_Jet_neHEF;   //!
-   TBranch        *b_Jet_phi;   //!
-   TBranch        *b_Jet_pt;   //!
-   TBranch        *b_Jet_rawFactor;   //!
-   TBranch        *b_nLowPtElectron;   //!
-   TBranch        *b_LowPtElectron_convVeto;   //!
-   TBranch        *b_LowPtElectron_convWP;   //!
-   TBranch        *b_LowPtElectron_lostHits;   //!
-   TBranch        *b_LowPtElectron_electronIdx;   //!
-   TBranch        *b_LowPtElectron_photonIdx;   //!
-   TBranch        *b_LowPtElectron_charge;   //!
-   TBranch        *b_LowPtElectron_pdgId;   //!
-   TBranch        *b_LowPtElectron_ID;   //!
-   TBranch        *b_LowPtElectron_convVtxRadius;   //!
-   TBranch        *b_LowPtElectron_deltaEtaSC;   //!
-   TBranch        *b_LowPtElectron_dxy;   //!
-   TBranch        *b_LowPtElectron_dxyErr;   //!
-   TBranch        *b_LowPtElectron_dz;   //!
-   TBranch        *b_LowPtElectron_dzErr;   //!
-   TBranch        *b_LowPtElectron_eInvMinusPInv;   //!
-   TBranch        *b_LowPtElectron_energyErr;   //!
-   TBranch        *b_LowPtElectron_eta;   //!
-   TBranch        *b_LowPtElectron_hoe;   //!
-   TBranch        *b_LowPtElectron_mass;   //!
-   TBranch        *b_LowPtElectron_miniPFRelIso_all;   //!
-   TBranch        *b_LowPtElectron_miniPFRelIso_chg;   //!
-   TBranch        *b_LowPtElectron_phi;   //!
-   TBranch        *b_LowPtElectron_pt;   //!
-   TBranch        *b_LowPtElectron_ptbiased;   //!
-   TBranch        *b_LowPtElectron_r9;   //!
-   TBranch        *b_LowPtElectron_scEtOverPt;   //!
-   TBranch        *b_LowPtElectron_sieie;   //!
-   TBranch        *b_LowPtElectron_unbiased;   //!
-   TBranch        *b_MET_MetUnclustEnUpDeltaX;   //!
-   TBranch        *b_MET_MetUnclustEnUpDeltaY;   //!
-   TBranch        *b_MET_covXX;   //!
-   TBranch        *b_MET_covXY;   //!
-   TBranch        *b_MET_covYY;   //!
-   TBranch        *b_MET_phi;   //!
-   TBranch        *b_MET_pt;   //!
-   TBranch        *b_MET_significance;   //!
-   TBranch        *b_MET_sumEt;   //!
-   TBranch        *b_MET_sumPtUnclustered;   //!
-   TBranch        *b_nProton_multiRP;   //!
-   TBranch        *b_Proton_multiRP_arm;   //!
-   TBranch        *b_Proton_multiRP_t;   //!
-   TBranch        *b_Proton_multiRP_thetaX;   //!
-   TBranch        *b_Proton_multiRP_thetaY;   //!
-   TBranch        *b_Proton_multiRP_time;   //!
-   TBranch        *b_Proton_multiRP_timeUnc;   //!
-   TBranch        *b_Proton_multiRP_xi;   //!
-   TBranch        *b_nMuon;   //!
-   TBranch        *b_Muon_highPtId;   //!
-   TBranch        *b_Muon_highPurity;   //!
-   TBranch        *b_Muon_inTimeMuon;   //!
-   TBranch        *b_Muon_isGlobal;   //!
-   TBranch        *b_Muon_isPFcand;   //!
-   TBranch        *b_Muon_isStandalone;   //!
-   TBranch        *b_Muon_isTracker;   //!
-   TBranch        *b_Muon_jetNDauCharged;   //!
-   TBranch        *b_Muon_looseId;   //!
-   TBranch        *b_Muon_mediumId;   //!
-   TBranch        *b_Muon_mediumPromptId;   //!
-   TBranch        *b_Muon_miniIsoId;   //!
-   TBranch        *b_Muon_multiIsoId;   //!
-   TBranch        *b_Muon_mvaMuID_WP;   //!
-   TBranch        *b_Muon_nStations;   //!
-   TBranch        *b_Muon_nTrackerLayers;   //!
-   TBranch        *b_Muon_pfIsoId;   //!
-   TBranch        *b_Muon_puppiIsoId;   //!
-   TBranch        *b_Muon_softId;   //!
-   TBranch        *b_Muon_softMvaId;   //!
-   TBranch        *b_Muon_tightCharge;   //!
-   TBranch        *b_Muon_tightId;   //!
-   TBranch        *b_Muon_tkIsoId;   //!
-   TBranch        *b_Muon_triggerIdLoose;   //!
-   TBranch        *b_Muon_jetIdx;   //!
-   TBranch        *b_Muon_svIdx;   //!
-   TBranch        *b_Muon_fsrPhotonIdx;   //!
-   TBranch        *b_Muon_charge;   //!
-   TBranch        *b_Muon_pdgId;   //!
-   TBranch        *b_Muon_dxy;   //!
-   TBranch        *b_Muon_dxyErr;   //!
-   TBranch        *b_Muon_dxybs;   //!
-   TBranch        *b_Muon_dz;   //!
-   TBranch        *b_Muon_dzErr;   //!
-   TBranch        *b_Muon_eta;   //!
-   TBranch        *b_Muon_ip3d;   //!
-   TBranch        *b_Muon_jetPtRelv2;   //!
-   TBranch        *b_Muon_jetRelIso;   //!
-   TBranch        *b_Muon_mass;   //!
-   TBranch        *b_Muon_miniPFRelIso_all;   //!
-   TBranch        *b_Muon_miniPFRelIso_chg;   //!
-   TBranch        *b_Muon_mvaMuID;   //!
-   TBranch        *b_Muon_pfRelIso03_all;   //!
-   TBranch        *b_Muon_pfRelIso03_chg;   //!
-   TBranch        *b_Muon_pfRelIso04_all;   //!
-   TBranch        *b_Muon_phi;   //!
-   TBranch        *b_Muon_pt;   //!
-   TBranch        *b_Muon_ptErr;   //!
-   TBranch        *b_Muon_segmentComp;   //!
-   TBranch        *b_Muon_sip3d;   //!
-   TBranch        *b_Muon_softMva;   //!
-   TBranch        *b_Muon_tkRelIso;   //!
-   TBranch        *b_Muon_tunepRelPt;   //!
-   TBranch        *b_Muon_bsConstrainedChi2;   //!
-   TBranch        *b_Muon_bsConstrainedPt;   //!
-   TBranch        *b_Muon_bsConstrainedPtErr;   //!
-   TBranch        *b_Muon_mvaLowPt;   //!
-   TBranch        *b_Muon_mvaTTH;   //!
-   TBranch        *b_nPhoton;   //!
-   TBranch        *b_Photon_seediEtaOriX;   //!
-   TBranch        *b_Photon_cutBased;   //!
-   TBranch        *b_Photon_electronVeto;   //!
-   TBranch        *b_Photon_hasConversionTracks;   //!
-   TBranch        *b_Photon_isScEtaEB;   //!
-   TBranch        *b_Photon_isScEtaEE;   //!
-   TBranch        *b_Photon_mvaID_WP80;   //!
-   TBranch        *b_Photon_mvaID_WP90;   //!
-   TBranch        *b_Photon_pixelSeed;   //!
-   TBranch        *b_Photon_seedGain;   //!
-   TBranch        *b_Photon_electronIdx;   //!
-   TBranch        *b_Photon_jetIdx;   //!
-   TBranch        *b_Photon_seediPhiOriY;   //!
-   TBranch        *b_Photon_vidNestedWPBitmap;   //!
-   TBranch        *b_Photon_ecalPFClusterIso;   //!
-   TBranch        *b_Photon_energyErr;   //!
-   TBranch        *b_Photon_energyRaw;   //!
-   TBranch        *b_Photon_esEffSigmaRR;   //!
-   TBranch        *b_Photon_esEnergyOverRawE;   //!
-   TBranch        *b_Photon_eta;   //!
-   TBranch        *b_Photon_etaWidth;   //!
-   TBranch        *b_Photon_haloTaggerMVAVal;   //!
-   TBranch        *b_Photon_hcalPFClusterIso;   //!
-   TBranch        *b_Photon_hoe;   //!
-   TBranch        *b_Photon_hoe_PUcorr;   //!
-   TBranch        *b_Photon_mvaID;   //!
-   TBranch        *b_Photon_pfChargedIso;   //!
-   TBranch        *b_Photon_pfChargedIsoPFPV;   //!
-   TBranch        *b_Photon_pfChargedIsoWorstVtx;   //!
-   TBranch        *b_Photon_pfPhoIso03;   //!
-   TBranch        *b_Photon_pfRelIso03_all_quadratic;   //!
-   TBranch        *b_Photon_pfRelIso03_chg_quadratic;   //!
-   TBranch        *b_Photon_phi;   //!
-   TBranch        *b_Photon_phiWidth;   //!
-   TBranch        *b_Photon_pt;   //!
-   TBranch        *b_Photon_r9;   //!
-   TBranch        *b_Photon_s4;   //!
-   TBranch        *b_Photon_sieie;   //!
-   TBranch        *b_Photon_sieip;   //!
-   TBranch        *b_Photon_sipip;   //!
-   TBranch        *b_Photon_trkSumPtHollowConeDR03;   //!
-   TBranch        *b_Photon_trkSumPtSolidConeDR04;   //!
-   TBranch        *b_Photon_x_calo;   //!
-   TBranch        *b_Photon_y_calo;   //!
-   TBranch        *b_Photon_z_calo;   //!
-   TBranch        *b_nPPSLocalTrack;   //!
-   TBranch        *b_PPSLocalTrack_multiRPProtonIdx;   //!
-   TBranch        *b_PPSLocalTrack_singleRPProtonIdx;   //!
-   TBranch        *b_PPSLocalTrack_decRPId;   //!
-   TBranch        *b_PPSLocalTrack_rpType;   //!
-   TBranch        *b_PPSLocalTrack_x;   //!
-   TBranch        *b_PPSLocalTrack_y;   //!
-   TBranch        *b_PPSLocalTrack_time;   //!
-   TBranch        *b_PPSLocalTrack_timeUnc;   //!
-   TBranch        *b_PuppiMET_phi;   //!
-   TBranch        *b_PuppiMET_phiJERDown;   //!
-   TBranch        *b_PuppiMET_phiJERUp;   //!
-   TBranch        *b_PuppiMET_phiJESDown;   //!
-   TBranch        *b_PuppiMET_phiJESUp;   //!
-   TBranch        *b_PuppiMET_phiUnclusteredDown;   //!
-   TBranch        *b_PuppiMET_phiUnclusteredUp;   //!
-   TBranch        *b_PuppiMET_pt;   //!
-   TBranch        *b_PuppiMET_ptJERDown;   //!
-   TBranch        *b_PuppiMET_ptJERUp;   //!
-   TBranch        *b_PuppiMET_ptJESDown;   //!
-   TBranch        *b_PuppiMET_ptJESUp;   //!
-   TBranch        *b_PuppiMET_ptUnclusteredDown;   //!
-   TBranch        *b_PuppiMET_ptUnclusteredUp;   //!
-   TBranch        *b_PuppiMET_sumEt;   //!
-   TBranch        *b_RawMET_phi;   //!
-   TBranch        *b_RawMET_pt;   //!
-   TBranch        *b_RawMET_sumEt;   //!
-   TBranch        *b_RawPuppiMET_phi;   //!
-   TBranch        *b_RawPuppiMET_pt;   //!
-   TBranch        *b_RawPuppiMET_sumEt;   //!
-   TBranch        *b_Rho_fixedGridRhoAll;   //!
-   TBranch        *b_Rho_fixedGridRhoFastjetAll;   //!
-   TBranch        *b_Rho_fixedGridRhoFastjetCentral;   //!
-   TBranch        *b_Rho_fixedGridRhoFastjetCentralCalo;   //!
-   TBranch        *b_Rho_fixedGridRhoFastjetCentralChargedPileUp;   //!
-   TBranch        *b_Rho_fixedGridRhoFastjetCentralNeutral;   //!
-   TBranch        *b_nSoftActivityJet;   //!
-   TBranch        *b_SoftActivityJet_eta;   //!
-   TBranch        *b_SoftActivityJet_phi;   //!
-   TBranch        *b_SoftActivityJet_pt;   //!
-   TBranch        *b_SoftActivityJetNjets10;   //!
-   TBranch        *b_SoftActivityJetNjets2;   //!
-   TBranch        *b_SoftActivityJetNjets5;   //!
-   TBranch        *b_SoftActivityJetHT;   //!
-   TBranch        *b_SoftActivityJetHT10;   //!
-   TBranch        *b_SoftActivityJetHT2;   //!
-   TBranch        *b_SoftActivityJetHT5;   //!
-   TBranch        *b_nProton_singleRP;   //!
-   TBranch        *b_Proton_singleRP_decRPId;   //!
-   TBranch        *b_Proton_singleRP_thetaY;   //!
-   TBranch        *b_Proton_singleRP_xi;   //!
-   TBranch        *b_nSubJet;   //!
-   TBranch        *b_SubJet_btagDeepB;   //!
-   TBranch        *b_SubJet_eta;   //!
-   TBranch        *b_SubJet_mass;   //!
-   TBranch        *b_SubJet_n2b1;   //!
-   TBranch        *b_SubJet_n3b1;   //!
-   TBranch        *b_SubJet_phi;   //!
-   TBranch        *b_SubJet_pt;   //!
-   TBranch        *b_SubJet_rawFactor;   //!
-   TBranch        *b_SubJet_tau1;   //!
-   TBranch        *b_SubJet_tau2;   //!
-   TBranch        *b_SubJet_tau3;   //!
-   TBranch        *b_SubJet_tau4;   //!
-   TBranch        *b_nTau;   //!
-   TBranch        *b_Tau_decayMode;   //!
-   TBranch        *b_Tau_idAntiEleDeadECal;   //!
-   TBranch        *b_Tau_idAntiMu;   //!
-   TBranch        *b_Tau_idDecayModeNewDMs;   //!
-   TBranch        *b_Tau_idDecayModeOldDMs;   //!
-   TBranch        *b_Tau_idDeepTau2017v2p1VSe;   //!
-   TBranch        *b_Tau_idDeepTau2017v2p1VSjet;   //!
-   TBranch        *b_Tau_idDeepTau2017v2p1VSmu;   //!
-   TBranch        *b_Tau_idDeepTau2018v2p5VSe;   //!
-   TBranch        *b_Tau_idDeepTau2018v2p5VSjet;   //!
-   TBranch        *b_Tau_idDeepTau2018v2p5VSmu;   //!
-   TBranch        *b_Tau_nSVs;   //!
-   TBranch        *b_Tau_charge;   //!
-   TBranch        *b_Tau_decayModePNet;   //!
-   TBranch        *b_Tau_eleIdx;   //!
-   TBranch        *b_Tau_jetIdx;   //!
-   TBranch        *b_Tau_muIdx;   //!
-   TBranch        *b_Tau_svIdx1;   //!
-   TBranch        *b_Tau_svIdx2;   //!
-   TBranch        *b_Tau_chargedIso;   //!
-   TBranch        *b_Tau_dxy;   //!
-   TBranch        *b_Tau_dz;   //!
-   TBranch        *b_Tau_eta;   //!
-   TBranch        *b_Tau_leadTkDeltaEta;   //!
-   TBranch        *b_Tau_leadTkDeltaPhi;   //!
-   TBranch        *b_Tau_leadTkPtOverTauPt;   //!
-   TBranch        *b_Tau_mass;   //!
-   TBranch        *b_Tau_neutralIso;   //!
-   TBranch        *b_Tau_phi;   //!
-   TBranch        *b_Tau_photonsOutsideSignalCone;   //!
-   TBranch        *b_Tau_probDM0PNet;   //!
-   TBranch        *b_Tau_probDM10PNet;   //!
-   TBranch        *b_Tau_probDM11PNet;   //!
-   TBranch        *b_Tau_probDM1PNet;   //!
-   TBranch        *b_Tau_probDM2PNet;   //!
-   TBranch        *b_Tau_pt;   //!
-   TBranch        *b_Tau_ptCorrPNet;   //!
-   TBranch        *b_Tau_puCorr;   //!
-   TBranch        *b_Tau_qConfPNet;   //!
-   TBranch        *b_Tau_rawDeepTau2017v2p1VSe;   //!
-   TBranch        *b_Tau_rawDeepTau2017v2p1VSjet;   //!
-   TBranch        *b_Tau_rawDeepTau2017v2p1VSmu;   //!
-   TBranch        *b_Tau_rawDeepTau2018v2p5VSe;   //!
-   TBranch        *b_Tau_rawDeepTau2018v2p5VSjet;   //!
-   TBranch        *b_Tau_rawDeepTau2018v2p5VSmu;   //!
-   TBranch        *b_Tau_rawIso;   //!
-   TBranch        *b_Tau_rawIsodR03;   //!
-   TBranch        *b_Tau_rawPNetVSe;   //!
-   TBranch        *b_Tau_rawPNetVSjet;   //!
-   TBranch        *b_Tau_rawPNetVSmu;   //!
-   TBranch        *b_TkMET_phi;   //!
-   TBranch        *b_TkMET_pt;   //!
-   TBranch        *b_TkMET_sumEt;   //!
-   TBranch        *b_nTrigObj;   //!
-   TBranch        *b_TrigObj_l1charge;   //!
-   TBranch        *b_TrigObj_id;   //!
-   TBranch        *b_TrigObj_l1iso;   //!
-   TBranch        *b_TrigObj_filterBits;   //!
-   TBranch        *b_TrigObj_pt;   //!
-   TBranch        *b_TrigObj_eta;   //!
-   TBranch        *b_TrigObj_phi;   //!
-   TBranch        *b_TrigObj_l1pt;   //!
-   TBranch        *b_TrigObj_l1pt_2;   //!
-   TBranch        *b_TrigObj_l2pt;   //!
-   TBranch        *b_nOtherPV;   //!
-   TBranch        *b_OtherPV_z;   //!
-   TBranch        *b_OtherPV_score;   //!
-   TBranch        *b_PV_npvs;   //!
-   TBranch        *b_PV_npvsGood;   //!
-   TBranch        *b_PV_ndof;   //!
-   TBranch        *b_PV_x;   //!
-   TBranch        *b_PV_y;   //!
-   TBranch        *b_PV_z;   //!
-   TBranch        *b_PV_chi2;   //!
-   TBranch        *b_PV_score;   //!
-   TBranch        *b_nSV;   //!
-   TBranch        *b_SV_charge;   //!
-   TBranch        *b_SV_dlen;   //!
-   TBranch        *b_SV_dlenSig;   //!
-   TBranch        *b_SV_dxy;   //!
-   TBranch        *b_SV_dxySig;   //!
-   TBranch        *b_SV_pAngle;   //!
-   TBranch        *b_SV_ntracks;   //!
-   TBranch        *b_SV_chi2;   //!
-   TBranch        *b_SV_eta;   //!
-   TBranch        *b_SV_mass;   //!
-   TBranch        *b_SV_ndof;   //!
-   TBranch        *b_SV_phi;   //!
-   TBranch        *b_SV_pt;   //!
-   TBranch        *b_SV_x;   //!
-   TBranch        *b_SV_y;   //!
-   TBranch        *b_SV_z;   //!
-   TBranch        *b_Flag_HBHENoiseFilter;   //!
-   TBranch        *b_Flag_HBHENoiseIsoFilter;   //!
-   TBranch        *b_Flag_CSCTightHaloFilter;   //!
-   TBranch        *b_Flag_CSCTightHaloTrkMuUnvetoFilter;   //!
-   TBranch        *b_Flag_CSCTightHalo2015Filter;   //!
-   TBranch        *b_Flag_globalTightHalo2016Filter;   //!
-   TBranch        *b_Flag_globalSuperTightHalo2016Filter;   //!
-   TBranch        *b_Flag_HcalStripHaloFilter;   //!
-   TBranch        *b_Flag_hcalLaserEventFilter;   //!
-   TBranch        *b_Flag_EcalDeadCellTriggerPrimitiveFilter;   //!
-   TBranch        *b_Flag_EcalDeadCellBoundaryEnergyFilter;   //!
-   TBranch        *b_Flag_ecalBadCalibFilter;   //!
-   TBranch        *b_Flag_goodVertices;   //!
-   TBranch        *b_Flag_eeBadScFilter;   //!
-   TBranch        *b_Flag_ecalLaserCorrFilter;   //!
-   TBranch        *b_Flag_trkPOGFilters;   //!
-   TBranch        *b_Flag_chargedHadronTrackResolutionFilter;   //!
-   TBranch        *b_Flag_muonBadTrackFilter;   //!
-   TBranch        *b_Flag_BadChargedCandidateFilter;   //!
-   TBranch        *b_Flag_BadPFMuonFilter;   //!
-   TBranch        *b_Flag_BadPFMuonDzFilter;   //!
-   TBranch        *b_Flag_hfNoisyHitsFilter;   //!
-   TBranch        *b_Flag_BadChargedCandidateSummer16Filter;   //!
-   TBranch        *b_Flag_BadPFMuonSummer16Filter;   //!
-   TBranch        *b_Flag_trkPOG_manystripclus53X;   //!
-   TBranch        *b_Flag_trkPOG_toomanystripclus53X;   //!
-   TBranch        *b_Flag_trkPOG_logErrorTooManyClusters;   //!
-   TBranch        *b_Flag_METFilters;   //!
-   TBranch        *b_L1_AlwaysTrue;   //!
-   TBranch        *b_L1_BPTX_AND_Ref1_VME;   //!
-   TBranch        *b_L1_BPTX_AND_Ref3_VME;   //!
-   TBranch        *b_L1_BPTX_AND_Ref4_VME;   //!
-   TBranch        *b_L1_BPTX_BeamGas_B1_VME;   //!
-   TBranch        *b_L1_BPTX_BeamGas_B2_VME;   //!
-   TBranch        *b_L1_BPTX_BeamGas_Ref1_VME;   //!
-   TBranch        *b_L1_BPTX_BeamGas_Ref2_VME;   //!
-   TBranch        *b_L1_BPTX_NotOR_VME;   //!
-   TBranch        *b_L1_BPTX_OR_Ref3_VME;   //!
-   TBranch        *b_L1_BPTX_OR_Ref4_VME;   //!
-   TBranch        *b_L1_BPTX_RefAND_VME;   //!
-   TBranch        *b_L1_BptxMinus;   //!
-   TBranch        *b_L1_BptxOR;   //!
-   TBranch        *b_L1_BptxPlus;   //!
-   TBranch        *b_L1_BptxXOR;   //!
-   TBranch        *b_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;   //!
-   TBranch        *b_L1_DoubleEG10_er1p2_dR_Max0p6;   //!
-   TBranch        *b_L1_DoubleEG10p5_er1p2_dR_Max0p6;   //!
-   TBranch        *b_L1_DoubleEG11_er1p2_dR_Max0p6;   //!
-   TBranch        *b_L1_DoubleEG4_er1p2_dR_Max0p9;   //!
-   TBranch        *b_L1_DoubleEG4p5_er1p2_dR_Max0p9;   //!
-   TBranch        *b_L1_DoubleEG5_er1p2_dR_Max0p9;   //!
-   TBranch        *b_L1_DoubleEG5p5_er1p2_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleEG6_er1p2_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleEG6p5_er1p2_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleEG7_er1p2_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleEG7p5_er1p2_dR_Max0p7;   //!
-   TBranch        *b_L1_DoubleEG8_er1p2_dR_Max0p7;   //!
-   TBranch        *b_L1_DoubleEG8er2p5_HTT260er;   //!
-   TBranch        *b_L1_DoubleEG8er2p5_HTT280er;   //!
-   TBranch        *b_L1_DoubleEG8er2p5_HTT300er;   //!
-   TBranch        *b_L1_DoubleEG8er2p5_HTT320er;   //!
-   TBranch        *b_L1_DoubleEG8er2p5_HTT340er;   //!
-   TBranch        *b_L1_DoubleEG8p5_er1p2_dR_Max0p7;   //!
-   TBranch        *b_L1_DoubleEG9_er1p2_dR_Max0p7;   //!
-   TBranch        *b_L1_DoubleEG9p5_er1p2_dR_Max0p6;   //!
-   TBranch        *b_L1_DoubleEG_15_10_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_20_10_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_22_10_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_25_12_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_25_14_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_27_14_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso16_LooseIso12_er1p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso18_LooseIso12_er1p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso20_10_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso20_LooseIso12_er1p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso22_10_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso22_12_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso22_LooseIso12_er1p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso25_12_er2p5;   //!
-   TBranch        *b_L1_DoubleEG_LooseIso25_LooseIso12_er1p5;   //!
-   TBranch        *b_L1_DoubleIsoTau26er2p1_Jet55_RmOvlp_dR0p5;   //!
-   TBranch        *b_L1_DoubleIsoTau26er2p1_Jet70_RmOvlp_dR0p5;   //!
-   TBranch        *b_L1_DoubleIsoTau28er2p1;   //!
-   TBranch        *b_L1_DoubleIsoTau28er2p1_Mass_Max80;   //!
-   TBranch        *b_L1_DoubleIsoTau28er2p1_Mass_Max90;   //!
-   TBranch        *b_L1_DoubleIsoTau30er2p1;   //!
-   TBranch        *b_L1_DoubleIsoTau30er2p1_Mass_Max80;   //!
-   TBranch        *b_L1_DoubleIsoTau30er2p1_Mass_Max90;   //!
-   TBranch        *b_L1_DoubleIsoTau32er2p1;   //!
-   TBranch        *b_L1_DoubleIsoTau34er2p1;   //!
-   TBranch        *b_L1_DoubleIsoTau35er2p1;   //!
-   TBranch        *b_L1_DoubleIsoTau36er2p1;   //!
-   TBranch        *b_L1_DoubleJet100er2p3_dEta_Max1p6;   //!
-   TBranch        *b_L1_DoubleJet100er2p5;   //!
-   TBranch        *b_L1_DoubleJet112er2p3_dEta_Max1p6;   //!
-   TBranch        *b_L1_DoubleJet120er2p5;   //!
-   TBranch        *b_L1_DoubleJet150er2p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min150_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min200_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min250_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min300_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min330_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet30er2p5_Mass_Min360_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleJet35_Mass_Min450_IsoTau45_RmOvlp;   //!
-   TBranch        *b_L1_DoubleJet35_Mass_Min450_IsoTau45er2p1_RmOvlp_dR0p5;   //!
-   TBranch        *b_L1_DoubleJet40er2p5;   //!
-   TBranch        *b_L1_DoubleJet_100_30_DoubleJet30_Mass_Min620;   //!
-   TBranch        *b_L1_DoubleJet_110_35_DoubleJet35_Mass_Min620;   //!
-   TBranch        *b_L1_DoubleJet_115_40_DoubleJet40_Mass_Min620;   //!
-   TBranch        *b_L1_DoubleJet_115_40_DoubleJet40_Mass_Min620_Jet60TT28;   //!
-   TBranch        *b_L1_DoubleJet_120_45_DoubleJet45_Mass_Min620;   //!
-   TBranch        *b_L1_DoubleJet_120_45_DoubleJet45_Mass_Min620_Jet60TT28;   //!
-   TBranch        *b_L1_DoubleJet_80_30_Mass_Min420_DoubleMu0_SQ;   //!
-   TBranch        *b_L1_DoubleJet_80_30_Mass_Min420_IsoTau40_RmOvlp;   //!
-   TBranch        *b_L1_DoubleJet_80_30_Mass_Min420_Mu8;   //!
-   TBranch        *b_L1_DoubleJet_90_30_DoubleJet30_Mass_Min620;   //!
-   TBranch        *b_L1_DoubleLLPJet40;   //!
-   TBranch        *b_L1_DoubleLooseIsoEG22er2p1;   //!
-   TBranch        *b_L1_DoubleLooseIsoEG24er2p1;   //!
-   TBranch        *b_L1_DoubleMu0;   //!
-   TBranch        *b_L1_DoubleMu0_Mass_Min1;   //!
-   TBranch        *b_L1_DoubleMu0_OQ;   //!
-   TBranch        *b_L1_DoubleMu0_SQ;   //!
-   TBranch        *b_L1_DoubleMu0_SQ_OS;   //!
-   TBranch        *b_L1_DoubleMu0_Upt15_Upt7;   //!
-   TBranch        *b_L1_DoubleMu0_Upt5_Upt5;   //!
-   TBranch        *b_L1_DoubleMu0_Upt6_IP_Min1_Upt4;   //!
-   TBranch        *b_L1_DoubleMu0_dR_Max1p6_Jet90er2p5_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleMu0er1p4_OQ_OS_dEta_Max1p6;   //!
-   TBranch        *b_L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu0er1p5_SQ;   //!
-   TBranch        *b_L1_DoubleMu0er1p5_SQ_OS;   //!
-   TBranch        *b_L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu0er1p5_SQ_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p6;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_OS_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_dEta_Max1p5;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_dEta_Max1p6;   //!
-   TBranch        *b_L1_DoubleMu0er2p0_SQ_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu18er2p1_SQ;   //!
-   TBranch        *b_L1_DoubleMu3_OS_er2p3_Mass_Max14_DoubleEG7p5_er2p1_Mass_Max20;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_ETMHF50_HTT60er;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5_OR_DoubleJet40er2p5;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_ETMHF60_Jet60er2p5;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_HTT220er;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_HTT240er;   //!
-   TBranch        *b_L1_DoubleMu3_SQ_HTT260er;   //!
-   TBranch        *b_L1_DoubleMu3_dR_Max1p6_Jet90er2p5_dR_Max0p8;   //!
-   TBranch        *b_L1_DoubleMu3er2p0_SQ_OS_dR_Max1p4;   //!
-   TBranch        *b_L1_DoubleMu4_SQ_EG9er2p5;   //!
-   TBranch        *b_L1_DoubleMu4_SQ_OS;   //!
-   TBranch        *b_L1_DoubleMu4_SQ_OS_dR_Max1p2;   //!
-   TBranch        *b_L1_DoubleMu4p5_SQ_OS;   //!
-   TBranch        *b_L1_DoubleMu4p5_SQ_OS_dR_Max1p2;   //!
-   TBranch        *b_L1_DoubleMu4p5er2p0_SQ_OS;   //!
-   TBranch        *b_L1_DoubleMu4p5er2p0_SQ_OS_Mass_7to18;   //!
-   TBranch        *b_L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7;   //!
-   TBranch        *b_L1_DoubleMu5_OS_er2p3_Mass_8to14_DoubleEG3er2p1_Mass_Max20;   //!
-   TBranch        *b_L1_DoubleMu5_SQ_EG9er2p5;   //!
-   TBranch        *b_L1_DoubleMu8_SQ;   //!
-   TBranch        *b_L1_DoubleMu9_SQ;   //!
-   TBranch        *b_L1_DoubleMu_12_5;   //!
-   TBranch        *b_L1_DoubleMu_15_5_SQ;   //!
-   TBranch        *b_L1_DoubleMu_15_7;   //!
-   TBranch        *b_L1_DoubleMu_15_7_Mass_Min1;   //!
-   TBranch        *b_L1_DoubleMu_15_7_SQ;   //!
-   TBranch        *b_L1_DoubleTau70er2p1;   //!
-   TBranch        *b_L1_ETM120;   //!
-   TBranch        *b_L1_ETM150;   //!
-   TBranch        *b_L1_ETMHF100;   //!
-   TBranch        *b_L1_ETMHF100_HTT60er;   //!
-   TBranch        *b_L1_ETMHF110;   //!
-   TBranch        *b_L1_ETMHF110_HTT60er;   //!
-   TBranch        *b_L1_ETMHF110_HTT60er_NotSecondBunchInTrain;   //!
-   TBranch        *b_L1_ETMHF120;   //!
-   TBranch        *b_L1_ETMHF120_HTT60er;   //!
-   TBranch        *b_L1_ETMHF120_NotSecondBunchInTrain;   //!
-   TBranch        *b_L1_ETMHF130;   //!
-   TBranch        *b_L1_ETMHF130_HTT60er;   //!
-   TBranch        *b_L1_ETMHF140;   //!
-   TBranch        *b_L1_ETMHF150;   //!
-   TBranch        *b_L1_ETMHF70;   //!
-   TBranch        *b_L1_ETMHF70_HTT60er;   //!
-   TBranch        *b_L1_ETMHF80;   //!
-   TBranch        *b_L1_ETMHF80_HTT60er;   //!
-   TBranch        *b_L1_ETMHF90;   //!
-   TBranch        *b_L1_ETMHF90_HTT60er;   //!
-   TBranch        *b_L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p1;   //!
-   TBranch        *b_L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p6;   //!
-   TBranch        *b_L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p1;   //!
-   TBranch        *b_L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p6;   //!
-   TBranch        *b_L1_ETT1200;   //!
-   TBranch        *b_L1_ETT1600;   //!
-   TBranch        *b_L1_ETT2000;   //!
-   TBranch        *b_L1_FirstBunchAfterTrain;   //!
-   TBranch        *b_L1_FirstBunchBeforeTrain;   //!
-   TBranch        *b_L1_FirstBunchInTrain;   //!
-   TBranch        *b_L1_FirstCollisionInOrbit;   //!
-   TBranch        *b_L1_FirstCollisionInTrain;   //!
-   TBranch        *b_L1_HCAL_LaserMon_Trig;   //!
-   TBranch        *b_L1_HCAL_LaserMon_Veto;   //!
-   TBranch        *b_L1_HTT120_SingleLLPJet40;   //!
-   TBranch        *b_L1_HTT120er;   //!
-   TBranch        *b_L1_HTT160_SingleLLPJet50;   //!
-   TBranch        *b_L1_HTT160er;   //!
-   TBranch        *b_L1_HTT200_SingleLLPJet60;   //!
-   TBranch        *b_L1_HTT200er;   //!
-   TBranch        *b_L1_HTT240_SingleLLPJet70;   //!
-   TBranch        *b_L1_HTT255er;   //!
-   TBranch        *b_L1_HTT280er;   //!
-   TBranch        *b_L1_HTT280er_QuadJet_70_55_40_35_er2p5;   //!
-   TBranch        *b_L1_HTT320er;   //!
-   TBranch        *b_L1_HTT320er_QuadJet_70_55_40_40_er2p5;   //!
-   TBranch        *b_L1_HTT320er_QuadJet_80_60_er2p1_45_40_er2p3;   //!
-   TBranch        *b_L1_HTT320er_QuadJet_80_60_er2p1_50_45_er2p3;   //!
-   TBranch        *b_L1_HTT360er;   //!
-   TBranch        *b_L1_HTT400er;   //!
-   TBranch        *b_L1_HTT450er;   //!
-   TBranch        *b_L1_IsoEG32er2p5_Mt40;   //!
-   TBranch        *b_L1_IsoTau52er2p1_QuadJet36er2p5;   //!
-   TBranch        *b_L1_IsolatedBunch;   //!
-   TBranch        *b_L1_LastBunchInTrain;   //!
-   TBranch        *b_L1_LastCollisionInTrain;   //!
-   TBranch        *b_L1_LooseIsoEG22er2p1_IsoTau26er2p1_dR_Min0p3;   //!
-   TBranch        *b_L1_LooseIsoEG22er2p1_Tau70er2p1_dR_Min0p3;   //!
-   TBranch        *b_L1_LooseIsoEG24er2p1_HTT100er;   //!
-   TBranch        *b_L1_LooseIsoEG24er2p1_IsoTau27er2p1_dR_Min0p3;   //!
-   TBranch        *b_L1_LooseIsoEG26er2p1_HTT100er;   //!
-   TBranch        *b_L1_LooseIsoEG26er2p1_Jet34er2p5_dR_Min0p3;   //!
-   TBranch        *b_L1_LooseIsoEG28er2p1_HTT100er;   //!
-   TBranch        *b_L1_LooseIsoEG28er2p1_Jet34er2p5_dR_Min0p3;   //!
-   TBranch        *b_L1_LooseIsoEG30er2p1_HTT100er;   //!
-   TBranch        *b_L1_LooseIsoEG30er2p1_Jet34er2p5_dR_Min0p3;   //!
-   TBranch        *b_L1_MinimumBiasHF0;   //!
-   TBranch        *b_L1_MinimumBiasHF0_AND_BptxAND;   //!
-   TBranch        *b_L1_Mu10er2p3_Jet32er2p3_dR_Max0p4_DoubleJet32er2p3_dEta_Max1p6;   //!
-   TBranch        *b_L1_Mu12er2p3_Jet40er2p1_dR_Max0p4_DoubleJet40er2p1_dEta_Max1p6;   //!
-   TBranch        *b_L1_Mu12er2p3_Jet40er2p3_dR_Max0p4_DoubleJet40er2p3_dEta_Max1p6;   //!
-   TBranch        *b_L1_Mu18er2p1_Tau24er2p1;   //!
-   TBranch        *b_L1_Mu18er2p1_Tau26er2p1;   //!
-   TBranch        *b_L1_Mu18er2p1_Tau26er2p1_Jet55;   //!
-   TBranch        *b_L1_Mu18er2p1_Tau26er2p1_Jet70;   //!
-   TBranch        *b_L1_Mu20_EG10er2p5;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau28er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau30er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau32er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau34er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau36er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_IsoTau40er2p1;   //!
-   TBranch        *b_L1_Mu22er2p1_Tau70er2p1;   //!
-   TBranch        *b_L1_Mu3_Jet120er2p5_dR_Max0p4;   //!
-   TBranch        *b_L1_Mu3_Jet120er2p5_dR_Max0p8;   //!
-   TBranch        *b_L1_Mu3_Jet16er2p5_dR_Max0p4;   //!
-   TBranch        *b_L1_Mu3_Jet30er2p5;   //!
-   TBranch        *b_L1_Mu3_Jet35er2p5_dR_Max0p4;   //!
-   TBranch        *b_L1_Mu3_Jet60er2p5_dR_Max0p4;   //!
-   TBranch        *b_L1_Mu3_Jet80er2p5_dR_Max0p4;   //!
-   TBranch        *b_L1_Mu3er1p5_Jet100er2p5_ETMHF40;   //!
-   TBranch        *b_L1_Mu3er1p5_Jet100er2p5_ETMHF50;   //!
-   TBranch        *b_L1_Mu5_EG23er2p5;   //!
-   TBranch        *b_L1_Mu5_LooseIsoEG20er2p5;   //!
-   TBranch        *b_L1_Mu6_DoubleEG10er2p5;   //!
-   TBranch        *b_L1_Mu6_DoubleEG12er2p5;   //!
-   TBranch        *b_L1_Mu6_DoubleEG15er2p5;   //!
-   TBranch        *b_L1_Mu6_DoubleEG17er2p5;   //!
-   TBranch        *b_L1_Mu6_HTT240er;   //!
-   TBranch        *b_L1_Mu6_HTT250er;   //!
-   TBranch        *b_L1_Mu7_EG20er2p5;   //!
-   TBranch        *b_L1_Mu7_EG23er2p5;   //!
-   TBranch        *b_L1_Mu7_LooseIsoEG20er2p5;   //!
-   TBranch        *b_L1_Mu7_LooseIsoEG23er2p5;   //!
-   TBranch        *b_L1_NotBptxOR;   //!
-   TBranch        *b_L1_QuadJet60er2p5;   //!
-   TBranch        *b_L1_QuadJet_95_75_65_20_DoubleJet_75_65_er2p5_Jet20_FWD3p0;   //!
-   TBranch        *b_L1_QuadMu0;   //!
-   TBranch        *b_L1_QuadMu0_OQ;   //!
-   TBranch        *b_L1_QuadMu0_SQ;   //!
-   TBranch        *b_L1_SecondBunchInTrain;   //!
-   TBranch        *b_L1_SecondLastBunchInTrain;   //!
-   TBranch        *b_L1_SingleEG10er2p5;   //!
-   TBranch        *b_L1_SingleEG15er2p5;   //!
-   TBranch        *b_L1_SingleEG26er2p5;   //!
-   TBranch        *b_L1_SingleEG28_FWD2p5;   //!
-   TBranch        *b_L1_SingleEG28er1p5;   //!
-   TBranch        *b_L1_SingleEG28er2p1;   //!
-   TBranch        *b_L1_SingleEG28er2p5;   //!
-   TBranch        *b_L1_SingleEG34er2p5;   //!
-   TBranch        *b_L1_SingleEG36er2p5;   //!
-   TBranch        *b_L1_SingleEG38er2p5;   //!
-   TBranch        *b_L1_SingleEG40er2p5;   //!
-   TBranch        *b_L1_SingleEG42er2p5;   //!
-   TBranch        *b_L1_SingleEG45er2p5;   //!
-   TBranch        *b_L1_SingleEG50;   //!
-   TBranch        *b_L1_SingleEG60;   //!
-   TBranch        *b_L1_SingleEG8er2p5;   //!
-   TBranch        *b_L1_SingleIsoEG24er1p5;   //!
-   TBranch        *b_L1_SingleIsoEG24er2p1;   //!
-   TBranch        *b_L1_SingleIsoEG26er1p5;   //!
-   TBranch        *b_L1_SingleIsoEG26er2p1;   //!
-   TBranch        *b_L1_SingleIsoEG26er2p5;   //!
-   TBranch        *b_L1_SingleIsoEG28_FWD2p5;   //!
-   TBranch        *b_L1_SingleIsoEG28er1p5;   //!
-   TBranch        *b_L1_SingleIsoEG28er2p1;   //!
-   TBranch        *b_L1_SingleIsoEG28er2p5;   //!
-   TBranch        *b_L1_SingleIsoEG30er2p1;   //!
-   TBranch        *b_L1_SingleIsoEG30er2p5;   //!
-   TBranch        *b_L1_SingleIsoEG32er2p1;   //!
-   TBranch        *b_L1_SingleIsoEG32er2p5;   //!
-   TBranch        *b_L1_SingleIsoEG34er2p5;   //!
-   TBranch        *b_L1_SingleIsoTau32er2p1;   //!
-   TBranch        *b_L1_SingleJet10erHE;   //!
-   TBranch        *b_L1_SingleJet120;   //!
-   TBranch        *b_L1_SingleJet120_FWD3p0;   //!
-   TBranch        *b_L1_SingleJet120er2p5;   //!
-   TBranch        *b_L1_SingleJet12erHE;   //!
-   TBranch        *b_L1_SingleJet140er2p5;   //!
-   TBranch        *b_L1_SingleJet140er2p5_ETMHF70;   //!
-   TBranch        *b_L1_SingleJet140er2p5_ETMHF80;   //!
-   TBranch        *b_L1_SingleJet140er2p5_ETMHF90;   //!
-   TBranch        *b_L1_SingleJet160er2p5;   //!
-   TBranch        *b_L1_SingleJet180;   //!
-   TBranch        *b_L1_SingleJet180er2p5;   //!
-   TBranch        *b_L1_SingleJet200;   //!
-   TBranch        *b_L1_SingleJet20er2p5_NotBptxOR;   //!
-   TBranch        *b_L1_SingleJet20er2p5_NotBptxOR_3BX;   //!
-   TBranch        *b_L1_SingleJet35;   //!
-   TBranch        *b_L1_SingleJet35_FWD3p0;   //!
-   TBranch        *b_L1_SingleJet35er2p5;   //!
-   TBranch        *b_L1_SingleJet43er2p5_NotBptxOR_3BX;   //!
-   TBranch        *b_L1_SingleJet46er2p5_NotBptxOR_3BX;   //!
-   TBranch        *b_L1_SingleJet60;   //!
-   TBranch        *b_L1_SingleJet60_FWD3p0;   //!
-   TBranch        *b_L1_SingleJet60er2p5;   //!
-   TBranch        *b_L1_SingleJet8erHE;   //!
-   TBranch        *b_L1_SingleJet90;   //!
-   TBranch        *b_L1_SingleJet90_FWD3p0;   //!
-   TBranch        *b_L1_SingleJet90er2p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG26er1p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG26er2p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG28_FWD2p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG28er1p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG28er2p1;   //!
-   TBranch        *b_L1_SingleLooseIsoEG28er2p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG30er1p5;   //!
-   TBranch        *b_L1_SingleLooseIsoEG30er2p5;   //!
-   TBranch        *b_L1_SingleMu0_BMTF;   //!
-   TBranch        *b_L1_SingleMu0_DQ;   //!
-   TBranch        *b_L1_SingleMu0_EMTF;   //!
-   TBranch        *b_L1_SingleMu0_OMTF;   //!
-   TBranch        *b_L1_SingleMu10er1p5;   //!
-   TBranch        *b_L1_SingleMu12_DQ_BMTF;   //!
-   TBranch        *b_L1_SingleMu12_DQ_EMTF;   //!
-   TBranch        *b_L1_SingleMu12_DQ_OMTF;   //!
-   TBranch        *b_L1_SingleMu12er1p5;   //!
-   TBranch        *b_L1_SingleMu14er1p5;   //!
-   TBranch        *b_L1_SingleMu15_DQ;   //!
-   TBranch        *b_L1_SingleMu16er1p5;   //!
-   TBranch        *b_L1_SingleMu18;   //!
-   TBranch        *b_L1_SingleMu18er1p5;   //!
-   TBranch        *b_L1_SingleMu20;   //!
-   TBranch        *b_L1_SingleMu22;   //!
-   TBranch        *b_L1_SingleMu22_BMTF;   //!
-   TBranch        *b_L1_SingleMu22_DQ;   //!
-   TBranch        *b_L1_SingleMu22_EMTF;   //!
-   TBranch        *b_L1_SingleMu22_OMTF;   //!
-   TBranch        *b_L1_SingleMu22_OQ;   //!
-   TBranch        *b_L1_SingleMu25;   //!
-   TBranch        *b_L1_SingleMu3;   //!
-   TBranch        *b_L1_SingleMu5;   //!
-   TBranch        *b_L1_SingleMu6er1p5;   //!
-   TBranch        *b_L1_SingleMu7;   //!
-   TBranch        *b_L1_SingleMu7_DQ;   //!
-   TBranch        *b_L1_SingleMu7er1p5;   //!
-   TBranch        *b_L1_SingleMu8er1p5;   //!
-   TBranch        *b_L1_SingleMu9er1p5;   //!
-   TBranch        *b_L1_SingleMuCosmics;   //!
-   TBranch        *b_L1_SingleMuCosmics_BMTF;   //!
-   TBranch        *b_L1_SingleMuCosmics_EMTF;   //!
-   TBranch        *b_L1_SingleMuCosmics_OMTF;   //!
-   TBranch        *b_L1_SingleMuOpen;   //!
-   TBranch        *b_L1_SingleMuOpen_NotBptxOR;   //!
-   TBranch        *b_L1_SingleMuOpen_er1p1_NotBptxOR_3BX;   //!
-   TBranch        *b_L1_SingleMuOpen_er1p4_NotBptxOR_3BX;   //!
-   TBranch        *b_L1_SingleMuShower_Nominal;   //!
-   TBranch        *b_L1_SingleMuShower_Tight;   //!
-   TBranch        *b_L1_SingleTau120er2p1;   //!
-   TBranch        *b_L1_SingleTau130er2p1;   //!
-   TBranch        *b_L1_SingleTau70er2p1;   //!
-   TBranch        *b_L1_TOTEM_1;   //!
-   TBranch        *b_L1_TOTEM_2;   //!
-   TBranch        *b_L1_TOTEM_3;   //!
-   TBranch        *b_L1_TOTEM_4;   //!
-   TBranch        *b_L1_TripleEG16er2p5;   //!
-   TBranch        *b_L1_TripleEG_16_12_8_er2p5;   //!
-   TBranch        *b_L1_TripleEG_16_15_8_er2p5;   //!
-   TBranch        *b_L1_TripleEG_18_17_8_er2p5;   //!
-   TBranch        *b_L1_TripleEG_18_18_12_er2p5;   //!
-   TBranch        *b_L1_TripleJet_100_80_70_DoubleJet_80_70_er2p5;   //!
-   TBranch        *b_L1_TripleJet_105_85_75_DoubleJet_85_75_er2p5;   //!
-   TBranch        *b_L1_TripleJet_95_75_65_DoubleJet_75_65_er2p5;   //!
-   TBranch        *b_L1_TripleMu0;   //!
-   TBranch        *b_L1_TripleMu0_OQ;   //!
-   TBranch        *b_L1_TripleMu0_SQ;   //!
-   TBranch        *b_L1_TripleMu3;   //!
-   TBranch        *b_L1_TripleMu3_SQ;   //!
-   TBranch        *b_L1_TripleMu_2SQ_1p5SQ_0OQ;   //!
-   TBranch        *b_L1_TripleMu_2SQ_1p5SQ_0OQ_Mass_Max12;   //!
-   TBranch        *b_L1_TripleMu_3SQ_2p5SQ_0OQ_Mass_Max12;   //!
-   TBranch        *b_L1_TripleMu_5SQ_3SQ_0OQ;   //!
-   TBranch        *b_L1_TripleMu_5SQ_3SQ_0OQ_DoubleMu_5_3_SQ_OS_Mass_Max9;   //!
-   TBranch        *b_L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9;   //!
-   TBranch        *b_L1_TripleMu_5_3_3;   //!
-   TBranch        *b_L1_TripleMu_5_3_3_SQ;   //!
-   TBranch        *b_L1_TripleMu_5_3p5_2p5;   //!
-   TBranch        *b_L1_TripleMu_5_3p5_2p5_DoubleMu_5_2p5_OS_Mass_5to17;   //!
-   TBranch        *b_L1_TripleMu_5_3p5_2p5_OQ_DoubleMu_5_2p5_OQ_OS_Mass_5to17;   //!
-   TBranch        *b_L1_TripleMu_5_4_2p5_DoubleMu_5_2p5_OS_Mass_5to17;   //!
-   TBranch        *b_L1_TripleMu_5_5_3;   //!
-   TBranch        *b_L1_UnpairedBunchBptxMinus;   //!
-   TBranch        *b_L1_UnpairedBunchBptxPlus;   //!
-   TBranch        *b_L1_ZeroBias;   //!
-   TBranch        *b_L1_ZeroBias_copy;   //!
-   TBranch        *b_L1_UnprefireableEvent;   //!
-   TBranch        *b_L1Reco_step;   //!
-   TBranch        *b_Flag_HBHENoiseFilter_pRECO;   //!
-   TBranch        *b_Flag_HBHENoiseIsoFilter_pRECO;   //!
-   TBranch        *b_Flag_CSCTightHaloFilter_pRECO;   //!
-   TBranch        *b_Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;   //!
-   TBranch        *b_Flag_CSCTightHalo2015Filter_pRECO;   //!
-   TBranch        *b_Flag_globalTightHalo2016Filter_pRECO;   //!
-   TBranch        *b_Flag_globalSuperTightHalo2016Filter_pRECO;   //!
-   TBranch        *b_Flag_HcalStripHaloFilter_pRECO;   //!
-   TBranch        *b_Flag_hcalLaserEventFilter_pRECO;   //!
-   TBranch        *b_Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;   //!
-   TBranch        *b_Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;   //!
-   TBranch        *b_Flag_ecalBadCalibFilter_pRECO;   //!
-   TBranch        *b_Flag_goodVertices_pRECO;   //!
-   TBranch        *b_Flag_eeBadScFilter_pRECO;   //!
-   TBranch        *b_Flag_ecalLaserCorrFilter_pRECO;   //!
-   TBranch        *b_Flag_trkPOGFilters_pRECO;   //!
-   TBranch        *b_Flag_chargedHadronTrackResolutionFilter_pRECO;   //!
-   TBranch        *b_Flag_muonBadTrackFilter_pRECO;   //!
-   TBranch        *b_Flag_BadChargedCandidateFilter_pRECO;   //!
-   TBranch        *b_Flag_BadPFMuonFilter_pRECO;   //!
-   TBranch        *b_Flag_BadPFMuonDzFilter_pRECO;   //!
-   TBranch        *b_Flag_hfNoisyHitsFilter_pRECO;   //!
-   TBranch        *b_Flag_BadChargedCandidateSummer16Filter_pRECO;   //!
-   TBranch        *b_Flag_BadPFMuonSummer16Filter_pRECO;   //!
-   TBranch        *b_Flag_trkPOG_manystripclus53X_pRECO;   //!
-   TBranch        *b_Flag_trkPOG_toomanystripclus53X_pRECO;   //!
-   TBranch        *b_Flag_trkPOG_logErrorTooManyClusters_pRECO;   //!
-   TBranch        *b_Flag_METFilters_pRECO;   //!
-   TBranch        *b_HLTriggerFirstPath;   //!
-   TBranch        *b_HLT_AK8PFJet360_TrimMass30;   //!
-   TBranch        *b_HLT_AK8PFJet380_TrimMass30;   //!
-   TBranch        *b_HLT_AK8PFJet400_TrimMass30;   //!
-   TBranch        *b_HLT_AK8PFJet420_TrimMass30;   //!
-   TBranch        *b_HLT_AK8PFJet400_MassSD30;   //!
-   TBranch        *b_HLT_AK8PFJet420_MassSD30;   //!
-   TBranch        *b_HLT_AK8PFJet450_MassSD30;   //!
-   TBranch        *b_HLT_AK8DiPFJet250_250_MassSD30;   //!
-   TBranch        *b_HLT_AK8DiPFJet250_250_MassSD50;   //!
-   TBranch        *b_HLT_AK8DiPFJet260_260_MassSD30;   //!
-   TBranch        *b_HLT_AK8DiPFJet270_270_MassSD30;   //!
-   TBranch        *b_HLT_AK8PFHT750_TrimMass50;   //!
-   TBranch        *b_HLT_AK8PFHT800_TrimMass50;   //!
-   TBranch        *b_HLT_AK8PFHT850_TrimMass50;   //!
-   TBranch        *b_HLT_AK8PFHT900_TrimMass50;   //!
-   TBranch        *b_HLT_CaloJet500_NoJetID;   //!
-   TBranch        *b_HLT_CaloJet550_NoJetID;   //!
-   TBranch        *b_HLT_DoubleMu5_Upsilon_DoubleEle3_CaloIdL_TrackIdL;   //!
-   TBranch        *b_HLT_DoubleMu3_DoubleEle7p5_CaloIdL_TrackIdL_Upsilon;   //!
-   TBranch        *b_HLT_Trimuon5_3p5_2_Upsilon_Muon;   //!
-   TBranch        *b_HLT_TrimuonOpen_5_3p5_2_Upsilon_Muon;   //!
-   TBranch        *b_HLT_DoubleEle25_CaloIdL_MW;   //!
-   TBranch        *b_HLT_DoubleEle27_CaloIdL_MW;   //!
-   TBranch        *b_HLT_DoubleEle33_CaloIdL_MW;   //!
-   TBranch        *b_HLT_DoubleEle24_eta2p1_WPTight_Gsf;   //!
-   TBranch        *b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350;   //!
-   TBranch        *b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350;   //!
-   TBranch        *b_HLT_Mu27_Ele37_CaloIdL_MW;   //!
-   TBranch        *b_HLT_Mu37_Ele27_CaloIdL_MW;   //!
-   TBranch        *b_HLT_Mu37_TkMu27;   //!
-   TBranch        *b_HLT_DoubleMu4_3_Bs;   //!
-   TBranch        *b_HLT_DoubleMu4_3_Jpsi;   //!
-   TBranch        *b_HLT_DoubleMu4_3_LowMass;   //!
-   TBranch        *b_HLT_DoubleMu4_LowMass_Displaced;   //!
-   TBranch        *b_HLT_Mu0_L1DoubleMu;   //!
-   TBranch        *b_HLT_Mu4_L1DoubleMu;   //!
-   TBranch        *b_HLT_DoubleMu4_3_Photon4_BsToMMG;   //!
-   TBranch        *b_HLT_DoubleMu4_3_Displaced_Photon4_BsToMMG;   //!
-   TBranch        *b_HLT_DoubleMu3_Trk_Tau3mu;   //!
-   TBranch        *b_HLT_DoubleMu3_TkMu_DsTau3Mu;   //!
-   TBranch        *b_HLT_DoubleMu4_Mass3p8_DZ_PFHT350;   //!
-   TBranch        *b_HLT_DoubleMu4_MuMuTrk_Displaced;   //!
-   TBranch        *b_HLT_Mu3_PFJet40;   //!
-   TBranch        *b_HLT_Mu7p5_L2Mu2_Jpsi;   //!
-   TBranch        *b_HLT_Mu7p5_L2Mu2_Upsilon;   //!
-   TBranch        *b_HLT_Mu3_L1SingleMu5orSingleMu7;   //!
-   TBranch        *b_HLT_DoublePhoton33_CaloIdL;   //!
-   TBranch        *b_HLT_DoublePhoton70;   //!
-   TBranch        *b_HLT_DoublePhoton85;   //!
-   TBranch        *b_HLT_Ele15_WPLoose_Gsf;   //!
-   TBranch        *b_HLT_Ele20_WPLoose_Gsf;   //!
-   TBranch        *b_HLT_DiEle27_WPTightCaloOnly_L1DoubleEG;   //!
-   TBranch        *b_HLT_Ele27_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele28_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele30_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele32_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele35_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele35_WPTight_Gsf_L1EGMT;   //!
-   TBranch        *b_HLT_Ele38_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele40_WPTight_Gsf;   //!
-   TBranch        *b_HLT_Ele32_WPTight_Gsf_L1DoubleEG;   //!
-   TBranch        *b_HLT_HT300_Beamspot;   //!
-   TBranch        *b_HLT_ZeroBias_Beamspot;   //!
-   TBranch        *b_HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu20;   //!
-   TBranch        *b_HLT_IsoMu24;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1;   //!
-   TBranch        *b_HLT_IsoMu27;   //!
-   TBranch        *b_HLT_UncorrectedJetE30_NoBPTX;   //!
-   TBranch        *b_HLT_UncorrectedJetE30_NoBPTX3BX;   //!
-   TBranch        *b_HLT_UncorrectedJetE60_NoBPTX3BX;   //!
-   TBranch        *b_HLT_UncorrectedJetE70_NoBPTX3BX;   //!
-   TBranch        *b_HLT_L1SingleMu18;   //!
-   TBranch        *b_HLT_L1SingleMu25;   //!
-   TBranch        *b_HLT_L1SingleMuCosmics;   //!
-   TBranch        *b_HLT_L2Mu10_NoVertex_NoBPTX3BX;   //!
-   TBranch        *b_HLT_L2Mu10_NoVertex_NoBPTX;   //!
-   TBranch        *b_HLT_L2Mu45_NoVertex_3Sta_NoBPTX3BX;   //!
-   TBranch        *b_HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX;   //!
-   TBranch        *b_HLT_L2Mu23NoVtx_2Cha;   //!
-   TBranch        *b_HLT_L2Mu23NoVtx_2Cha_CosmicSeed;   //!
-   TBranch        *b_HLT_DoubleL2Mu30NoVtx_2Cha_CosmicSeed_Eta2p4;   //!
-   TBranch        *b_HLT_DoubleL2Mu30NoVtx_2Cha_Eta2p4;   //!
-   TBranch        *b_HLT_DoubleL2Mu50;   //!
-   TBranch        *b_HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed;   //!
-   TBranch        *b_HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed;   //!
-   TBranch        *b_HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_Eta2p4;   //!
-   TBranch        *b_HLT_DoubleL2Mu23NoVtx_2Cha;   //!
-   TBranch        *b_HLT_DoubleL2Mu25NoVtx_2Cha;   //!
-   TBranch        *b_HLT_DoubleL2Mu25NoVtx_2Cha_Eta2p4;   //!
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;   //!
-   TBranch        *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL;   //!
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;   //!
-   TBranch        *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ;   //!
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8;   //!
-   TBranch        *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8;   //!
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8;   //!
-   TBranch        *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8;   //!
-   TBranch        *b_HLT_Mu25_TkMu0_Onia;   //!
-   TBranch        *b_HLT_Mu30_TkMu0_Psi;   //!
-   TBranch        *b_HLT_Mu30_TkMu0_Upsilon;   //!
-   TBranch        *b_HLT_Mu20_TkMu0_Phi;   //!
-   TBranch        *b_HLT_Mu25_TkMu0_Phi;   //!
-   TBranch        *b_HLT_Mu15;   //!
-   TBranch        *b_HLT_Mu20;   //!
-   TBranch        *b_HLT_Mu27;   //!
-   TBranch        *b_HLT_Mu50;   //!
-   TBranch        *b_HLT_Mu55;   //!
-   TBranch        *b_HLT_CascadeMu100;   //!
-   TBranch        *b_HLT_HighPtTkMu100;   //!
-   TBranch        *b_HLT_DiPFJetAve40;   //!
-   TBranch        *b_HLT_DiPFJetAve60;   //!
-   TBranch        *b_HLT_DiPFJetAve80;   //!
-   TBranch        *b_HLT_DiPFJetAve140;   //!
-   TBranch        *b_HLT_DiPFJetAve200;   //!
-   TBranch        *b_HLT_DiPFJetAve260;   //!
-   TBranch        *b_HLT_DiPFJetAve320;   //!
-   TBranch        *b_HLT_DiPFJetAve400;   //!
-   TBranch        *b_HLT_DiPFJetAve500;   //!
-   TBranch        *b_HLT_DiPFJetAve60_HFJEC;   //!
-   TBranch        *b_HLT_DiPFJetAve80_HFJEC;   //!
-   TBranch        *b_HLT_DiPFJetAve100_HFJEC;   //!
-   TBranch        *b_HLT_DiPFJetAve160_HFJEC;   //!
-   TBranch        *b_HLT_DiPFJetAve220_HFJEC;   //!
-   TBranch        *b_HLT_DiPFJetAve300_HFJEC;   //!
-   TBranch        *b_HLT_AK8PFJet40;   //!
-   TBranch        *b_HLT_AK8PFJet60;   //!
-   TBranch        *b_HLT_AK8PFJet80;   //!
-   TBranch        *b_HLT_AK8PFJet140;   //!
-   TBranch        *b_HLT_AK8PFJet200;   //!
-   TBranch        *b_HLT_AK8PFJet260;   //!
-   TBranch        *b_HLT_AK8PFJet320;   //!
-   TBranch        *b_HLT_AK8PFJet400;   //!
-   TBranch        *b_HLT_AK8PFJet450;   //!
-   TBranch        *b_HLT_AK8PFJet500;   //!
-   TBranch        *b_HLT_AK8PFJet550;   //!
-   TBranch        *b_HLT_PFJet40;   //!
-   TBranch        *b_HLT_PFJet60;   //!
-   TBranch        *b_HLT_PFJet80;   //!
-   TBranch        *b_HLT_PFJet140;   //!
-   TBranch        *b_HLT_PFJet200;   //!
-   TBranch        *b_HLT_PFJet260;   //!
-   TBranch        *b_HLT_PFJet320;   //!
-   TBranch        *b_HLT_PFJet400;   //!
-   TBranch        *b_HLT_PFJet450;   //!
-   TBranch        *b_HLT_PFJet500;   //!
-   TBranch        *b_HLT_PFJet550;   //!
-   TBranch        *b_HLT_PFJetFwd15;   //!
-   TBranch        *b_HLT_PFJetFwd25;   //!
-   TBranch        *b_HLT_PFJetFwd40;   //!
-   TBranch        *b_HLT_PFJetFwd60;   //!
-   TBranch        *b_HLT_PFJetFwd80;   //!
-   TBranch        *b_HLT_PFJetFwd140;   //!
-   TBranch        *b_HLT_PFJetFwd200;   //!
-   TBranch        *b_HLT_PFJetFwd260;   //!
-   TBranch        *b_HLT_PFJetFwd320;   //!
-   TBranch        *b_HLT_PFJetFwd400;   //!
-   TBranch        *b_HLT_PFJetFwd450;   //!
-   TBranch        *b_HLT_PFJetFwd500;   //!
-   TBranch        *b_HLT_AK8PFJetFwd15;   //!
-   TBranch        *b_HLT_AK8PFJetFwd25;   //!
-   TBranch        *b_HLT_AK8PFJetFwd40;   //!
-   TBranch        *b_HLT_AK8PFJetFwd60;   //!
-   TBranch        *b_HLT_AK8PFJetFwd80;   //!
-   TBranch        *b_HLT_AK8PFJetFwd140;   //!
-   TBranch        *b_HLT_AK8PFJetFwd200;   //!
-   TBranch        *b_HLT_AK8PFJetFwd260;   //!
-   TBranch        *b_HLT_AK8PFJetFwd320;   //!
-   TBranch        *b_HLT_AK8PFJetFwd400;   //!
-   TBranch        *b_HLT_AK8PFJetFwd450;   //!
-   TBranch        *b_HLT_AK8PFJetFwd500;   //!
-   TBranch        *b_HLT_PFHT180;   //!
-   TBranch        *b_HLT_PFHT250;   //!
-   TBranch        *b_HLT_PFHT370;   //!
-   TBranch        *b_HLT_PFHT430;   //!
-   TBranch        *b_HLT_PFHT510;   //!
-   TBranch        *b_HLT_PFHT590;   //!
-   TBranch        *b_HLT_PFHT680;   //!
-   TBranch        *b_HLT_PFHT780;   //!
-   TBranch        *b_HLT_PFHT890;   //!
-   TBranch        *b_HLT_PFHT1050;   //!
-   TBranch        *b_HLT_PFHT500_PFMET100_PFMHT100_IDTight;   //!
-   TBranch        *b_HLT_PFHT500_PFMET110_PFMHT110_IDTight;   //!
-   TBranch        *b_HLT_PFHT700_PFMET85_PFMHT85_IDTight;   //!
-   TBranch        *b_HLT_PFHT800_PFMET75_PFMHT75_IDTight;   //!
-   TBranch        *b_HLT_PFMET110_PFMHT110_IDTight;   //!
-   TBranch        *b_HLT_PFMET120_PFMHT120_IDTight;   //!
-   TBranch        *b_HLT_PFMET130_PFMHT130_IDTight;   //!
-   TBranch        *b_HLT_PFMET140_PFMHT140_IDTight;   //!
-   TBranch        *b_HLT_PFMET120_PFMHT120_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_PFMETTypeOne120_PFMHT120_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_PFMETTypeOne110_PFMHT110_IDTight;   //!
-   TBranch        *b_HLT_PFMETTypeOne120_PFMHT120_IDTight;   //!
-   TBranch        *b_HLT_PFMETTypeOne130_PFMHT130_IDTight;   //!
-   TBranch        *b_HLT_PFMETTypeOne140_PFMHT140_IDTight;   //!
-   TBranch        *b_HLT_PFMETNoMu110_PFMHTNoMu110_IDTight;   //!
-   TBranch        *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;   //!
-   TBranch        *b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight;   //!
-   TBranch        *b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight;   //!
-   TBranch        *b_HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_FilterHF;   //!
-   TBranch        *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_FilterHF;   //!
-   TBranch        *b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_FilterHF;   //!
-   TBranch        *b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_FilterHF;   //!
-   TBranch        *b_HLT_L1ETMHadSeeds;   //!
-   TBranch        *b_HLT_CaloMHT90;   //!
-   TBranch        *b_HLT_CaloMET90_NotCleaned;   //!
-   TBranch        *b_HLT_CaloMET350_NotCleaned;   //!
-   TBranch        *b_HLT_PFMET200_NotCleaned;   //!
-   TBranch        *b_HLT_PFMET250_NotCleaned;   //!
-   TBranch        *b_HLT_PFMET300_NotCleaned;   //!
-   TBranch        *b_HLT_PFMET200_BeamHaloCleaned;   //!
-   TBranch        *b_HLT_PFMETTypeOne200_BeamHaloCleaned;   //!
-   TBranch        *b_HLT_MET105_IsoTrk50;   //!
-   TBranch        *b_HLT_MET120_IsoTrk50;   //!
-   TBranch        *b_HLT_SingleJet30_Mu12_SinglePFJet40;   //!
-   TBranch        *b_HLT_Mu12eta2p3;   //!
-   TBranch        *b_HLT_Mu12eta2p3_PFJet40;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets40_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets100_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets200_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets350_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets40_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets100_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets200_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets350_PFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepCSV_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets40_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets100_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets200_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets350_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets40_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets100_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets200_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets350_PFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepJet_p71;   //!
-   TBranch        *b_HLT_Photon300_NoHE;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL;   //!
-   TBranch        *b_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ;   //!
-   TBranch        *b_HLT_Mu8_DiEle12_CaloIdL_TrackIdL;   //!
-   TBranch        *b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ;   //!
-   TBranch        *b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b_HLT_Mu17_TrkIsoVVL;   //!
-   TBranch        *b_HLT_Mu19_TrkIsoVVL;   //!
-   TBranch        *b_HLT_BTagMu_AK4DiJet20_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK4DiJet40_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK4DiJet70_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK4DiJet110_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK4DiJet170_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK4Jet300_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK8DiJet170_Mu5;   //!
-   TBranch        *b_HLT_BTagMu_AK8Jet170_DoubleMu5;   //!
-   TBranch        *b_HLT_BTagMu_AK8Jet300_Mu5;   //!
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;   //!
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;   //!
-   TBranch        *b_HLT_Photon20;   //!
-   TBranch        *b_HLT_Photon33;   //!
-   TBranch        *b_HLT_Photon50;   //!
-   TBranch        *b_HLT_Photon75;   //!
-   TBranch        *b_HLT_Photon90;   //!
-   TBranch        *b_HLT_Photon120;   //!
-   TBranch        *b_HLT_Photon150;   //!
-   TBranch        *b_HLT_Photon175;   //!
-   TBranch        *b_HLT_Photon200;   //!
-   TBranch        *b_HLT_Photon30EB_TightID_TightIso;   //!
-   TBranch        *b_HLT_Photon110EB_TightID_TightIso;   //!
-   TBranch        *b_HLT_Photon100EBHE10;   //!
-   TBranch        *b_HLT_Photon50_R9Id90_HE10_IsoM;   //!
-   TBranch        *b_HLT_Photon75_R9Id90_HE10_IsoM;   //!
-   TBranch        *b_HLT_Photon90_R9Id90_HE10_IsoM;   //!
-   TBranch        *b_HLT_Photon120_R9Id90_HE10_IsoM;   //!
-   TBranch        *b_HLT_Photon165_R9Id90_HE10_IsoM;   //!
-   TBranch        *b_HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90;   //!
-   TBranch        *b_HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95;   //!
-   TBranch        *b_HLT_Photon35_TwoProngs35;   //!
-   TBranch        *b_HLT_IsoMu24_TwoProngs35;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi_L1_NoOS;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi_NoVertexing_NoOS;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi_NoVertexing;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi_L1_4R_0er1p5R;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi_NoVertexing_L1_4R_0er1p5R;   //!
-   TBranch        *b_HLT_Dimuon0_Jpsi3p5_Muon2;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_4p5;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_5;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_4p5NoOS;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_4p5er2p0;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_4p5er2p0M;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_NoVertexing;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_L1_5M;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass_L1_0er1p5R;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass_L1_0er1p5;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass_L1_4;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass_L1_4R;   //!
-   TBranch        *b_HLT_Dimuon0_LowMass_L1_TM530;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_Muon_L1_TM0;   //!
-   TBranch        *b_HLT_Dimuon0_Upsilon_Muon_NoL1Mass;   //!
-   TBranch        *b_HLT_TripleMu_5_3_3_Mass3p8_DZ;   //!
-   TBranch        *b_HLT_TripleMu_10_5_5_DZ;   //!
-   TBranch        *b_HLT_TripleMu_12_10_5;   //!
-   TBranch        *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15;   //!
-   TBranch        *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_Charge1;   //!
-   TBranch        *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15;   //!
-   TBranch        *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1;   //!
-   TBranch        *b_HLT_DoubleMu3_DZ_PFMET50_PFMHT60;   //!
-   TBranch        *b_HLT_DoubleMu3_DZ_PFMET70_PFMHT70;   //!
-   TBranch        *b_HLT_DoubleMu3_DZ_PFMET90_PFMHT90;   //!
-   TBranch        *b_HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass;   //!
-   TBranch        *b_HLT_DoubleMu4_Jpsi_Displaced;   //!
-   TBranch        *b_HLT_DoubleMu4_Jpsi_NoVertexing;   //!
-   TBranch        *b_HLT_DoubleMu4_JpsiTrkTrk_Displaced;   //!
-   TBranch        *b_HLT_DoubleMu4_JpsiTrk_Bc;   //!
-   TBranch        *b_HLT_DoubleMu43NoFiltersNoVtx;   //!
-   TBranch        *b_HLT_DoubleMu48NoFiltersNoVtx;   //!
-   TBranch        *b_HLT_Mu43NoFiltersNoVtx_Photon43_CaloIdL;   //!
-   TBranch        *b_HLT_Mu48NoFiltersNoVtx_Photon48_CaloIdL;   //!
-   TBranch        *b_HLT_Mu38NoFiltersNoVtxDisplaced_Photon38_CaloIdL;   //!
-   TBranch        *b_HLT_Mu43NoFiltersNoVtxDisplaced_Photon43_CaloIdL;   //!
-   TBranch        *b_HLT_HT425;   //!
-   TBranch        *b_HLT_HT430_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT500_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT430_DisplacedDijet60_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT400_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT650_DisplacedDijet60_Inclusive;   //!
-   TBranch        *b_HLT_HT550_DisplacedDijet60_Inclusive;   //!
-   TBranch        *b_HLT_DiJet110_35_Mjj650_PFMET110;   //!
-   TBranch        *b_HLT_DiJet110_35_Mjj650_PFMET120;   //!
-   TBranch        *b_HLT_DiJet110_35_Mjj650_PFMET130;   //!
-   TBranch        *b_HLT_TripleJet110_35_35_Mjj650_PFMET110;   //!
-   TBranch        *b_HLT_TripleJet110_35_35_Mjj650_PFMET120;   //!
-   TBranch        *b_HLT_TripleJet110_35_35_Mjj650_PFMET130;   //!
-   TBranch        *b_HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned;   //!
-   TBranch        *b_HLT_Ele28_eta2p1_WPTight_Gsf_HT150;   //!
-   TBranch        *b_HLT_Ele28_HighEta_SC20_Mass55;   //!
-   TBranch        *b_HLT_Ele15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;   //!
-   TBranch        *b_HLT_Ele15_IsoVVVL_PFHT450_PFMET50;   //!
-   TBranch        *b_HLT_Ele15_IsoVVVL_PFHT450;   //!
-   TBranch        *b_HLT_Ele50_IsoVVVL_PFHT450;   //!
-   TBranch        *b_HLT_Ele15_IsoVVVL_PFHT600;   //!
-   TBranch        *b_HLT_Mu4_TrkIsoVVL_DiPFJet90_40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;   //!
-   TBranch        *b_HLT_Mu10_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT350_PFMETNoMu60;   //!
-   TBranch        *b_HLT_Mu15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;   //!
-   TBranch        *b_HLT_Mu15_IsoVVVL_PFHT450_PFMET50;   //!
-   TBranch        *b_HLT_Mu15_IsoVVVL_PFHT450;   //!
-   TBranch        *b_HLT_Mu50_IsoVVVL_PFHT450;   //!
-   TBranch        *b_HLT_Mu15_IsoVVVL_PFHT600;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET70_PFMHT70_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET80_PFMHT80_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET90_PFMHT90_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET100_PFMHT100_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu70_PFMHTNoMu70_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu80_PFMHTNoMu80_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu90_PFMHTNoMu90_IDTight;   //!
-   TBranch        *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu100_PFMHTNoMu100_IDTight;   //!
-   TBranch        *b_HLT_Dimuon10_PsiPrime_Barrel_Seagulls;   //!
-   TBranch        *b_HLT_Dimuon20_Jpsi_Barrel_Seagulls;   //!
-   TBranch        *b_HLT_Dimuon10_Upsilon_y1p4;   //!
-   TBranch        *b_HLT_Dimuon12_Upsilon_y1p4;   //!
-   TBranch        *b_HLT_Dimuon14_Phi_Barrel_Seagulls;   //!
-   TBranch        *b_HLT_Dimuon25_Jpsi;   //!
-   TBranch        *b_HLT_Dimuon14_PsiPrime;   //!
-   TBranch        *b_HLT_Dimuon14_PsiPrime_noCorrL1;   //!
-   TBranch        *b_HLT_Dimuon18_PsiPrime;   //!
-   TBranch        *b_HLT_Dimuon18_PsiPrime_noCorrL1;   //!
-   TBranch        *b_HLT_Dimuon24_Upsilon_noCorrL1;   //!
-   TBranch        *b_HLT_Dimuon24_Phi_noCorrL1;   //!
-   TBranch        *b_HLT_Dimuon25_Jpsi_noCorrL1;   //!
-   TBranch        *b_HLT_DiMu4_Ele9_CaloIdL_TrackIdL_DZ_Mass3p8;   //!
-   TBranch        *b_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ;   //!
-   TBranch        *b_HLT_DiMu9_Ele9_CaloIdL_TrackIdL;   //!
-   TBranch        *b_HLT_DoubleIsoMu20_eta2p1;   //!
-   TBranch        *b_HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx;   //!
-   TBranch        *b_HLT_Mu8;   //!
-   TBranch        *b_HLT_Mu17;   //!
-   TBranch        *b_HLT_Mu19;   //!
-   TBranch        *b_HLT_Mu17_Photon30_IsoCaloId;   //!
-   TBranch        *b_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30;   //!
-   TBranch        *b_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30;   //!
-   TBranch        *b_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30;   //!
-   TBranch        *b_HLT_Ele8_CaloIdM_TrackIdM_PFJet30;   //!
-   TBranch        *b_HLT_Ele17_CaloIdM_TrackIdM_PFJet30;   //!
-   TBranch        *b_HLT_Ele23_CaloIdM_TrackIdM_PFJet30;   //!
-   TBranch        *b_HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165;   //!
-   TBranch        *b_HLT_Ele115_CaloIdVT_GsfTrkIdT;   //!
-   TBranch        *b_HLT_Ele135_CaloIdVT_GsfTrkIdT;   //!
-   TBranch        *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5;   //!
-   TBranch        *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40;   //!
-   TBranch        *b_HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94;   //!
-   TBranch        *b_HLT_PFHT400_SixPFJet32;   //!
-   TBranch        *b_HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59;   //!
-   TBranch        *b_HLT_PFHT450_SixPFJet36;   //!
-   TBranch        *b_HLT_PFHT400_FivePFJet_100_100_60_30_30;   //!
-   TBranch        *b_HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepCSV_4p5;   //!
-   TBranch        *b_HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepCSV_4p5;   //!
-   TBranch        *b_HLT_PFHT350;   //!
-   TBranch        *b_HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_PFHT350MinPFJet15;   //!
-   TBranch        *b_HLT_ECALHT800;   //!
-   TBranch        *b_HLT_DiSC30_18_EIso_AND_HE_Mass70;   //!
-   TBranch        *b_HLT_Physics;   //!
-   TBranch        *b_HLT_Random;   //!
-   TBranch        *b_HLT_ZeroBias;   //!
-   TBranch        *b_HLT_ZeroBias_Alignment;   //!
-   TBranch        *b_HLT_EphemeralZeroBias;   //!
-   TBranch        *b_HLT_EphemeralPhysics;   //!
-   TBranch        *b_HLT_Photon20_HoverELoose;   //!
-   TBranch        *b_HLT_Photon30_HoverELoose;   //!
-   TBranch        *b_HLT_EcalCalibration;   //!
-   TBranch        *b_HLT_HcalCalibration;   //!
-   TBranch        *b_HLT_L1UnpairedBunchBptxMinus;   //!
-   TBranch        *b_HLT_L1UnpairedBunchBptxPlus;   //!
-   TBranch        *b_HLT_L1NotBptxOR;   //!
-   TBranch        *b_HLT_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;   //!
-   TBranch        *b_HLT_CDC_L2cosmic_10_er1p0;   //!
-   TBranch        *b_HLT_CDC_L2cosmic_5p5_er1p0;   //!
-   TBranch        *b_HLT_HcalNZS;   //!
-   TBranch        *b_HLT_HcalPhiSym;   //!
-   TBranch        *b_HLT_HcalIsolatedbunch;   //!
-   TBranch        *b_HLT_IsoTrackHB;   //!
-   TBranch        *b_HLT_IsoTrackHE;   //!
-   TBranch        *b_HLT_ZeroBias_FirstCollisionAfterAbortGap;   //!
-   TBranch        *b_HLT_ZeroBias_IsolatedBunches;   //!
-   TBranch        *b_HLT_ZeroBias_FirstCollisionInTrain;   //!
-   TBranch        *b_HLT_ZeroBias_LastCollisionInTrain;   //!
-   TBranch        *b_HLT_ZeroBias_FirstBXAfterTrain;   //!
-   TBranch        *b_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;   //!
-   TBranch        *b_HLT_VBF_DoubleMediumDeepTauPFTauHPS20_eta2p1;   //!
-   TBranch        *b_HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3;   //!
-   TBranch        *b_HLT_PFMET100_PFMHT100_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_PFMETTypeOne100_PFMHT100_IDTight_PFHT60;   //!
-   TBranch        *b_HLT_Mu18_Mu9_SameSign;   //!
-   TBranch        *b_HLT_DoubleMu2_Jpsi_DoubleTrk1_Phi1p05;   //!
-   TBranch        *b_HLT_DoubleMu3_DCA_PFMET50_PFMHT60;   //!
-   TBranch        *b_HLT_TripleMu_5_3_3_Mass3p8_DCA;   //!
-   TBranch        *b_HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_QuadPFJet103_88_75_15_PFBTagDeepCSV_1p3_VBF2;   //!
-   TBranch        *b_HLT_QuadPFJet105_88_76_15_PFBTagDeepCSV_1p3_VBF2;   //!
-   TBranch        *b_HLT_QuadPFJet111_90_80_15_PFBTagDeepCSV_1p3_VBF2;   //!
-   TBranch        *b_HLT_QuadPFJet103_88_75_15;   //!
-   TBranch        *b_HLT_QuadPFJet105_88_76_15;   //!
-   TBranch        *b_HLT_QuadPFJet111_90_80_15;   //!
-   TBranch        *b_HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_Mass55;   //!
-   TBranch        *b_HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId;   //!
-   TBranch        *b_HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_DoubleMediumDeepTauPFTauHPS35_L2NN_eta2p1;   //!
-   TBranch        *b_HLT_Ele24_eta2p1_WPTight_Gsf_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu20_eta2p1_LooseDeepTauPFTauHPS27_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS180_eta2p1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS35_L2NN_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_LooseDeepTauPFTauHPS180_L2NN_eta2p1;   //!
-   TBranch        *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepJet_4p5;   //!
-   TBranch        *b_HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepJet_4p5;   //!
-   TBranch        *b_HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepJet_4p5;   //!
-   TBranch        *b_HLT_PFHT400_SixPFJet32_DoublePFBTagDeepJet_2p94;   //!
-   TBranch        *b_HLT_PFHT450_SixPFJet36_PFBTagDeepJet_1p59;   //!
-   TBranch        *b_HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_QuadPFJet103_88_75_15_PFBTagDeepJet_1p3_VBF2;   //!
-   TBranch        *b_HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_QuadPFJet105_88_76_15_PFBTagDeepJet_1p3_VBF2;   //!
-   TBranch        *b_HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;   //!
-   TBranch        *b_HLT_QuadPFJet111_90_80_15_PFBTagDeepJet_1p3_VBF2;   //!
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepJet_1p5;   //!
-   TBranch        *b_HLT_QuadPFJet70_50_40_30;   //!
-   TBranch        *b_HLT_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;   //!
-   TBranch        *b_HLT_QuadPFJet70_50_40_35_PFBTagParticleNet_2BTagSum0p65;   //!
-   TBranch        *b_HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65;   //!
-   TBranch        *b_HLT_AK8PFJet230_SoftDropMass40;   //!
-   TBranch        *b_HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;   //!
-   TBranch        *b_HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetBB0p35;   //!
-   TBranch        *b_HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetBB0p35;   //!
-   TBranch        *b_HLT_AK8PFJet400_SoftDropMass40;   //!
-   TBranch        *b_HLT_AK8PFJet425_SoftDropMass40;   //!
-   TBranch        *b_HLT_AK8PFJet450_SoftDropMass40;   //!
-   TBranch        *b_HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetTauTau0p30;   //!
-   TBranch        *b_HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetTauTau0p30;   //!
-   TBranch        *b_HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetTauTau0p30;   //!
-   TBranch        *b_HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60;   //!
-   TBranch        *b_HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60_CrossL1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75_CrossL1;   //!
-   TBranch        *b_HLT_DoublePFJets40_Mass500_MediumDeepTauPFTauHPS45_L2NN_MediumDeepTauPFTauHPS20_eta2p1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS20_eta2p1_SingleL1;   //!
-   TBranch        *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS45_L2NN_eta2p1_CrossL1;   //!
-   TBranch        *b_HLT_DoubleL2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;   //!
-   TBranch        *b_HLT_DoubleL2Mu12NoVtx_2Cha_VetoL3Mu0DxyMax1cm;   //!
-   TBranch        *b_HLT_DoubleL2Mu14NoVtx_2Cha_VetoL3Mu0DxyMax1cm;   //!
-   TBranch        *b_HLT_DoubleL3Mu16_10NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_DoubleL3Mu18_10NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_DoubleL3Mu20_10NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_L2Mu10NoVtx_2Cha;   //!
-   TBranch        *b_HLT_L2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;   //!
-   TBranch        *b_HLT_L3Mu10NoVtx;   //!
-   TBranch        *b_HLT_L3Mu10NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_DoubleL3dTksMu16_10NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_L3dTksMu10_NoVtx_DxyMin0p01cm;   //!
-   TBranch        *b_HLT_Mu20NoFiltersNoVtxDisplaced_Photon20_CaloCustomId;   //!
-   TBranch        *b_HLT_DoubleMediumChargedIsoDisplacedPFTauHPS32_Trk1_eta2p1;   //!
-   TBranch        *b_HLT_HT430_DelayedJet40_DoubleDelay0p5nsTrackless;   //!
-   TBranch        *b_HLT_HT430_DelayedJet40_DoubleDelay1nsInclusive;   //!
-   TBranch        *b_HLT_HT430_DelayedJet40_SingleDelay1nsTrackless;   //!
-   TBranch        *b_HLT_HT430_DelayedJet40_SingleDelay2nsInclusive;   //!
-   TBranch        *b_HLT_L1Mu6HT240;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet30_Inclusive0PtrkShortSig5;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet30_Inclusive1PtrkShortSig5_DisplacedLoose;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet35_Inclusive0PtrkShortSig5;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet35_Inclusive1PtrkShortSig5_DisplacedLoose;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet40_Inclusive0PtrkShortSig5;   //!
-   TBranch        *b_HLT_Mu6HT240_DisplacedDijet40_Inclusive1PtrkShortSig5_DisplacedLoose;   //!
-   TBranch        *b_HLT_HT430_DisplacedDijet30_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_HT430_DisplacedDijet35_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_HT430_DisplacedDijet40_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_CaloMET60_DTCluster50;   //!
-   TBranch        *b_HLT_CaloMET60_DTClusterNoMB1S50;   //!
-   TBranch        *b_HLT_L1MET_DTCluster50;   //!
-   TBranch        *b_HLT_L1MET_DTClusterNoMB1S50;   //!
-   TBranch        *b_HLT_CscCluster_Loose;   //!
-   TBranch        *b_HLT_CscCluster_Medium;   //!
-   TBranch        *b_HLT_CscCluster_Tight;   //!
-   TBranch        *b_HLT_L1CSCShower_DTCluster50;   //!
-   TBranch        *b_HLT_L1CSCShower_DTCluster75;   //!
-   TBranch        *b_HLT_PFMET105_IsoTrk50;   //!
-   TBranch        *b_HLT_PFMET110_PFJet100;   //!
-   TBranch        *b_HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet60_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT270_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;   //!
-   TBranch        *b_HLT_HT320_L1SingleLLPJet_DisplacedDijet60_Inclusive;   //!
-   TBranch        *b_HLT_HT420_L1SingleLLPJet_DisplacedDijet60_Inclusive;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay1nsTrackless;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay2nsInclusive;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay0p5nsTrackless;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay1nsInclusive;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet30_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet35_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet40_Inclusive1PtrkShortSig5;   //!
-   TBranch        *b_HLT_DiPhoton10Time1p4ns;   //!
-   TBranch        *b_HLT_DiPhoton10Time1p6ns;   //!
-   TBranch        *b_HLT_DiPhoton10Time1p8ns;   //!
-   TBranch        *b_HLT_DiPhoton10Time2ns;   //!
-   TBranch        *b_HLT_DiPhoton10sminlt0p1;   //!
-   TBranch        *b_HLT_DiPhoton10sminlt0p12;   //!
-   TBranch        *b_HLT_DiPhoton10_CaloIdL;   //!
-   TBranch        *b_HLT_DoubleEle4_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle4p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle5p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle6_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle6p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle7_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle7p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle8_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle8p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle9_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle9p5_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_DoubleEle10_eta1p22_mMax6;   //!
-   TBranch        *b_HLT_Diphoton20_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;   //!
-   TBranch        *b_HLT_Diphoton20_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;   //!
-   TBranch        *b_HLT_Diphoton22_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;   //!
-   TBranch        *b_HLT_Diphoton22_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;   //!
-   TBranch        *b_HLT_ExpressMuons;   //!
-   TBranch        *b_HLT_OnlineMonitorGroup;   //!
-   TBranch        *b_HLT_PPSMaxTracksPerArm1;   //!
-   TBranch        *b_HLT_PPSMaxTracksPerRP4;   //!
-   TBranch        *b_HLTriggerFinalPath;   //!
+   TBranch *b_run;                                                                                    //!
+   TBranch *b_luminosityBlock;                                                                        //!
+   TBranch *b_event;                                                                                  //!
+   TBranch *b_bunchCrossing;                                                                          //!
+   TBranch *b_BeamSpot_type;                                                                          //!
+   TBranch *b_BeamSpot_sigmaZ;                                                                        //!
+   TBranch *b_BeamSpot_sigmaZError;                                                                   //!
+   TBranch *b_BeamSpot_z;                                                                             //!
+   TBranch *b_BeamSpot_zError;                                                                        //!
+   TBranch *b_nboostedTau;                                                                            //!
+   TBranch *b_boostedTau_idAntiEle2018;                                                               //!
+   TBranch *b_boostedTau_idAntiMu;                                                                    //!
+   TBranch *b_boostedTau_idMVAnewDM2017v2;                                                            //!
+   TBranch *b_boostedTau_idMVAoldDM2017v2;                                                            //!
+   TBranch *b_boostedTau_jetIdx;                                                                      //!
+   TBranch *b_boostedTau_rawAntiEleCat2018;                                                           //!
+   TBranch *b_boostedTau_charge;                                                                      //!
+   TBranch *b_boostedTau_decayMode;                                                                   //!
+   TBranch *b_boostedTau_chargedIso;                                                                  //!
+   TBranch *b_boostedTau_eta;                                                                         //!
+   TBranch *b_boostedTau_leadTkDeltaEta;                                                              //!
+   TBranch *b_boostedTau_leadTkDeltaPhi;                                                              //!
+   TBranch *b_boostedTau_leadTkPtOverTauPt;                                                           //!
+   TBranch *b_boostedTau_mass;                                                                        //!
+   TBranch *b_boostedTau_neutralIso;                                                                  //!
+   TBranch *b_boostedTau_phi;                                                                         //!
+   TBranch *b_boostedTau_photonsOutsideSignalCone;                                                    //!
+   TBranch *b_boostedTau_pt;                                                                          //!
+   TBranch *b_boostedTau_puCorr;                                                                      //!
+   TBranch *b_boostedTau_rawAntiEle2018;                                                              //!
+   TBranch *b_boostedTau_rawIso;                                                                      //!
+   TBranch *b_boostedTau_rawIsodR03;                                                                  //!
+   TBranch *b_boostedTau_rawMVAnewDM2017v2;                                                           //!
+   TBranch *b_boostedTau_rawMVAoldDM2017v2;                                                           //!
+   TBranch *b_CaloMET_phi;                                                                            //!
+   TBranch *b_CaloMET_pt;                                                                             //!
+   TBranch *b_CaloMET_sumEt;                                                                          //!
+   TBranch *b_ChsMET_phi;                                                                             //!
+   TBranch *b_ChsMET_pt;                                                                              //!
+   TBranch *b_ChsMET_sumEt;                                                                           //!
+   TBranch *b_nCorrT1METJet;                                                                          //!
+   TBranch *b_CorrT1METJet_area;                                                                      //!
+   TBranch *b_CorrT1METJet_eta;                                                                       //!
+   TBranch *b_CorrT1METJet_muonSubtrFactor;                                                           //!
+   TBranch *b_CorrT1METJet_phi;                                                                       //!
+   TBranch *b_CorrT1METJet_rawPt;                                                                     //!
+   TBranch *b_DeepMETResolutionTune_phi;                                                              //!
+   TBranch *b_DeepMETResolutionTune_pt;                                                               //!
+   TBranch *b_DeepMETResponseTune_phi;                                                                //!
+   TBranch *b_DeepMETResponseTune_pt;                                                                 //!
+   TBranch *b_nElectron;                                                                              //!
+   TBranch *b_Electron_seediEtaOriX;                                                                  //!
+   TBranch *b_Electron_convVeto;                                                                      //!
+   TBranch *b_Electron_cutBased;                                                                      //!
+   TBranch *b_Electron_cutBased_HEEP;                                                                 //!
+   TBranch *b_Electron_isPFcand;                                                                      //!
+   TBranch *b_Electron_jetNDauCharged;                                                                //!
+   TBranch *b_Electron_lostHits;                                                                      //!
+   TBranch *b_Electron_mvaIso_WP80;                                                                   //!
+   TBranch *b_Electron_mvaIso_WP90;                                                                   //!
+   TBranch *b_Electron_mvaNoIso_WP80;                                                                 //!
+   TBranch *b_Electron_mvaNoIso_WP90;                                                                 //!
+   TBranch *b_Electron_seedGain;                                                                      //!
+   TBranch *b_Electron_tightCharge;                                                                   //!
+   TBranch *b_Electron_jetIdx;                                                                        //!
+   TBranch *b_Electron_photonIdx;                                                                     //!
+   TBranch *b_Electron_svIdx;                                                                         //!
+   TBranch *b_Electron_fsrPhotonIdx;                                                                  //!
+   TBranch *b_Electron_charge;                                                                        //!
+   TBranch *b_Electron_pdgId;                                                                         //!
+   TBranch *b_Electron_seediPhiOriY;                                                                  //!
+   TBranch *b_Electron_vidNestedWPBitmap;                                                             //!
+   TBranch *b_Electron_vidNestedWPBitmapHEEP;                                                         //!
+   TBranch *b_Electron_deltaEtaSC;                                                                    //!
+   TBranch *b_Electron_dr03EcalRecHitSumEt;                                                           //!
+   TBranch *b_Electron_dr03HcalDepth1TowerSumEt;                                                      //!
+   TBranch *b_Electron_dr03TkSumPt;                                                                   //!
+   TBranch *b_Electron_dr03TkSumPtHEEP;                                                               //!
+   TBranch *b_Electron_dxy;                                                                           //!
+   TBranch *b_Electron_dxyErr;                                                                        //!
+   TBranch *b_Electron_dz;                                                                            //!
+   TBranch *b_Electron_dzErr;                                                                         //!
+   TBranch *b_Electron_eInvMinusPInv;                                                                 //!
+   TBranch *b_Electron_energyErr;                                                                     //!
+   TBranch *b_Electron_eta;                                                                           //!
+   TBranch *b_Electron_hoe;                                                                           //!
+   TBranch *b_Electron_ip3d;                                                                          //!
+   TBranch *b_Electron_jetPtRelv2;                                                                    //!
+   TBranch *b_Electron_jetRelIso;                                                                     //!
+   TBranch *b_Electron_mass;                                                                          //!
+   TBranch *b_Electron_miniPFRelIso_all;                                                              //!
+   TBranch *b_Electron_miniPFRelIso_chg;                                                              //!
+   TBranch *b_Electron_mvaHZZIso;                                                                     //!
+   TBranch *b_Electron_mvaIso;                                                                        //!
+   TBranch *b_Electron_mvaNoIso;                                                                      //!
+   TBranch *b_Electron_pfRelIso03_all;                                                                //!
+   TBranch *b_Electron_pfRelIso03_chg;                                                                //!
+   TBranch *b_Electron_phi;                                                                           //!
+   TBranch *b_Electron_pt;                                                                            //!
+   TBranch *b_Electron_r9;                                                                            //!
+   TBranch *b_Electron_scEtOverPt;                                                                    //!
+   TBranch *b_Electron_sieie;                                                                         //!
+   TBranch *b_Electron_sip3d;                                                                         //!
+   TBranch *b_Electron_mvaTTH;                                                                        //!
+   TBranch *b_nFatJet;                                                                                //!
+   TBranch *b_FatJet_jetId;                                                                           //!
+   TBranch *b_FatJet_nConstituents;                                                                   //!
+   TBranch *b_FatJet_subJetIdx1;                                                                      //!
+   TBranch *b_FatJet_subJetIdx2;                                                                      //!
+   TBranch *b_FatJet_electronIdx3SJ;                                                                  //!
+   TBranch *b_FatJet_muonIdx3SJ;                                                                      //!
+   TBranch *b_FatJet_area;                                                                            //!
+   TBranch *b_FatJet_btagDDBvLV2;                                                                     //!
+   TBranch *b_FatJet_btagDDCvBV2;                                                                     //!
+   TBranch *b_FatJet_btagDDCvLV2;                                                                     //!
+   TBranch *b_FatJet_btagDeepB;                                                                       //!
+   TBranch *b_FatJet_btagHbb;                                                                         //!
+   TBranch *b_FatJet_eta;                                                                             //!
+   TBranch *b_FatJet_mass;                                                                            //!
+   TBranch *b_FatJet_msoftdrop;                                                                       //!
+   TBranch *b_FatJet_n2b1;                                                                            //!
+   TBranch *b_FatJet_n3b1;                                                                            //!
+   TBranch *b_FatJet_particleNetWithMass_H4qvsQCD;                                                    //!
+   TBranch *b_FatJet_particleNetWithMass_HbbvsQCD;                                                    //!
+   TBranch *b_FatJet_particleNetWithMass_HccvsQCD;                                                    //!
+   TBranch *b_FatJet_particleNetWithMass_QCD;                                                         //!
+   TBranch *b_FatJet_particleNetWithMass_TvsQCD;                                                      //!
+   TBranch *b_FatJet_particleNetWithMass_WvsQCD;                                                      //!
+   TBranch *b_FatJet_particleNetWithMass_ZvsQCD;                                                      //!
+   TBranch *b_FatJet_particleNet_QCD;                                                                 //!
+   TBranch *b_FatJet_particleNet_QCD0HF;                                                              //!
+   TBranch *b_FatJet_particleNet_QCD1HF;                                                              //!
+   TBranch *b_FatJet_particleNet_QCD2HF;                                                              //!
+   TBranch *b_FatJet_particleNet_XbbVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XccVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XggVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XqqVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XteVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XtmVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_XttVsQCD;                                                            //!
+   TBranch *b_FatJet_particleNet_massCorr;                                                            //!
+   TBranch *b_FatJet_phi;                                                                             //!
+   TBranch *b_FatJet_pt;                                                                              //!
+   TBranch *b_FatJet_rawFactor;                                                                       //!
+   TBranch *b_FatJet_tau1;                                                                            //!
+   TBranch *b_FatJet_tau2;                                                                            //!
+   TBranch *b_FatJet_tau3;                                                                            //!
+   TBranch *b_FatJet_tau4;                                                                            //!
+   TBranch *b_FatJet_lsf3;                                                                            //!
+   TBranch *b_nFsrPhoton;                                                                             //!
+   TBranch *b_FsrPhoton_electronIdx;                                                                  //!
+   TBranch *b_FsrPhoton_muonIdx;                                                                      //!
+   TBranch *b_FsrPhoton_dROverEt2;                                                                    //!
+   TBranch *b_FsrPhoton_eta;                                                                          //!
+   TBranch *b_FsrPhoton_phi;                                                                          //!
+   TBranch *b_FsrPhoton_pt;                                                                           //!
+   TBranch *b_FsrPhoton_relIso03;                                                                     //!
+   TBranch *b_nIsoTrack;                                                                              //!
+   TBranch *b_IsoTrack_isHighPurityTrack;                                                             //!
+   TBranch *b_IsoTrack_isPFcand;                                                                      //!
+   TBranch *b_IsoTrack_isFromLostTrack;                                                               //!
+   TBranch *b_IsoTrack_charge;                                                                        //!
+   TBranch *b_IsoTrack_fromPV;                                                                        //!
+   TBranch *b_IsoTrack_pdgId;                                                                         //!
+   TBranch *b_IsoTrack_dxy;                                                                           //!
+   TBranch *b_IsoTrack_dz;                                                                            //!
+   TBranch *b_IsoTrack_eta;                                                                           //!
+   TBranch *b_IsoTrack_pfRelIso03_all;                                                                //!
+   TBranch *b_IsoTrack_pfRelIso03_chg;                                                                //!
+   TBranch *b_IsoTrack_phi;                                                                           //!
+   TBranch *b_IsoTrack_pt;                                                                            //!
+   TBranch *b_IsoTrack_miniPFRelIso_all;                                                              //!
+   TBranch *b_IsoTrack_miniPFRelIso_chg;                                                              //!
+   TBranch *b_nJet;                                                                                   //!
+   TBranch *b_Jet_jetId;                                                                              //!
+   TBranch *b_Jet_nConstituents;                                                                      //!
+   TBranch *b_Jet_nElectrons;                                                                         //!
+   TBranch *b_Jet_nMuons;                                                                             //!
+   TBranch *b_Jet_nSVs;                                                                               //!
+   TBranch *b_Jet_electronIdx1;                                                                       //!
+   TBranch *b_Jet_electronIdx2;                                                                       //!
+   TBranch *b_Jet_muonIdx1;                                                                           //!
+   TBranch *b_Jet_muonIdx2;                                                                           //!
+   TBranch *b_Jet_svIdx1;                                                                             //!
+   TBranch *b_Jet_svIdx2;                                                                             //!
+   TBranch *b_Jet_hfadjacentEtaStripsSize;                                                            //!
+   TBranch *b_Jet_hfcentralEtaStripSize;                                                              //!
+   TBranch *b_Jet_PNetRegPtRawCorr;                                                                   //!
+   TBranch *b_Jet_PNetRegPtRawCorrNeutrino;                                                           //!
+   TBranch *b_Jet_PNetRegPtRawRes;                                                                    //!
+   TBranch *b_Jet_area;                                                                               //!
+   TBranch *b_Jet_btagDeepFlavB;                                                                      //!
+   TBranch *b_Jet_btagDeepFlavCvB;                                                                    //!
+   TBranch *b_Jet_btagDeepFlavCvL;                                                                    //!
+   TBranch *b_Jet_btagDeepFlavQG;                                                                     //!
+   TBranch *b_Jet_btagPNetB;                                                                          //!
+   TBranch *b_Jet_btagPNetCvB;                                                                        //!
+   TBranch *b_Jet_btagPNetCvL;                                                                        //!
+   TBranch *b_Jet_btagPNetQvG;                                                                        //!
+   TBranch *b_Jet_btagPNetTauVJet;                                                                    //!
+   TBranch *b_Jet_btagRobustParTAK4B;                                                                 //!
+   TBranch *b_Jet_btagRobustParTAK4CvB;                                                               //!
+   TBranch *b_Jet_btagRobustParTAK4CvL;                                                               //!
+   TBranch *b_Jet_btagRobustParTAK4QG;                                                                //!
+   TBranch *b_Jet_chEmEF;                                                                             //!
+   TBranch *b_Jet_chHEF;                                                                              //!
+   TBranch *b_Jet_eta;                                                                                //!
+   TBranch *b_Jet_hfsigmaEtaEta;                                                                      //!
+   TBranch *b_Jet_hfsigmaPhiPhi;                                                                      //!
+   TBranch *b_Jet_mass;                                                                               //!
+   TBranch *b_Jet_muEF;                                                                               //!
+   TBranch *b_Jet_muonSubtrFactor;                                                                    //!
+   TBranch *b_Jet_neEmEF;                                                                             //!
+   TBranch *b_Jet_neHEF;                                                                              //!
+   TBranch *b_Jet_phi;                                                                                //!
+   TBranch *b_Jet_pt;                                                                                 //!
+   TBranch *b_Jet_rawFactor;                                                                          //!
+   TBranch *b_nLowPtElectron;                                                                         //!
+   TBranch *b_LowPtElectron_convVeto;                                                                 //!
+   TBranch *b_LowPtElectron_convWP;                                                                   //!
+   TBranch *b_LowPtElectron_lostHits;                                                                 //!
+   TBranch *b_LowPtElectron_electronIdx;                                                              //!
+   TBranch *b_LowPtElectron_photonIdx;                                                                //!
+   TBranch *b_LowPtElectron_charge;                                                                   //!
+   TBranch *b_LowPtElectron_pdgId;                                                                    //!
+   TBranch *b_LowPtElectron_ID;                                                                       //!
+   TBranch *b_LowPtElectron_convVtxRadius;                                                            //!
+   TBranch *b_LowPtElectron_deltaEtaSC;                                                               //!
+   TBranch *b_LowPtElectron_dxy;                                                                      //!
+   TBranch *b_LowPtElectron_dxyErr;                                                                   //!
+   TBranch *b_LowPtElectron_dz;                                                                       //!
+   TBranch *b_LowPtElectron_dzErr;                                                                    //!
+   TBranch *b_LowPtElectron_eInvMinusPInv;                                                            //!
+   TBranch *b_LowPtElectron_energyErr;                                                                //!
+   TBranch *b_LowPtElectron_eta;                                                                      //!
+   TBranch *b_LowPtElectron_hoe;                                                                      //!
+   TBranch *b_LowPtElectron_mass;                                                                     //!
+   TBranch *b_LowPtElectron_miniPFRelIso_all;                                                         //!
+   TBranch *b_LowPtElectron_miniPFRelIso_chg;                                                         //!
+   TBranch *b_LowPtElectron_phi;                                                                      //!
+   TBranch *b_LowPtElectron_pt;                                                                       //!
+   TBranch *b_LowPtElectron_ptbiased;                                                                 //!
+   TBranch *b_LowPtElectron_r9;                                                                       //!
+   TBranch *b_LowPtElectron_scEtOverPt;                                                               //!
+   TBranch *b_LowPtElectron_sieie;                                                                    //!
+   TBranch *b_LowPtElectron_unbiased;                                                                 //!
+   TBranch *b_MET_MetUnclustEnUpDeltaX;                                                               //!
+   TBranch *b_MET_MetUnclustEnUpDeltaY;                                                               //!
+   TBranch *b_MET_covXX;                                                                              //!
+   TBranch *b_MET_covXY;                                                                              //!
+   TBranch *b_MET_covYY;                                                                              //!
+   TBranch *b_MET_phi;                                                                                //!
+   TBranch *b_MET_pt;                                                                                 //!
+   TBranch *b_MET_significance;                                                                       //!
+   TBranch *b_MET_sumEt;                                                                              //!
+   TBranch *b_MET_sumPtUnclustered;                                                                   //!
+   TBranch *b_nProton_multiRP;                                                                        //!
+   TBranch *b_Proton_multiRP_arm;                                                                     //!
+   TBranch *b_Proton_multiRP_t;                                                                       //!
+   TBranch *b_Proton_multiRP_thetaX;                                                                  //!
+   TBranch *b_Proton_multiRP_thetaY;                                                                  //!
+   TBranch *b_Proton_multiRP_time;                                                                    //!
+   TBranch *b_Proton_multiRP_timeUnc;                                                                 //!
+   TBranch *b_Proton_multiRP_xi;                                                                      //!
+   TBranch *b_nMuon;                                                                                  //!
+   TBranch *b_Muon_highPtId;                                                                          //!
+   TBranch *b_Muon_highPurity;                                                                        //!
+   TBranch *b_Muon_inTimeMuon;                                                                        //!
+   TBranch *b_Muon_isGlobal;                                                                          //!
+   TBranch *b_Muon_isPFcand;                                                                          //!
+   TBranch *b_Muon_isStandalone;                                                                      //!
+   TBranch *b_Muon_isTracker;                                                                         //!
+   TBranch *b_Muon_jetNDauCharged;                                                                    //!
+   TBranch *b_Muon_looseId;                                                                           //!
+   TBranch *b_Muon_mediumId;                                                                          //!
+   TBranch *b_Muon_mediumPromptId;                                                                    //!
+   TBranch *b_Muon_miniIsoId;                                                                         //!
+   TBranch *b_Muon_multiIsoId;                                                                        //!
+   TBranch *b_Muon_mvaMuID_WP;                                                                        //!
+   TBranch *b_Muon_nStations;                                                                         //!
+   TBranch *b_Muon_nTrackerLayers;                                                                    //!
+   TBranch *b_Muon_pfIsoId;                                                                           //!
+   TBranch *b_Muon_puppiIsoId;                                                                        //!
+   TBranch *b_Muon_softId;                                                                            //!
+   TBranch *b_Muon_softMvaId;                                                                         //!
+   TBranch *b_Muon_tightCharge;                                                                       //!
+   TBranch *b_Muon_tightId;                                                                           //!
+   TBranch *b_Muon_tkIsoId;                                                                           //!
+   TBranch *b_Muon_triggerIdLoose;                                                                    //!
+   TBranch *b_Muon_jetIdx;                                                                            //!
+   TBranch *b_Muon_svIdx;                                                                             //!
+   TBranch *b_Muon_fsrPhotonIdx;                                                                      //!
+   TBranch *b_Muon_charge;                                                                            //!
+   TBranch *b_Muon_pdgId;                                                                             //!
+   TBranch *b_Muon_dxy;                                                                               //!
+   TBranch *b_Muon_dxyErr;                                                                            //!
+   TBranch *b_Muon_dxybs;                                                                             //!
+   TBranch *b_Muon_dz;                                                                                //!
+   TBranch *b_Muon_dzErr;                                                                             //!
+   TBranch *b_Muon_eta;                                                                               //!
+   TBranch *b_Muon_ip3d;                                                                              //!
+   TBranch *b_Muon_jetPtRelv2;                                                                        //!
+   TBranch *b_Muon_jetRelIso;                                                                         //!
+   TBranch *b_Muon_mass;                                                                              //!
+   TBranch *b_Muon_miniPFRelIso_all;                                                                  //!
+   TBranch *b_Muon_miniPFRelIso_chg;                                                                  //!
+   TBranch *b_Muon_mvaMuID;                                                                           //!
+   TBranch *b_Muon_pfRelIso03_all;                                                                    //!
+   TBranch *b_Muon_pfRelIso03_chg;                                                                    //!
+   TBranch *b_Muon_pfRelIso04_all;                                                                    //!
+   TBranch *b_Muon_phi;                                                                               //!
+   TBranch *b_Muon_pt;                                                                                //!
+   TBranch *b_Muon_ptErr;                                                                             //!
+   TBranch *b_Muon_segmentComp;                                                                       //!
+   TBranch *b_Muon_sip3d;                                                                             //!
+   TBranch *b_Muon_softMva;                                                                           //!
+   TBranch *b_Muon_tkRelIso;                                                                          //!
+   TBranch *b_Muon_tunepRelPt;                                                                        //!
+   TBranch *b_Muon_bsConstrainedChi2;                                                                 //!
+   TBranch *b_Muon_bsConstrainedPt;                                                                   //!
+   TBranch *b_Muon_bsConstrainedPtErr;                                                                //!
+   TBranch *b_Muon_mvaLowPt;                                                                          //!
+   TBranch *b_Muon_mvaTTH;                                                                            //!
+   TBranch *b_nPhoton;                                                                                //!
+   TBranch *b_Photon_seediEtaOriX;                                                                    //!
+   TBranch *b_Photon_cutBased;                                                                        //!
+   TBranch *b_Photon_electronVeto;                                                                    //!
+   TBranch *b_Photon_hasConversionTracks;                                                             //!
+   TBranch *b_Photon_isScEtaEB;                                                                       //!
+   TBranch *b_Photon_isScEtaEE;                                                                       //!
+   TBranch *b_Photon_mvaID_WP80;                                                                      //!
+   TBranch *b_Photon_mvaID_WP90;                                                                      //!
+   TBranch *b_Photon_pixelSeed;                                                                       //!
+   TBranch *b_Photon_seedGain;                                                                        //!
+   TBranch *b_Photon_electronIdx;                                                                     //!
+   TBranch *b_Photon_jetIdx;                                                                          //!
+   TBranch *b_Photon_seediPhiOriY;                                                                    //!
+   TBranch *b_Photon_vidNestedWPBitmap;                                                               //!
+   TBranch *b_Photon_ecalPFClusterIso;                                                                //!
+   TBranch *b_Photon_energyErr;                                                                       //!
+   TBranch *b_Photon_energyRaw;                                                                       //!
+   TBranch *b_Photon_esEffSigmaRR;                                                                    //!
+   TBranch *b_Photon_esEnergyOverRawE;                                                                //!
+   TBranch *b_Photon_eta;                                                                             //!
+   TBranch *b_Photon_etaWidth;                                                                        //!
+   TBranch *b_Photon_haloTaggerMVAVal;                                                                //!
+   TBranch *b_Photon_hcalPFClusterIso;                                                                //!
+   TBranch *b_Photon_hoe;                                                                             //!
+   TBranch *b_Photon_hoe_PUcorr;                                                                      //!
+   TBranch *b_Photon_mvaID;                                                                           //!
+   TBranch *b_Photon_pfChargedIso;                                                                    //!
+   TBranch *b_Photon_pfChargedIsoPFPV;                                                                //!
+   TBranch *b_Photon_pfChargedIsoWorstVtx;                                                            //!
+   TBranch *b_Photon_pfPhoIso03;                                                                      //!
+   TBranch *b_Photon_pfRelIso03_all_quadratic;                                                        //!
+   TBranch *b_Photon_pfRelIso03_chg_quadratic;                                                        //!
+   TBranch *b_Photon_phi;                                                                             //!
+   TBranch *b_Photon_phiWidth;                                                                        //!
+   TBranch *b_Photon_pt;                                                                              //!
+   TBranch *b_Photon_r9;                                                                              //!
+   TBranch *b_Photon_s4;                                                                              //!
+   TBranch *b_Photon_sieie;                                                                           //!
+   TBranch *b_Photon_sieip;                                                                           //!
+   TBranch *b_Photon_sipip;                                                                           //!
+   TBranch *b_Photon_trkSumPtHollowConeDR03;                                                          //!
+   TBranch *b_Photon_trkSumPtSolidConeDR04;                                                           //!
+   TBranch *b_Photon_x_calo;                                                                          //!
+   TBranch *b_Photon_y_calo;                                                                          //!
+   TBranch *b_Photon_z_calo;                                                                          //!
+   TBranch *b_nPPSLocalTrack;                                                                         //!
+   TBranch *b_PPSLocalTrack_multiRPProtonIdx;                                                         //!
+   TBranch *b_PPSLocalTrack_singleRPProtonIdx;                                                        //!
+   TBranch *b_PPSLocalTrack_decRPId;                                                                  //!
+   TBranch *b_PPSLocalTrack_rpType;                                                                   //!
+   TBranch *b_PPSLocalTrack_x;                                                                        //!
+   TBranch *b_PPSLocalTrack_y;                                                                        //!
+   TBranch *b_PPSLocalTrack_time;                                                                     //!
+   TBranch *b_PPSLocalTrack_timeUnc;                                                                  //!
+   TBranch *b_PuppiMET_phi;                                                                           //!
+   TBranch *b_PuppiMET_phiJERDown;                                                                    //!
+   TBranch *b_PuppiMET_phiJERUp;                                                                      //!
+   TBranch *b_PuppiMET_phiJESDown;                                                                    //!
+   TBranch *b_PuppiMET_phiJESUp;                                                                      //!
+   TBranch *b_PuppiMET_phiUnclusteredDown;                                                            //!
+   TBranch *b_PuppiMET_phiUnclusteredUp;                                                              //!
+   TBranch *b_PuppiMET_pt;                                                                            //!
+   TBranch *b_PuppiMET_ptJERDown;                                                                     //!
+   TBranch *b_PuppiMET_ptJERUp;                                                                       //!
+   TBranch *b_PuppiMET_ptJESDown;                                                                     //!
+   TBranch *b_PuppiMET_ptJESUp;                                                                       //!
+   TBranch *b_PuppiMET_ptUnclusteredDown;                                                             //!
+   TBranch *b_PuppiMET_ptUnclusteredUp;                                                               //!
+   TBranch *b_PuppiMET_sumEt;                                                                         //!
+   TBranch *b_RawMET_phi;                                                                             //!
+   TBranch *b_RawMET_pt;                                                                              //!
+   TBranch *b_RawMET_sumEt;                                                                           //!
+   TBranch *b_RawPuppiMET_phi;                                                                        //!
+   TBranch *b_RawPuppiMET_pt;                                                                         //!
+   TBranch *b_RawPuppiMET_sumEt;                                                                      //!
+   TBranch *b_Rho_fixedGridRhoAll;                                                                    //!
+   TBranch *b_Rho_fixedGridRhoFastjetAll;                                                             //!
+   TBranch *b_Rho_fixedGridRhoFastjetCentral;                                                         //!
+   TBranch *b_Rho_fixedGridRhoFastjetCentralCalo;                                                     //!
+   TBranch *b_Rho_fixedGridRhoFastjetCentralChargedPileUp;                                            //!
+   TBranch *b_Rho_fixedGridRhoFastjetCentralNeutral;                                                  //!
+   TBranch *b_nSoftActivityJet;                                                                       //!
+   TBranch *b_SoftActivityJet_eta;                                                                    //!
+   TBranch *b_SoftActivityJet_phi;                                                                    //!
+   TBranch *b_SoftActivityJet_pt;                                                                     //!
+   TBranch *b_SoftActivityJetNjets10;                                                                 //!
+   TBranch *b_SoftActivityJetNjets2;                                                                  //!
+   TBranch *b_SoftActivityJetNjets5;                                                                  //!
+   TBranch *b_SoftActivityJetHT;                                                                      //!
+   TBranch *b_SoftActivityJetHT10;                                                                    //!
+   TBranch *b_SoftActivityJetHT2;                                                                     //!
+   TBranch *b_SoftActivityJetHT5;                                                                     //!
+   TBranch *b_nProton_singleRP;                                                                       //!
+   TBranch *b_Proton_singleRP_decRPId;                                                                //!
+   TBranch *b_Proton_singleRP_thetaY;                                                                 //!
+   TBranch *b_Proton_singleRP_xi;                                                                     //!
+   TBranch *b_nSubJet;                                                                                //!
+   TBranch *b_SubJet_btagDeepB;                                                                       //!
+   TBranch *b_SubJet_eta;                                                                             //!
+   TBranch *b_SubJet_mass;                                                                            //!
+   TBranch *b_SubJet_n2b1;                                                                            //!
+   TBranch *b_SubJet_n3b1;                                                                            //!
+   TBranch *b_SubJet_phi;                                                                             //!
+   TBranch *b_SubJet_pt;                                                                              //!
+   TBranch *b_SubJet_rawFactor;                                                                       //!
+   TBranch *b_SubJet_tau1;                                                                            //!
+   TBranch *b_SubJet_tau2;                                                                            //!
+   TBranch *b_SubJet_tau3;                                                                            //!
+   TBranch *b_SubJet_tau4;                                                                            //!
+   TBranch *b_nTau;                                                                                   //!
+   TBranch *b_Tau_decayMode;                                                                          //!
+   TBranch *b_Tau_idAntiEleDeadECal;                                                                  //!
+   TBranch *b_Tau_idAntiMu;                                                                           //!
+   TBranch *b_Tau_idDecayModeNewDMs;                                                                  //!
+   TBranch *b_Tau_idDecayModeOldDMs;                                                                  //!
+   TBranch *b_Tau_idDeepTau2017v2p1VSe;                                                               //!
+   TBranch *b_Tau_idDeepTau2017v2p1VSjet;                                                             //!
+   TBranch *b_Tau_idDeepTau2017v2p1VSmu;                                                              //!
+   TBranch *b_Tau_idDeepTau2018v2p5VSe;                                                               //!
+   TBranch *b_Tau_idDeepTau2018v2p5VSjet;                                                             //!
+   TBranch *b_Tau_idDeepTau2018v2p5VSmu;                                                              //!
+   TBranch *b_Tau_nSVs;                                                                               //!
+   TBranch *b_Tau_charge;                                                                             //!
+   TBranch *b_Tau_decayModePNet;                                                                      //!
+   TBranch *b_Tau_eleIdx;                                                                             //!
+   TBranch *b_Tau_jetIdx;                                                                             //!
+   TBranch *b_Tau_muIdx;                                                                              //!
+   TBranch *b_Tau_svIdx1;                                                                             //!
+   TBranch *b_Tau_svIdx2;                                                                             //!
+   TBranch *b_Tau_chargedIso;                                                                         //!
+   TBranch *b_Tau_dxy;                                                                                //!
+   TBranch *b_Tau_dz;                                                                                 //!
+   TBranch *b_Tau_eta;                                                                                //!
+   TBranch *b_Tau_leadTkDeltaEta;                                                                     //!
+   TBranch *b_Tau_leadTkDeltaPhi;                                                                     //!
+   TBranch *b_Tau_leadTkPtOverTauPt;                                                                  //!
+   TBranch *b_Tau_mass;                                                                               //!
+   TBranch *b_Tau_neutralIso;                                                                         //!
+   TBranch *b_Tau_phi;                                                                                //!
+   TBranch *b_Tau_photonsOutsideSignalCone;                                                           //!
+   TBranch *b_Tau_probDM0PNet;                                                                        //!
+   TBranch *b_Tau_probDM10PNet;                                                                       //!
+   TBranch *b_Tau_probDM11PNet;                                                                       //!
+   TBranch *b_Tau_probDM1PNet;                                                                        //!
+   TBranch *b_Tau_probDM2PNet;                                                                        //!
+   TBranch *b_Tau_pt;                                                                                 //!
+   TBranch *b_Tau_ptCorrPNet;                                                                         //!
+   TBranch *b_Tau_puCorr;                                                                             //!
+   TBranch *b_Tau_qConfPNet;                                                                          //!
+   TBranch *b_Tau_rawDeepTau2017v2p1VSe;                                                              //!
+   TBranch *b_Tau_rawDeepTau2017v2p1VSjet;                                                            //!
+   TBranch *b_Tau_rawDeepTau2017v2p1VSmu;                                                             //!
+   TBranch *b_Tau_rawDeepTau2018v2p5VSe;                                                              //!
+   TBranch *b_Tau_rawDeepTau2018v2p5VSjet;                                                            //!
+   TBranch *b_Tau_rawDeepTau2018v2p5VSmu;                                                             //!
+   TBranch *b_Tau_rawIso;                                                                             //!
+   TBranch *b_Tau_rawIsodR03;                                                                         //!
+   TBranch *b_Tau_rawPNetVSe;                                                                         //!
+   TBranch *b_Tau_rawPNetVSjet;                                                                       //!
+   TBranch *b_Tau_rawPNetVSmu;                                                                        //!
+   TBranch *b_TkMET_phi;                                                                              //!
+   TBranch *b_TkMET_pt;                                                                               //!
+   TBranch *b_TkMET_sumEt;                                                                            //!
+   TBranch *b_nTrigObj;                                                                               //!
+   TBranch *b_TrigObj_l1charge;                                                                       //!
+   TBranch *b_TrigObj_id;                                                                             //!
+   TBranch *b_TrigObj_l1iso;                                                                          //!
+   TBranch *b_TrigObj_filterBits;                                                                     //!
+   TBranch *b_TrigObj_pt;                                                                             //!
+   TBranch *b_TrigObj_eta;                                                                            //!
+   TBranch *b_TrigObj_phi;                                                                            //!
+   TBranch *b_TrigObj_l1pt;                                                                           //!
+   TBranch *b_TrigObj_l1pt_2;                                                                         //!
+   TBranch *b_TrigObj_l2pt;                                                                           //!
+   TBranch *b_nOtherPV;                                                                               //!
+   TBranch *b_OtherPV_z;                                                                              //!
+   TBranch *b_OtherPV_score;                                                                          //!
+   TBranch *b_PV_npvs;                                                                                //!
+   TBranch *b_PV_npvsGood;                                                                            //!
+   TBranch *b_PV_ndof;                                                                                //!
+   TBranch *b_PV_x;                                                                                   //!
+   TBranch *b_PV_y;                                                                                   //!
+   TBranch *b_PV_z;                                                                                   //!
+   TBranch *b_PV_chi2;                                                                                //!
+   TBranch *b_PV_score;                                                                               //!
+   TBranch *b_nSV;                                                                                    //!
+   TBranch *b_SV_charge;                                                                              //!
+   TBranch *b_SV_dlen;                                                                                //!
+   TBranch *b_SV_dlenSig;                                                                             //!
+   TBranch *b_SV_dxy;                                                                                 //!
+   TBranch *b_SV_dxySig;                                                                              //!
+   TBranch *b_SV_pAngle;                                                                              //!
+   TBranch *b_SV_ntracks;                                                                             //!
+   TBranch *b_SV_chi2;                                                                                //!
+   TBranch *b_SV_eta;                                                                                 //!
+   TBranch *b_SV_mass;                                                                                //!
+   TBranch *b_SV_ndof;                                                                                //!
+   TBranch *b_SV_phi;                                                                                 //!
+   TBranch *b_SV_pt;                                                                                  //!
+   TBranch *b_SV_x;                                                                                   //!
+   TBranch *b_SV_y;                                                                                   //!
+   TBranch *b_SV_z;                                                                                   //!
+   TBranch *b_Flag_HBHENoiseFilter;                                                                   //!
+   TBranch *b_Flag_HBHENoiseIsoFilter;                                                                //!
+   TBranch *b_Flag_CSCTightHaloFilter;                                                                //!
+   TBranch *b_Flag_CSCTightHaloTrkMuUnvetoFilter;                                                     //!
+   TBranch *b_Flag_CSCTightHalo2015Filter;                                                            //!
+   TBranch *b_Flag_globalTightHalo2016Filter;                                                         //!
+   TBranch *b_Flag_globalSuperTightHalo2016Filter;                                                    //!
+   TBranch *b_Flag_HcalStripHaloFilter;                                                               //!
+   TBranch *b_Flag_hcalLaserEventFilter;                                                              //!
+   TBranch *b_Flag_EcalDeadCellTriggerPrimitiveFilter;                                                //!
+   TBranch *b_Flag_EcalDeadCellBoundaryEnergyFilter;                                                  //!
+   TBranch *b_Flag_ecalBadCalibFilter;                                                                //!
+   TBranch *b_Flag_goodVertices;                                                                      //!
+   TBranch *b_Flag_eeBadScFilter;                                                                     //!
+   TBranch *b_Flag_ecalLaserCorrFilter;                                                               //!
+   TBranch *b_Flag_trkPOGFilters;                                                                     //!
+   TBranch *b_Flag_chargedHadronTrackResolutionFilter;                                                //!
+   TBranch *b_Flag_muonBadTrackFilter;                                                                //!
+   TBranch *b_Flag_BadChargedCandidateFilter;                                                         //!
+   TBranch *b_Flag_BadPFMuonFilter;                                                                   //!
+   TBranch *b_Flag_BadPFMuonDzFilter;                                                                 //!
+   TBranch *b_Flag_hfNoisyHitsFilter;                                                                 //!
+   TBranch *b_Flag_BadChargedCandidateSummer16Filter;                                                 //!
+   TBranch *b_Flag_BadPFMuonSummer16Filter;                                                           //!
+   TBranch *b_Flag_trkPOG_manystripclus53X;                                                           //!
+   TBranch *b_Flag_trkPOG_toomanystripclus53X;                                                        //!
+   TBranch *b_Flag_trkPOG_logErrorTooManyClusters;                                                    //!
+   TBranch *b_Flag_METFilters;                                                                        //!
+   TBranch *b_L1_AlwaysTrue;                                                                          //!
+   TBranch *b_L1_BPTX_AND_Ref1_VME;                                                                   //!
+   TBranch *b_L1_BPTX_AND_Ref3_VME;                                                                   //!
+   TBranch *b_L1_BPTX_AND_Ref4_VME;                                                                   //!
+   TBranch *b_L1_BPTX_BeamGas_B1_VME;                                                                 //!
+   TBranch *b_L1_BPTX_BeamGas_B2_VME;                                                                 //!
+   TBranch *b_L1_BPTX_BeamGas_Ref1_VME;                                                               //!
+   TBranch *b_L1_BPTX_BeamGas_Ref2_VME;                                                               //!
+   TBranch *b_L1_BPTX_NotOR_VME;                                                                      //!
+   TBranch *b_L1_BPTX_OR_Ref3_VME;                                                                    //!
+   TBranch *b_L1_BPTX_OR_Ref4_VME;                                                                    //!
+   TBranch *b_L1_BPTX_RefAND_VME;                                                                     //!
+   TBranch *b_L1_BptxMinus;                                                                           //!
+   TBranch *b_L1_BptxOR;                                                                              //!
+   TBranch *b_L1_BptxPlus;                                                                            //!
+   TBranch *b_L1_BptxXOR;                                                                             //!
+   TBranch *b_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;                                         //!
+   TBranch *b_L1_DoubleEG10_er1p2_dR_Max0p6;                                                          //!
+   TBranch *b_L1_DoubleEG10p5_er1p2_dR_Max0p6;                                                        //!
+   TBranch *b_L1_DoubleEG11_er1p2_dR_Max0p6;                                                          //!
+   TBranch *b_L1_DoubleEG4_er1p2_dR_Max0p9;                                                           //!
+   TBranch *b_L1_DoubleEG4p5_er1p2_dR_Max0p9;                                                         //!
+   TBranch *b_L1_DoubleEG5_er1p2_dR_Max0p9;                                                           //!
+   TBranch *b_L1_DoubleEG5p5_er1p2_dR_Max0p8;                                                         //!
+   TBranch *b_L1_DoubleEG6_er1p2_dR_Max0p8;                                                           //!
+   TBranch *b_L1_DoubleEG6p5_er1p2_dR_Max0p8;                                                         //!
+   TBranch *b_L1_DoubleEG7_er1p2_dR_Max0p8;                                                           //!
+   TBranch *b_L1_DoubleEG7p5_er1p2_dR_Max0p7;                                                         //!
+   TBranch *b_L1_DoubleEG8_er1p2_dR_Max0p7;                                                           //!
+   TBranch *b_L1_DoubleEG8er2p5_HTT260er;                                                             //!
+   TBranch *b_L1_DoubleEG8er2p5_HTT280er;                                                             //!
+   TBranch *b_L1_DoubleEG8er2p5_HTT300er;                                                             //!
+   TBranch *b_L1_DoubleEG8er2p5_HTT320er;                                                             //!
+   TBranch *b_L1_DoubleEG8er2p5_HTT340er;                                                             //!
+   TBranch *b_L1_DoubleEG8p5_er1p2_dR_Max0p7;                                                         //!
+   TBranch *b_L1_DoubleEG9_er1p2_dR_Max0p7;                                                           //!
+   TBranch *b_L1_DoubleEG9p5_er1p2_dR_Max0p6;                                                         //!
+   TBranch *b_L1_DoubleEG_15_10_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_20_10_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_22_10_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_25_12_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_25_14_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_27_14_er2p5;                                                                //!
+   TBranch *b_L1_DoubleEG_LooseIso16_LooseIso12_er1p5;                                                //!
+   TBranch *b_L1_DoubleEG_LooseIso18_LooseIso12_er1p5;                                                //!
+   TBranch *b_L1_DoubleEG_LooseIso20_10_er2p5;                                                        //!
+   TBranch *b_L1_DoubleEG_LooseIso20_LooseIso12_er1p5;                                                //!
+   TBranch *b_L1_DoubleEG_LooseIso22_10_er2p5;                                                        //!
+   TBranch *b_L1_DoubleEG_LooseIso22_12_er2p5;                                                        //!
+   TBranch *b_L1_DoubleEG_LooseIso22_LooseIso12_er1p5;                                                //!
+   TBranch *b_L1_DoubleEG_LooseIso25_12_er2p5;                                                        //!
+   TBranch *b_L1_DoubleEG_LooseIso25_LooseIso12_er1p5;                                                //!
+   TBranch *b_L1_DoubleIsoTau26er2p1_Jet55_RmOvlp_dR0p5;                                              //!
+   TBranch *b_L1_DoubleIsoTau26er2p1_Jet70_RmOvlp_dR0p5;                                              //!
+   TBranch *b_L1_DoubleIsoTau28er2p1;                                                                 //!
+   TBranch *b_L1_DoubleIsoTau28er2p1_Mass_Max80;                                                      //!
+   TBranch *b_L1_DoubleIsoTau28er2p1_Mass_Max90;                                                      //!
+   TBranch *b_L1_DoubleIsoTau30er2p1;                                                                 //!
+   TBranch *b_L1_DoubleIsoTau30er2p1_Mass_Max80;                                                      //!
+   TBranch *b_L1_DoubleIsoTau30er2p1_Mass_Max90;                                                      //!
+   TBranch *b_L1_DoubleIsoTau32er2p1;                                                                 //!
+   TBranch *b_L1_DoubleIsoTau34er2p1;                                                                 //!
+   TBranch *b_L1_DoubleIsoTau35er2p1;                                                                 //!
+   TBranch *b_L1_DoubleIsoTau36er2p1;                                                                 //!
+   TBranch *b_L1_DoubleJet100er2p3_dEta_Max1p6;                                                       //!
+   TBranch *b_L1_DoubleJet100er2p5;                                                                   //!
+   TBranch *b_L1_DoubleJet112er2p3_dEta_Max1p6;                                                       //!
+   TBranch *b_L1_DoubleJet120er2p5;                                                                   //!
+   TBranch *b_L1_DoubleJet150er2p5;                                                                   //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min150_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min200_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min250_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min300_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min330_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet30er2p5_Mass_Min360_dEta_Max1p5;                                            //!
+   TBranch *b_L1_DoubleJet35_Mass_Min450_IsoTau45_RmOvlp;                                             //!
+   TBranch *b_L1_DoubleJet35_Mass_Min450_IsoTau45er2p1_RmOvlp_dR0p5;                                  //!
+   TBranch *b_L1_DoubleJet40er2p5;                                                                    //!
+   TBranch *b_L1_DoubleJet_100_30_DoubleJet30_Mass_Min620;                                            //!
+   TBranch *b_L1_DoubleJet_110_35_DoubleJet35_Mass_Min620;                                            //!
+   TBranch *b_L1_DoubleJet_115_40_DoubleJet40_Mass_Min620;                                            //!
+   TBranch *b_L1_DoubleJet_115_40_DoubleJet40_Mass_Min620_Jet60TT28;                                  //!
+   TBranch *b_L1_DoubleJet_120_45_DoubleJet45_Mass_Min620;                                            //!
+   TBranch *b_L1_DoubleJet_120_45_DoubleJet45_Mass_Min620_Jet60TT28;                                  //!
+   TBranch *b_L1_DoubleJet_80_30_Mass_Min420_DoubleMu0_SQ;                                            //!
+   TBranch *b_L1_DoubleJet_80_30_Mass_Min420_IsoTau40_RmOvlp;                                         //!
+   TBranch *b_L1_DoubleJet_80_30_Mass_Min420_Mu8;                                                     //!
+   TBranch *b_L1_DoubleJet_90_30_DoubleJet30_Mass_Min620;                                             //!
+   TBranch *b_L1_DoubleLLPJet40;                                                                      //!
+   TBranch *b_L1_DoubleLooseIsoEG22er2p1;                                                             //!
+   TBranch *b_L1_DoubleLooseIsoEG24er2p1;                                                             //!
+   TBranch *b_L1_DoubleMu0;                                                                           //!
+   TBranch *b_L1_DoubleMu0_Mass_Min1;                                                                 //!
+   TBranch *b_L1_DoubleMu0_OQ;                                                                        //!
+   TBranch *b_L1_DoubleMu0_SQ;                                                                        //!
+   TBranch *b_L1_DoubleMu0_SQ_OS;                                                                     //!
+   TBranch *b_L1_DoubleMu0_Upt15_Upt7;                                                                //!
+   TBranch *b_L1_DoubleMu0_Upt5_Upt5;                                                                 //!
+   TBranch *b_L1_DoubleMu0_Upt6_IP_Min1_Upt4;                                                         //!
+   TBranch *b_L1_DoubleMu0_dR_Max1p6_Jet90er2p5_dR_Max0p8;                                            //!
+   TBranch *b_L1_DoubleMu0er1p4_OQ_OS_dEta_Max1p6;                                                    //!
+   TBranch *b_L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4;                                                      //!
+   TBranch *b_L1_DoubleMu0er1p5_SQ;                                                                   //!
+   TBranch *b_L1_DoubleMu0er1p5_SQ_OS;                                                                //!
+   TBranch *b_L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4;                                                      //!
+   TBranch *b_L1_DoubleMu0er1p5_SQ_dR_Max1p4;                                                         //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p5;                                                    //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_OS_dEta_Max1p6;                                                    //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_OS_dR_Max1p4;                                                      //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_dEta_Max1p5;                                                       //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_dEta_Max1p6;                                                       //!
+   TBranch *b_L1_DoubleMu0er2p0_SQ_dR_Max1p4;                                                         //!
+   TBranch *b_L1_DoubleMu18er2p1_SQ;                                                                  //!
+   TBranch *b_L1_DoubleMu3_OS_er2p3_Mass_Max14_DoubleEG7p5_er2p1_Mass_Max20;                          //!
+   TBranch *b_L1_DoubleMu3_SQ_ETMHF50_HTT60er;                                                        //!
+   TBranch *b_L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5;                                                     //!
+   TBranch *b_L1_DoubleMu3_SQ_ETMHF50_Jet60er2p5_OR_DoubleJet40er2p5;                                 //!
+   TBranch *b_L1_DoubleMu3_SQ_ETMHF60_Jet60er2p5;                                                     //!
+   TBranch *b_L1_DoubleMu3_SQ_HTT220er;                                                               //!
+   TBranch *b_L1_DoubleMu3_SQ_HTT240er;                                                               //!
+   TBranch *b_L1_DoubleMu3_SQ_HTT260er;                                                               //!
+   TBranch *b_L1_DoubleMu3_dR_Max1p6_Jet90er2p5_dR_Max0p8;                                            //!
+   TBranch *b_L1_DoubleMu3er2p0_SQ_OS_dR_Max1p4;                                                      //!
+   TBranch *b_L1_DoubleMu4_SQ_EG9er2p5;                                                               //!
+   TBranch *b_L1_DoubleMu4_SQ_OS;                                                                     //!
+   TBranch *b_L1_DoubleMu4_SQ_OS_dR_Max1p2;                                                           //!
+   TBranch *b_L1_DoubleMu4p5_SQ_OS;                                                                   //!
+   TBranch *b_L1_DoubleMu4p5_SQ_OS_dR_Max1p2;                                                         //!
+   TBranch *b_L1_DoubleMu4p5er2p0_SQ_OS;                                                              //!
+   TBranch *b_L1_DoubleMu4p5er2p0_SQ_OS_Mass_7to18;                                                   //!
+   TBranch *b_L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7;                                                    //!
+   TBranch *b_L1_DoubleMu5_OS_er2p3_Mass_8to14_DoubleEG3er2p1_Mass_Max20;                             //!
+   TBranch *b_L1_DoubleMu5_SQ_EG9er2p5;                                                               //!
+   TBranch *b_L1_DoubleMu8_SQ;                                                                        //!
+   TBranch *b_L1_DoubleMu9_SQ;                                                                        //!
+   TBranch *b_L1_DoubleMu_12_5;                                                                       //!
+   TBranch *b_L1_DoubleMu_15_5_SQ;                                                                    //!
+   TBranch *b_L1_DoubleMu_15_7;                                                                       //!
+   TBranch *b_L1_DoubleMu_15_7_Mass_Min1;                                                             //!
+   TBranch *b_L1_DoubleMu_15_7_SQ;                                                                    //!
+   TBranch *b_L1_DoubleTau70er2p1;                                                                    //!
+   TBranch *b_L1_ETM120;                                                                              //!
+   TBranch *b_L1_ETM150;                                                                              //!
+   TBranch *b_L1_ETMHF100;                                                                            //!
+   TBranch *b_L1_ETMHF100_HTT60er;                                                                    //!
+   TBranch *b_L1_ETMHF110;                                                                            //!
+   TBranch *b_L1_ETMHF110_HTT60er;                                                                    //!
+   TBranch *b_L1_ETMHF110_HTT60er_NotSecondBunchInTrain;                                              //!
+   TBranch *b_L1_ETMHF120;                                                                            //!
+   TBranch *b_L1_ETMHF120_HTT60er;                                                                    //!
+   TBranch *b_L1_ETMHF120_NotSecondBunchInTrain;                                                      //!
+   TBranch *b_L1_ETMHF130;                                                                            //!
+   TBranch *b_L1_ETMHF130_HTT60er;                                                                    //!
+   TBranch *b_L1_ETMHF140;                                                                            //!
+   TBranch *b_L1_ETMHF150;                                                                            //!
+   TBranch *b_L1_ETMHF70;                                                                             //!
+   TBranch *b_L1_ETMHF70_HTT60er;                                                                     //!
+   TBranch *b_L1_ETMHF80;                                                                             //!
+   TBranch *b_L1_ETMHF80_HTT60er;                                                                     //!
+   TBranch *b_L1_ETMHF90;                                                                             //!
+   TBranch *b_L1_ETMHF90_HTT60er;                                                                     //!
+   TBranch *b_L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p1;                                                //!
+   TBranch *b_L1_ETMHF90_SingleJet60er2p5_dPhi_Min2p6;                                                //!
+   TBranch *b_L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p1;                                                //!
+   TBranch *b_L1_ETMHF90_SingleJet80er2p5_dPhi_Min2p6;                                                //!
+   TBranch *b_L1_ETT1200;                                                                             //!
+   TBranch *b_L1_ETT1600;                                                                             //!
+   TBranch *b_L1_ETT2000;                                                                             //!
+   TBranch *b_L1_FirstBunchAfterTrain;                                                                //!
+   TBranch *b_L1_FirstBunchBeforeTrain;                                                               //!
+   TBranch *b_L1_FirstBunchInTrain;                                                                   //!
+   TBranch *b_L1_FirstCollisionInOrbit;                                                               //!
+   TBranch *b_L1_FirstCollisionInTrain;                                                               //!
+   TBranch *b_L1_HCAL_LaserMon_Trig;                                                                  //!
+   TBranch *b_L1_HCAL_LaserMon_Veto;                                                                  //!
+   TBranch *b_L1_HTT120_SingleLLPJet40;                                                               //!
+   TBranch *b_L1_HTT120er;                                                                            //!
+   TBranch *b_L1_HTT160_SingleLLPJet50;                                                               //!
+   TBranch *b_L1_HTT160er;                                                                            //!
+   TBranch *b_L1_HTT200_SingleLLPJet60;                                                               //!
+   TBranch *b_L1_HTT200er;                                                                            //!
+   TBranch *b_L1_HTT240_SingleLLPJet70;                                                               //!
+   TBranch *b_L1_HTT255er;                                                                            //!
+   TBranch *b_L1_HTT280er;                                                                            //!
+   TBranch *b_L1_HTT280er_QuadJet_70_55_40_35_er2p5;                                                  //!
+   TBranch *b_L1_HTT320er;                                                                            //!
+   TBranch *b_L1_HTT320er_QuadJet_70_55_40_40_er2p5;                                                  //!
+   TBranch *b_L1_HTT320er_QuadJet_80_60_er2p1_45_40_er2p3;                                            //!
+   TBranch *b_L1_HTT320er_QuadJet_80_60_er2p1_50_45_er2p3;                                            //!
+   TBranch *b_L1_HTT360er;                                                                            //!
+   TBranch *b_L1_HTT400er;                                                                            //!
+   TBranch *b_L1_HTT450er;                                                                            //!
+   TBranch *b_L1_IsoEG32er2p5_Mt40;                                                                   //!
+   TBranch *b_L1_IsoTau52er2p1_QuadJet36er2p5;                                                        //!
+   TBranch *b_L1_IsolatedBunch;                                                                       //!
+   TBranch *b_L1_LastBunchInTrain;                                                                    //!
+   TBranch *b_L1_LastCollisionInTrain;                                                                //!
+   TBranch *b_L1_LooseIsoEG22er2p1_IsoTau26er2p1_dR_Min0p3;                                           //!
+   TBranch *b_L1_LooseIsoEG22er2p1_Tau70er2p1_dR_Min0p3;                                              //!
+   TBranch *b_L1_LooseIsoEG24er2p1_HTT100er;                                                          //!
+   TBranch *b_L1_LooseIsoEG24er2p1_IsoTau27er2p1_dR_Min0p3;                                           //!
+   TBranch *b_L1_LooseIsoEG26er2p1_HTT100er;                                                          //!
+   TBranch *b_L1_LooseIsoEG26er2p1_Jet34er2p5_dR_Min0p3;                                              //!
+   TBranch *b_L1_LooseIsoEG28er2p1_HTT100er;                                                          //!
+   TBranch *b_L1_LooseIsoEG28er2p1_Jet34er2p5_dR_Min0p3;                                              //!
+   TBranch *b_L1_LooseIsoEG30er2p1_HTT100er;                                                          //!
+   TBranch *b_L1_LooseIsoEG30er2p1_Jet34er2p5_dR_Min0p3;                                              //!
+   TBranch *b_L1_MinimumBiasHF0;                                                                      //!
+   TBranch *b_L1_MinimumBiasHF0_AND_BptxAND;                                                          //!
+   TBranch *b_L1_Mu10er2p3_Jet32er2p3_dR_Max0p4_DoubleJet32er2p3_dEta_Max1p6;                         //!
+   TBranch *b_L1_Mu12er2p3_Jet40er2p1_dR_Max0p4_DoubleJet40er2p1_dEta_Max1p6;                         //!
+   TBranch *b_L1_Mu12er2p3_Jet40er2p3_dR_Max0p4_DoubleJet40er2p3_dEta_Max1p6;                         //!
+   TBranch *b_L1_Mu18er2p1_Tau24er2p1;                                                                //!
+   TBranch *b_L1_Mu18er2p1_Tau26er2p1;                                                                //!
+   TBranch *b_L1_Mu18er2p1_Tau26er2p1_Jet55;                                                          //!
+   TBranch *b_L1_Mu18er2p1_Tau26er2p1_Jet70;                                                          //!
+   TBranch *b_L1_Mu20_EG10er2p5;                                                                      //!
+   TBranch *b_L1_Mu22er2p1_IsoTau28er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_IsoTau30er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_IsoTau32er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_IsoTau34er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_IsoTau36er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_IsoTau40er2p1;                                                             //!
+   TBranch *b_L1_Mu22er2p1_Tau70er2p1;                                                                //!
+   TBranch *b_L1_Mu3_Jet120er2p5_dR_Max0p4;                                                           //!
+   TBranch *b_L1_Mu3_Jet120er2p5_dR_Max0p8;                                                           //!
+   TBranch *b_L1_Mu3_Jet16er2p5_dR_Max0p4;                                                            //!
+   TBranch *b_L1_Mu3_Jet30er2p5;                                                                      //!
+   TBranch *b_L1_Mu3_Jet35er2p5_dR_Max0p4;                                                            //!
+   TBranch *b_L1_Mu3_Jet60er2p5_dR_Max0p4;                                                            //!
+   TBranch *b_L1_Mu3_Jet80er2p5_dR_Max0p4;                                                            //!
+   TBranch *b_L1_Mu3er1p5_Jet100er2p5_ETMHF40;                                                        //!
+   TBranch *b_L1_Mu3er1p5_Jet100er2p5_ETMHF50;                                                        //!
+   TBranch *b_L1_Mu5_EG23er2p5;                                                                       //!
+   TBranch *b_L1_Mu5_LooseIsoEG20er2p5;                                                               //!
+   TBranch *b_L1_Mu6_DoubleEG10er2p5;                                                                 //!
+   TBranch *b_L1_Mu6_DoubleEG12er2p5;                                                                 //!
+   TBranch *b_L1_Mu6_DoubleEG15er2p5;                                                                 //!
+   TBranch *b_L1_Mu6_DoubleEG17er2p5;                                                                 //!
+   TBranch *b_L1_Mu6_HTT240er;                                                                        //!
+   TBranch *b_L1_Mu6_HTT250er;                                                                        //!
+   TBranch *b_L1_Mu7_EG20er2p5;                                                                       //!
+   TBranch *b_L1_Mu7_EG23er2p5;                                                                       //!
+   TBranch *b_L1_Mu7_LooseIsoEG20er2p5;                                                               //!
+   TBranch *b_L1_Mu7_LooseIsoEG23er2p5;                                                               //!
+   TBranch *b_L1_NotBptxOR;                                                                           //!
+   TBranch *b_L1_QuadJet60er2p5;                                                                      //!
+   TBranch *b_L1_QuadJet_95_75_65_20_DoubleJet_75_65_er2p5_Jet20_FWD3p0;                              //!
+   TBranch *b_L1_QuadMu0;                                                                             //!
+   TBranch *b_L1_QuadMu0_OQ;                                                                          //!
+   TBranch *b_L1_QuadMu0_SQ;                                                                          //!
+   TBranch *b_L1_SecondBunchInTrain;                                                                  //!
+   TBranch *b_L1_SecondLastBunchInTrain;                                                              //!
+   TBranch *b_L1_SingleEG10er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG15er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG26er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG28_FWD2p5;                                                                   //!
+   TBranch *b_L1_SingleEG28er1p5;                                                                     //!
+   TBranch *b_L1_SingleEG28er2p1;                                                                     //!
+   TBranch *b_L1_SingleEG28er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG34er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG36er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG38er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG40er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG42er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG45er2p5;                                                                     //!
+   TBranch *b_L1_SingleEG50;                                                                          //!
+   TBranch *b_L1_SingleEG60;                                                                          //!
+   TBranch *b_L1_SingleEG8er2p5;                                                                      //!
+   TBranch *b_L1_SingleIsoEG24er1p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG24er2p1;                                                                  //!
+   TBranch *b_L1_SingleIsoEG26er1p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG26er2p1;                                                                  //!
+   TBranch *b_L1_SingleIsoEG26er2p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG28_FWD2p5;                                                                //!
+   TBranch *b_L1_SingleIsoEG28er1p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG28er2p1;                                                                  //!
+   TBranch *b_L1_SingleIsoEG28er2p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG30er2p1;                                                                  //!
+   TBranch *b_L1_SingleIsoEG30er2p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG32er2p1;                                                                  //!
+   TBranch *b_L1_SingleIsoEG32er2p5;                                                                  //!
+   TBranch *b_L1_SingleIsoEG34er2p5;                                                                  //!
+   TBranch *b_L1_SingleIsoTau32er2p1;                                                                 //!
+   TBranch *b_L1_SingleJet10erHE;                                                                     //!
+   TBranch *b_L1_SingleJet120;                                                                        //!
+   TBranch *b_L1_SingleJet120_FWD3p0;                                                                 //!
+   TBranch *b_L1_SingleJet120er2p5;                                                                   //!
+   TBranch *b_L1_SingleJet12erHE;                                                                     //!
+   TBranch *b_L1_SingleJet140er2p5;                                                                   //!
+   TBranch *b_L1_SingleJet140er2p5_ETMHF70;                                                           //!
+   TBranch *b_L1_SingleJet140er2p5_ETMHF80;                                                           //!
+   TBranch *b_L1_SingleJet140er2p5_ETMHF90;                                                           //!
+   TBranch *b_L1_SingleJet160er2p5;                                                                   //!
+   TBranch *b_L1_SingleJet180;                                                                        //!
+   TBranch *b_L1_SingleJet180er2p5;                                                                   //!
+   TBranch *b_L1_SingleJet200;                                                                        //!
+   TBranch *b_L1_SingleJet20er2p5_NotBptxOR;                                                          //!
+   TBranch *b_L1_SingleJet20er2p5_NotBptxOR_3BX;                                                      //!
+   TBranch *b_L1_SingleJet35;                                                                         //!
+   TBranch *b_L1_SingleJet35_FWD3p0;                                                                  //!
+   TBranch *b_L1_SingleJet35er2p5;                                                                    //!
+   TBranch *b_L1_SingleJet43er2p5_NotBptxOR_3BX;                                                      //!
+   TBranch *b_L1_SingleJet46er2p5_NotBptxOR_3BX;                                                      //!
+   TBranch *b_L1_SingleJet60;                                                                         //!
+   TBranch *b_L1_SingleJet60_FWD3p0;                                                                  //!
+   TBranch *b_L1_SingleJet60er2p5;                                                                    //!
+   TBranch *b_L1_SingleJet8erHE;                                                                      //!
+   TBranch *b_L1_SingleJet90;                                                                         //!
+   TBranch *b_L1_SingleJet90_FWD3p0;                                                                  //!
+   TBranch *b_L1_SingleJet90er2p5;                                                                    //!
+   TBranch *b_L1_SingleLooseIsoEG26er1p5;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG26er2p5;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG28_FWD2p5;                                                           //!
+   TBranch *b_L1_SingleLooseIsoEG28er1p5;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG28er2p1;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG28er2p5;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG30er1p5;                                                             //!
+   TBranch *b_L1_SingleLooseIsoEG30er2p5;                                                             //!
+   TBranch *b_L1_SingleMu0_BMTF;                                                                      //!
+   TBranch *b_L1_SingleMu0_DQ;                                                                        //!
+   TBranch *b_L1_SingleMu0_EMTF;                                                                      //!
+   TBranch *b_L1_SingleMu0_OMTF;                                                                      //!
+   TBranch *b_L1_SingleMu10er1p5;                                                                     //!
+   TBranch *b_L1_SingleMu12_DQ_BMTF;                                                                  //!
+   TBranch *b_L1_SingleMu12_DQ_EMTF;                                                                  //!
+   TBranch *b_L1_SingleMu12_DQ_OMTF;                                                                  //!
+   TBranch *b_L1_SingleMu12er1p5;                                                                     //!
+   TBranch *b_L1_SingleMu14er1p5;                                                                     //!
+   TBranch *b_L1_SingleMu15_DQ;                                                                       //!
+   TBranch *b_L1_SingleMu16er1p5;                                                                     //!
+   TBranch *b_L1_SingleMu18;                                                                          //!
+   TBranch *b_L1_SingleMu18er1p5;                                                                     //!
+   TBranch *b_L1_SingleMu20;                                                                          //!
+   TBranch *b_L1_SingleMu22;                                                                          //!
+   TBranch *b_L1_SingleMu22_BMTF;                                                                     //!
+   TBranch *b_L1_SingleMu22_DQ;                                                                       //!
+   TBranch *b_L1_SingleMu22_EMTF;                                                                     //!
+   TBranch *b_L1_SingleMu22_OMTF;                                                                     //!
+   TBranch *b_L1_SingleMu22_OQ;                                                                       //!
+   TBranch *b_L1_SingleMu25;                                                                          //!
+   TBranch *b_L1_SingleMu3;                                                                           //!
+   TBranch *b_L1_SingleMu5;                                                                           //!
+   TBranch *b_L1_SingleMu6er1p5;                                                                      //!
+   TBranch *b_L1_SingleMu7;                                                                           //!
+   TBranch *b_L1_SingleMu7_DQ;                                                                        //!
+   TBranch *b_L1_SingleMu7er1p5;                                                                      //!
+   TBranch *b_L1_SingleMu8er1p5;                                                                      //!
+   TBranch *b_L1_SingleMu9er1p5;                                                                      //!
+   TBranch *b_L1_SingleMuCosmics;                                                                     //!
+   TBranch *b_L1_SingleMuCosmics_BMTF;                                                                //!
+   TBranch *b_L1_SingleMuCosmics_EMTF;                                                                //!
+   TBranch *b_L1_SingleMuCosmics_OMTF;                                                                //!
+   TBranch *b_L1_SingleMuOpen;                                                                        //!
+   TBranch *b_L1_SingleMuOpen_NotBptxOR;                                                              //!
+   TBranch *b_L1_SingleMuOpen_er1p1_NotBptxOR_3BX;                                                    //!
+   TBranch *b_L1_SingleMuOpen_er1p4_NotBptxOR_3BX;                                                    //!
+   TBranch *b_L1_SingleMuShower_Nominal;                                                              //!
+   TBranch *b_L1_SingleMuShower_Tight;                                                                //!
+   TBranch *b_L1_SingleTau120er2p1;                                                                   //!
+   TBranch *b_L1_SingleTau130er2p1;                                                                   //!
+   TBranch *b_L1_SingleTau70er2p1;                                                                    //!
+   TBranch *b_L1_TOTEM_1;                                                                             //!
+   TBranch *b_L1_TOTEM_2;                                                                             //!
+   TBranch *b_L1_TOTEM_3;                                                                             //!
+   TBranch *b_L1_TOTEM_4;                                                                             //!
+   TBranch *b_L1_TripleEG16er2p5;                                                                     //!
+   TBranch *b_L1_TripleEG_16_12_8_er2p5;                                                              //!
+   TBranch *b_L1_TripleEG_16_15_8_er2p5;                                                              //!
+   TBranch *b_L1_TripleEG_18_17_8_er2p5;                                                              //!
+   TBranch *b_L1_TripleEG_18_18_12_er2p5;                                                             //!
+   TBranch *b_L1_TripleJet_100_80_70_DoubleJet_80_70_er2p5;                                           //!
+   TBranch *b_L1_TripleJet_105_85_75_DoubleJet_85_75_er2p5;                                           //!
+   TBranch *b_L1_TripleJet_95_75_65_DoubleJet_75_65_er2p5;                                            //!
+   TBranch *b_L1_TripleMu0;                                                                           //!
+   TBranch *b_L1_TripleMu0_OQ;                                                                        //!
+   TBranch *b_L1_TripleMu0_SQ;                                                                        //!
+   TBranch *b_L1_TripleMu3;                                                                           //!
+   TBranch *b_L1_TripleMu3_SQ;                                                                        //!
+   TBranch *b_L1_TripleMu_2SQ_1p5SQ_0OQ;                                                              //!
+   TBranch *b_L1_TripleMu_2SQ_1p5SQ_0OQ_Mass_Max12;                                                   //!
+   TBranch *b_L1_TripleMu_3SQ_2p5SQ_0OQ_Mass_Max12;                                                   //!
+   TBranch *b_L1_TripleMu_5SQ_3SQ_0OQ;                                                                //!
+   TBranch *b_L1_TripleMu_5SQ_3SQ_0OQ_DoubleMu_5_3_SQ_OS_Mass_Max9;                                   //!
+   TBranch *b_L1_TripleMu_5SQ_3SQ_0_DoubleMu_5_3_SQ_OS_Mass_Max9;                                     //!
+   TBranch *b_L1_TripleMu_5_3_3;                                                                      //!
+   TBranch *b_L1_TripleMu_5_3_3_SQ;                                                                   //!
+   TBranch *b_L1_TripleMu_5_3p5_2p5;                                                                  //!
+   TBranch *b_L1_TripleMu_5_3p5_2p5_DoubleMu_5_2p5_OS_Mass_5to17;                                     //!
+   TBranch *b_L1_TripleMu_5_3p5_2p5_OQ_DoubleMu_5_2p5_OQ_OS_Mass_5to17;                               //!
+   TBranch *b_L1_TripleMu_5_4_2p5_DoubleMu_5_2p5_OS_Mass_5to17;                                       //!
+   TBranch *b_L1_TripleMu_5_5_3;                                                                      //!
+   TBranch *b_L1_UnpairedBunchBptxMinus;                                                              //!
+   TBranch *b_L1_UnpairedBunchBptxPlus;                                                               //!
+   TBranch *b_L1_ZeroBias;                                                                            //!
+   TBranch *b_L1_ZeroBias_copy;                                                                       //!
+   TBranch *b_L1_UnprefireableEvent;                                                                  //!
+   TBranch *b_L1Reco_step;                                                                            //!
+   TBranch *b_Flag_HBHENoiseFilter_pRECO;                                                             //!
+   TBranch *b_Flag_HBHENoiseIsoFilter_pRECO;                                                          //!
+   TBranch *b_Flag_CSCTightHaloFilter_pRECO;                                                          //!
+   TBranch *b_Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;                                               //!
+   TBranch *b_Flag_CSCTightHalo2015Filter_pRECO;                                                      //!
+   TBranch *b_Flag_globalTightHalo2016Filter_pRECO;                                                   //!
+   TBranch *b_Flag_globalSuperTightHalo2016Filter_pRECO;                                              //!
+   TBranch *b_Flag_HcalStripHaloFilter_pRECO;                                                         //!
+   TBranch *b_Flag_hcalLaserEventFilter_pRECO;                                                        //!
+   TBranch *b_Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;                                          //!
+   TBranch *b_Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;                                            //!
+   TBranch *b_Flag_ecalBadCalibFilter_pRECO;                                                          //!
+   TBranch *b_Flag_goodVertices_pRECO;                                                                //!
+   TBranch *b_Flag_eeBadScFilter_pRECO;                                                               //!
+   TBranch *b_Flag_ecalLaserCorrFilter_pRECO;                                                         //!
+   TBranch *b_Flag_trkPOGFilters_pRECO;                                                               //!
+   TBranch *b_Flag_chargedHadronTrackResolutionFilter_pRECO;                                          //!
+   TBranch *b_Flag_muonBadTrackFilter_pRECO;                                                          //!
+   TBranch *b_Flag_BadChargedCandidateFilter_pRECO;                                                   //!
+   TBranch *b_Flag_BadPFMuonFilter_pRECO;                                                             //!
+   TBranch *b_Flag_BadPFMuonDzFilter_pRECO;                                                           //!
+   TBranch *b_Flag_hfNoisyHitsFilter_pRECO;                                                           //!
+   TBranch *b_Flag_BadChargedCandidateSummer16Filter_pRECO;                                           //!
+   TBranch *b_Flag_BadPFMuonSummer16Filter_pRECO;                                                     //!
+   TBranch *b_Flag_trkPOG_manystripclus53X_pRECO;                                                     //!
+   TBranch *b_Flag_trkPOG_toomanystripclus53X_pRECO;                                                  //!
+   TBranch *b_Flag_trkPOG_logErrorTooManyClusters_pRECO;                                              //!
+   TBranch *b_Flag_METFilters_pRECO;                                                                  //!
+   TBranch *b_HLTriggerFirstPath;                                                                     //!
+   TBranch *b_HLT_AK8PFJet360_TrimMass30;                                                             //!
+   TBranch *b_HLT_AK8PFJet380_TrimMass30;                                                             //!
+   TBranch *b_HLT_AK8PFJet400_TrimMass30;                                                             //!
+   TBranch *b_HLT_AK8PFJet420_TrimMass30;                                                             //!
+   TBranch *b_HLT_AK8PFJet400_MassSD30;                                                               //!
+   TBranch *b_HLT_AK8PFJet420_MassSD30;                                                               //!
+   TBranch *b_HLT_AK8PFJet450_MassSD30;                                                               //!
+   TBranch *b_HLT_AK8DiPFJet250_250_MassSD30;                                                         //!
+   TBranch *b_HLT_AK8DiPFJet250_250_MassSD50;                                                         //!
+   TBranch *b_HLT_AK8DiPFJet260_260_MassSD30;                                                         //!
+   TBranch *b_HLT_AK8DiPFJet270_270_MassSD30;                                                         //!
+   TBranch *b_HLT_AK8PFHT750_TrimMass50;                                                              //!
+   TBranch *b_HLT_AK8PFHT800_TrimMass50;                                                              //!
+   TBranch *b_HLT_AK8PFHT850_TrimMass50;                                                              //!
+   TBranch *b_HLT_AK8PFHT900_TrimMass50;                                                              //!
+   TBranch *b_HLT_CaloJet500_NoJetID;                                                                 //!
+   TBranch *b_HLT_CaloJet550_NoJetID;                                                                 //!
+   TBranch *b_HLT_DoubleMu5_Upsilon_DoubleEle3_CaloIdL_TrackIdL;                                      //!
+   TBranch *b_HLT_DoubleMu3_DoubleEle7p5_CaloIdL_TrackIdL_Upsilon;                                    //!
+   TBranch *b_HLT_Trimuon5_3p5_2_Upsilon_Muon;                                                        //!
+   TBranch *b_HLT_TrimuonOpen_5_3p5_2_Upsilon_Muon;                                                   //!
+   TBranch *b_HLT_DoubleEle25_CaloIdL_MW;                                                             //!
+   TBranch *b_HLT_DoubleEle27_CaloIdL_MW;                                                             //!
+   TBranch *b_HLT_DoubleEle33_CaloIdL_MW;                                                             //!
+   TBranch *b_HLT_DoubleEle24_eta2p1_WPTight_Gsf;                                                     //!
+   TBranch *b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350;                                       //!
+   TBranch *b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350;                                          //!
+   TBranch *b_HLT_Mu27_Ele37_CaloIdL_MW;                                                              //!
+   TBranch *b_HLT_Mu37_Ele27_CaloIdL_MW;                                                              //!
+   TBranch *b_HLT_Mu37_TkMu27;                                                                        //!
+   TBranch *b_HLT_DoubleMu4_3_Bs;                                                                     //!
+   TBranch *b_HLT_DoubleMu4_3_Jpsi;                                                                   //!
+   TBranch *b_HLT_DoubleMu4_3_LowMass;                                                                //!
+   TBranch *b_HLT_DoubleMu4_LowMass_Displaced;                                                        //!
+   TBranch *b_HLT_Mu0_L1DoubleMu;                                                                     //!
+   TBranch *b_HLT_Mu4_L1DoubleMu;                                                                     //!
+   TBranch *b_HLT_DoubleMu4_3_Photon4_BsToMMG;                                                        //!
+   TBranch *b_HLT_DoubleMu4_3_Displaced_Photon4_BsToMMG;                                              //!
+   TBranch *b_HLT_DoubleMu3_Trk_Tau3mu;                                                               //!
+   TBranch *b_HLT_DoubleMu3_TkMu_DsTau3Mu;                                                            //!
+   TBranch *b_HLT_DoubleMu4_Mass3p8_DZ_PFHT350;                                                       //!
+   TBranch *b_HLT_DoubleMu4_MuMuTrk_Displaced;                                                        //!
+   TBranch *b_HLT_Mu3_PFJet40;                                                                        //!
+   TBranch *b_HLT_Mu7p5_L2Mu2_Jpsi;                                                                   //!
+   TBranch *b_HLT_Mu7p5_L2Mu2_Upsilon;                                                                //!
+   TBranch *b_HLT_Mu3_L1SingleMu5orSingleMu7;                                                         //!
+   TBranch *b_HLT_DoublePhoton33_CaloIdL;                                                             //!
+   TBranch *b_HLT_DoublePhoton70;                                                                     //!
+   TBranch *b_HLT_DoublePhoton85;                                                                     //!
+   TBranch *b_HLT_Ele15_WPLoose_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele20_WPLoose_Gsf;                                                                  //!
+   TBranch *b_HLT_DiEle27_WPTightCaloOnly_L1DoubleEG;                                                 //!
+   TBranch *b_HLT_Ele27_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele28_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele30_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele32_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele35_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele35_WPTight_Gsf_L1EGMT;                                                           //!
+   TBranch *b_HLT_Ele38_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele40_WPTight_Gsf;                                                                  //!
+   TBranch *b_HLT_Ele32_WPTight_Gsf_L1DoubleEG;                                                       //!
+   TBranch *b_HLT_HT300_Beamspot;                                                                     //!
+   TBranch *b_HLT_ZeroBias_Beamspot;                                                                  //!
+   TBranch *b_HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1;                    //!
+   TBranch *b_HLT_IsoMu20;                                                                            //!
+   TBranch *b_HLT_IsoMu24;                                                                            //!
+   TBranch *b_HLT_IsoMu24_eta2p1;                                                                     //!
+   TBranch *b_HLT_IsoMu27;                                                                            //!
+   TBranch *b_HLT_UncorrectedJetE30_NoBPTX;                                                           //!
+   TBranch *b_HLT_UncorrectedJetE30_NoBPTX3BX;                                                        //!
+   TBranch *b_HLT_UncorrectedJetE60_NoBPTX3BX;                                                        //!
+   TBranch *b_HLT_UncorrectedJetE70_NoBPTX3BX;                                                        //!
+   TBranch *b_HLT_L1SingleMu18;                                                                       //!
+   TBranch *b_HLT_L1SingleMu25;                                                                       //!
+   TBranch *b_HLT_L1SingleMuCosmics;                                                                  //!
+   TBranch *b_HLT_L2Mu10_NoVertex_NoBPTX3BX;                                                          //!
+   TBranch *b_HLT_L2Mu10_NoVertex_NoBPTX;                                                             //!
+   TBranch *b_HLT_L2Mu45_NoVertex_3Sta_NoBPTX3BX;                                                     //!
+   TBranch *b_HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX;                                                     //!
+   TBranch *b_HLT_L2Mu23NoVtx_2Cha;                                                                   //!
+   TBranch *b_HLT_L2Mu23NoVtx_2Cha_CosmicSeed;                                                        //!
+   TBranch *b_HLT_DoubleL2Mu30NoVtx_2Cha_CosmicSeed_Eta2p4;                                           //!
+   TBranch *b_HLT_DoubleL2Mu30NoVtx_2Cha_Eta2p4;                                                      //!
+   TBranch *b_HLT_DoubleL2Mu50;                                                                       //!
+   TBranch *b_HLT_DoubleL2Mu23NoVtx_2Cha_CosmicSeed;                                                  //!
+   TBranch *b_HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed;                                                  //!
+   TBranch *b_HLT_DoubleL2Mu25NoVtx_2Cha_CosmicSeed_Eta2p4;                                           //!
+   TBranch *b_HLT_DoubleL2Mu23NoVtx_2Cha;                                                             //!
+   TBranch *b_HLT_DoubleL2Mu25NoVtx_2Cha;                                                             //!
+   TBranch *b_HLT_DoubleL2Mu25NoVtx_2Cha_Eta2p4;                                                      //!
+   TBranch *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL;                                                       //!
+   TBranch *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL;                                                       //!
+   TBranch *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ;                                                    //!
+   TBranch *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ;                                                    //!
+   TBranch *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8;                                              //!
+   TBranch *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass8;                                              //!
+   TBranch *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8;                                            //!
+   TBranch *b_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_Mass3p8;                                            //!
+   TBranch *b_HLT_Mu25_TkMu0_Onia;                                                                    //!
+   TBranch *b_HLT_Mu30_TkMu0_Psi;                                                                     //!
+   TBranch *b_HLT_Mu30_TkMu0_Upsilon;                                                                 //!
+   TBranch *b_HLT_Mu20_TkMu0_Phi;                                                                     //!
+   TBranch *b_HLT_Mu25_TkMu0_Phi;                                                                     //!
+   TBranch *b_HLT_Mu15;                                                                               //!
+   TBranch *b_HLT_Mu20;                                                                               //!
+   TBranch *b_HLT_Mu27;                                                                               //!
+   TBranch *b_HLT_Mu50;                                                                               //!
+   TBranch *b_HLT_Mu55;                                                                               //!
+   TBranch *b_HLT_CascadeMu100;                                                                       //!
+   TBranch *b_HLT_HighPtTkMu100;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve40;                                                                       //!
+   TBranch *b_HLT_DiPFJetAve60;                                                                       //!
+   TBranch *b_HLT_DiPFJetAve80;                                                                       //!
+   TBranch *b_HLT_DiPFJetAve140;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve200;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve260;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve320;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve400;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve500;                                                                      //!
+   TBranch *b_HLT_DiPFJetAve60_HFJEC;                                                                 //!
+   TBranch *b_HLT_DiPFJetAve80_HFJEC;                                                                 //!
+   TBranch *b_HLT_DiPFJetAve100_HFJEC;                                                                //!
+   TBranch *b_HLT_DiPFJetAve160_HFJEC;                                                                //!
+   TBranch *b_HLT_DiPFJetAve220_HFJEC;                                                                //!
+   TBranch *b_HLT_DiPFJetAve300_HFJEC;                                                                //!
+   TBranch *b_HLT_AK8PFJet40;                                                                         //!
+   TBranch *b_HLT_AK8PFJet60;                                                                         //!
+   TBranch *b_HLT_AK8PFJet80;                                                                         //!
+   TBranch *b_HLT_AK8PFJet140;                                                                        //!
+   TBranch *b_HLT_AK8PFJet200;                                                                        //!
+   TBranch *b_HLT_AK8PFJet260;                                                                        //!
+   TBranch *b_HLT_AK8PFJet320;                                                                        //!
+   TBranch *b_HLT_AK8PFJet400;                                                                        //!
+   TBranch *b_HLT_AK8PFJet450;                                                                        //!
+   TBranch *b_HLT_AK8PFJet500;                                                                        //!
+   TBranch *b_HLT_AK8PFJet550;                                                                        //!
+   TBranch *b_HLT_PFJet40;                                                                            //!
+   TBranch *b_HLT_PFJet60;                                                                            //!
+   TBranch *b_HLT_PFJet80;                                                                            //!
+   TBranch *b_HLT_PFJet140;                                                                           //!
+   TBranch *b_HLT_PFJet200;                                                                           //!
+   TBranch *b_HLT_PFJet260;                                                                           //!
+   TBranch *b_HLT_PFJet320;                                                                           //!
+   TBranch *b_HLT_PFJet400;                                                                           //!
+   TBranch *b_HLT_PFJet450;                                                                           //!
+   TBranch *b_HLT_PFJet500;                                                                           //!
+   TBranch *b_HLT_PFJet550;                                                                           //!
+   TBranch *b_HLT_PFJetFwd15;                                                                         //!
+   TBranch *b_HLT_PFJetFwd25;                                                                         //!
+   TBranch *b_HLT_PFJetFwd40;                                                                         //!
+   TBranch *b_HLT_PFJetFwd60;                                                                         //!
+   TBranch *b_HLT_PFJetFwd80;                                                                         //!
+   TBranch *b_HLT_PFJetFwd140;                                                                        //!
+   TBranch *b_HLT_PFJetFwd200;                                                                        //!
+   TBranch *b_HLT_PFJetFwd260;                                                                        //!
+   TBranch *b_HLT_PFJetFwd320;                                                                        //!
+   TBranch *b_HLT_PFJetFwd400;                                                                        //!
+   TBranch *b_HLT_PFJetFwd450;                                                                        //!
+   TBranch *b_HLT_PFJetFwd500;                                                                        //!
+   TBranch *b_HLT_AK8PFJetFwd15;                                                                      //!
+   TBranch *b_HLT_AK8PFJetFwd25;                                                                      //!
+   TBranch *b_HLT_AK8PFJetFwd40;                                                                      //!
+   TBranch *b_HLT_AK8PFJetFwd60;                                                                      //!
+   TBranch *b_HLT_AK8PFJetFwd80;                                                                      //!
+   TBranch *b_HLT_AK8PFJetFwd140;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd200;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd260;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd320;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd400;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd450;                                                                     //!
+   TBranch *b_HLT_AK8PFJetFwd500;                                                                     //!
+   TBranch *b_HLT_PFHT180;                                                                            //!
+   TBranch *b_HLT_PFHT250;                                                                            //!
+   TBranch *b_HLT_PFHT370;                                                                            //!
+   TBranch *b_HLT_PFHT430;                                                                            //!
+   TBranch *b_HLT_PFHT510;                                                                            //!
+   TBranch *b_HLT_PFHT590;                                                                            //!
+   TBranch *b_HLT_PFHT680;                                                                            //!
+   TBranch *b_HLT_PFHT780;                                                                            //!
+   TBranch *b_HLT_PFHT890;                                                                            //!
+   TBranch *b_HLT_PFHT1050;                                                                           //!
+   TBranch *b_HLT_PFHT500_PFMET100_PFMHT100_IDTight;                                                  //!
+   TBranch *b_HLT_PFHT500_PFMET110_PFMHT110_IDTight;                                                  //!
+   TBranch *b_HLT_PFHT700_PFMET85_PFMHT85_IDTight;                                                    //!
+   TBranch *b_HLT_PFHT800_PFMET75_PFMHT75_IDTight;                                                    //!
+   TBranch *b_HLT_PFMET110_PFMHT110_IDTight;                                                          //!
+   TBranch *b_HLT_PFMET120_PFMHT120_IDTight;                                                          //!
+   TBranch *b_HLT_PFMET130_PFMHT130_IDTight;                                                          //!
+   TBranch *b_HLT_PFMET140_PFMHT140_IDTight;                                                          //!
+   TBranch *b_HLT_PFMET120_PFMHT120_IDTight_PFHT60;                                                   //!
+   TBranch *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;                                           //!
+   TBranch *b_HLT_PFMETTypeOne120_PFMHT120_IDTight_PFHT60;                                            //!
+   TBranch *b_HLT_PFMETTypeOne110_PFMHT110_IDTight;                                                   //!
+   TBranch *b_HLT_PFMETTypeOne120_PFMHT120_IDTight;                                                   //!
+   TBranch *b_HLT_PFMETTypeOne130_PFMHT130_IDTight;                                                   //!
+   TBranch *b_HLT_PFMETTypeOne140_PFMHT140_IDTight;                                                   //!
+   TBranch *b_HLT_PFMETNoMu110_PFMHTNoMu110_IDTight;                                                  //!
+   TBranch *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;                                                  //!
+   TBranch *b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight;                                                  //!
+   TBranch *b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight;                                                  //!
+   TBranch *b_HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_FilterHF;                                         //!
+   TBranch *b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_FilterHF;                                         //!
+   TBranch *b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_FilterHF;                                         //!
+   TBranch *b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_FilterHF;                                         //!
+   TBranch *b_HLT_L1ETMHadSeeds;                                                                      //!
+   TBranch *b_HLT_CaloMHT90;                                                                          //!
+   TBranch *b_HLT_CaloMET90_NotCleaned;                                                               //!
+   TBranch *b_HLT_CaloMET350_NotCleaned;                                                              //!
+   TBranch *b_HLT_PFMET200_NotCleaned;                                                                //!
+   TBranch *b_HLT_PFMET250_NotCleaned;                                                                //!
+   TBranch *b_HLT_PFMET300_NotCleaned;                                                                //!
+   TBranch *b_HLT_PFMET200_BeamHaloCleaned;                                                           //!
+   TBranch *b_HLT_PFMETTypeOne200_BeamHaloCleaned;                                                    //!
+   TBranch *b_HLT_MET105_IsoTrk50;                                                                    //!
+   TBranch *b_HLT_MET120_IsoTrk50;                                                                    //!
+   TBranch *b_HLT_SingleJet30_Mu12_SinglePFJet40;                                                     //!
+   TBranch *b_HLT_Mu12eta2p3;                                                                         //!
+   TBranch *b_HLT_Mu12eta2p3_PFJet40;                                                                 //!
+   TBranch *b_HLT_Mu12_DoublePFJets40_PFBTagDeepCSV_p71;                                              //!
+   TBranch *b_HLT_Mu12_DoublePFJets100_PFBTagDeepCSV_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets200_PFBTagDeepCSV_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets350_PFBTagDeepCSV_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepCSV_p71;                              //!
+   TBranch *b_HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepCSV_p71;                              //!
+   TBranch *b_HLT_DoublePFJets40_PFBTagDeepCSV_p71;                                                   //!
+   TBranch *b_HLT_DoublePFJets100_PFBTagDeepCSV_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets200_PFBTagDeepCSV_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets350_PFBTagDeepCSV_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepCSV_p71;                                  //!
+   TBranch *b_HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepCSV_p71;                                  //!
+   TBranch *b_HLT_Mu12_DoublePFJets40_PFBTagDeepJet_p71;                                              //!
+   TBranch *b_HLT_Mu12_DoublePFJets100_PFBTagDeepJet_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets200_PFBTagDeepJet_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets350_PFBTagDeepJet_p71;                                             //!
+   TBranch *b_HLT_Mu12_DoublePFJets40MaxDeta1p6_DoublePFBTagDeepJet_p71;                              //!
+   TBranch *b_HLT_Mu12_DoublePFJets54MaxDeta1p6_DoublePFBTagDeepJet_p71;                              //!
+   TBranch *b_HLT_DoublePFJets40_PFBTagDeepJet_p71;                                                   //!
+   TBranch *b_HLT_DoublePFJets100_PFBTagDeepJet_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets200_PFBTagDeepJet_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets350_PFBTagDeepJet_p71;                                                  //!
+   TBranch *b_HLT_DoublePFJets116MaxDeta1p6_DoublePFBTagDeepJet_p71;                                  //!
+   TBranch *b_HLT_DoublePFJets128MaxDeta1p6_DoublePFBTagDeepJet_p71;                                  //!
+   TBranch *b_HLT_Photon300_NoHE;                                                                     //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL;                                                                      //!
+   TBranch *b_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ;                                                    //!
+   TBranch *b_HLT_Mu8_DiEle12_CaloIdL_TrackIdL;                                                       //!
+   TBranch *b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ;                                         //!
+   TBranch *b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350;                                            //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;                                      //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30;                            //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30;                          //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5;          //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5;      //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;                                         //!
+   TBranch *b_HLT_Mu17_TrkIsoVVL;                                                                     //!
+   TBranch *b_HLT_Mu19_TrkIsoVVL;                                                                     //!
+   TBranch *b_HLT_BTagMu_AK4DiJet20_Mu5;                                                              //!
+   TBranch *b_HLT_BTagMu_AK4DiJet40_Mu5;                                                              //!
+   TBranch *b_HLT_BTagMu_AK4DiJet70_Mu5;                                                              //!
+   TBranch *b_HLT_BTagMu_AK4DiJet110_Mu5;                                                             //!
+   TBranch *b_HLT_BTagMu_AK4DiJet170_Mu5;                                                             //!
+   TBranch *b_HLT_BTagMu_AK4Jet300_Mu5;                                                               //!
+   TBranch *b_HLT_BTagMu_AK8DiJet170_Mu5;                                                             //!
+   TBranch *b_HLT_BTagMu_AK8Jet170_DoubleMu5;                                                         //!
+   TBranch *b_HLT_BTagMu_AK8Jet300_Mu5;                                                               //!
+   TBranch *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;                                              //!
+   TBranch *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL;                                                 //!
+   TBranch *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ;                                     //!
+   TBranch *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL;                                        //!
+   TBranch *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL;                                        //!
+   TBranch *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ;                                     //!
+   TBranch *b_HLT_Photon20;                                                                           //!
+   TBranch *b_HLT_Photon33;                                                                           //!
+   TBranch *b_HLT_Photon50;                                                                           //!
+   TBranch *b_HLT_Photon75;                                                                           //!
+   TBranch *b_HLT_Photon90;                                                                           //!
+   TBranch *b_HLT_Photon120;                                                                          //!
+   TBranch *b_HLT_Photon150;                                                                          //!
+   TBranch *b_HLT_Photon175;                                                                          //!
+   TBranch *b_HLT_Photon200;                                                                          //!
+   TBranch *b_HLT_Photon30EB_TightID_TightIso;                                                        //!
+   TBranch *b_HLT_Photon110EB_TightID_TightIso;                                                       //!
+   TBranch *b_HLT_Photon100EBHE10;                                                                    //!
+   TBranch *b_HLT_Photon50_R9Id90_HE10_IsoM;                                                          //!
+   TBranch *b_HLT_Photon75_R9Id90_HE10_IsoM;                                                          //!
+   TBranch *b_HLT_Photon90_R9Id90_HE10_IsoM;                                                          //!
+   TBranch *b_HLT_Photon120_R9Id90_HE10_IsoM;                                                         //!
+   TBranch *b_HLT_Photon165_R9Id90_HE10_IsoM;                                                         //!
+   TBranch *b_HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90;                                 //!
+   TBranch *b_HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95;                                 //!
+   TBranch *b_HLT_Photon35_TwoProngs35;                                                               //!
+   TBranch *b_HLT_IsoMu24_TwoProngs35;                                                                //!
+   TBranch *b_HLT_Dimuon0_Jpsi_L1_NoOS;                                                               //!
+   TBranch *b_HLT_Dimuon0_Jpsi_NoVertexing_NoOS;                                                      //!
+   TBranch *b_HLT_Dimuon0_Jpsi;                                                                       //!
+   TBranch *b_HLT_Dimuon0_Jpsi_NoVertexing;                                                           //!
+   TBranch *b_HLT_Dimuon0_Jpsi_L1_4R_0er1p5R;                                                         //!
+   TBranch *b_HLT_Dimuon0_Jpsi_NoVertexing_L1_4R_0er1p5R;                                             //!
+   TBranch *b_HLT_Dimuon0_Jpsi3p5_Muon2;                                                              //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_4p5;                                                             //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_5;                                                               //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_4p5NoOS;                                                         //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_4p5er2p0;                                                        //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_4p5er2p0M;                                                       //!
+   TBranch *b_HLT_Dimuon0_Upsilon_NoVertexing;                                                        //!
+   TBranch *b_HLT_Dimuon0_Upsilon_L1_5M;                                                              //!
+   TBranch *b_HLT_Dimuon0_LowMass_L1_0er1p5R;                                                         //!
+   TBranch *b_HLT_Dimuon0_LowMass_L1_0er1p5;                                                          //!
+   TBranch *b_HLT_Dimuon0_LowMass;                                                                    //!
+   TBranch *b_HLT_Dimuon0_LowMass_L1_4;                                                               //!
+   TBranch *b_HLT_Dimuon0_LowMass_L1_4R;                                                              //!
+   TBranch *b_HLT_Dimuon0_LowMass_L1_TM530;                                                           //!
+   TBranch *b_HLT_Dimuon0_Upsilon_Muon_L1_TM0;                                                        //!
+   TBranch *b_HLT_Dimuon0_Upsilon_Muon_NoL1Mass;                                                      //!
+   TBranch *b_HLT_TripleMu_5_3_3_Mass3p8_DZ;                                                          //!
+   TBranch *b_HLT_TripleMu_10_5_5_DZ;                                                                 //!
+   TBranch *b_HLT_TripleMu_12_10_5;                                                                   //!
+   TBranch *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15;                                                         //!
+   TBranch *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_Tau15_Charge1;                                                 //!
+   TBranch *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15;                                                      //!
+   TBranch *b_HLT_Tau3Mu_Mu7_Mu1_TkMu1_IsoTau15_Charge1;                                              //!
+   TBranch *b_HLT_DoubleMu3_DZ_PFMET50_PFMHT60;                                                       //!
+   TBranch *b_HLT_DoubleMu3_DZ_PFMET70_PFMHT70;                                                       //!
+   TBranch *b_HLT_DoubleMu3_DZ_PFMET90_PFMHT90;                                                       //!
+   TBranch *b_HLT_DoubleMu3_Trk_Tau3mu_NoL1Mass;                                                      //!
+   TBranch *b_HLT_DoubleMu4_Jpsi_Displaced;                                                           //!
+   TBranch *b_HLT_DoubleMu4_Jpsi_NoVertexing;                                                         //!
+   TBranch *b_HLT_DoubleMu4_JpsiTrkTrk_Displaced;                                                     //!
+   TBranch *b_HLT_DoubleMu4_JpsiTrk_Bc;                                                               //!
+   TBranch *b_HLT_DoubleMu43NoFiltersNoVtx;                                                           //!
+   TBranch *b_HLT_DoubleMu48NoFiltersNoVtx;                                                           //!
+   TBranch *b_HLT_Mu43NoFiltersNoVtx_Photon43_CaloIdL;                                                //!
+   TBranch *b_HLT_Mu48NoFiltersNoVtx_Photon48_CaloIdL;                                                //!
+   TBranch *b_HLT_Mu38NoFiltersNoVtxDisplaced_Photon38_CaloIdL;                                       //!
+   TBranch *b_HLT_Mu43NoFiltersNoVtxDisplaced_Photon43_CaloIdL;                                       //!
+   TBranch *b_HLT_HT425;                                                                              //!
+   TBranch *b_HLT_HT430_DisplacedDijet40_DisplacedTrack;                                              //!
+   TBranch *b_HLT_HT500_DisplacedDijet40_DisplacedTrack;                                              //!
+   TBranch *b_HLT_HT430_DisplacedDijet60_DisplacedTrack;                                              //!
+   TBranch *b_HLT_HT400_DisplacedDijet40_DisplacedTrack;                                              //!
+   TBranch *b_HLT_HT650_DisplacedDijet60_Inclusive;                                                   //!
+   TBranch *b_HLT_HT550_DisplacedDijet60_Inclusive;                                                   //!
+   TBranch *b_HLT_DiJet110_35_Mjj650_PFMET110;                                                        //!
+   TBranch *b_HLT_DiJet110_35_Mjj650_PFMET120;                                                        //!
+   TBranch *b_HLT_DiJet110_35_Mjj650_PFMET130;                                                        //!
+   TBranch *b_HLT_TripleJet110_35_35_Mjj650_PFMET110;                                                 //!
+   TBranch *b_HLT_TripleJet110_35_35_Mjj650_PFMET120;                                                 //!
+   TBranch *b_HLT_TripleJet110_35_35_Mjj650_PFMET130;                                                 //!
+   TBranch *b_HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned;                                 //!
+   TBranch *b_HLT_Ele28_eta2p1_WPTight_Gsf_HT150;                                                     //!
+   TBranch *b_HLT_Ele28_HighEta_SC20_Mass55;                                                          //!
+   TBranch *b_HLT_Ele15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;                                          //!
+   TBranch *b_HLT_Ele15_IsoVVVL_PFHT450_PFMET50;                                                      //!
+   TBranch *b_HLT_Ele15_IsoVVVL_PFHT450;                                                              //!
+   TBranch *b_HLT_Ele50_IsoVVVL_PFHT450;                                                              //!
+   TBranch *b_HLT_Ele15_IsoVVVL_PFHT600;                                                              //!
+   TBranch *b_HLT_Mu4_TrkIsoVVL_DiPFJet90_40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;                       //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60;                          //!
+   TBranch *b_HLT_Mu10_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT350_PFMETNoMu60;                         //!
+   TBranch *b_HLT_Mu15_IsoVVVL_PFHT450_CaloBTagDeepCSV_4p5;                                           //!
+   TBranch *b_HLT_Mu15_IsoVVVL_PFHT450_PFMET50;                                                       //!
+   TBranch *b_HLT_Mu15_IsoVVVL_PFHT450;                                                               //!
+   TBranch *b_HLT_Mu50_IsoVVVL_PFHT450;                                                               //!
+   TBranch *b_HLT_Mu15_IsoVVVL_PFHT600;                                                               //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET70_PFMHT70_IDTight;                                     //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET80_PFMHT80_IDTight;                                     //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET90_PFMHT90_IDTight;                                     //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMET100_PFMHT100_IDTight;                                   //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu70_PFMHTNoMu70_IDTight;                             //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu80_PFMHTNoMu80_IDTight;                             //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu90_PFMHTNoMu90_IDTight;                             //!
+   TBranch *b_HLT_Mu3er1p5_PFJet100er2p5_PFMETNoMu100_PFMHTNoMu100_IDTight;                           //!
+   TBranch *b_HLT_Dimuon10_PsiPrime_Barrel_Seagulls;                                                  //!
+   TBranch *b_HLT_Dimuon20_Jpsi_Barrel_Seagulls;                                                      //!
+   TBranch *b_HLT_Dimuon10_Upsilon_y1p4;                                                              //!
+   TBranch *b_HLT_Dimuon12_Upsilon_y1p4;                                                              //!
+   TBranch *b_HLT_Dimuon14_Phi_Barrel_Seagulls;                                                       //!
+   TBranch *b_HLT_Dimuon25_Jpsi;                                                                      //!
+   TBranch *b_HLT_Dimuon14_PsiPrime;                                                                  //!
+   TBranch *b_HLT_Dimuon14_PsiPrime_noCorrL1;                                                         //!
+   TBranch *b_HLT_Dimuon18_PsiPrime;                                                                  //!
+   TBranch *b_HLT_Dimuon18_PsiPrime_noCorrL1;                                                         //!
+   TBranch *b_HLT_Dimuon24_Upsilon_noCorrL1;                                                          //!
+   TBranch *b_HLT_Dimuon24_Phi_noCorrL1;                                                              //!
+   TBranch *b_HLT_Dimuon25_Jpsi_noCorrL1;                                                             //!
+   TBranch *b_HLT_DiMu4_Ele9_CaloIdL_TrackIdL_DZ_Mass3p8;                                             //!
+   TBranch *b_HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ;                                                     //!
+   TBranch *b_HLT_DiMu9_Ele9_CaloIdL_TrackIdL;                                                        //!
+   TBranch *b_HLT_DoubleIsoMu20_eta2p1;                                                               //!
+   TBranch *b_HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx;                                                 //!
+   TBranch *b_HLT_Mu8;                                                                                //!
+   TBranch *b_HLT_Mu17;                                                                               //!
+   TBranch *b_HLT_Mu19;                                                                               //!
+   TBranch *b_HLT_Mu17_Photon30_IsoCaloId;                                                            //!
+   TBranch *b_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30;                                                //!
+   TBranch *b_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30;                                               //!
+   TBranch *b_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30;                                               //!
+   TBranch *b_HLT_Ele8_CaloIdM_TrackIdM_PFJet30;                                                      //!
+   TBranch *b_HLT_Ele17_CaloIdM_TrackIdM_PFJet30;                                                     //!
+   TBranch *b_HLT_Ele23_CaloIdM_TrackIdM_PFJet30;                                                     //!
+   TBranch *b_HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165;                                                  //!
+   TBranch *b_HLT_Ele115_CaloIdVT_GsfTrkIdT;                                                          //!
+   TBranch *b_HLT_Ele135_CaloIdVT_GsfTrkIdT;                                                          //!
+   TBranch *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5;                          //!
+   TBranch *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40;                                                  //!
+   TBranch *b_HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94;                                        //!
+   TBranch *b_HLT_PFHT400_SixPFJet32;                                                                 //!
+   TBranch *b_HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59;                                              //!
+   TBranch *b_HLT_PFHT450_SixPFJet36;                                                                 //!
+   TBranch *b_HLT_PFHT400_FivePFJet_100_100_60_30_30;                                                 //!
+   TBranch *b_HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepCSV_4p5;                         //!
+   TBranch *b_HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepCSV_4p5;                         //!
+   TBranch *b_HLT_PFHT350;                                                                            //!
+   TBranch *b_HLT_Photon60_R9Id90_CaloIdL_IsoL_DisplacedIdL_PFHT350MinPFJet15;                        //!
+   TBranch *b_HLT_ECALHT800;                                                                          //!
+   TBranch *b_HLT_DiSC30_18_EIso_AND_HE_Mass70;                                                       //!
+   TBranch *b_HLT_Physics;                                                                            //!
+   TBranch *b_HLT_Random;                                                                             //!
+   TBranch *b_HLT_ZeroBias;                                                                           //!
+   TBranch *b_HLT_ZeroBias_Alignment;                                                                 //!
+   TBranch *b_HLT_EphemeralZeroBias;                                                                  //!
+   TBranch *b_HLT_EphemeralPhysics;                                                                   //!
+   TBranch *b_HLT_Photon20_HoverELoose;                                                               //!
+   TBranch *b_HLT_Photon30_HoverELoose;                                                               //!
+   TBranch *b_HLT_EcalCalibration;                                                                    //!
+   TBranch *b_HLT_HcalCalibration;                                                                    //!
+   TBranch *b_HLT_L1UnpairedBunchBptxMinus;                                                           //!
+   TBranch *b_HLT_L1UnpairedBunchBptxPlus;                                                            //!
+   TBranch *b_HLT_L1NotBptxOR;                                                                        //!
+   TBranch *b_HLT_L1_CDC_SingleMu_3_er1p2_TOP120_DPHI2p618_3p142;                                     //!
+   TBranch *b_HLT_CDC_L2cosmic_10_er1p0;                                                              //!
+   TBranch *b_HLT_CDC_L2cosmic_5p5_er1p0;                                                             //!
+   TBranch *b_HLT_HcalNZS;                                                                            //!
+   TBranch *b_HLT_HcalPhiSym;                                                                         //!
+   TBranch *b_HLT_HcalIsolatedbunch;                                                                  //!
+   TBranch *b_HLT_IsoTrackHB;                                                                         //!
+   TBranch *b_HLT_IsoTrackHE;                                                                         //!
+   TBranch *b_HLT_ZeroBias_FirstCollisionAfterAbortGap;                                               //!
+   TBranch *b_HLT_ZeroBias_IsolatedBunches;                                                           //!
+   TBranch *b_HLT_ZeroBias_FirstCollisionInTrain;                                                     //!
+   TBranch *b_HLT_ZeroBias_LastCollisionInTrain;                                                      //!
+   TBranch *b_HLT_ZeroBias_FirstBXAfterTrain;                                                         //!
+   TBranch *b_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL;                                                  //!
+   TBranch *b_HLT_VBF_DoubleMediumDeepTauPFTauHPS20_eta2p1;                                           //!
+   TBranch *b_HLT_Photon75_R9Id90_HE10_IsoM_EBOnly_PFJetsMJJ300DEta3;                                 //!
+   TBranch *b_HLT_PFMET100_PFMHT100_IDTight_PFHT60;                                                   //!
+   TBranch *b_HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60;                                           //!
+   TBranch *b_HLT_PFMETTypeOne100_PFMHT100_IDTight_PFHT60;                                            //!
+   TBranch *b_HLT_Mu18_Mu9_SameSign;                                                                  //!
+   TBranch *b_HLT_DoubleMu2_Jpsi_DoubleTrk1_Phi1p05;                                                  //!
+   TBranch *b_HLT_DoubleMu3_DCA_PFMET50_PFMHT60;                                                      //!
+   TBranch *b_HLT_TripleMu_5_3_3_Mass3p8_DCA;                                                         //!
+   TBranch *b_HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_QuadPFJet103_88_75_15_PFBTagDeepCSV_1p3_VBF2;                                       //!
+   TBranch *b_HLT_QuadPFJet105_88_76_15_PFBTagDeepCSV_1p3_VBF2;                                       //!
+   TBranch *b_HLT_QuadPFJet111_90_80_15_PFBTagDeepCSV_1p3_VBF2;                                       //!
+   TBranch *b_HLT_QuadPFJet103_88_75_15;                                                              //!
+   TBranch *b_HLT_QuadPFJet105_88_76_15;                                                              //!
+   TBranch *b_HLT_QuadPFJet111_90_80_15;                                                              //!
+   TBranch *b_HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_Mass55;                                    //!
+   TBranch *b_HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId;                                           //!
+   TBranch *b_HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_DoubleMediumDeepTauPFTauHPS35_L2NN_eta2p1;                                          //!
+   TBranch *b_HLT_Ele24_eta2p1_WPTight_Gsf_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;                     //!
+   TBranch *b_HLT_IsoMu20_eta2p1_LooseDeepTauPFTauHPS27_eta2p1_CrossL1;                               //!
+   TBranch *b_HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS180_eta2p1;                                      //!
+   TBranch *b_HLT_IsoMu24_eta2p1_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;                               //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS35_L2NN_eta2p1_CrossL1;                         //!
+   TBranch *b_HLT_LooseDeepTauPFTauHPS180_L2NN_eta2p1;                                                //!
+   TBranch *b_HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepJet_4p5;                          //!
+   TBranch *b_HLT_PFHT400_FivePFJet_100_100_60_30_30_DoublePFBTagDeepJet_4p5;                         //!
+   TBranch *b_HLT_PFHT400_FivePFJet_120_120_60_30_30_DoublePFBTagDeepJet_4p5;                         //!
+   TBranch *b_HLT_PFHT400_SixPFJet32_DoublePFBTagDeepJet_2p94;                                        //!
+   TBranch *b_HLT_PFHT450_SixPFJet36_PFBTagDeepJet_1p59;                                              //!
+   TBranch *b_HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_QuadPFJet103_88_75_15_PFBTagDeepJet_1p3_VBF2;                                       //!
+   TBranch *b_HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_QuadPFJet105_88_76_15_PFBTagDeepJet_1p3_VBF2;                                       //!
+   TBranch *b_HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepJet_1p3_7p7_VBF1;                             //!
+   TBranch *b_HLT_QuadPFJet111_90_80_15_PFBTagDeepJet_1p3_VBF2;                                       //!
+   TBranch *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepJet_1p5;          //!
+   TBranch *b_HLT_QuadPFJet70_50_40_30;                                                               //!
+   TBranch *b_HLT_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;                                //!
+   TBranch *b_HLT_QuadPFJet70_50_40_35_PFBTagParticleNet_2BTagSum0p65;                                //!
+   TBranch *b_HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65;                                //!
+   TBranch *b_HLT_AK8PFJet230_SoftDropMass40;                                                         //!
+   TBranch *b_HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;                                  //!
+   TBranch *b_HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetBB0p35;                                  //!
+   TBranch *b_HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetBB0p35;                                  //!
+   TBranch *b_HLT_AK8PFJet400_SoftDropMass40;                                                         //!
+   TBranch *b_HLT_AK8PFJet425_SoftDropMass40;                                                         //!
+   TBranch *b_HLT_AK8PFJet450_SoftDropMass40;                                                         //!
+   TBranch *b_HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetTauTau0p30;                              //!
+   TBranch *b_HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetTauTau0p30;                              //!
+   TBranch *b_HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetTauTau0p30;                              //!
+   TBranch *b_HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60;                                  //!
+   TBranch *b_HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75;                                  //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_CrossL1;                         //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60_CrossL1;                 //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75_CrossL1;                 //!
+   TBranch *b_HLT_DoublePFJets40_Mass500_MediumDeepTauPFTauHPS45_L2NN_MediumDeepTauPFTauHPS20_eta2p1; //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS20_eta2p1_SingleL1;                             //!
+   TBranch *b_HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS45_L2NN_eta2p1_CrossL1;                         //!
+   TBranch *b_HLT_DoubleL2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;                                          //!
+   TBranch *b_HLT_DoubleL2Mu12NoVtx_2Cha_VetoL3Mu0DxyMax1cm;                                          //!
+   TBranch *b_HLT_DoubleL2Mu14NoVtx_2Cha_VetoL3Mu0DxyMax1cm;                                          //!
+   TBranch *b_HLT_DoubleL3Mu16_10NoVtx_DxyMin0p01cm;                                                  //!
+   TBranch *b_HLT_DoubleL3Mu18_10NoVtx_DxyMin0p01cm;                                                  //!
+   TBranch *b_HLT_DoubleL3Mu20_10NoVtx_DxyMin0p01cm;                                                  //!
+   TBranch *b_HLT_L2Mu10NoVtx_2Cha;                                                                   //!
+   TBranch *b_HLT_L2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;                                                //!
+   TBranch *b_HLT_L3Mu10NoVtx;                                                                        //!
+   TBranch *b_HLT_L3Mu10NoVtx_DxyMin0p01cm;                                                           //!
+   TBranch *b_HLT_DoubleL3dTksMu16_10NoVtx_DxyMin0p01cm;                                              //!
+   TBranch *b_HLT_L3dTksMu10_NoVtx_DxyMin0p01cm;                                                      //!
+   TBranch *b_HLT_Mu20NoFiltersNoVtxDisplaced_Photon20_CaloCustomId;                                  //!
+   TBranch *b_HLT_DoubleMediumChargedIsoDisplacedPFTauHPS32_Trk1_eta2p1;                              //!
+   TBranch *b_HLT_HT430_DelayedJet40_DoubleDelay0p5nsTrackless;                                       //!
+   TBranch *b_HLT_HT430_DelayedJet40_DoubleDelay1nsInclusive;                                         //!
+   TBranch *b_HLT_HT430_DelayedJet40_SingleDelay1nsTrackless;                                         //!
+   TBranch *b_HLT_HT430_DelayedJet40_SingleDelay2nsInclusive;                                         //!
+   TBranch *b_HLT_L1Mu6HT240;                                                                         //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet30_Inclusive0PtrkShortSig5;                                  //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet30_Inclusive1PtrkShortSig5_DisplacedLoose;                   //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet35_Inclusive0PtrkShortSig5;                                  //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet35_Inclusive1PtrkShortSig5_DisplacedLoose;                   //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet40_Inclusive0PtrkShortSig5;                                  //!
+   TBranch *b_HLT_Mu6HT240_DisplacedDijet40_Inclusive1PtrkShortSig5_DisplacedLoose;                   //!
+   TBranch *b_HLT_HT430_DisplacedDijet30_Inclusive1PtrkShortSig5;                                     //!
+   TBranch *b_HLT_HT430_DisplacedDijet35_Inclusive1PtrkShortSig5;                                     //!
+   TBranch *b_HLT_HT430_DisplacedDijet40_Inclusive1PtrkShortSig5;                                     //!
+   TBranch *b_HLT_CaloMET60_DTCluster50;                                                              //!
+   TBranch *b_HLT_CaloMET60_DTClusterNoMB1S50;                                                        //!
+   TBranch *b_HLT_L1MET_DTCluster50;                                                                  //!
+   TBranch *b_HLT_L1MET_DTClusterNoMB1S50;                                                            //!
+   TBranch *b_HLT_CscCluster_Loose;                                                                   //!
+   TBranch *b_HLT_CscCluster_Medium;                                                                  //!
+   TBranch *b_HLT_CscCluster_Tight;                                                                   //!
+   TBranch *b_HLT_L1CSCShower_DTCluster50;                                                            //!
+   TBranch *b_HLT_L1CSCShower_DTCluster75;                                                            //!
+   TBranch *b_HLT_PFMET105_IsoTrk50;                                                                  //!
+   TBranch *b_HLT_PFMET110_PFJet100;                                                                  //!
+   TBranch *b_HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;                               //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;                               //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet60_DisplacedTrack;                               //!
+   TBranch *b_HLT_HT270_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;                               //!
+   TBranch *b_HLT_HT320_L1SingleLLPJet_DisplacedDijet60_Inclusive;                                    //!
+   TBranch *b_HLT_HT420_L1SingleLLPJet_DisplacedDijet60_Inclusive;                                    //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay1nsTrackless;                          //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_SingleDelay2nsInclusive;                          //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay0p5nsTrackless;                        //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DelayedJet40_DoubleDelay1nsInclusive;                          //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet30_Inclusive1PtrkShortSig5;                      //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet35_Inclusive1PtrkShortSig5;                      //!
+   TBranch *b_HLT_HT200_L1SingleLLPJet_DisplacedDijet40_Inclusive1PtrkShortSig5;                      //!
+   TBranch *b_HLT_DiPhoton10Time1p4ns;                                                                //!
+   TBranch *b_HLT_DiPhoton10Time1p6ns;                                                                //!
+   TBranch *b_HLT_DiPhoton10Time1p8ns;                                                                //!
+   TBranch *b_HLT_DiPhoton10Time2ns;                                                                  //!
+   TBranch *b_HLT_DiPhoton10sminlt0p1;                                                                //!
+   TBranch *b_HLT_DiPhoton10sminlt0p12;                                                               //!
+   TBranch *b_HLT_DiPhoton10_CaloIdL;                                                                 //!
+   TBranch *b_HLT_DoubleEle4_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle4p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle5_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle5p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle6_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle6p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle7_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle7p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle8_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle8p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle9_eta1p22_mMax6;                                                           //!
+   TBranch *b_HLT_DoubleEle9p5_eta1p22_mMax6;                                                         //!
+   TBranch *b_HLT_DoubleEle10_eta1p22_mMax6;                                                          //!
+   TBranch *b_HLT_Diphoton20_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;                                  //!
+   TBranch *b_HLT_Diphoton20_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;                                 //!
+   TBranch *b_HLT_Diphoton22_14_eta1p5_R9IdL_AND_HE_AND_IsoTCaloIdT;                                  //!
+   TBranch *b_HLT_Diphoton22_14_eta1p5_R9IdL_AND_HET_AND_IsoTCaloIdT;                                 //!
+   TBranch *b_HLT_ExpressMuons;                                                                       //!
+   TBranch *b_HLT_OnlineMonitorGroup;                                                                 //!
+   TBranch *b_HLT_PPSMaxTracksPerArm1;                                                                //!
+   TBranch *b_HLT_PPSMaxTracksPerRP4;                                                                 //!
+   TBranch *b_HLTriggerFinalPath;                                                                     //!
 
-   nano_events(TTree *tree=0);
+   nano_events(TTree *tree = 0);
    virtual ~nano_events();
-   virtual Int_t    Cut(Long64_t entry);
-   virtual Int_t    GetEntry(Long64_t entry);
+   virtual Int_t Cut(Long64_t entry);
+   virtual Int_t GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
-   virtual void     Loop();
-   virtual Bool_t   Notify();
-   virtual void     Show(Long64_t entry = -1);
+   virtual void Init(TTree *tree);
+   virtual void Loop();
+   virtual Bool_t Notify();
+   virtual void Show(Long64_t entry = -1);
 };
 
 #endif
 
 #ifdef nano_events_cxx
-nano_events::nano_events(TTree *tree) : fChain(0) 
+nano_events::nano_events(TTree *tree) : fChain(0)
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("root://cmsxrootd.fnal.gov//store/data/Run2022E/JetMET/NANOAOD/22Sep2023-v1/30000/1c50d190-5161-4783-9870-71dd70d3beff.root");
-      if (!f || !f->IsOpen()) {
+   // if parameter tree is not specified (or zero), connect the file
+   // used to generate this class and read the Tree.
+   if (tree == 0)
+   {
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("root://cmsxrootd.fnal.gov//store/data/Run2022E/JetMET/NANOAOD/22Sep2023-v1/30000/1c50d190-5161-4783-9870-71dd70d3beff.root");
+      if (!f || !f->IsOpen())
+      {
          f = new TFile("root://cmsxrootd.fnal.gov//store/data/Run2022E/JetMET/NANOAOD/22Sep2023-v1/30000/1c50d190-5161-4783-9870-71dd70d3beff.root");
       }
-      f->GetObject("Events",tree);
-
+      f->GetObject("Events", tree);
    }
    Init(tree);
 }
 
 nano_events::~nano_events()
 {
-   if (!fChain) return;
+   if (!fChain)
+      return;
    delete fChain->GetCurrentFile();
 }
 
 Int_t nano_events::GetEntry(Long64_t entry)
 {
-// Read contents of entry.
-   if (!fChain) return 0;
+   // Read contents of entry.
+   if (!fChain)
+      return 0;
    return fChain->GetEntry(entry);
 }
 Long64_t nano_events::LoadTree(Long64_t entry)
 {
-// Set the environment to read one entry
-   if (!fChain) return -5;
+   // Set the environment to read one entry
+   if (!fChain)
+      return -5;
    Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
+   if (centry < 0)
+      return centry;
+   if (fChain->GetTreeNumber() != fCurrent)
+   {
       fCurrent = fChain->GetTreeNumber();
       Notify();
    }
@@ -3222,7 +3229,8 @@ void nano_events::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set branch addresses and branch pointers
-   if (!tree) return;
+   if (!tree)
+      return;
    fChain = tree;
    fCurrent = -1;
    fChain->SetMakeClass(1);
@@ -4809,16 +4817,17 @@ Bool_t nano_events::Notify()
 
 void nano_events::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
-   if (!fChain) return;
+   // Print contents of entry.
+   // If entry is not specified, print current entry
+   if (!fChain)
+      return;
    fChain->Show(entry);
 }
 Int_t nano_events::Cut(Long64_t entry)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
+   // This function may be called from Loop.
+   // returns  1 if entry is accepted.
+   // returns -1 otherwise.
    return 1;
 }
 #endif // #ifdef nano_events_cxx

@@ -16,34 +16,33 @@
 
 class SimpleTable : public TObject
 {
-    public:
-        class MyParameter : public TParameter<double>
+public:
+    class MyParameter : public TParameter<double>
     {
-        public:
-            MyParameter() {}
-            MyParameter(const char *n, Double_t v) : 
-                TParameter<double>(n,v), fHash(TString(n).Hash()) {}
-
-            ULong_t Hash()                       const { return fHash; }
-            void    Print(Option_t */*option*/="") const;
-
-        protected:
-            ULong_t fHash; //stored hash value
-
-            //ClassDef(MyParameter,1) // Extension to TParameter<double>
-    };
-
     public:
-        SimpleTable(const char *input);
-        ~SimpleTable() {}
+        MyParameter() {}
+        MyParameter(const char *n, Double_t v) : TParameter<double>(n, v), fHash(TString(n).Hash()) {}
 
-        Double_t         Get(const char *name)   const;
-        Double_t         Has(const char *name)   const;
-        void             Print(Option_t *opt="") const;
+        ULong_t Hash() const { return fHash; }
+        void Print(Option_t * /*option*/ = "") const;
 
     protected:
-        THashTable      fTable;
+        ULong_t fHash; // stored hash value
 
-        //ClassDef(SimpleTable, 1) // Simple table to keep numbers
+        // ClassDef(MyParameter,1) // Extension to TParameter<double>
+    };
+
+public:
+    SimpleTable(const char *input);
+    ~SimpleTable() {}
+
+    Double_t Get(const char *name) const;
+    Double_t Has(const char *name) const;
+    void Print(Option_t *opt = "") const;
+
+protected:
+    THashTable fTable;
+
+    // ClassDef(SimpleTable, 1) // Simple table to keep numbers
 };
 #endif
