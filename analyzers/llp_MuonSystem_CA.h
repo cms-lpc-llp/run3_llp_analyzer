@@ -19,6 +19,7 @@ public:
 
 private:
     void fillHLT(TreeMuonSystemCombination *MuonSystem);
+    void fillMetFilter(TreeMuonSystemCombination *MuonSystem);
 };
 
 #endif

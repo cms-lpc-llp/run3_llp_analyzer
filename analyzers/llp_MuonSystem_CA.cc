@@ -1576,6 +1576,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     }
 
     fillHLT(MuonSystem);
+    fillMetFilter(MuonSystem);
     //*************************************************************************
     // Start Object Selection
     //*************************************************************************
@@ -2498,6 +2499,34 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     // outFile->Write();
     outFile->Close();
   }
+}
+
+void llp_MuonSystem_CAM::fillMetFilter(TreeMuonSystemCombination *MuonSystem)
+{
+  MuonSystem->Flag_goodVertices = Flag_goodVertices;
+  MuonSystem->Flag_globalSuperTightHalo2016Filter = Flag_globalSuperTightHalo2016Filter;
+  MuonSystem->Flag_EcalDeadCellTriggerPrimitiveFilter = Flag_EcalDeadCellTriggerPrimitiveFilter;
+  MuonSystem->Flag_BadPFMuonFilter = Flag_BadPFMuonFilter;
+  MuonSystem->Flag_BadPFMuonDzFilter = Flag_BadPFMuonDzFilter;
+  MuonSystem->Flag_hfNoisyHitsFilter = Flag_hfNoisyHitsFilter;
+  MuonSystem->Flag_eeBadScFilter = Flag_eeBadScFilter;
+
+  bool flag_all = Flag_globalTightHalo2016Filter &&
+                  Flag_HBHENoiseFilter &&
+                  Flag_HBHENoiseIsoFilter &&
+                  Flag_EcalDeadCellTriggerPrimitiveFilter &&
+                  Flag_BadPFMuonFilter &&
+                  Flag_BadChargedCandidateFilter &&
+                  Flag_eeBadScFilter &&
+                  Flag_ecalBadCalibFilter &&
+                  Flag_hfNoisyHitsFilter;
+  MuonSystem->Flag_all = flag_all;
+
+  MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
+  MuonSystem->Flag_HBHENoiseFilter = Flag_HBHENoiseFilter;
+  MuonSystem->Flag_HBHEIsoNoiseFilter = false; // Non-exist artifact
+  MuonSystem->Flag_CSCTightHaloFilter = Flag_CSCTightHaloFilter;
+  MuonSystem->Flag_BadChargedCandidateFilter = Flag_BadChargedCandidateFilter;
 }
 
 void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)

@@ -53,8 +53,23 @@ public:
   float pileupWeight;
 
   float met, metPhi;
-  bool Flag_HBHENoiseFilter, Flag_HBHEIsoNoiseFilter, Flag_BadPFMuonFilter, Flag_globalSuperTightHalo2016Filter,
-      Flag_CSCTightHaloFilter, Flag_BadChargedCandidateFilter, Flag_eeBadScFilter, Flag_goodVertices, Flag_ecalBadCalibFilter, Flag_all;
+
+  bool Flag_goodVertices;
+  bool Flag_globalSuperTightHalo2016Filter;
+  bool Flag_EcalDeadCellTriggerPrimitiveFilter;
+  bool Flag_BadPFMuonFilter;
+  bool Flag_BadPFMuonDzFilter;
+  bool Flag_hfNoisyHitsFilter;
+  bool Flag_eeBadScFilter;
+  bool Flag_ecalBadCalibFilter;
+
+  bool Flag_BadChargedCandidateFilter;
+  bool Flag_HBHENoiseFilter;
+  bool Flag_HBHEIsoNoiseFilter;
+  bool Flag_CSCTightHaloFilter;
+
+  bool Flag_all;
+
   int mH, mX, ctau;
 
   bool Flag2_HBHENoiseFilter, Flag2_HBHEIsoNoiseFilter, Flag2_BadPFMuonFilter, Flag2_globalSuperTightHalo2016Filter,
