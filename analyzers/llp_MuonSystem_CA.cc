@@ -1983,6 +1983,10 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->nCscRings++;
     if (nCscRechitsChamberMinus42 > 50)
       MuonSystem->nCscRings++;
+
+    if (MuonSystem->nCscRings + MuonSystem->nDtRings >= 10)
+      continue;
+
     // Do DBSCAN Clustering
 
     int min_point = 50;  // minimum number of Rechitss to call it a cluster
