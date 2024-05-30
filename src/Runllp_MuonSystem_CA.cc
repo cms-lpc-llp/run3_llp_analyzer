@@ -182,13 +182,13 @@ int main(int argc, char *argv[])
   cout << "Executing llp_MuonSystem_CA..." << endl;
   if (is_merged)
   {
-    llp_MuonSystem_CA analyzer(theChain);
+    llp_MuonSystem_CAM analyzer(theChain);
     analyzer.EnableAll();
     analyzer.Analyze(isData, option, outputFileName, label);
   }
   else
   {
-    llp_MuonSystem_CAM analyzer(theChain);
+    llp_MuonSystem_CA analyzer(theChain);
     analyzer.EnableAll();
     analyzer.Analyze(isData, option, outputFileName, label);
   }

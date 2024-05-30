@@ -1394,6 +1394,12 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
 
+    // if (nDtRechits > 5000){
+    //   cout << run << " " << luminosityBlock << " " << event << endl;
+    //   cout << nJet << " " << nMuon << " " << nElectron << " " << nCscRechits << " " << nDtRechits << " " << nRpc << " " << nCscSeg << " " << nDtSeg << endl;
+    //   continue;
+    // }
+
     // fill normalization histogram
     MuonSystem->InitVariables();
     // std::cout << "deb1 " << jentry << std::endl;
@@ -2518,8 +2524,7 @@ void llp_MuonSystem_CAM::fillMetFilter(TreeMuonSystemCombination *MuonSystem)
                   Flag_BadPFMuonFilter &&
                   Flag_BadChargedCandidateFilter &&
                   Flag_eeBadScFilter &&
-                  Flag_ecalBadCalibFilter &&
-                  Flag_hfNoisyHitsFilter;
+                  Flag_ecalBadCalibFilter;
   MuonSystem->Flag_all = flag_all;
 
   MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
