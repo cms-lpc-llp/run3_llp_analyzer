@@ -37,7 +37,7 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     -b|--bin)
-        BIN="$2"
+        BIN=$(realpath "$2")
         shift
         shift
         ;;

@@ -166,4 +166,4 @@ for INP_LIST in $INP_LIST_FILES; do
     prepare_chunks $INP_LIST $TMP_PATH $CHUNK_SIZE
 done
 
-ls $TMP_PATH/*/*.txt | parallel -j $N_JOBS --progress launch {} $OUT_PATH $BIN $SYNC
+ls $TMP_PATH/*/*.txt | parallel -j $N_JOBS --bar --eta launch {} $OUT_PATH $BIN $SYNC
