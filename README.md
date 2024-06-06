@@ -16,15 +16,11 @@ Setup
     cmsenv
 
     git clone git@github.com:cms-lpc-llp/run3_llp_analyzer.git
+    cd run3_llp_analyzer
 
     # Setup the fastjet environment
     # This version is known to work, newer versions may also.
-    wget https://fastjet.fr/repo/fastjet-3.4.2.tar.gz
-    tar -zxvf fastjet-3.4.2.tar.gz
-    cd fastjet-3.4.2
-    ./configure --prefix=$(realpath ../run3_llp_analyzer/fastjet-install)
-
-    make -j && make install
+    ./fastjet_install.sh -j$(nproc)
 
     cd ../run3_llp_analyzer
     make -j
@@ -54,7 +50,7 @@ The "options" are the following:
 
 
 ## Run the llp_analyzer
-    ./RazorRun_T2 <list of input files> llp_MuonSystem -d=${isData} -n=${option} -f=${outputfile} -l=${tag}
+    ./RazorRun <list of input files> llp_MuonSystem -d=${isData} -n=${option} -f=${outputfile} -l=${tag}
 * ```isData``` is ```yes``` or ```no```
 * ```option``` is currently not used
 * ```tag``` is currently not used
