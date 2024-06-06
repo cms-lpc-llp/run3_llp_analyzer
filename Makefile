@@ -6,6 +6,7 @@ INCLUDEDIR = include
 ANADIR = analyzers
 BINDIR = bin
 INCLUDELIST= SimpleTable.h Linkdef.h
+FASTJET = fastjet-install/bin/fastjet-config
 
 ANALYZERS = $(wildcard $(ANADIR)/*.cc)
 ANALYZERSH = $(ANALYZERS:cc=h)
@@ -21,7 +22,7 @@ HELPERSCRIPT = python/MakeAnalyzerCode.py
 
 .PHONY: clean all lxplus copy_runners
 
-all: copy_runners $(EXECUTABLES)
+all: $(FASTJET) copy_runners $(EXECUTABLES)
 
 lxplus: all
 
@@ -33,11 +34,13 @@ copy_runners:
 		@for d in $(subst Run,,$(notdir $(basename $(RUNNERSCC)))); do ( if [ ! -f "src/Run"$$d".cc" ]; then echo $$d" file does not exists, copying"; $(HELPERSCRIPT) $$d; fi ) ; done
 
 
+$(FASTJET):
+	$(ANADIR)/fastjet_install.sh
 
 $(INCLUDEDIR)/rootdict.cc:
 	$(ROOTSYS)/bin/rootcint -f $@ -c $(CINTINCLUDES) -I$(INCLUDEDIR) $(INCLUDELIST)
 
-$(SRCDIR)/SimpleTable.o: $(SRCDIR)/SimpleTable.cc
+$(SRCDIR)/SimpleTable.o: $(FASTJET) $(SRCDIR)/SimpleTable.cc
 	$(CXX) -c $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
 $(SRCDIR)/llp_event.o: $(SRCDIR)/llp_event.C $(INCLUDEDIR)/llp_event.h
