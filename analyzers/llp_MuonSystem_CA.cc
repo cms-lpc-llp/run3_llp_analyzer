@@ -1256,6 +1256,10 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
   }
 }
 
+// ==========================================================================================
+// ================================= For the merged ntuples =================================
+// ==========================================================================================
+
 void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename, string analysisTag)
 {
   // initialization: create one TTree for each analysis box
@@ -1469,15 +1473,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     auto runNum = run;                          // runNum
 
     auto *lheComments = (string *)"123";
-    int gLLP_beta[1] = {-1};           // gLLP_beta
-    int gLLP_decay_vertex_x[1] = {-1}; // gLLP_decay_vertex_x
-    int gLLP_decay_vertex_y[1] = {-1}; // gLLP_decay_vertex_y
-    int gLLP_decay_vertex_z[1] = {-1}; // gLLP_decay_vertex_z
-    int gLLP_e[1] = {-1};              // gLLP_e
-    int gLLP_eta[1] = {-1};            // gLLP_eta
-    int gLLP_phi[1] = {-1};            // gLLP_phi
-    int gLLP_pt[1] = {-1};             // gLLP_pt
-    auto genWeight = -1;               // genWeigh
+    auto genWeight = Generator_weight; // genWeight
 
     // event info
 
@@ -2606,7 +2602,7 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[61] = HLT_HT300_Beamspot;
   arr[62] = HLT_ZeroBias_Beamspot;
   arr[63] = HLT_IsoMu20_eta2p1_TightChargedIsoPFTauHPS27_eta2p1_TightID_CrossL1;
-  arr[64] = HLT_IsoMu27_MediumDeepTauPFTauHPS20_eta2p1_SingleL1;
+  arr[64] = false;
   arr[65] = HLT_IsoMu20;
   arr[66] = HLT_IsoMu24;
   arr[67] = HLT_IsoMu24_eta2p1;
@@ -2682,7 +2678,7 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[137] = HLT_PFJet40;
   arr[138] = HLT_PFJet60;
   arr[139] = HLT_PFJet80;
-  arr[140] = HLT_PFJet110;
+  arr[140] = false;
   arr[141] = HLT_PFJet140;
   arr[142] = HLT_PFJet200;
   arr[143] = HLT_PFJet260;
@@ -3007,7 +3003,7 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[462] = HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np4;
   arr[463] = HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_Mass55;
   arr[464] = HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId;
-  arr[465] = HLT_Mu12_IP6;
+  arr[465] = false;
   arr[466] = HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepCSV_1p3_7p7_VBF1;
   arr[467] = HLT_DoubleMediumDeepTauPFTauHPS35_L2NN_eta2p1;
   arr[468] = HLT_Ele24_eta2p1_WPTight_Gsf_LooseDeepTauPFTauHPS30_eta2p1_CrossL1;
@@ -3032,9 +3028,9 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[487] = HLT_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;
   arr[488] = HLT_QuadPFJet70_50_40_35_PFBTagParticleNet_2BTagSum0p65;
   arr[489] = HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65;
-  arr[490] = HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBTagParticleNet_2BTagSum0p65;
-  arr[491] = HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_QuadPFJet70_50_40_30;
-  arr[492] = HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_QuadPFJet70_50_40_30_PFBTagParticleNet_2BTagSum0p65;
+  arr[490] = false;
+  arr[491] = false;
+  arr[492] = false;
   arr[493] = HLT_AK8PFJet230_SoftDropMass40;
   arr[494] = HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;
   arr[495] = HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetBB0p35;
@@ -3045,10 +3041,10 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[500] = HLT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
   arr[501] = HLT_AK8PFJet250_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
   arr[502] = HLT_AK8PFJet275_SoftDropMass40_PFAK8ParticleNetTauTau0p30;
-  arr[503] = HLT_IsoMu50_AK8PFJet230_SoftDropMass40;
-  arr[504] = HLT_IsoMu50_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;
-  arr[505] = HLT_Ele50_CaloIdVT_GsfTrkIdT_AK8PFJet230_SoftDropMass40;
-  arr[506] = HLT_Ele50_CaloIdVT_GsfTrkIdT_AK8PFJet230_SoftDropMass40_PFAK8ParticleNetBB0p35;
+  arr[503] = false;
+  arr[504] = false;
+  arr[505] = false;
+  arr[506] = false;
   arr[507] = HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet60;
   arr[508] = HLT_DoubleMediumDeepTauPFTauHPS30_L2NN_eta2p1_PFJet75;
   arr[509] = HLT_IsoMu24_eta2p1_MediumDeepTauPFTauHPS30_L2NN_eta2p1_CrossL1;
@@ -3067,12 +3063,12 @@ void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
   arr[522] = HLT_L2Mu10NoVtx_2Cha_VetoL3Mu0DxyMax1cm;
   arr[523] = HLT_L3Mu10NoVtx;
   arr[524] = HLT_L3Mu10NoVtx_DxyMin0p01cm;
-  arr[525] = HLT_DoubleL2Mu_L3Mu16NoVtx_VetoL3Mu0DxyMax0p1cm;
-  arr[526] = HLT_DoubleL2Mu_L3Mu18NoVtx_VetoL3Mu0DxyMax0p1cm;
-  arr[527] = HLT_DoubleL2Mu10NoVtx_2Cha_CosmicSeed_VetoL3Mu0DxyMax1cm;
-  arr[528] = HLT_DoubleL2Mu12NoVtx_2Cha_CosmicSeed_VetoL3Mu0DxyMax1cm;
-  arr[529] = HLT_L2Mu10NoVtx_2Cha_CosmicSeed;
-  arr[530] = HLT_L2Mu10NoVtx_2Cha_CosmicSeed_VetoL3Mu0DxyMax1cm;
+  arr[525] = false;
+  arr[526] = false;
+  arr[527] = false;
+  arr[528] = false;
+  arr[529] = false;
+  arr[530] = false;
   arr[531] = HLT_DoubleL3dTksMu16_10NoVtx_DxyMin0p01cm;
   arr[532] = HLT_L3dTksMu10_NoVtx_DxyMin0p01cm;
   arr[533] = HLT_Mu20NoFiltersNoVtxDisplaced_Photon20_CaloCustomId;

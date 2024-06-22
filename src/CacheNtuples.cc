@@ -17,8 +17,8 @@
 
 std::string get_cache_path(std::string path_inp, std::string dir_out)
 {
-  std::regex e("^.*/(.*)/(.*)/(.*)/(.*\\.root)$");
-  std::string result = std::regex_replace(path_inp, e, "$1_$2_$3_$4");
+  std::regex e("^.*/(.*)/(.*)/(.*)/(.*)/(.*\\.root)$");
+  std::string result = std::regex_replace(path_inp, e, "$1=$2=$3=$4=$5");
   std::string path_out = dir_out + "/" + result;
   return path_out;
 }

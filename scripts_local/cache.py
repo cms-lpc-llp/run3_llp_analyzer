@@ -9,19 +9,23 @@ from tqdm import tqdm
 
 
 def load(fname: str | Path) -> np.ndarray:
-    with up.open(fname) as f:  # type: ignore
-        keys = f.keys()
-        if 'ntuples;1' in keys:
-            run = f['ntuples/llp/runNum'].array()  # type: ignore
-            lumi = f['ntuples/llp/lumiNum'].array()  # type: ignore
-            event = f['ntuples/llp/eventNum'].array()  # type: ignore
-        elif 'Events;1' in keys:
-            run = f['Events/run'].array()  # type: ignore
-            lumi = f['Events/luminosityBlock'].array()  # type: ignore
-            event = f['Events/event'].array()  # type: ignore
-        else:
-            raise ValueError(f'Could not find ntuple or Events in {fname}')
-    return np.asarray(np.stack([run, lumi, event], axis=1))
+    try:
+        with up.open(fname) as f:  # type: ignore
+            keys = f.keys()
+            if 'ntuples;1' in keys:
+                run = f['ntuples/llp/runNum'].array()  # type: ignore
+                lumi = f['ntuples/llp/lumiNum'].array()  # type: ignore
+                event = f['ntuples/llp/eventNum'].array()  # type: ignore
+            elif 'Events;1' in keys:
+                run = f['Events/run'].array()  # type: ignore
+                lumi = f['Events/luminosityBlock'].array()  # type: ignore
+                event = f['Events/event'].array()  # type: ignore
+            else:
+                raise ValueError(f'Could not find ntuple or Events in {fname}')
+        return np.asarray(np.stack([run, lumi, event], axis=1))
+    except Exception as e:
+        print(f'Error: {e} in {fname}')
+        return np.array([])
 
 
 def save_cache(fname: str | Path, data: dict[str, np.ndarray]) -> None:

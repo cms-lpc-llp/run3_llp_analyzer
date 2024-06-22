@@ -23,6 +23,19 @@ public:
    // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
+   Float_t gLLP_eta[2];
+   Float_t gLLP_phi[2];
+   Float_t gLLP_csc[2];
+   Float_t gLLP_dt[2];
+   Float_t gLLP_beta[2];
+   Float_t gLLP_e[2];
+   Float_t gLLP_pt[2];
+   Float_t gLLP_decay_vertex_x[2];
+   Float_t gLLP_decay_vertex_y[2];
+   Float_t gLLP_decay_vertex_z[2];
+   Float_t gLLP_decay_vertex_r[2];
+   Float_t Generator_weight = -1;
+
    UInt_t run;
    UInt_t luminosityBlock;
    ULong64_t event;
@@ -1662,6 +1675,19 @@ public:
    Int_t rpcLayer[107];              //[nRpc]
 
    // List of branches
+   TBranch *b_gLLP_eta;
+   TBranch *b_gLLP_phi;
+   TBranch *b_gLLP_csc;
+   TBranch *b_gLLP_dt;
+   TBranch *b_gLLP_beta;
+   TBranch *b_gLLP_e;
+   TBranch *b_gLLP_pt;
+   TBranch *b_gLLP_decay_vertex_x;
+   TBranch *b_gLLP_decay_vertex_y;
+   TBranch *b_gLLP_decay_vertex_z;
+   TBranch *b_gLLP_decay_vertex_r;
+   TBranch *b_Generator_weight;
+
    TBranch *b_run;                                                                                                   //!
    TBranch *b_luminosityBlock;                                                                                       //!
    TBranch *b_event;                                                                                                 //!
@@ -3376,6 +3402,18 @@ void merged_event::Init(TTree *tree)
    fChain = tree;
    fCurrent = -1;
    fChain->SetMakeClass(1);
+   fChain->SetBranchAddress("gLLP_eta", gLLP_eta, &b_gLLP_eta);
+   fChain->SetBranchAddress("gLLP_phi", gLLP_phi, &b_gLLP_phi);
+   fChain->SetBranchAddress("gLLP_csc", gLLP_csc, &b_gLLP_csc);
+   fChain->SetBranchAddress("gLLP_dt", gLLP_dt, &b_gLLP_dt);
+   fChain->SetBranchAddress("gLLP_beta", gLLP_beta, &b_gLLP_beta);
+   fChain->SetBranchAddress("gLLP_e", gLLP_e, &b_gLLP_e);
+   fChain->SetBranchAddress("gLLP_pt", gLLP_pt, &b_gLLP_pt);
+   fChain->SetBranchAddress("gLLP_decay_vertex_x", gLLP_decay_vertex_x, &b_gLLP_decay_vertex_x);
+   fChain->SetBranchAddress("gLLP_decay_vertex_y", gLLP_decay_vertex_y, &b_gLLP_decay_vertex_y);
+   fChain->SetBranchAddress("gLLP_decay_vertex_z", gLLP_decay_vertex_z, &b_gLLP_decay_vertex_z);
+   fChain->SetBranchAddress("gLLP_decay_vertex_r", gLLP_decay_vertex_r, &b_gLLP_decay_vertex_r);
+   fChain->SetBranchAddress("Generator_weight", &Generator_weight, &b_Generator_weight);
 
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("luminosityBlock", &luminosityBlock, &b_luminosityBlock);

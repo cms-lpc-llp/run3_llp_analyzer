@@ -25,8 +25,8 @@ using namespace std;
 
 string get_cache_path(string path_inp, string dir_out)
 {
-  regex e("^.*/(.*)/(.*)/(.*)/(.*\\.root)$");
-  string result = regex_replace(path_inp, e, "$1_$2_$3_$4");
+  regex e("^.*/(.*)/(.*)/(.*)/(.*)/(.*)/(.*\\.root)$");
+  string result = regex_replace(path_inp, e, "$1=$2=$3=$4=$5=$6");
   string path_out = dir_out + "/" + result;
   return path_out;
 }
@@ -109,9 +109,12 @@ int main(int argc, char *argv[])
     }
     NtuplesLoaded++;
   }
-  cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events" << endl;
+
   if (ntupleChain == NULL)
     return -1;
+
+  bool is_mc = ntupleChain->GetBranch("gLLP_eta") != NULL;
+  cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events. is_mc = " << is_mc << endl;
 
   ////////////////////////
   ////// Load nanoAOD files
@@ -202,7 +205,7 @@ int main(int argc, char *argv[])
 
   // clone tree with 0 entries, copy all the branch addresses only
 
-  TFile *outputFile = new TFile(outputFileName.c_str(), "RECREATE");
+  TFile *outputFile = new TFile(outputFileName.c_str(), "RECREATE", "", 202);
   outputFile->cd();
   TTree *outputTree = nanoChain->CloneTree(0);
 
@@ -345,16 +348,47 @@ int main(int argc, char *argv[])
     outputTree->SetBranchAddress(addBranchNamesIntSeg[i], addBranchesInputVarIntSeg[i]);
   }
 
+  int nGLLP;
+  float gLLP_eta[2], gLLP_phi[2], gLLP_csc[2], gLLP_dt[2], gLLP_beta[2], gLLP_e[2], gLLP_pt[2], gLLP_decay_vertex_r[2], gLLP_decay_vertex_x[2], gLLP_decay_vertex_y[2], gLLP_decay_vertex_z[2];
+  if (is_mc)
+  {
+    outputTree->Branch("nGLLP", &nGLLP, "nGLLP/I");
+    outputTree->Branch("gLLP_eta", gLLP_eta, "gLLP_eta[nGLLP]/F");
+    outputTree->Branch("gLLP_phi", gLLP_phi, "gLLP_phi[nGLLP]/F");
+    outputTree->Branch("gLLP_csc", gLLP_csc, "gLLP_csc[nGLLP]/F");
+    outputTree->Branch("gLLP_dt", gLLP_dt, "gLLP_dt[nGLLP]/F");
+    outputTree->Branch("gLLP_beta", gLLP_beta, "gLLP_beta[nGLLP]/F");
+    outputTree->Branch("gLLP_e", gLLP_e, "gLLP_e[nGLLP]/F");
+    outputTree->Branch("gLLP_pt", gLLP_pt, "gLLP_pt[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_r", gLLP_decay_vertex_r, "gLLP_decay_vertex_r[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_x", gLLP_decay_vertex_x, "gLLP_decay_vertex_x[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_y", gLLP_decay_vertex_y, "gLLP_decay_vertex_y[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_z", gLLP_decay_vertex_z, "gLLP_decay_vertex_z[nGLLP]/F");
+    outputTree->SetBranchAddress("nGLLP", &nGLLP);
+    outputTree->SetBranchAddress("gLLP_eta", gLLP_eta);
+    outputTree->SetBranchAddress("gLLP_phi", gLLP_phi);
+    outputTree->SetBranchAddress("gLLP_csc", gLLP_csc);
+    outputTree->SetBranchAddress("gLLP_dt", gLLP_dt);
+    outputTree->SetBranchAddress("gLLP_beta", gLLP_beta);
+    outputTree->SetBranchAddress("gLLP_e", gLLP_e);
+    outputTree->SetBranchAddress("gLLP_pt", gLLP_pt);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_r", gLLP_decay_vertex_r);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_x", gLLP_decay_vertex_x);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_y", gLLP_decay_vertex_y);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_z", gLLP_decay_vertex_z);
+  }
+
   /////////////////////////////////////////////////////
   /////// FILL OUTPUT TREE
   /////////////////////////////////////////////////////
 
+  int idx = 0;
   for (auto it : indexPair)
   {
     auto n = it.first;
     auto m = it.second;
-    if (n % 10000 == 0)
-      cout << "Processing entry " << n << "\n";
+    if (idx % 10000 == 0)
+      cout << "Processing entry " << idx << "\n";
 
     nanoChain->GetEntry(m);
     ntupleChain->GetEntry(n);
@@ -387,7 +421,7 @@ int main(int argc, char *argv[])
         temp_nhits = nDtSeg;
       if (string(addBranchNamesFloatSeg[i]).find("rpc") != string::npos)
         temp_nhits = nRpc;
-      for (int j = 0; j < min(temp_nhits, N_MAX_RECHITS); j++)
+      for (int j = 0; j < min(temp_nhits, N_MAX_SEGMENT); j++)
         addBranchesInputVarFloatSeg[i][j] = addBranchesRazorVarFloatSeg[i][j];
     }
 
@@ -411,11 +445,33 @@ int main(int argc, char *argv[])
         temp_nhits = nDtSeg;
       if (string(addBranchNamesIntSeg[i]).find("rpc") != string::npos)
         temp_nhits = nRpc;
-      for (int j = 0; j < temp_nhits; j++)
+      for (int j = 0; j < min(temp_nhits, N_MAX_SEGMENT); j++)
         addBranchesInputVarIntSeg[i][j] = addBranchesRazorVarIntSeg[i][j];
     }
 
+    if (is_mc)
+    {
+      nGLLP = 2;
+      for (int i = 0; i < nGLLP; i++)
+      {
+        gLLP_eta[i] = ntuple.gLLP_eta[i];
+        gLLP_phi[i] = ntuple.gLLP_phi[i];
+        gLLP_csc[i] = ntuple.gLLP_csc[i];
+        gLLP_dt[i] = ntuple.gLLP_dt[i];
+        gLLP_beta[i] = ntuple.gLLP_beta[i];
+        gLLP_e[i] = ntuple.gLLP_e[i];
+        gLLP_pt[i] = ntuple.gLLP_pt[i];
+        double x = ntuple.gLLP_decay_vertex_x[i];
+        double y = ntuple.gLLP_decay_vertex_y[i];
+        gLLP_decay_vertex_x[i] = x;
+        gLLP_decay_vertex_y[i] = y;
+        gLLP_decay_vertex_z[i] = ntuple.gLLP_decay_vertex_z[i];
+        gLLP_decay_vertex_r[i] = sqrt(x * x + y * y);
+      }
+    }
+
     outputTree->Fill();
+    idx++;
   }
   // save information
   cout << "Filled Total of " << outputTree->GetEntries() << " Matched Events\n";

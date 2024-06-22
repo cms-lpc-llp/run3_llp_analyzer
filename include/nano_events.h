@@ -279,14 +279,6 @@ public:
    Float_t MET_significance;
    Float_t MET_sumEt;
    Float_t MET_sumPtUnclustered;
-   Int_t nProton_multiRP;
-   UChar_t Proton_multiRP_arm[1];     //[nProton_multiRP]
-   Float_t Proton_multiRP_t[1];       //[nProton_multiRP]
-   Float_t Proton_multiRP_thetaX[1];  //[nProton_multiRP]
-   Float_t Proton_multiRP_thetaY[1];  //[nProton_multiRP]
-   Float_t Proton_multiRP_time[1];    //[nProton_multiRP]
-   Float_t Proton_multiRP_timeUnc[1]; //[nProton_multiRP]
-   Float_t Proton_multiRP_xi[1];      //[nProton_multiRP]
    Int_t nMuon;
    UChar_t Muon_highPtId[36];           //[nMuon]
    Bool_t Muon_highPurity[36];          //[nMuon]
@@ -392,15 +384,6 @@ public:
    Float_t Photon_x_calo[15];                   //[nPhoton]
    Float_t Photon_y_calo[15];                   //[nPhoton]
    Float_t Photon_z_calo[15];                   //[nPhoton]
-   Int_t nPPSLocalTrack;
-   Int_t PPSLocalTrack_multiRPProtonIdx[1];  //[nPPSLocalTrack]
-   Int_t PPSLocalTrack_singleRPProtonIdx[1]; //[nPPSLocalTrack]
-   Int_t PPSLocalTrack_decRPId[1];           //[nPPSLocalTrack]
-   Int_t PPSLocalTrack_rpType[1];            //[nPPSLocalTrack]
-   Float_t PPSLocalTrack_x[1];               //[nPPSLocalTrack]
-   Float_t PPSLocalTrack_y[1];               //[nPPSLocalTrack]
-   Float_t PPSLocalTrack_time[1];            //[nPPSLocalTrack]
-   Float_t PPSLocalTrack_timeUnc[1];         //[nPPSLocalTrack]
    Float_t PuppiMET_phi;
    Float_t PuppiMET_phiJERDown;
    Float_t PuppiMET_phiJERUp;
@@ -439,10 +422,6 @@ public:
    Float_t SoftActivityJetHT10;
    Float_t SoftActivityJetHT2;
    Float_t SoftActivityJetHT5;
-   Int_t nProton_singleRP;
-   Short_t Proton_singleRP_decRPId[1]; //[nProton_singleRP]
-   Float_t Proton_singleRP_thetaY[1];  //[nProton_singleRP]
-   Float_t Proton_singleRP_xi[1];      //[nProton_singleRP]
    Int_t nSubJet;
    Float_t SubJet_btagDeepB[14]; //[nSubJet]
    Float_t SubJet_eta[14];       //[nSubJet]
@@ -975,34 +954,6 @@ public:
    Bool_t L1_ZeroBias_copy;
    Bool_t L1_UnprefireableEvent;
    Bool_t L1Reco_step;
-   Bool_t Flag_HBHENoiseFilter_pRECO;
-   Bool_t Flag_HBHENoiseIsoFilter_pRECO;
-   Bool_t Flag_CSCTightHaloFilter_pRECO;
-   Bool_t Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;
-   Bool_t Flag_CSCTightHalo2015Filter_pRECO;
-   Bool_t Flag_globalTightHalo2016Filter_pRECO;
-   Bool_t Flag_globalSuperTightHalo2016Filter_pRECO;
-   Bool_t Flag_HcalStripHaloFilter_pRECO;
-   Bool_t Flag_hcalLaserEventFilter_pRECO;
-   Bool_t Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;
-   Bool_t Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;
-   Bool_t Flag_ecalBadCalibFilter_pRECO;
-   Bool_t Flag_goodVertices_pRECO;
-   Bool_t Flag_eeBadScFilter_pRECO;
-   Bool_t Flag_ecalLaserCorrFilter_pRECO;
-   Bool_t Flag_trkPOGFilters_pRECO;
-   Bool_t Flag_chargedHadronTrackResolutionFilter_pRECO;
-   Bool_t Flag_muonBadTrackFilter_pRECO;
-   Bool_t Flag_BadChargedCandidateFilter_pRECO;
-   Bool_t Flag_BadPFMuonFilter_pRECO;
-   Bool_t Flag_BadPFMuonDzFilter_pRECO;
-   Bool_t Flag_hfNoisyHitsFilter_pRECO;
-   Bool_t Flag_BadChargedCandidateSummer16Filter_pRECO;
-   Bool_t Flag_BadPFMuonSummer16Filter_pRECO;
-   Bool_t Flag_trkPOG_manystripclus53X_pRECO;
-   Bool_t Flag_trkPOG_toomanystripclus53X_pRECO;
-   Bool_t Flag_trkPOG_logErrorTooManyClusters_pRECO;
-   Bool_t Flag_METFilters_pRECO;
    Bool_t HLTriggerFirstPath;
    Bool_t HLT_AK8PFJet360_TrimMass30;
    Bool_t HLT_AK8PFJet380_TrimMass30;
@@ -1847,14 +1798,6 @@ public:
    TBranch *b_MET_significance;                                                                       //!
    TBranch *b_MET_sumEt;                                                                              //!
    TBranch *b_MET_sumPtUnclustered;                                                                   //!
-   TBranch *b_nProton_multiRP;                                                                        //!
-   TBranch *b_Proton_multiRP_arm;                                                                     //!
-   TBranch *b_Proton_multiRP_t;                                                                       //!
-   TBranch *b_Proton_multiRP_thetaX;                                                                  //!
-   TBranch *b_Proton_multiRP_thetaY;                                                                  //!
-   TBranch *b_Proton_multiRP_time;                                                                    //!
-   TBranch *b_Proton_multiRP_timeUnc;                                                                 //!
-   TBranch *b_Proton_multiRP_xi;                                                                      //!
    TBranch *b_nMuon;                                                                                  //!
    TBranch *b_Muon_highPtId;                                                                          //!
    TBranch *b_Muon_highPurity;                                                                        //!
@@ -1960,15 +1903,6 @@ public:
    TBranch *b_Photon_x_calo;                                                                          //!
    TBranch *b_Photon_y_calo;                                                                          //!
    TBranch *b_Photon_z_calo;                                                                          //!
-   TBranch *b_nPPSLocalTrack;                                                                         //!
-   TBranch *b_PPSLocalTrack_multiRPProtonIdx;                                                         //!
-   TBranch *b_PPSLocalTrack_singleRPProtonIdx;                                                        //!
-   TBranch *b_PPSLocalTrack_decRPId;                                                                  //!
-   TBranch *b_PPSLocalTrack_rpType;                                                                   //!
-   TBranch *b_PPSLocalTrack_x;                                                                        //!
-   TBranch *b_PPSLocalTrack_y;                                                                        //!
-   TBranch *b_PPSLocalTrack_time;                                                                     //!
-   TBranch *b_PPSLocalTrack_timeUnc;                                                                  //!
    TBranch *b_PuppiMET_phi;                                                                           //!
    TBranch *b_PuppiMET_phiJERDown;                                                                    //!
    TBranch *b_PuppiMET_phiJERUp;                                                                      //!
@@ -2007,10 +1941,6 @@ public:
    TBranch *b_SoftActivityJetHT10;                                                                    //!
    TBranch *b_SoftActivityJetHT2;                                                                     //!
    TBranch *b_SoftActivityJetHT5;                                                                     //!
-   TBranch *b_nProton_singleRP;                                                                       //!
-   TBranch *b_Proton_singleRP_decRPId;                                                                //!
-   TBranch *b_Proton_singleRP_thetaY;                                                                 //!
-   TBranch *b_Proton_singleRP_xi;                                                                     //!
    TBranch *b_nSubJet;                                                                                //!
    TBranch *b_SubJet_btagDeepB;                                                                       //!
    TBranch *b_SubJet_eta;                                                                             //!
@@ -2543,34 +2473,6 @@ public:
    TBranch *b_L1_ZeroBias_copy;                                                                       //!
    TBranch *b_L1_UnprefireableEvent;                                                                  //!
    TBranch *b_L1Reco_step;                                                                            //!
-   TBranch *b_Flag_HBHENoiseFilter_pRECO;                                                             //!
-   TBranch *b_Flag_HBHENoiseIsoFilter_pRECO;                                                          //!
-   TBranch *b_Flag_CSCTightHaloFilter_pRECO;                                                          //!
-   TBranch *b_Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO;                                               //!
-   TBranch *b_Flag_CSCTightHalo2015Filter_pRECO;                                                      //!
-   TBranch *b_Flag_globalTightHalo2016Filter_pRECO;                                                   //!
-   TBranch *b_Flag_globalSuperTightHalo2016Filter_pRECO;                                              //!
-   TBranch *b_Flag_HcalStripHaloFilter_pRECO;                                                         //!
-   TBranch *b_Flag_hcalLaserEventFilter_pRECO;                                                        //!
-   TBranch *b_Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO;                                          //!
-   TBranch *b_Flag_EcalDeadCellBoundaryEnergyFilter_pRECO;                                            //!
-   TBranch *b_Flag_ecalBadCalibFilter_pRECO;                                                          //!
-   TBranch *b_Flag_goodVertices_pRECO;                                                                //!
-   TBranch *b_Flag_eeBadScFilter_pRECO;                                                               //!
-   TBranch *b_Flag_ecalLaserCorrFilter_pRECO;                                                         //!
-   TBranch *b_Flag_trkPOGFilters_pRECO;                                                               //!
-   TBranch *b_Flag_chargedHadronTrackResolutionFilter_pRECO;                                          //!
-   TBranch *b_Flag_muonBadTrackFilter_pRECO;                                                          //!
-   TBranch *b_Flag_BadChargedCandidateFilter_pRECO;                                                   //!
-   TBranch *b_Flag_BadPFMuonFilter_pRECO;                                                             //!
-   TBranch *b_Flag_BadPFMuonDzFilter_pRECO;                                                           //!
-   TBranch *b_Flag_hfNoisyHitsFilter_pRECO;                                                           //!
-   TBranch *b_Flag_BadChargedCandidateSummer16Filter_pRECO;                                           //!
-   TBranch *b_Flag_BadPFMuonSummer16Filter_pRECO;                                                     //!
-   TBranch *b_Flag_trkPOG_manystripclus53X_pRECO;                                                     //!
-   TBranch *b_Flag_trkPOG_toomanystripclus53X_pRECO;                                                  //!
-   TBranch *b_Flag_trkPOG_logErrorTooManyClusters_pRECO;                                              //!
-   TBranch *b_Flag_METFilters_pRECO;                                                                  //!
    TBranch *b_HLTriggerFirstPath;                                                                     //!
    TBranch *b_HLT_AK8PFJet360_TrimMass30;                                                             //!
    TBranch *b_HLT_AK8PFJet380_TrimMass30;                                                             //!
@@ -3491,14 +3393,6 @@ void nano_events::Init(TTree *tree)
    fChain->SetBranchAddress("MET_significance", &MET_significance, &b_MET_significance);
    fChain->SetBranchAddress("MET_sumEt", &MET_sumEt, &b_MET_sumEt);
    fChain->SetBranchAddress("MET_sumPtUnclustered", &MET_sumPtUnclustered, &b_MET_sumPtUnclustered);
-   fChain->SetBranchAddress("nProton_multiRP", &nProton_multiRP, &b_nProton_multiRP);
-   fChain->SetBranchAddress("Proton_multiRP_arm", &Proton_multiRP_arm, &b_Proton_multiRP_arm);
-   fChain->SetBranchAddress("Proton_multiRP_t", &Proton_multiRP_t, &b_Proton_multiRP_t);
-   fChain->SetBranchAddress("Proton_multiRP_thetaX", &Proton_multiRP_thetaX, &b_Proton_multiRP_thetaX);
-   fChain->SetBranchAddress("Proton_multiRP_thetaY", &Proton_multiRP_thetaY, &b_Proton_multiRP_thetaY);
-   fChain->SetBranchAddress("Proton_multiRP_time", &Proton_multiRP_time, &b_Proton_multiRP_time);
-   fChain->SetBranchAddress("Proton_multiRP_timeUnc", &Proton_multiRP_timeUnc, &b_Proton_multiRP_timeUnc);
-   fChain->SetBranchAddress("Proton_multiRP_xi", &Proton_multiRP_xi, &b_Proton_multiRP_xi);
    fChain->SetBranchAddress("nMuon", &nMuon, &b_nMuon);
    fChain->SetBranchAddress("Muon_highPtId", Muon_highPtId, &b_Muon_highPtId);
    fChain->SetBranchAddress("Muon_highPurity", Muon_highPurity, &b_Muon_highPurity);
@@ -3604,15 +3498,6 @@ void nano_events::Init(TTree *tree)
    fChain->SetBranchAddress("Photon_x_calo", Photon_x_calo, &b_Photon_x_calo);
    fChain->SetBranchAddress("Photon_y_calo", Photon_y_calo, &b_Photon_y_calo);
    fChain->SetBranchAddress("Photon_z_calo", Photon_z_calo, &b_Photon_z_calo);
-   fChain->SetBranchAddress("nPPSLocalTrack", &nPPSLocalTrack, &b_nPPSLocalTrack);
-   fChain->SetBranchAddress("PPSLocalTrack_multiRPProtonIdx", &PPSLocalTrack_multiRPProtonIdx, &b_PPSLocalTrack_multiRPProtonIdx);
-   fChain->SetBranchAddress("PPSLocalTrack_singleRPProtonIdx", &PPSLocalTrack_singleRPProtonIdx, &b_PPSLocalTrack_singleRPProtonIdx);
-   fChain->SetBranchAddress("PPSLocalTrack_decRPId", &PPSLocalTrack_decRPId, &b_PPSLocalTrack_decRPId);
-   fChain->SetBranchAddress("PPSLocalTrack_rpType", &PPSLocalTrack_rpType, &b_PPSLocalTrack_rpType);
-   fChain->SetBranchAddress("PPSLocalTrack_x", &PPSLocalTrack_x, &b_PPSLocalTrack_x);
-   fChain->SetBranchAddress("PPSLocalTrack_y", &PPSLocalTrack_y, &b_PPSLocalTrack_y);
-   fChain->SetBranchAddress("PPSLocalTrack_time", &PPSLocalTrack_time, &b_PPSLocalTrack_time);
-   fChain->SetBranchAddress("PPSLocalTrack_timeUnc", &PPSLocalTrack_timeUnc, &b_PPSLocalTrack_timeUnc);
    fChain->SetBranchAddress("PuppiMET_phi", &PuppiMET_phi, &b_PuppiMET_phi);
    fChain->SetBranchAddress("PuppiMET_phiJERDown", &PuppiMET_phiJERDown, &b_PuppiMET_phiJERDown);
    fChain->SetBranchAddress("PuppiMET_phiJERUp", &PuppiMET_phiJERUp, &b_PuppiMET_phiJERUp);
@@ -3651,10 +3536,6 @@ void nano_events::Init(TTree *tree)
    fChain->SetBranchAddress("SoftActivityJetHT10", &SoftActivityJetHT10, &b_SoftActivityJetHT10);
    fChain->SetBranchAddress("SoftActivityJetHT2", &SoftActivityJetHT2, &b_SoftActivityJetHT2);
    fChain->SetBranchAddress("SoftActivityJetHT5", &SoftActivityJetHT5, &b_SoftActivityJetHT5);
-   fChain->SetBranchAddress("nProton_singleRP", &nProton_singleRP, &b_nProton_singleRP);
-   fChain->SetBranchAddress("Proton_singleRP_decRPId", &Proton_singleRP_decRPId, &b_Proton_singleRP_decRPId);
-   fChain->SetBranchAddress("Proton_singleRP_thetaY", &Proton_singleRP_thetaY, &b_Proton_singleRP_thetaY);
-   fChain->SetBranchAddress("Proton_singleRP_xi", &Proton_singleRP_xi, &b_Proton_singleRP_xi);
    fChain->SetBranchAddress("nSubJet", &nSubJet, &b_nSubJet);
    fChain->SetBranchAddress("SubJet_btagDeepB", SubJet_btagDeepB, &b_SubJet_btagDeepB);
    fChain->SetBranchAddress("SubJet_eta", SubJet_eta, &b_SubJet_eta);
@@ -4187,34 +4068,6 @@ void nano_events::Init(TTree *tree)
    fChain->SetBranchAddress("L1_ZeroBias_copy", &L1_ZeroBias_copy, &b_L1_ZeroBias_copy);
    fChain->SetBranchAddress("L1_UnprefireableEvent", &L1_UnprefireableEvent, &b_L1_UnprefireableEvent);
    fChain->SetBranchAddress("L1Reco_step", &L1Reco_step, &b_L1Reco_step);
-   fChain->SetBranchAddress("Flag_HBHENoiseFilter_pRECO", &Flag_HBHENoiseFilter_pRECO, &b_Flag_HBHENoiseFilter_pRECO);
-   fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter_pRECO", &Flag_HBHENoiseIsoFilter_pRECO, &b_Flag_HBHENoiseIsoFilter_pRECO);
-   fChain->SetBranchAddress("Flag_CSCTightHaloFilter_pRECO", &Flag_CSCTightHaloFilter_pRECO, &b_Flag_CSCTightHaloFilter_pRECO);
-   fChain->SetBranchAddress("Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO", &Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO, &b_Flag_CSCTightHaloTrkMuUnvetoFilter_pRECO);
-   fChain->SetBranchAddress("Flag_CSCTightHalo2015Filter_pRECO", &Flag_CSCTightHalo2015Filter_pRECO, &b_Flag_CSCTightHalo2015Filter_pRECO);
-   fChain->SetBranchAddress("Flag_globalTightHalo2016Filter_pRECO", &Flag_globalTightHalo2016Filter_pRECO, &b_Flag_globalTightHalo2016Filter_pRECO);
-   fChain->SetBranchAddress("Flag_globalSuperTightHalo2016Filter_pRECO", &Flag_globalSuperTightHalo2016Filter_pRECO, &b_Flag_globalSuperTightHalo2016Filter_pRECO);
-   fChain->SetBranchAddress("Flag_HcalStripHaloFilter_pRECO", &Flag_HcalStripHaloFilter_pRECO, &b_Flag_HcalStripHaloFilter_pRECO);
-   fChain->SetBranchAddress("Flag_hcalLaserEventFilter_pRECO", &Flag_hcalLaserEventFilter_pRECO, &b_Flag_hcalLaserEventFilter_pRECO);
-   fChain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO", &Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO, &b_Flag_EcalDeadCellTriggerPrimitiveFilter_pRECO);
-   fChain->SetBranchAddress("Flag_EcalDeadCellBoundaryEnergyFilter_pRECO", &Flag_EcalDeadCellBoundaryEnergyFilter_pRECO, &b_Flag_EcalDeadCellBoundaryEnergyFilter_pRECO);
-   fChain->SetBranchAddress("Flag_ecalBadCalibFilter_pRECO", &Flag_ecalBadCalibFilter_pRECO, &b_Flag_ecalBadCalibFilter_pRECO);
-   fChain->SetBranchAddress("Flag_goodVertices_pRECO", &Flag_goodVertices_pRECO, &b_Flag_goodVertices_pRECO);
-   fChain->SetBranchAddress("Flag_eeBadScFilter_pRECO", &Flag_eeBadScFilter_pRECO, &b_Flag_eeBadScFilter_pRECO);
-   fChain->SetBranchAddress("Flag_ecalLaserCorrFilter_pRECO", &Flag_ecalLaserCorrFilter_pRECO, &b_Flag_ecalLaserCorrFilter_pRECO);
-   fChain->SetBranchAddress("Flag_trkPOGFilters_pRECO", &Flag_trkPOGFilters_pRECO, &b_Flag_trkPOGFilters_pRECO);
-   fChain->SetBranchAddress("Flag_chargedHadronTrackResolutionFilter_pRECO", &Flag_chargedHadronTrackResolutionFilter_pRECO, &b_Flag_chargedHadronTrackResolutionFilter_pRECO);
-   fChain->SetBranchAddress("Flag_muonBadTrackFilter_pRECO", &Flag_muonBadTrackFilter_pRECO, &b_Flag_muonBadTrackFilter_pRECO);
-   fChain->SetBranchAddress("Flag_BadChargedCandidateFilter_pRECO", &Flag_BadChargedCandidateFilter_pRECO, &b_Flag_BadChargedCandidateFilter_pRECO);
-   fChain->SetBranchAddress("Flag_BadPFMuonFilter_pRECO", &Flag_BadPFMuonFilter_pRECO, &b_Flag_BadPFMuonFilter_pRECO);
-   fChain->SetBranchAddress("Flag_BadPFMuonDzFilter_pRECO", &Flag_BadPFMuonDzFilter_pRECO, &b_Flag_BadPFMuonDzFilter_pRECO);
-   fChain->SetBranchAddress("Flag_hfNoisyHitsFilter_pRECO", &Flag_hfNoisyHitsFilter_pRECO, &b_Flag_hfNoisyHitsFilter_pRECO);
-   fChain->SetBranchAddress("Flag_BadChargedCandidateSummer16Filter_pRECO", &Flag_BadChargedCandidateSummer16Filter_pRECO, &b_Flag_BadChargedCandidateSummer16Filter_pRECO);
-   fChain->SetBranchAddress("Flag_BadPFMuonSummer16Filter_pRECO", &Flag_BadPFMuonSummer16Filter_pRECO, &b_Flag_BadPFMuonSummer16Filter_pRECO);
-   fChain->SetBranchAddress("Flag_trkPOG_manystripclus53X_pRECO", &Flag_trkPOG_manystripclus53X_pRECO, &b_Flag_trkPOG_manystripclus53X_pRECO);
-   fChain->SetBranchAddress("Flag_trkPOG_toomanystripclus53X_pRECO", &Flag_trkPOG_toomanystripclus53X_pRECO, &b_Flag_trkPOG_toomanystripclus53X_pRECO);
-   fChain->SetBranchAddress("Flag_trkPOG_logErrorTooManyClusters_pRECO", &Flag_trkPOG_logErrorTooManyClusters_pRECO, &b_Flag_trkPOG_logErrorTooManyClusters_pRECO);
-   fChain->SetBranchAddress("Flag_METFilters_pRECO", &Flag_METFilters_pRECO, &b_Flag_METFilters_pRECO);
    fChain->SetBranchAddress("HLTriggerFirstPath", &HLTriggerFirstPath, &b_HLTriggerFirstPath);
    fChain->SetBranchAddress("HLT_AK8PFJet360_TrimMass30", &HLT_AK8PFJet360_TrimMass30, &b_HLT_AK8PFJet360_TrimMass30);
    fChain->SetBranchAddress("HLT_AK8PFJet380_TrimMass30", &HLT_AK8PFJet380_TrimMass30, &b_HLT_AK8PFJet380_TrimMass30);
