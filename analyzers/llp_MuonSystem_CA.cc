@@ -2451,6 +2451,106 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->nDtRechitClusters++;
     }
 
+
+    if (!isData)
+    {
+      MuonSystem->nboostedTau=nboostedTau;
+      MuonSystem->nsoftActivityVH=nsoftActivityVH;
+      MuonSystem->nElectron=nElectron;
+      MuonSystem->nFatJet=nFatJet;
+      MuonSystem->nLowPtElectron=nLowPtElectron;
+      MuonSystem->nMuon=nMuon;
+      MuonSystem->nPhoton=nPhoton;
+      MuonSystem->nTau=nTau;
+      MuonSystem->nGenJetAK8=nGenJetAK8;
+      memcpy(MuonSystem->GenJetAK8_eta, GenJetAK8_eta, sizeof(GenJetAK8_eta));
+      memcpy(MuonSystem->GenJetAK8_mass, GenJetAK8_mass, sizeof(GenJetAK8_mass));
+      memcpy(MuonSystem->GenJetAK8_phi, GenJetAK8_phi, sizeof(GenJetAK8_phi));
+      memcpy(MuonSystem->GenJetAK8_pt, GenJetAK8_pt, sizeof(GenJetAK8_pt));
+      MuonSystem->nGenJet=nGenJet;
+      memcpy(MuonSystem->GenJet_eta, GenJet_eta, sizeof(GenJet_eta));
+      memcpy(MuonSystem->GenJet_mass, GenJet_mass, sizeof(GenJet_mass));
+      memcpy(MuonSystem->GenJet_phi, GenJet_phi, sizeof(GenJet_phi));
+      memcpy(MuonSystem->GenJet_pt, GenJet_pt, sizeof(GenJet_pt));
+      MuonSystem->nGenPart=nGenPart;
+      memcpy(MuonSystem->GenPart_genPartIdxMother, GenPart_genPartIdxMother, sizeof(GenPart_genPartIdxMother));
+      memcpy(MuonSystem->GenPart_statusFlags, GenPart_statusFlags, sizeof(GenPart_statusFlags));
+      memcpy(MuonSystem->GenPart_pdgId, GenPart_pdgId, sizeof(GenPart_pdgId));
+      memcpy(MuonSystem->GenPart_status, GenPart_status, sizeof(GenPart_status));
+      memcpy(MuonSystem->GenPart_eta, GenPart_eta, sizeof(GenPart_eta));
+      memcpy(MuonSystem->GenPart_mass, GenPart_mass, sizeof(GenPart_mass));
+      memcpy(MuonSystem->GenPart_phi, GenPart_phi, sizeof(GenPart_phi));
+      memcpy(MuonSystem->GenPart_pt, GenPart_pt, sizeof(GenPart_pt));
+      MuonSystem->nGenProton=nGenProton;
+      memcpy(MuonSystem->GenProton_isPU, GenProton_isPU, sizeof(GenProton_isPU));
+      memcpy(MuonSystem->GenProton_px, GenProton_px, sizeof(GenProton_px));
+      memcpy(MuonSystem->GenProton_py, GenProton_py, sizeof(GenProton_py));
+      memcpy(MuonSystem->GenProton_pz, GenProton_pz, sizeof(GenProton_pz));
+      memcpy(MuonSystem->GenProton_vz, GenProton_vz, sizeof(GenProton_vz));
+      MuonSystem->nSubGenJetAK8=nSubGenJetAK8;
+      memcpy(MuonSystem->SubGenJetAK8_eta, SubGenJetAK8_eta, sizeof(SubGenJetAK8_eta));
+      memcpy(MuonSystem->SubGenJetAK8_mass, SubGenJetAK8_mass, sizeof(SubGenJetAK8_mass));
+      memcpy(MuonSystem->SubGenJetAK8_phi, SubGenJetAK8_phi, sizeof(SubGenJetAK8_phi));
+      memcpy(MuonSystem->SubGenJetAK8_pt, SubGenJetAK8_pt, sizeof(SubGenJetAK8_pt));
+      MuonSystem->Generator_id1=Generator_id1;
+      MuonSystem->Generator_id2=Generator_id2;
+      MuonSystem->Generator_binvar=Generator_binvar;
+      MuonSystem->Generator_scalePDF=Generator_scalePDF;
+      MuonSystem->Generator_weight=Generator_weight;
+      MuonSystem->Generator_x1=Generator_x1;
+      MuonSystem->Generator_x2=Generator_x2;
+      MuonSystem->Generator_xpdf1=Generator_xpdf1;
+      MuonSystem->Generator_xpdf2=Generator_xpdf2;
+      MuonSystem->GenVtx_x=GenVtx_x;
+      MuonSystem->GenVtx_y=GenVtx_y;
+      MuonSystem->GenVtx_z=GenVtx_z;
+      MuonSystem->nGenVisTau=nGenVisTau;
+      memcpy(MuonSystem->GenVisTau_status, GenVisTau_status, sizeof(GenVisTau_status));
+      memcpy(MuonSystem->GenVisTau_charge, GenVisTau_charge, sizeof(GenVisTau_charge));
+      memcpy(MuonSystem->GenVisTau_genPartIdxMother, GenVisTau_genPartIdxMother, sizeof(GenVisTau_genPartIdxMother));
+      memcpy(MuonSystem->GenVisTau_eta, GenVisTau_eta, sizeof(GenVisTau_eta));
+      memcpy(MuonSystem->GenVisTau_mass, GenVisTau_mass, sizeof(GenVisTau_mass));
+      memcpy(MuonSystem->GenVisTau_phi, GenVisTau_phi, sizeof(GenVisTau_phi));
+      memcpy(MuonSystem->GenVisTau_pt, GenVisTau_pt, sizeof(GenVisTau_pt));
+      MuonSystem->genWeight=genWeight;
+      MuonSystem->GenMET_phi=GenMET_phi;
+      MuonSystem->GenMET_pt=GenMET_pt;
+      MuonSystem->nGenDressedLepton=nGenDressedLepton;
+      memcpy(MuonSystem->GenDressedLepton_hasTauAnc, GenDressedLepton_hasTauAnc, sizeof(GenDressedLepton_hasTauAnc));
+      memcpy(MuonSystem->GenDressedLepton_pdgId, GenDressedLepton_pdgId, sizeof(GenDressedLepton_pdgId));
+      memcpy(MuonSystem->GenDressedLepton_eta, GenDressedLepton_eta, sizeof(GenDressedLepton_eta));
+      memcpy(MuonSystem->GenDressedLepton_mass, GenDressedLepton_mass, sizeof(GenDressedLepton_mass));
+      memcpy(MuonSystem->GenDressedLepton_phi, GenDressedLepton_phi, sizeof(GenDressedLepton_phi));
+      memcpy(MuonSystem->GenDressedLepton_pt, GenDressedLepton_pt, sizeof(GenDressedLepton_pt));
+      MuonSystem->nGenIsolatedPhoton=nGenIsolatedPhoton;
+      memcpy(MuonSystem->GenIsolatedPhoton_eta, GenIsolatedPhoton_eta, sizeof(GenIsolatedPhoton_eta));
+      memcpy(MuonSystem->GenIsolatedPhoton_mass, GenIsolatedPhoton_mass, sizeof(GenIsolatedPhoton_mass));
+      memcpy(MuonSystem->GenIsolatedPhoton_phi, GenIsolatedPhoton_phi, sizeof(GenIsolatedPhoton_phi));
+      memcpy(MuonSystem->GenIsolatedPhoton_pt, GenIsolatedPhoton_pt, sizeof(GenIsolatedPhoton_pt));
+      MuonSystem->genTtbarId=genTtbarId;
+      memcpy(MuonSystem->boostedTau_genPartFlav, boostedTau_genPartFlav, sizeof(boostedTau_genPartFlav));
+      memcpy(MuonSystem->boostedTau_genPartIdx, boostedTau_genPartIdx, sizeof(boostedTau_genPartIdx));
+      memcpy(MuonSystem->Electron_genPartFlav, Electron_genPartFlav, sizeof(Electron_genPartFlav));
+      memcpy(MuonSystem->Electron_genPartIdx, Electron_genPartIdx, sizeof(Electron_genPartIdx));
+      memcpy(MuonSystem->FatJet_genJetAK8Idx, FatJet_genJetAK8Idx, sizeof(FatJet_genJetAK8Idx));
+      memcpy(MuonSystem->GenJetAK8_hadronFlavour, GenJetAK8_hadronFlavour, sizeof(GenJetAK8_hadronFlavour));
+      memcpy(MuonSystem->GenJetAK8_partonFlavour, GenJetAK8_partonFlavour, sizeof(GenJetAK8_partonFlavour));
+      memcpy(MuonSystem->GenJet_hadronFlavour, GenJet_hadronFlavour, sizeof(GenJet_hadronFlavour));
+      memcpy(MuonSystem->GenJet_partonFlavour, GenJet_partonFlavour, sizeof(GenJet_partonFlavour));
+      MuonSystem->GenVtx_t0=GenVtx_t0;
+      memcpy(MuonSystem->Jet_genJetIdx, Jet_genJetIdx, sizeof(Jet_genJetIdx));
+      memcpy(MuonSystem->LowPtElectron_genPartFlav, LowPtElectron_genPartFlav, sizeof(LowPtElectron_genPartFlav));
+      memcpy(MuonSystem->LowPtElectron_genPartIdx, LowPtElectron_genPartIdx, sizeof(LowPtElectron_genPartIdx));
+      memcpy(MuonSystem->Muon_genPartFlav, Muon_genPartFlav, sizeof(Muon_genPartFlav));
+      memcpy(MuonSystem->Muon_genPartIdx, Muon_genPartIdx, sizeof(Muon_genPartIdx));
+      memcpy(MuonSystem->Photon_genPartFlav, Photon_genPartFlav, sizeof(Photon_genPartFlav));
+      memcpy(MuonSystem->Photon_genPartIdx, Photon_genPartIdx, sizeof(Photon_genPartIdx));
+      MuonSystem->MET_fiducialGenPhi=MET_fiducialGenPhi;
+      MuonSystem->MET_fiducialGenPt=MET_fiducialGenPt;
+      memcpy(MuonSystem->Tau_genPartFlav, Tau_genPartFlav, sizeof(Tau_genPartFlav));
+      memcpy(MuonSystem->Tau_genPartIdx, Tau_genPartIdx, sizeof(Tau_genPartIdx));
+  }
+
     if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1)
       continue;
 
@@ -2532,6 +2632,7 @@ void llp_MuonSystem_CAM::fillMetFilter(TreeMuonSystemCombination *MuonSystem)
   MuonSystem->Flag_HBHEIsoNoiseFilter = false; // Non-exist artifact
   MuonSystem->Flag_CSCTightHaloFilter = Flag_CSCTightHaloFilter;
   MuonSystem->Flag_BadChargedCandidateFilter = Flag_BadChargedCandidateFilter;
+
 }
 
 void llp_MuonSystem_CAM::fillHLT(TreeMuonSystemCombination *MuonSystem)
