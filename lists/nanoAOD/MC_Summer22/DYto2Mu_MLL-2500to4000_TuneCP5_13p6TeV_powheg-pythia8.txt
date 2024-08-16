@@ -1,0 +1,10 @@
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/24cea2eb-8c03-472e-ad2e-d0428a9b6408.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/cbeae521-8468-41ee-b0e1-7cb43cb9c0f3.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/8d40b799-187e-4633-805c-12900c8b775d.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/a0f28daa-8836-4305-996a-1acd1dcd594c.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/46986be2-4b24-4920-912d-c6b02f45f76e.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/94691903-8a6b-43f6-b984-0d345cc324f4.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/30000/f12f7a67-9cd5-446b-8a8d-dcad27dc19ce.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/40000/4b291a05-1d02-45ef-898b-ff02c84cb92c.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/30000/cf396edd-5169-4130-92ed-db753218b92a.root
+root://cmsxrootd.fnal.gov//store/mc/Run3Summer22NanoAODv12/DYto2Mu_MLL-2500to4000_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/30000/db10061f-045f-4a85-8776-e19e8a381682.root
