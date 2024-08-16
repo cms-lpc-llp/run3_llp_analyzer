@@ -2,7 +2,7 @@
 
 ### Train and store the .h5 model
 
-April 17th file: training_CA0p6_NoMerging_FlatClusterSize0to500_230415.h5
+#### April 17th file: training_CA0p6_NoMerging_FlatClusterSize0to500_230415.h5
 
 - Input ntuples: CA clustering with dR = 0.6, no merging. 
 
@@ -20,7 +20,7 @@ number of epochs = 1000
 10% of the training dataset used as validation dataset
 Early stopping with pacient = 30 epochs on the loss of the validation dataset to control the overtraining. Early stopped on epoch 216 -> loss: 0.2271 - accuracy: 0.9076 - val_loss: 0.3398 - val_accuracy: 0.8510
 
-May 2024 file: training_CA0p6_NoMerging_WeightedClusterSize_bkgMC_CSCOnly_adversarial_PlusBeamHalo_240510.h5
+#### May 2024 file: training_CA0p6_NoMerging_WeightedClusterSize_bkgMC_CSCOnly_adversarial_PlusBeamHalo_240510.h5
 
 - Adversarial DNN trained with MC + beam halo data clusters
 - More details: https://indico.cern.ch/event/1391693/#2-machine-learning-studies-for
