@@ -35,7 +35,7 @@ for p in tag.keys():
                 dataset = dataset.decode("utf-8")
                 dataset=str(dataset).replace('\n','')
 
-                command_getfiles = "dasgoclient -query=\"dataset=" + dataset + " \" > temp.list"
+                command_getfiles = "dasgoclient -query=\"file dataset=" + dataset + " \" > temp.list"
                 print(command_getfiles)
                 dataset=os.system(command_getfiles)
                 print(dataset)
