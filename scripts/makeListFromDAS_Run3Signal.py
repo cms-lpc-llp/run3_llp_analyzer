@@ -7,16 +7,15 @@ import subprocess
 import numpy as np
 import glob
 import sys
-prod = ['Summer22', 'Summer22EE', 'Summer23', 'Summer23BPix']
-tag = {'Summer22':'Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_v6-v2',\
-        'Summer22EE': 'Run3Summer22NanoAODv12-130X_mcRun3_2022_realistic_v5-v2',\
-        'Summer23':'Run3Summer23BPixNanoAODv12-130X_mcRun3_2023_realistic_postBPix_v6-v2',\
-        'Summer23BPix': 'Run3Summer23NanoAODv12-130X_mcRun3_2023_realistic_v15-v2'}
+tag = {'Summer22EE':'Run3Summer22EENanoAODv12-130X_mcRun3_2022_realistic_postEE_*',\
+        'Summer22': 'Run3Summer22NanoAODv12-130X_mcRun3_2022_realistic_*',\
+        'Summer23BPix':'Run3Summer23BPixNanoAODv12-130X_mcRun3_2023_realistic_postBPix_*',\
+        'Summer23': 'Run3Summer23NanoAODv12-130X_mcRun3_2023_realistic_*'}
 decay_list = ['4B','4D','4Tau']
 mass = [1, 7, 15, 23, 30, 40, 55] #GeV
 ct_list = ['0p1','1','10','100','1000','10000','100000',]
 base_path = os.environ['CMSSW_BASE'] + '/src/run3_llp_analyzer/lists/nanoAOD/'
-for p in prod:
+for p in tag.keys():
     for decay in decay_list:
         for m in mass:
             for ct in ct_list:
@@ -28,11 +27,18 @@ for p in prod:
                 sample_name = "ggH_Hto2Sto{}_MH-125-MS-{}-ctauS-{}_TuneCP5_13p6TeV_powheg-pythia8".format(decay, m, ct)
                 outputFile = list_path + sample_name + ".txt"
                 sample_name_das = "/{}/{}/NANOAODSIM".format(sample_name, tag[p])
-                print(sample_name_das) 
-                command = "dasgoclient -query=\"file dataset=" + sample_name_das + " \" > temp.list"
-                print(command)
-                os.system(command)
-         
+                print(sample_name_das)
+
+                command = "dasgoclient -query=\"dataset=" + sample_name_das + "\""
+                proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+                (dataset, err) = proc.communicate()
+                dataset = dataset.decode("utf-8")
+                dataset=str(dataset).replace('\n','')
+
+                command_getfiles = "dasgoclient -query=\"dataset=" + dataset + " \" > temp.list"
+                print(command_getfiles)
+                dataset=os.system(command_getfiles)
+                print(dataset)
                 with open('temp.list', "r") as f:
                     lines = f.readlines()
                     print("Number of files: ", len(lines))
