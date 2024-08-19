@@ -3,6 +3,11 @@ if [ "$1" == "" ] || [ "$2" == "" ]; then
     echo "RazorRun <list of input files> <analyzer name> <options>"
 else
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/bin/Run$2 .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer22.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer22EE.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23BPix.root .
+
    echo $1 $2
     ./Run$2 $1 ${@:3}
     rm -rf Run$2

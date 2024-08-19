@@ -47,9 +47,9 @@ public :
    Float_t         pvAllSumPx[84];   //[nPVAll]
    Float_t         pvAllSumPy[84];   //[nPVAll]
    Int_t           nBunchXing;
-   Int_t           BunchXing[1];   //[nBunchXing]
-   Int_t           nPU[1];   //[nBunchXing]
-   Float_t         nPUmean[1];   //[nBunchXing]
+   Int_t           BunchXing[20];   //[nBunchXing]
+   Int_t           nPU[20];   //[nBunchXing]
+   Float_t         nPUmean[20];   //[nBunchXing]
    Int_t           nMuons;
    Float_t         muonE[200];   //[nMuons]
    Float_t         muonPt[200];   //[nMuons]

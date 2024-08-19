@@ -36,10 +36,19 @@ class RazorHelper {
     private:
         // member functions
 
-        void loadTag_Razor2018_17SeptEarlyReReco();
+        void loadTag_Summer22();
+        void loadTag_Summer22EE();
+        void loadTag_Summer23();
+        void loadTag_Summer23BPix();
         void loadTag_Null(); // Default when tag is not provided
         void loadCMSSWPath();
 
+
+        void loadPileup_Summer22();
+        void loadPileup_Summer22EE();
+        void loadPileup_Summer23();
+        void loadPileup_Summer23BPix();
+        
         //for Razor Razor2018
         void loadPileup_Razor2018_17SeptEarlyReReco();
         void loadTrigger_Razor2018_17SeptEarlyReReco();

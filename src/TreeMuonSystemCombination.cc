@@ -18,6 +18,8 @@ void TreeMuonSystemCombination::InitVariables()
   runNum=0; lumiSec=0; evtNum=0; MC_condition = 0;
   npv=0; npu=0;
   pileupWeight = 0;
+  pileupWeightDown = 0;
+  pileupWeightUp = 0;
   weight=-1.0;rho=-1;
   met=-1; metPhi=-1;
   Flag_HBHENoiseFilter = false; Flag_HBHEIsoNoiseFilter = false; Flag_BadPFMuonFilter = false; Flag_CSCTightHaloFilter = false; Flag_goodVertices = false;
@@ -312,6 +314,8 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("pileupWeight",      &pileupWeight);
+  tree_->SetBranchAddress("pileupWeightUp",      &pileupWeightUp);
+  tree_->SetBranchAddress("pileupWeightDown",      &pileupWeightDown);
   tree_->SetBranchAddress("Flag_HBHENoiseFilter",      &Flag_HBHENoiseFilter);
   tree_->SetBranchAddress("Flag_HBHEIsoNoiseFilter",      &Flag_HBHEIsoNoiseFilter);
   tree_->SetBranchAddress("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter);
@@ -645,6 +649,8 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("weight",      &weight,     "weight/F");
 
   tree_->Branch("pileupWeight",      &pileupWeight,     "pileupWeight/F");
+  tree_->Branch("pileupWeightUp",      &pileupWeightUp,     "pileupWeightUp/F");
+  tree_->Branch("pileupWeightDown",      &pileupWeightDown,     "pileupWeightDown/F");
   tree_->Branch("Flag_HBHENoiseFilter",      &Flag_HBHENoiseFilter,     "Flag_HBHENoiseFilter/O");
   tree_->Branch("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter,     "Flag_BadPFMuonFilter/O");
   tree_->Branch("Flag_HBHEIsoNoiseFilter",      &Flag_HBHEIsoNoiseFilter,     "Flag_HBHEIsoNoiseFilter/O");

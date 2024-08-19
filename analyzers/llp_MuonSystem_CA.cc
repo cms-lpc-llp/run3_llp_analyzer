@@ -14,7 +14,6 @@
 #include <random>
 //C++ includes
 #include "assert.h"
-
 //ROOT includes
 #include "TH1F.h"
 
@@ -323,6 +322,13 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
 
             MuonSystem->nGLLP++;
        }
+       for (int i=0; i < nBunchXing; i++)
+        {
+          if (BunchXing[i] == 0)MuonSystem->npu = nPUmean[i];
+        }
+        MuonSystem->pileupWeight = helper->getPileupWeight(MuonSystem->npu);
+        MuonSystem->pileupWeightUp = helper->getPileupWeightUp(MuonSystem->npu) / MuonSystem->pileupWeight;
+        MuonSystem->pileupWeightDown = helper->getPileupWeightDown(MuonSystem->npu) / MuonSystem->pileupWeight;
 
 
     }//end of isData
