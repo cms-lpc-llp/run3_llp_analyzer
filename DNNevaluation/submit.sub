@@ -4,5 +4,6 @@ arguments   = $(myargs)
 output      = /dev/null
 error       = /dev/null
 log         = /dev/null
-+JobFlavour = "workday"
++JobFlavour = "tomorrow"
+MY.WantOS = "el7"
 queue myargs from file_args.txt
