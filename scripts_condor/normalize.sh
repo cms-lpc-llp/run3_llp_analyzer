@@ -40,10 +40,13 @@ then
 	echo "${inputDir}/${sample}*_Job*.root"
 	hadd ${sample}.root ${inputDir}/*_Job*.root
 	output=${sample}.root
+        ls
 
+	echo "start normalization"
 	if [ ${isData} == "no" ]
         then
 		eval `scramv1 runtime -sh`
+		echo "$CMSSW_BASE/src/run3_llp_analyzer/data/xSections.dat"
 		if [ -f $CMSSW_BASE/src/run3_llp_analyzer/data/xSections.dat ]
 		then
 			mkdir -p data
@@ -55,8 +58,6 @@ then
 
 		#create normalization file
 		rm -f $normalize_file
-
-
 		echo "${sample} ${runDir}/${output}" > $normalize_file
 		cat $normalize_file
 
@@ -74,7 +75,9 @@ then
 			echo "NormalizeNtuple not found"
 		fi
 		echo "Normalization done"
+		ls
 		output=${output%.root*}_${lumi}pb_weighted.root
+		echo "Output file name: ${output}"
 	fi
 	sleep 2
         echo "I slept for 2 second"

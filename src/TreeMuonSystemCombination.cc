@@ -22,6 +22,8 @@ void TreeMuonSystemCombination::InitVariables()
   pileupWeightUp = 0;
   weight=-1.0;rho=-1;
   met=-1; metPhi=-1;
+  HLT_CSCCSC = false;
+  HLT_CSCDT = false;
   Flag_HBHENoiseFilter = false; Flag_HBHEIsoNoiseFilter = false; Flag_BadPFMuonFilter = false; Flag_CSCTightHaloFilter = false; Flag_goodVertices = false;
   Flag_ecalBadCalibFilter = false; Flag_all = false; Flag_globalSuperTightHalo2016Filter = false; Flag_BadChargedCandidateFilter = false; Flag_eeBadScFilter = false;
 
@@ -126,6 +128,10 @@ void TreeMuonSystemCombination::InitVariables()
         cscRechitClusterNRechitChamberMinus32[i] = -999;
         cscRechitClusterNRechitChamberMinus41[i] = -999;
         cscRechitClusterNRechitChamberMinus42[i] = -999;
+
+        cscRechitClusterHMTEfficiency[i] = -999;
+
+
         cscRechitClusterMet_dPhi[i] = 999.;
 
         dtRechitClusterNSegStation1[i] = 0;
@@ -289,9 +295,9 @@ void TreeMuonSystemCombination::InitVariables()
     jetTightPassId[i] = false;
   }
 
-  for(int i = 0; i <NTriggersMAX; i++){
-    HLTDecision[i] = false;
-  }
+  // for(int i = 0; i <NTriggersMAX; i++){
+  //   HLTDecision[i] = false;
+  // }
 
 };
 
@@ -311,6 +317,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("npv",         &npv);
   tree_->SetBranchAddress("npu",         &npu);
   tree_->SetBranchAddress("weight",      &weight);
+  tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
+  tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
 
 
   tree_->SetBranchAddress("pileupWeight",      &pileupWeight);
@@ -566,6 +574,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus32",             cscRechitClusterNRechitChamberMinus32);
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus41",             cscRechitClusterNRechitChamberMinus41);
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus42",             cscRechitClusterNRechitChamberMinus42);
+  tree_->SetBranchAddress("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency);
+
 
   tree_->SetBranchAddress("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi);
 
@@ -617,7 +627,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("jetPhi",    jetPhi);
   tree_->SetBranchAddress("jetTightPassId", jetTightPassId);
   // triggers
-  tree_->SetBranchAddress("HLTDecision",   HLTDecision);
+  // tree_->SetBranchAddress("HLTDecision",   HLTDecision);
 
 
 };
@@ -643,6 +653,8 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("mH",      &mH,     "mH/I");      // event number
   tree_->Branch("mX",      &mX,     "mX/I");      // event number
   tree_->Branch("ctau",      &ctau,     "ctau/I");      // event number
+  tree_->Branch("HLT_CSCCSC",      &HLT_CSCCSC,     "HLT_CSCCSC/O");
+  tree_->Branch("HLT_CSCDT",      &HLT_CSCDT,     "HLT_CSCDT/O");
 
   tree_->Branch("npv",         &npv,        "npv/i");         // number of primary vertices
   tree_->Branch("npu",         &npu,        "npu/i");         // number of in-time PU events (MC)
@@ -782,6 +794,8 @@ void TreeMuonSystemCombination::CreateTree()
     tree_->Branch("cscRechitClusterNRechitChamberMinus32",             cscRechitClusterNRechitChamberMinus32,             "cscRechitClusterNRechitChamberMinus32[nCscRechitClusters]/I");
     tree_->Branch("cscRechitClusterNRechitChamberMinus41",             cscRechitClusterNRechitChamberMinus41,             "cscRechitClusterNRechitChamberMinus41[nCscRechitClusters]/I");
     tree_->Branch("cscRechitClusterNRechitChamberMinus42",             cscRechitClusterNRechitChamberMinus42,             "cscRechitClusterNRechitChamberMinus42[nCscRechitClusters]/I");
+
+    tree_->Branch("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency,             "cscRechitClusterHMTEfficiency[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi,             "cscRechitClusterMet_dPhi[nCscRechitClusters]/F");
 
 
@@ -946,6 +960,6 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("jetEta",    jetEta,    "jetEta[nJets]/F");
   tree_->Branch("jetPhi",    jetPhi,    "jetPhi[nJets]/F");
   tree_->Branch("jetTightPassId", jetTightPassId, "jetTightPassId[nJets]/O");
-  tree_->Branch("HLTDecision", HLTDecision, "HLTDecision[1201]/O"); //hardcoded
+  // tree_->Branch("HLTDecision", HLTDecision, "HLTDecision[1201]/O"); //hardcoded
 
 };

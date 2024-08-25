@@ -3,16 +3,19 @@ MergeNtuples
 NormalizeNtuple
 SkimNtuple
 bin/
-
+test/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
+test*txt
+test*list
+
 # C extensions
 *.so
 *.o
-
+*root
 scripts_condor/log/*
 scripts_condor/submit/*
 

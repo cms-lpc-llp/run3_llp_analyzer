@@ -43,6 +43,8 @@ then
 	if [ -f ${CMSSW_BASE}/src/run3_llp_analyzer/RazorRun ]
 	then
 		cp $CMSSW_BASE/src/run3_llp_analyzer/RazorRun ./
+		cp $CMSSW_BASE/src/run3_llp_analyzer/DNNevaluation/EvaluateDNN.py ./
+                cp $CMSSW_BASE/src/run3_llp_analyzer/DNNevaluation/*.h5 .
 		#get grid proxy
 		export X509_USER_PROXY=${homeDir}x509_proxy
 		echo "${homeDir}x509_proxy"
@@ -52,6 +54,18 @@ then
 		#run the job
 		# echo "cat ${inputfilelist} | awk \"NR > (${jobnumber}*${filePerJob}) && NR <= ((${jobnumber}+1)*${filePerJob})\" > inputfilelistForThisJob_${jobnumber}.txt"
 		cat ${inputfilelist} | awk "NR > (${jobnumber}*${filePerJob}) && NR <= ((${jobnumber}+1)*${filePerJob})" > inputfilelistForThisJob_${jobnumber}.txt
+		echo "************************************"
+                echo "Running on these input files:"
+                cat inputfilelistForThisJob_${jobnumber}.txt
+                echo "************************************"
+	
+		echo "start copying files"
+		while read line; do   xrdcp ${line} .; done < "inputfilelistForThisJob_${jobnumber}.txt"
+		rm inputfilelistForThisJob_${jobnumber}.txt
+		ls displaced*.root > inputfilelistForThisJob_${jobnumber}.txt
+		
+		
+
 		echo ""
 		echo "************************************"
 		echo "Running on these input files:"
@@ -77,6 +91,10 @@ then
 		echo "RazorRun_T2 finished"
 		date
 
+		echo "start DNN evaluation"
+		source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh
+		python EvaluateDNN.py --in_file ${outputfile}
+		
 		sleep 2
 		echo "I slept for 2 second"
 
@@ -84,17 +102,13 @@ then
 		echo "copying output file to ${outputDirectory}"
 		eval `scram unsetenv -sh`
 		mkdir -p ${outputDirectory}
-		while IFS= read -r line
-		do
-        		echo $line
-			cp ${line} ${outputDirectory}/${outputfile}
-			if [ -f ${outputDirectory}/${line} ]
-			then
-				echo ${line} "copied"
-			else
-				echo ${line} "not copied"
-			fi
-		done <"output.txt"
+		cp ${outputfile} ${outputDirectory}/${outputfile}
+		if [ -f ${outputDirectory}/${outputfile} ]
+		then
+			echo ${outputfile} "copied"
+		else
+			echo ${outputfile} "not copied"
+		fi
 
 	else
 		echo echo "WWWWYYYY ============= failed to access file RazorRun_T2, job anandoned"

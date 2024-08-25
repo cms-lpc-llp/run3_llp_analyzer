@@ -14,8 +14,7 @@ os.system("mkdir -p log")
 executable = "runAnalyzer.sh"
 analyzer = 'llp_MuonSystem_CA'
 filesPerJob = 1
-ntupler_version = 'V1p19/Data2022/'
-
+ntupler_version = 'V1p19/Data2023/'
 #ntupler_version = "V1p19/MC_Summer22EE/v1/sixie/"
 
 
@@ -32,7 +31,7 @@ datasetListDir = Analyzer_DIR + "lists/displacedJetMuonNtuple/{}/".format(ntuple
 datasetList = OrderedDict()
 samples = os.listdir(datasetListDir)
 for s in samples:
-    if not "JetMET-EXOHighMET_Run2022C-27Jun2023-v1" in s:continue
+    if not "EXOCSCCluster" in s:continue 
     if 'Data' in ntupler_version: datasetList[s.replace('.txt', '')] = ["2018", "yes"]
     else: datasetList[s.replace('.txt', '')] = ["2018", "no"]
 ############
@@ -84,14 +83,14 @@ for sample in datasetList.keys():
 
     tmpCondorJDLFile.write("+RunAsOwner = True \n")
     tmpCondorJDLFile.write("+InteractiveUser = true \n")
-    tmpCondorJDLFile.write("+SingularityImage = \"/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel8\" \n")
+    tmpCondorJDLFile.write("+SingularityImage = \"/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7\" \n")
     tmpCondorJDLFile.write('+SingularityBindCVMFS = True \n')
     tmpCondorJDLFile.write("run_as_owner = True \n")
     tmpCondorJDLFile.write("x509userproxy = {}/x509_proxy \n".format(HOME))
     tmpCondorJDLFile.write("should_transfer_files = YES \n")
     tmpCondorJDLFile.write("when_to_transfer_output = ON_EXIT \n")
-    #tmpCondorJDLFile.write("Queue {} \n".format(maxjob))
-    tmpCondorJDLFile.write("Queue {} \n".format(2))
+    tmpCondorJDLFile.write("Queue {} \n".format(maxjob))
+    #tmpCondorJDLFile.write("Queue {} \n".format(2))
     tmpCondorJDLFile.close()
 
     os.system("condor_submit {} --batch-name {}".format(jdl_file, sample))

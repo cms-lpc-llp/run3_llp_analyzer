@@ -16,8 +16,16 @@ HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 
 version = "v13"
-for year in ['2022', '2023']:
-    inputDir = f"/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data{year}/{version}/"
+
+#for CSC clusters
+lumi = {
+'Summer22': 0,
+'Summer22EE':23020, #in inverse pb
+'Summer23':18411,
+'Summer23BPix':9451,
+}
+for year in [ 'Summer22EE','Summer23','Summer23BPix']:
+    inputDir = f"/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/MC_{year}/{version}/"
     outputDir=inputDir  + "/normalized/"
     
     
@@ -27,8 +35,8 @@ for year in ['2022', '2023']:
     samples = os.listdir(inputDir)
     for s in samples:
         if "normalize" in s: continue
-        if 'Data' in inputDir: datasetList[s.replace('.txt', '')] = ["2018", "yes"]
-        else: datasetList[s.replace('.txt', '')] = ["2018", "no"]
+        if 'Data' in inputDir: datasetList[s.replace('.txt', '')] = [year, "yes"]
+        else: datasetList[s.replace('.txt', '')] = [year, "no"]
     ############
     os.system("eval `scram runtime -sh`")
     
@@ -53,7 +61,7 @@ for year in ['2022', '2023']:
     
         tmpCondorJDLFile.write("Universe = vanilla \n")
         tmpCondorJDLFile.write("Executable = {} \n".format(executable))
-        tmpCondorJDLFile.write("Arguments = {} {} {} {} {} {} {} \n".format(isData, sample, inputDir, outputDir, CMSSW_BASE, HOME, 1))
+        tmpCondorJDLFile.write("Arguments = {} {} {} {} {} {} {} \n".format(isData, sample, inputDir, outputDir, CMSSW_BASE, HOME, lumi[year]))
     
         tmpCondorJDLFile.write("Log = log/normalize_{}_$(Cluster).$(Process).log \n".format(sample))
         tmpCondorJDLFile.write("Output = log/normalize_{}_$(Cluster).$(Process).out \n".format(sample))

@@ -9,6 +9,7 @@
 
 #include "TFile.h"
 #include "TH1F.h"
+#include "TEfficiency.h"
 #include "TH2D.h"
 #include "TRandom.h"
 
@@ -26,6 +27,7 @@ class RazorHelper {
 
 
         double getMetTriggerSF(float met);
+        double getHMTTriggerEff(int chamber, int nhits);
         // retrieve pileup weights (nominal, up, and down versions)
         double getPileupWeight(int NPU);
         double getPileupWeightUp(int NPU);
@@ -48,7 +50,8 @@ class RazorHelper {
         void loadPileup_Summer22EE();
         void loadPileup_Summer23();
         void loadPileup_Summer23BPix();
-        
+        void loadHMTEfficiency();
+
         //for Razor Razor2018
         void loadPileup_Razor2018_17SeptEarlyReReco();
         void loadTrigger_Razor2018_17SeptEarlyReReco();
@@ -67,6 +70,18 @@ class RazorHelper {
         TH1F *pileupWeightHist;
         TH1F *pileupWeightSysUpHist;
         TH1F *pileupWeightSysDownHist;
+
+        TFile *HMTEffFile;
+        // TGraphAsymmErrors *HMTEffHist11;
+        // TGraphAsymmErrors *HMTEffHist12;
+        // TGraphAsymmErrors *HMTEffHist13;
+        // TGraphAsymmErrors *HMTEffHist21;
+        // TGraphAsymmErrors *HMTEffHist22;
+        // TGraphAsymmErrors *HMTEffHist31;
+        // TGraphAsymmErrors *HMTEffHist32;
+        // TGraphAsymmErrors *HMTEffHist41;
+        // TGraphAsymmErrors *HMTEffHist42;
+        map<int, TEfficiency*> HMTEffHist;
 
 
 };

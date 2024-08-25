@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
 
         //create output file
         TFile *outputFile = new TFile(Form("%s_%.0fpb_weighted.root", (fileName.substr(0, fileName.find_last_of("."))).c_str(), intLumi), "RECREATE");
-
+	cout<<Form("%s_%.0fpb_weighted.root", (fileName.substr(0, fileName.find_last_of("."))).c_str(), intLumi)<<endl;
         //loop over all TTrees in the file and add the weight branch to each of them
        TFile *inputFile = TFile::Open(fileName.c_str(), "READ");
 	cout << "input: " << fileName << "\n";
@@ -180,7 +180,7 @@ int main(int argc, char* argv[]) {
 
             //store the weights
             for (int n=0;n<inputTree->GetEntries();n++) { 
-	      if (n%1000000==0) cout << "Processed Event " << n << "\n";
+	      if (n%1==0) cout << "Processed Event " << n << "\n";
                 inputTree->GetEntry(n);
 
                 if(normalizationWeight >= 0){
@@ -196,6 +196,7 @@ int main(int argc, char* argv[]) {
 
 		if (!doUnweight) {
 		  normalizedTree->Fill();
+		  cout<<"here"<<endl;
 		} else {
 		  double randomNum = random.Rndm();
 		  //cout << "random: " << randomNum << "\n";
@@ -217,7 +218,7 @@ int main(int argc, char* argv[]) {
 		  } 
 		}
             }
-
+	    cout<< " Saving Tree"<<endl;
             //save
             normalizedTree->Write();
             inputFile->cd();

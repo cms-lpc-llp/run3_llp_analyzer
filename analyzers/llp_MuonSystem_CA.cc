@@ -174,6 +174,8 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
   TH1F *Total = new TH1F("Total", "Total", 1, 1, 2);
 
   TH1F *accep = new TH1F("accep", "acceptance", 1, 1, 2);
+  TH1F *accep_csccsc = new TH1F("accep_csccsc", "acceptance", 1, 1, 2);
+  TH1F *accep_cscdt = new TH1F("accep_cscdt", "acceptance", 1, 1, 2);
   TH1F *accep_met = new TH1F("accep_met", "acceptance_met", 1, 1, 2);
 
   TH1F *Nmet200 = new TH1F("Nmet200", "Nmet200", 1, 1, 2);
@@ -292,6 +294,7 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
     MuonSystem->lumiSec = lumiNum;
     MuonSystem->evtNum = eventNum;
 
+    if (isData && runNum < 360019)continue;
 
     if (!isData)
     {
@@ -346,15 +349,18 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       }
       else if (!isData)
       {
-        accep->Fill(1.0, genWeight*MuonSystem->pileupWeight);
+        if (MuonSystem->gLLP_csc[0] && MuonSystem->gLLP_csc[1]) accep_csccsc->Fill(1.0, genWeight*MuonSystem->pileupWeight);
+        if ((MuonSystem->gLLP_dt[0] && MuonSystem->gLLP_csc[1]) || (MuonSystem->gLLP_dt[1] && MuonSystem->gLLP_csc[0])) accep_cscdt->Fill(1.0, genWeight*MuonSystem->pileupWeight);
 
       }
 
 
       //Triggers
-      for(int i = 0; i < NTriggersMAX; i++){
-        MuonSystem->HLTDecision[i] = HLTDecision[i];
-      }
+      // for(int i = 0; i < NTriggersMAX; i++){
+      //   MuonSystem->HLTDecision[i] = HLTDecision[i];
+      // }
+      MuonSystem->HLT_CSCCSC = HLTDecision[566];
+      MuonSystem->HLT_CSCDT = HLTDecision[569];
 
       //*************************************************************************
       //Start Object Selection
@@ -715,6 +721,62 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
           MuonSystem->cscRechitClusterNRechitChamberMinus32[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus32;
           MuonSystem->cscRechitClusterNRechitChamberMinus41[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus41;
           MuonSystem->cscRechitClusterNRechitChamberMinus42[MuonSystem->nCscRechitClusters] = tmp.nCscRechitsChamberMinus42;
+
+
+          // MuonSystem->cscRechitClusterHMTEffPlus11[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(11, tmp.nCscRechitsChamberPlus11);
+          // MuonSystem->cscRechitClusterHMTEffPlus12[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(12, tmp.nCscRechitsChamberPlus12);
+          // MuonSystem->cscRechitClusterHMTEffPlus13[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(13, tmp.nCscRechitsChamberPlus13);
+          // MuonSystem->cscRechitClusterHMTEffPlus21[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(21, tmp.nCscRechitsChamberPlus21);
+          // MuonSystem->cscRechitClusterHMTEffPlus22[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(22, tmp.nCscRechitsChamberPlus22);
+          // MuonSystem->cscRechitClusterHMTEffPlus31[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(31, tmp.nCscRechitsChamberPlus31);
+          // MuonSystem->cscRechitClusterHMTEffPlus32[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(32, tmp.nCscRechitsChamberPlus32);
+          // MuonSystem->cscRechitClusterHMTEffPlus41[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(41, tmp.nCscRechitsChamberPlus41);
+          // MuonSystem->cscRechitClusterHMTEffPlus42[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(42, tmp.nCscRechitsChamberPlus42);
+          // MuonSystem->cscRechitClusterHMTEffMinus11[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(11, tmp.nCscRechitsChamberMinus11);
+          // MuonSystem->cscRechitClusterHMTEffMinus12[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(12, tmp.nCscRechitsChamberMinus12);
+          // MuonSystem->cscRechitClusterHMTEffMinus13[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(13, tmp.nCscRechitsChamberMinus13);
+          // MuonSystem->cscRechitClusterHMTEffMinus21[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(21, tmp.nCscRechitsChamberMinus21);
+          // MuonSystem->cscRechitClusterHMTEffMinus22[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(22, tmp.nCscRechitsChamberMinus22);
+          // MuonSystem->cscRechitClusterHMTEffMinus31[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(31, tmp.nCscRechitsChamberMinus31);
+          // MuonSystem->cscRechitClusterHMTEffMinus32[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(32, tmp.nCscRechitsChamberMinus32);
+          // MuonSystem->cscRechitClusterHMTEffMinus41[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(41, tmp.nCscRechitsChamberMinus41);
+          // MuonSystem->cscRechitClusterHMTEffMinus42[MuonSystem->nCscRechitClusters] = helper->getHMTTriggerEff(42, tmp.nCscRechitsChamberPlus42);
+
+
+          float efficiencies[] = {
+            helper->getHMTTriggerEff(13, tmp.nCscRechitsChamberPlus13),
+            helper->getHMTTriggerEff(21, tmp.nCscRechitsChamberPlus21),
+            helper->getHMTTriggerEff(22, tmp.nCscRechitsChamberPlus22),
+            helper->getHMTTriggerEff(31, tmp.nCscRechitsChamberPlus31),
+            helper->getHMTTriggerEff(32, tmp.nCscRechitsChamberPlus32),
+            helper->getHMTTriggerEff(41, tmp.nCscRechitsChamberPlus41),
+            helper->getHMTTriggerEff(42, tmp.nCscRechitsChamberPlus42),
+            helper->getHMTTriggerEff(13, tmp.nCscRechitsChamberMinus13),
+            helper->getHMTTriggerEff(21, tmp.nCscRechitsChamberMinus21),
+            helper->getHMTTriggerEff(22, tmp.nCscRechitsChamberMinus22),
+            helper->getHMTTriggerEff(31, tmp.nCscRechitsChamberMinus31),
+            helper->getHMTTriggerEff(32, tmp.nCscRechitsChamberMinus32),
+            helper->getHMTTriggerEff(41, tmp.nCscRechitsChamberMinus41),
+            helper->getHMTTriggerEff(42, tmp.nCscRechitsChamberPlus42),
+          };
+
+          MuonSystem->cscRechitClusterHMTEfficiency[MuonSystem->nCscRechitClusters] = 1;
+          for(const float &eff : efficiencies){
+              MuonSystem->cscRechitClusterHMTEfficiency[MuonSystem->nCscRechitClusters] *= (1-eff);
+          }
+          MuonSystem->cscRechitClusterHMTEfficiency[MuonSystem->nCscRechitClusters] = 1-MuonSystem->cscRechitClusterHMTEfficiency[MuonSystem->nCscRechitClusters];
+
+
+
+
+          // MuonSystem->cscRechitClusterHMTEffMinus42[MuonSystem->nCscRechitClusters] = getHMTTriggerEff(11, tmp.nCscRechitsChamberPlus11);
+
+          // cout<<tmp.nCscRechitsChamberPlus42<<", "<<helper->getHMTTriggerEff(42, tmp.nCscRechitsChamberPlus42)<<endl;;
+
+
+
+
+
           MuonSystem->cscRechitClusterMaxChamber[MuonSystem->nCscRechitClusters] = tmp.maxChamber;
           MuonSystem->cscRechitClusterMaxChamberRatio[MuonSystem->nCscRechitClusters] = 1.0*tmp.maxChamberRechits/tmp.nhits;
           MuonSystem->cscRechitClusterNChamber[MuonSystem->nCscRechitClusters] = tmp.nChamber;
@@ -1095,7 +1157,7 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
           MuonSystem->nDtRechitClusters++;
         }
 
-      //if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1) continue;
+      if (MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
 
       if(!isData && signalScan)
       {
@@ -1132,6 +1194,8 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
          MuonSystem->tree_->Write();
          NEvents->Write();
          accep->Write("acceptance");
+         accep_csccsc->Write("acceptance_csccsc");
+         accep_cscdt->Write("acceptance_cscdt");
          accep_met->Write("acceptance_met");
          outFile->Close();
       }

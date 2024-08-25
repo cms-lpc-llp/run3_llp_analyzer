@@ -59,11 +59,30 @@ void RazorHelper::loadTag_Null() {
 }
 
 
+void RazorHelper::loadHMTEfficiency() {
+    // pileup weights
+    std::cout << "RazorHelper: loading HMT L1 efficiency histograms" << std::endl;
+    HMTEffFile = TFile::Open("L1_efficiencies_2022_2023_082324-TEff.root");
+    
+    HMTEffHist[11] = (TEfficiency*)HMTEffFile->Get("ME11");
+    HMTEffHist[12] = (TEfficiency*)HMTEffFile->Get("ME12");
+    HMTEffHist[13] = (TEfficiency*)HMTEffFile->Get("ME13");
+    HMTEffHist[21] = (TEfficiency*)HMTEffFile->Get("ME21");
+    HMTEffHist[22] = (TEfficiency*)HMTEffFile->Get("ME22");
+    HMTEffHist[31] = (TEfficiency*)HMTEffFile->Get("ME31");
+    HMTEffHist[32] = (TEfficiency*)HMTEffFile->Get("ME32");
+    HMTEffHist[41] = (TEfficiency*)HMTEffFile->Get("ME41");
+    HMTEffHist[42] = (TEfficiency*)HMTEffFile->Get("ME42");
+
+}
+
+
 ////////////////////////////////////////////////
 //  Summer 22
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer22() {
   loadPileup_Summer22();
+  loadHMTEfficiency();
 }
 
 void RazorHelper::loadPileup_Summer22() {
@@ -80,6 +99,8 @@ void RazorHelper::loadPileup_Summer22() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer22EE() {
   loadPileup_Summer22EE();
+   loadHMTEfficiency();
+
 }
 
 void RazorHelper::loadPileup_Summer22EE() {
@@ -95,6 +116,8 @@ void RazorHelper::loadPileup_Summer22EE() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23() {
   loadPileup_Summer23();
+    loadHMTEfficiency();
+
 }
 
 void RazorHelper::loadPileup_Summer23() {
@@ -111,6 +134,8 @@ void RazorHelper::loadPileup_Summer23() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23BPix() {
   loadPileup_Summer23BPix();
+    loadHMTEfficiency();
+
 }
 
 void RazorHelper::loadPileup_Summer23BPix() {
@@ -127,6 +152,27 @@ void RazorHelper::loadPileup_Summer23BPix() {
 //  Utilities
 ////////////////////////////////////////////////
 
+
+
+double RazorHelper::getHMTTriggerEff(int chamber, int nhits){
+
+    map<int, int> hist_cutoff;
+    hist_cutoff[11] = 0;
+    hist_cutoff[12] = 0;
+    hist_cutoff[13] = 600;
+    hist_cutoff[21] = 900;
+    hist_cutoff[22] = 800;
+    hist_cutoff[31] = 900;
+    hist_cutoff[32] = 500;
+    hist_cutoff[41] = 900;
+    hist_cutoff[42] = 500;
+
+    if (HMTEffHist[chamber]){
+        return HMTEffHist[chamber]->GetEfficiency(HMTEffHist[chamber]->GetTotalHistogram()->GetXaxis()->FindFixBin(min(nhits,hist_cutoff[chamber])));
+    }
+    std::cout << "RazorHelper error: HMT efficiency requested, but no histogram available!" << std::endl;
+    return 0;
+}
 
 
 

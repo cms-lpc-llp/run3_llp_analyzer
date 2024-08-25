@@ -51,7 +51,7 @@ public:
   UInt_t  npv, npu;
   float rho, weight;
   float pileupWeight, pileupWeightUp, pileupWeightDown;
-
+  bool HLT_CSCCSC,HLT_CSCDT;
   float met, metPhi;
   bool Flag_HBHENoiseFilter, Flag_HBHEIsoNoiseFilter, Flag_BadPFMuonFilter, Flag_globalSuperTightHalo2016Filter,
   Flag_CSCTightHaloFilter, Flag_BadChargedCandidateFilter, Flag_eeBadScFilter, Flag_goodVertices, Flag_ecalBadCalibFilter, Flag_all;
@@ -267,6 +267,28 @@ public:
   int           cscRechitClusterNRechitChamberMinus32[N_MAX_CSC];
   int           cscRechitClusterNRechitChamberMinus41[N_MAX_CSC];
   int           cscRechitClusterNRechitChamberMinus42[N_MAX_CSC];
+  float           cscRechitClusterHMTEfficiency[N_MAX_CSC];
+
+  // int           cscRechitClusterHMTEffPlus11[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus12[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus13[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus21[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus22[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus31[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus32[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus41[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffPlus42[N_MAX_CSC];
+  // int           cscRechitClusterHMTEffMinus11[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus12[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus13[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus21[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus22[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus31[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus32[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus41[N_MAX_CSC]; 
+  // int           cscRechitClusterHMTEffMinus42[N_MAX_CSC];
+
+
   float         cscRechitClusterMet_dPhi[N_MAX_CSC];
 
 
@@ -315,7 +337,7 @@ public:
 
 
   bool jetTightPassId[N_MAX_JETS];
-  bool HLTDecision[NTriggersMAX];
+  // bool HLTDecision[NTriggersMAX];
 
 
 

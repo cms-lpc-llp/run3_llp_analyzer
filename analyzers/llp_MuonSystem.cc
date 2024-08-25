@@ -346,9 +346,9 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
 
 
       //Triggers
-      for(int i = 0; i < NTriggersMAX; i++){
-        MuonSystem->HLTDecision[i] = HLTDecision[i];
-      }
+      //for(int i = 0; i < NTriggersMAX; i++){
+      //  MuonSystem->HLTDecision[i] = HLTDecision[i];
+      //}
 
       //*************************************************************************
       //Start Object Selection
