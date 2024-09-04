@@ -20,7 +20,7 @@ for p in tag.keys():
         for m in mass:
             for ct in ct_list:
                 if decay == '4B' and m < 15:continue
-                if decay == '4D' and m < 7:continue
+                if decay == '4Tau' and m < 7:continue
                 list_path = '{}/MC_{}/'.format(base_path, p)
                 print(list_path)
                 if not os.path.exists(list_path): os.makedirs(list_path)
