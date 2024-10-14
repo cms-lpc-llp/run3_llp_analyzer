@@ -54,6 +54,22 @@ public:
 
   float met, metPhi;
 
+  // rechit info
+  // Int_t nCscRechits;
+  // Int_t nDtRechits;
+  Int_t cscRechitsClusterId[20000];
+  Int_t dtRechitsClusterId[20000];
+  Float_t cscRechitsX[20000];
+  Float_t cscRechitsY[20000];
+  Float_t cscRechitsZ[20000];
+  Float_t dtRechitsX[20000];
+  Float_t dtRechitsY[20000];
+  Float_t dtRechitsZ[20000];
+  Float_t cscRechitsTime[20000];
+  Float_t dtRechitsTime[20000];
+  Float_t dtRechitsTimeW[20000];
+  Float_t cscRechitsTimeW[20000];
+
   bool Flag_goodVertices;
   bool Flag_globalSuperTightHalo2016Filter;
   bool Flag_EcalDeadCellTriggerPrimitiveFilter;
