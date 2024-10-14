@@ -476,7 +476,7 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
       MuonSystem->nJets++;
     }
 
-    MuonSystem->nDTRechits = 0;
+    MuonSystem->nDTRechits = nDtRechits;
 
     int nDTRechitsChamberMinus12 = 0;
     int nDTRechitsChamberMinus11 = 0;
@@ -938,6 +938,21 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
     ds_dtRechit.sort_clusters();
 
     MuonSystem->nDtRechitClusters = 0;
+
+    MuonSystem->nDTRechits = ds_dtRechit.m_points.size();
+    assert (MuonSystem->nDTRechits == nDtRechits);
+    for (int i = 0; i < min(nDtRechits, 20000); i++)
+      {
+        int clusterID = ds_dtRechit.m_points[i].clusterID;
+        MuonSystem->dtRechitsClusterId[i] = clusterID;
+        MuonSystem->dtRechitsX[i] = ds_dtRechit.m_points[i].x;
+        MuonSystem->dtRechitsY[i] = ds_dtRechit.m_points[i].y;
+        MuonSystem->dtRechitsZ[i] = ds_dtRechit.m_points[i].z;
+        MuonSystem->dtRechitsTime[i] = ds_dtRechit.m_points[i].t;
+        MuonSystem->dtRechitsTimeW[i] = ds_dtRechit.m_points[i].twire;
+    }
+
+
 
     for (auto &tmp : ds_dtRechit.clusters)
     {
@@ -1403,6 +1418,11 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     //   cout << nJet << " " << nMuon << " " << nElectron << " " << nCscRechits << " " << nDtRechits << " " << nRpc << " " << nCscSeg << " " << nDtSeg << endl;
     //   continue;
     // }
+    // if (nCscRechits > 5000){
+    //   cout << run << " " << luminosityBlock << " " << event << endl;
+    //   cout << nJet << " " << nMuon << " " << nElectron << " " << nCscRechits << " " << nDtRechits << " " << nRpc << " " << nCscSeg << " " << nDtSeg << endl;
+    //   continue;
+    // }
 
     // fill normalization histogram
     MuonSystem->InitVariables();
@@ -1722,7 +1742,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->nJets++;
     }
 
-    MuonSystem->nDTRechits = 0;
+    MuonSystem->nDTRechits = nDtRechits;
 
     int nDTRechitsChamberMinus12 = 0;
     int nDTRechitsChamberMinus11 = 0;
@@ -1982,6 +2002,10 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
     if (MuonSystem->nCscRings + MuonSystem->nDtRings >= 10)
       continue;
+    if (ncscRechits > 5000)
+      continue;
+    if (nDtRechits > 5000)
+      continue;
 
     // Do DBSCAN Clustering
 
@@ -1993,6 +2017,18 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     // ds.merge_clusters();
     // ds.clusterProperties();
     ds.sort_clusters();
+
+    MuonSystem->nCscRechits = ds.m_points.size();
+    for (int i = 0; i < min(MuonSystem->nCscRechits,20000); i++)
+    {
+      int clusterID = ds.m_points[i].clusterID;
+      MuonSystem->cscRechitsClusterId[i] = clusterID;
+      MuonSystem->cscRechitsX[i] = ds.m_points[i].x;
+      MuonSystem->cscRechitsY[i] = ds.m_points[i].y;
+      MuonSystem->cscRechitsZ[i] = ds.m_points[i].z;
+      MuonSystem->cscRechitsTime[i] = ds.m_points[i].t;
+      MuonSystem->cscRechitsTimeW[i] = ds.m_points[i].twire;
+    }
 
     MuonSystem->nCscRechitClusters = 0;
     for (auto &tmp : ds.clusters)

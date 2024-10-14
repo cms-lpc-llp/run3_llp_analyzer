@@ -58,7 +58,6 @@ public:
   double deltaPhi(double phi1, double phi2);
   double deltaR(double eta1, double phi1, double eta2, double phi2);
 
-private:
   vector<Rechits> m_points;
   unsigned int m_pointSize;
   unsigned int m_minPoints;
