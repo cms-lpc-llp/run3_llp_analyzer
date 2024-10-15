@@ -1,0 +1,7 @@
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/919/00000/abfa7c4b-27a0-4428-be08-1047ff349bcf.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/927/00000/815816e3-81ca-4de4-beba-fc152f93524b.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/929/00000/ff3b1bb7-aba4-4f7b-bb61-c41de19a3938.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/938/00000/9f525a5d-a13e-416f-914d-48c0156954da.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/937/00000/a74895da-0bcb-43a2-8bf1-36d92af83ede.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/968/00000/84366938-e3d5-4785-8d3f-3e764e09ca5f.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/Muon0/NANOAOD/PromptReco-v1/000/378/944/00000/b02c6a4a-667c-4bc1-9cbe-5a1277be2ff7.root

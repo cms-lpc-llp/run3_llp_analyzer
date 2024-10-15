@@ -1,1 +1,1 @@
-root://cmsxrootd.fnal.gov/Validation error: unmatched dataset pattern
+/storage/cms/Validation error: unmatched dataset pattern
