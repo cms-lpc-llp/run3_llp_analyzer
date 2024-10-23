@@ -22,14 +22,15 @@ for p in tag.keys():
                 if decay == '4B' and m < 15:continue
                 if decay == '4Tau' and m < 7:continue
                 list_path = '{}/MC_{}/'.format(base_path, p)
-                print(list_path)
+                #print(list_path)
                 if not os.path.exists(list_path): os.makedirs(list_path)
                 sample_name = "ggH_Hto2Sto{}_MH-125-MS-{}-ctauS-{}_TuneCP5_13p6TeV_powheg-pythia8".format(decay, m, ct)
                 outputFile = list_path + sample_name + ".txt"
                 sample_name_das = "/{}/{}/NANOAODSIM".format(sample_name, tag[p])
-                print(sample_name_das)
+                #print(sample_name_das)
 
                 command = "dasgoclient -query=\"dataset=" + sample_name_das + "\""
+                os.system(command)
                 proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
                 (dataset, err) = proc.communicate()
                 dataset = dataset.decode("utf-8")
@@ -43,7 +44,8 @@ for p in tag.keys():
                     lines = f.readlines()
                     print("Number of files: ", len(lines))
                     for index, line in enumerate(lines):
-                        lines[index] = "root://cmsxrootd.fnal.gov/" + line.strip() + "\n"
+                        #lines[index] = "root://cmsxrootd.fnal.gov/" + line.strip() + "\n"
+                        lines[index] = "/storage/cms/" + line.strip() + "\n"
         
                 with open(outputFile, "w") as f:
                     for line in lines:

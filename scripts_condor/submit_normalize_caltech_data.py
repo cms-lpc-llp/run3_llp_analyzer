@@ -15,8 +15,8 @@ executable = "normalize.sh"
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 
-version = "v13"
-for year in ['2022', '2023']:
+version = "v16"
+for year in ['2024']:
     inputDir = f"/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/Data{year}/{version}/"
     outputDir=inputDir  + "/normalized/"
     

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from multiprocessing import Pool
 from pathlib import Path
 
@@ -6,11 +7,17 @@ import numpy as np
 import uproot as up
 import h5py as h5
 from tqdm import tqdm
-
+import os
 
 def load(fname: str | Path) -> np.ndarray:
     try:
-        with up.open(fname) as f:  # type: ignore
+        if "cmsxrootd.fnal.gov" in fname:
+            os.system(f"xrdcp {fname} .")
+            fname_temp = str(Path(fname).name)
+            
+        else:
+            fname_temp = fname
+        with up.open(fname_temp) as f:  # type: ignore
             keys = f.keys()
             if 'ntuples;1' in keys:
                 run = f['ntuples/llp/runNum'].array()  # type: ignore
@@ -22,6 +29,7 @@ def load(fname: str | Path) -> np.ndarray:
                 event = f['Events/event'].array()  # type: ignore
             else:
                 raise ValueError(f'Could not find ntuple or Events in {fname}')
+        os.system(f"rm {fname_temp}")
         return np.asarray(np.stack([run, lumi, event], axis=1))
     except Exception as e:
         print(f'Error: {e} in {fname}')
@@ -60,6 +68,8 @@ def batch_load(base_path: Path | str, j: int | None = None):
 @click.option('--out', '-o', type=str, required=True)
 @click.option('--jobs', '-j', type=int, default=None)
 def main(inp: str, out: str, jobs: int | None):
+
+    print(inp, out, jobs)
     data = batch_load(inp, j=jobs)
     save_cache(out, data)
 

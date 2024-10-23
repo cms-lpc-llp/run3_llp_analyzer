@@ -24,7 +24,7 @@ CMSSW_BASE = os.getenv('CMSSW_BASE')
 Analyzer_DIR = CMSSW_BASE+"/src/run3_llp_analyzer/"
 
 
-for year in ['2022', '2023']:
+for year in ['2024']:
     datasetListDir = Analyzer_DIR + "lists/displacedJetMuonNtuple/{}/Data{}/".format(ntupler_version,year)
     outputDirectoryBase="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/{0}/Data{1}/{2}/".format(ntupler_version, year,analyzer_version)
     #### Run on all signal samples ####
@@ -32,7 +32,7 @@ for year in ['2022', '2023']:
     datasetList = OrderedDict()
     samples = os.listdir(datasetListDir)
     for s in samples:
-        if not "EXOCSCCluster" in s:continue 
+        #if not "EXOCSCCluster" in s:continue 
         datasetList[s.replace('.txt', '')] = [year, "yes"]
     ############
     

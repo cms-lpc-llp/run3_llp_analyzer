@@ -38,6 +38,8 @@ then
 
 	#hadd all the jobs for this sample
 	echo "${inputDir}/${sample}*_Job*.root"
+	ls ${inputDir}/*_Job*.root | wc
+	scho "${inputDir}/*_Job*.root"
 	hadd ${sample}.root ${inputDir}/*_Job*.root
 	output=${sample}.root
         ls

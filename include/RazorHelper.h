@@ -42,6 +42,8 @@ class RazorHelper {
         void loadTag_Summer22EE();
         void loadTag_Summer23();
         void loadTag_Summer23BPix();
+        void loadTag_Summer24();
+
         void loadTag_Null(); // Default when tag is not provided
         void loadCMSSWPath();
 
@@ -50,6 +52,7 @@ class RazorHelper {
         void loadPileup_Summer22EE();
         void loadPileup_Summer23();
         void loadPileup_Summer23BPix();
+        void loadPileup_Summer24();
         void loadHMTEfficiency();
 
         //for Razor Razor2018
@@ -72,15 +75,7 @@ class RazorHelper {
         TH1F *pileupWeightSysDownHist;
 
         TFile *HMTEffFile;
-        // TGraphAsymmErrors *HMTEffHist11;
-        // TGraphAsymmErrors *HMTEffHist12;
-        // TGraphAsymmErrors *HMTEffHist13;
-        // TGraphAsymmErrors *HMTEffHist21;
-        // TGraphAsymmErrors *HMTEffHist22;
-        // TGraphAsymmErrors *HMTEffHist31;
-        // TGraphAsymmErrors *HMTEffHist32;
-        // TGraphAsymmErrors *HMTEffHist41;
-        // TGraphAsymmErrors *HMTEffHist42;
+
         map<int, TEfficiency*> HMTEffHist;
 
 

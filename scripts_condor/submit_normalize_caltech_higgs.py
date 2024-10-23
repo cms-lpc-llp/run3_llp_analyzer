@@ -15,7 +15,7 @@ executable = "normalize.sh"
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 
-version = "v13"
+version = "v16"
 
 #for CSC clusters
 lumi = {
@@ -24,6 +24,7 @@ lumi = {
 'Summer23':18411,
 'Summer23BPix':9451,
 }
+
 for year in [ 'Summer22EE','Summer23','Summer23BPix']:
     inputDir = f"/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/V1p19/MC_{year}/{version}/"
     outputDir=inputDir  + "/normalized/"

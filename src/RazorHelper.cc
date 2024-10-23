@@ -19,6 +19,7 @@ RazorHelper::RazorHelper(std::string tag_, bool isData_):
     else if (tag == "Summer22EE") loadTag_Summer22EE();
     else if (tag == "Summer23")loadTag_Summer23();
     else if (tag == "Summer23BPix")loadTag_Summer23BPix();
+    else if (tag == "Summer24")loadTag_Summer24();
    // tag not found
     else {
         std::cout << "Error in RazorHelper::RazorHelper : specified tag " << tag << " is not supported!" << std::endl;
@@ -147,7 +148,22 @@ void RazorHelper::loadPileup_Summer23BPix() {
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
 
+////////////////////////////////////////////////
+//  Summer 24
+////////////////////////////////////////////////
+void RazorHelper::loadTag_Summer24() {
+  loadPileup_Summer24();
+  loadHMTEfficiency();
+}
 
+void RazorHelper::loadPileup_Summer24() {
+    // pileup weights
+    std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
+    pileupWeightFile = TFile::Open("PileupReweight_Summer23BPix.root");
+    pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
+    pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
+    pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
+}
 ////////////////////////////////////////////////
 //  Utilities
 ////////////////////////////////////////////////

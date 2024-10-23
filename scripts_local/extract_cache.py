@@ -1,3 +1,4 @@
+from __future__ import annotations
 from multiprocessing import Pool
 from pathlib import Path
 

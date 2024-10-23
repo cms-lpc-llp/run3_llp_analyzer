@@ -36,11 +36,30 @@ datasets = [
 #'/Muon1/Run2023D-22Sep2023_v2-v1/NANOAOD',
 
 # muon dataset in 2022 for tag n probe?
-'/Muon/Run2022C-22Sep2023-v1/NANOAOD',
-'/Muon/Run2022D-22Sep2023-v1/NANOAOD',
-'/Muon/Run2022E-22Sep2023-v1/NANOAOD',
-'/Muon/Run2022F-22Sep2023-v2/NANOAOD',
-'/Muon/Run2022G-22Sep2023-v1/NANOAOD',
+#'/Muon/Run2022C-22Sep2023-v1/NANOAOD',
+#'/Muon/Run2022D-22Sep2023-v1/NANOAOD',
+#'/Muon/Run2022E-22Sep2023-v1/NANOAOD',
+#'/Muon/Run2022F-22Sep2023-v2/NANOAOD',
+#'/Muon/Run2022G-22Sep2023-v1/NANOAOD',
+
+#'/Muon0/Run2024A-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024B-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024C-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024D-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024E-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024E-PromptReco-v2/NANOAOD',
+#'/Muon0/Run2024F-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024G-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024H-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024A-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024B-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024C-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024D-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024E-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024E-PromptReco-v2/NANOAOD',
+#'/Muon1/Run2024F-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024G-PromptReco-v1/NANOAOD',
+'/Muon1/Run2024H-PromptReco-v1/NANOAOD',
 ]
 
 
@@ -49,6 +68,7 @@ for name in datasets:
     
     if 'Run2022' in name: temp_path = path + '/2022/'
     elif 'Run2023' in name: temp_path = path + '/2023/'
+    elif 'Run2024' in name: temp_path = path + '/2024/'
     if not os.path.exists(temp_path): os.makedirs(temp_path)
     outputFile = "{}/{}-{}.txt".format(temp_path, name.split('/')[1],name.split('/')[2])
     command = "dasgoclient -query=\"file dataset=" + name + " \" > temp.list"

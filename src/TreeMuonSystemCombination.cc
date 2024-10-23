@@ -24,13 +24,11 @@ void TreeMuonSystemCombination::InitVariables()
   met=-1; metPhi=-1;
   HLT_CSCCSC = false;
   HLT_CSCDT = false;
-  Flag_HBHENoiseFilter = false; Flag_HBHEIsoNoiseFilter = false; Flag_BadPFMuonFilter = false; Flag_CSCTightHaloFilter = false; Flag_goodVertices = false;
-  Flag_ecalBadCalibFilter = false; Flag_all = false; Flag_globalSuperTightHalo2016Filter = false; Flag_BadChargedCandidateFilter = false; Flag_eeBadScFilter = false;
 
-  Flag2_HBHENoiseFilter = false; Flag2_HBHEIsoNoiseFilter = false; Flag2_BadPFMuonFilter = false; Flag2_globalSuperTightHalo2016Filter = false;
-  Flag2_globalTightHalo2016Filter = false; Flag2_BadChargedCandidateFilter = false; Flag2_EcalDeadCellTriggerPrimitiveFilter = false; Flag2_ecalBadCalibFilter = false;
-  Flag2_eeBadScFilter = false;
-  Flag2_all = false;
+Flag_eeBadScFilter = false; Flag_hfNoisyHitsFilter = false; Flag_BadPFMuonDzFilter = false; 
+Flag_BadPFMuonFilter = false; Flag_EcalDeadCellTriggerPrimitiveFilter= false;Flag_globalSuperTightHalo2016Filter = false;Flag_goodVertices= false;
+Flag_all = false;
+
   mH = 0; mX = 0; ctau = 0;
 
 
@@ -324,27 +322,14 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("pileupWeight",      &pileupWeight);
   tree_->SetBranchAddress("pileupWeightUp",      &pileupWeightUp);
   tree_->SetBranchAddress("pileupWeightDown",      &pileupWeightDown);
-  tree_->SetBranchAddress("Flag_HBHENoiseFilter",      &Flag_HBHENoiseFilter);
-  tree_->SetBranchAddress("Flag_HBHEIsoNoiseFilter",      &Flag_HBHEIsoNoiseFilter);
-  tree_->SetBranchAddress("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter);
-  tree_->SetBranchAddress("Flag_CSCTightHaloFilter",      &Flag_CSCTightHaloFilter);
-  tree_->SetBranchAddress("Flag_BadChargedCandidateFilter",      &Flag_BadChargedCandidateFilter);
   tree_->SetBranchAddress("Flag_eeBadScFilter",      &Flag_eeBadScFilter);
+  tree_->SetBranchAddress("Flag_hfNoisyHitsFilter",      &Flag_hfNoisyHitsFilter);
+  tree_->SetBranchAddress("Flag_BadPFMuonDzFilter",      &Flag_BadPFMuonDzFilter);
+  tree_->SetBranchAddress("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter);
+  tree_->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter",      &Flag_EcalDeadCellTriggerPrimitiveFilter);
   tree_->SetBranchAddress("Flag_globalSuperTightHalo2016Filter",      &Flag_globalSuperTightHalo2016Filter);
   tree_->SetBranchAddress("Flag_goodVertices",      &Flag_goodVertices);
-  tree_->SetBranchAddress("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter);
-  // tree_->SetBranchAddress("Flag_all",      &Flag_all);
-
-  tree_->SetBranchAddress("Flag2_HBHENoiseFilter",      &Flag2_HBHENoiseFilter);
-  tree_->SetBranchAddress("Flag2_HBHEIsoNoiseFilter",      &Flag2_HBHEIsoNoiseFilter);
-  tree_->SetBranchAddress("Flag2_BadPFMuonFilter",      &Flag2_BadPFMuonFilter);
-  tree_->SetBranchAddress("Flag2_globalSuperTightHalo2016Filter",      &Flag2_globalSuperTightHalo2016Filter);
-  tree_->SetBranchAddress("Flag2_globalTightHalo2016Filter",      &Flag2_globalTightHalo2016Filter);
-  tree_->SetBranchAddress("Flag2_BadChargedCandidateFilter",      &Flag2_BadChargedCandidateFilter);
-  tree_->SetBranchAddress("Flag2_EcalDeadCellTriggerPrimitiveFilter",      &Flag2_EcalDeadCellTriggerPrimitiveFilter);
-  tree_->SetBranchAddress("Flag2_ecalBadCalibFilter",      &Flag2_ecalBadCalibFilter);
-  tree_->SetBranchAddress("Flag2_eeBadScFilter",      &Flag2_eeBadScFilter);
-  tree_->SetBranchAddress("Flag2_all",      &Flag2_all);
+  tree_->SetBranchAddress("Flag_all",      &Flag_all);
 
 
   tree_->SetBranchAddress("rho",         &rho);
@@ -663,27 +648,16 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("pileupWeight",      &pileupWeight,     "pileupWeight/F");
   tree_->Branch("pileupWeightUp",      &pileupWeightUp,     "pileupWeightUp/F");
   tree_->Branch("pileupWeightDown",      &pileupWeightDown,     "pileupWeightDown/F");
-  tree_->Branch("Flag_HBHENoiseFilter",      &Flag_HBHENoiseFilter,     "Flag_HBHENoiseFilter/O");
-  tree_->Branch("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter,     "Flag_BadPFMuonFilter/O");
-  tree_->Branch("Flag_HBHEIsoNoiseFilter",      &Flag_HBHEIsoNoiseFilter,     "Flag_HBHEIsoNoiseFilter/O");
-  tree_->Branch("Flag_CSCTightHaloFilter",      &Flag_CSCTightHaloFilter,     "Flag_CSCTightHaloFilter/O");
-  tree_->Branch("Flag_globalSuperTightHalo2016Filter",      &Flag_globalSuperTightHalo2016Filter,     "Flag_globalSuperTightHalo2016Filter/O");
-  tree_->Branch("Flag_goodVertices",      &Flag_goodVertices,     "Flag_goodVertices/O");
-  tree_->Branch("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter,     "Flag_ecalBadCalibFilter/O");
-  tree_->Branch("Flag_BadChargedCandidateFilter",      &Flag_BadChargedCandidateFilter,     "Flag_BadChargedCandidateFilter/O");
   tree_->Branch("Flag_eeBadScFilter",      &Flag_eeBadScFilter,     "Flag_eeBadScFilter/O");
+  tree_->Branch("Flag_BadPFMuonFilter",      &Flag_BadPFMuonFilter,     "Flag_BadPFMuonFilter/O");
+  tree_->Branch("Flag_hfNoisyHitsFilter",      &Flag_hfNoisyHitsFilter,     "Flag_hfNoisyHitsFilter/O");
+  tree_->Branch("Flag_BadPFMuonDzFilter",      &Flag_BadPFMuonDzFilter,     "Flag_BadPFMuonDzFilter/O");
+  tree_->Branch("Flag_globalSuperTightHalo2016Filter",      &Flag_globalSuperTightHalo2016Filter,     "Flag_globalSuperTightHalo2016Filter/O");
+  tree_->Branch("Flag_EcalDeadCellTriggerPrimitiveFilter",      &Flag_EcalDeadCellTriggerPrimitiveFilter,     "Flag_EcalDeadCellTriggerPrimitiveFilter/O");
+  tree_->Branch("Flag_goodVertices",      &Flag_goodVertices,     "Flag_goodVertices/O");
   tree_->Branch("Flag_all",      &Flag_all,     "Flag_all/O");
 
-  tree_->Branch("Flag2_HBHENoiseFilter",      &Flag2_HBHENoiseFilter,     "Flag2_HBHENoiseFilter/O");
-  tree_->Branch("Flag2_HBHEIsoNoiseFilter",      &Flag2_HBHEIsoNoiseFilter,     "Flag2_HBHEIsoNoiseFilter/O");
-  tree_->Branch("Flag2_BadPFMuonFilter",      &Flag2_BadPFMuonFilter,     "Flag2_BadPFMuonFilter/O");
-  tree_->Branch("Flag2_globalSuperTightHalo2016Filter",      &Flag2_globalSuperTightHalo2016Filter,     "Flag2_globalSuperTightHalo2016Filter/O");
-  tree_->Branch("Flag2_globalTightHalo2016Filter",      &Flag2_globalTightHalo2016Filter,     "Flag2_globalTightHalo2016Filter/O");
-  tree_->Branch("Flag2_BadChargedCandidateFilter",      &Flag2_BadChargedCandidateFilter,     "Flag2_BadChargedCandidateFilter/O");
-  tree_->Branch("Flag2_EcalDeadCellTriggerPrimitiveFilter",      &Flag2_EcalDeadCellTriggerPrimitiveFilter,     "Flag2_EcalDeadCellTriggerPrimitiveFilter/O");
-  tree_->Branch("Flag2_ecalBadCalibFilter",      &Flag2_ecalBadCalibFilter,     "Flag2_ecalBadCalibFilter/O");
-  tree_->Branch("Flag2_eeBadScFilter",      &Flag2_eeBadScFilter,     "Flag2_eeBadScFilter/O");
-  tree_->Branch("Flag2_all",      &Flag2_all,     "Flag2_all/O");
+
 
 
 

@@ -53,14 +53,9 @@ public:
   float pileupWeight, pileupWeightUp, pileupWeightDown;
   bool HLT_CSCCSC,HLT_CSCDT;
   float met, metPhi;
-  bool Flag_HBHENoiseFilter, Flag_HBHEIsoNoiseFilter, Flag_BadPFMuonFilter, Flag_globalSuperTightHalo2016Filter,
-  Flag_CSCTightHaloFilter, Flag_BadChargedCandidateFilter, Flag_eeBadScFilter, Flag_goodVertices, Flag_ecalBadCalibFilter, Flag_all;
+  bool Flag_goodVertices, Flag_EcalDeadCellTriggerPrimitiveFilter, Flag_BadPFMuonFilter, Flag_BadPFMuonDzFilter, Flag_globalSuperTightHalo2016Filter,
+  Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_all;
   int mH, mX, ctau;
-
-  bool Flag2_HBHENoiseFilter, Flag2_HBHEIsoNoiseFilter, Flag2_BadPFMuonFilter, Flag2_globalSuperTightHalo2016Filter,
-  Flag2_globalTightHalo2016Filter, Flag2_BadChargedCandidateFilter, Flag2_EcalDeadCellTriggerPrimitiveFilter,
-  Flag2_ecalBadCalibFilter, Flag2_eeBadScFilter, Flag2_all;
-
 
 
   //csc
@@ -338,6 +333,8 @@ public:
 
   bool jetTightPassId[N_MAX_JETS];
   // bool HLTDecision[NTriggersMAX];
+
+
 
 
 

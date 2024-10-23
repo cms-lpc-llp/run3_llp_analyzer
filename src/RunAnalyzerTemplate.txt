@@ -149,8 +149,8 @@ int main(int argc, char* argv[]){
 	      }
 	    else
 	      {
-		theChain->SetName("HSCParticleAnalyzer/BaseName/HscpCandidates");
-		std::cout << "[INFO]: alternative configuration for tchain"<< std::endl;
+		theChain->SetName("Events");
+		std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
 	      }
 	    theChain->Add( curFileName.c_str() );
 	    delete f_0;

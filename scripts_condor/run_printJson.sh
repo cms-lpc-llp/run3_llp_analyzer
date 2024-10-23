@@ -58,7 +58,7 @@ then
 		echo "************************************"
 		echo ""
 		echo " "; echo "Starting razor run job now"; echo " ";
-			python printJson.py -r runNum -l lumiNum -o ${outputfile} -i inputfilelistForThisJob_${jobnumber}.txt
+			python printJson.py -r run -l luminosityBlock -o ${outputfile} -i inputfilelistForThisJob_${jobnumber}.txt
 		echo ${outputfile}
 		echo ${outputDirectory}
 		echo "printJson.py finished"

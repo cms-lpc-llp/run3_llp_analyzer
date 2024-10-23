@@ -59,10 +59,10 @@ then
                 cat inputfilelistForThisJob_${jobnumber}.txt
                 echo "************************************"
 	
-		echo "start copying files"
-		while read line; do   xrdcp ${line} .; done < "inputfilelistForThisJob_${jobnumber}.txt"
-		rm inputfilelistForThisJob_${jobnumber}.txt
-		ls displaced*.root > inputfilelistForThisJob_${jobnumber}.txt
+		#echo "start copying files"
+		#while read line; do   xrdcp ${line} .; done < "inputfilelistForThisJob_${jobnumber}.txt"
+		#rm inputfilelistForThisJob_${jobnumber}.txt
+		#ls *.root > inputfilelistForThisJob_${jobnumber}.txt
 		
 		
 

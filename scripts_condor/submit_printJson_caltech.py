@@ -12,21 +12,22 @@ from collections import OrderedDict
 os.system("mkdir -p submit")
 os.system("mkdir -p log")
 executable = "run_printJson.sh"
-filesPerJob = 1
-ntupler_version = 'V1p19/Data2022/'
-analyzer_version = 'v1'
+filesPerJob = 10
+ntupler_version = 'V1p19/2024/'
+analyzer_version = 'v2'
 outputDirectoryBase="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonNtuple_json/Run3/{0}/{1}/".format(ntupler_version, analyzer_version)
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 Analyzer_DIR = CMSSW_BASE+"/src/run3_llp_analyzer/"
 datasetListDir = Analyzer_DIR + "lists/displacedJetMuonNtuple/{}/".format(ntupler_version)
-
+datasetListDir = Analyzer_DIR + "lists/MergedNtuples/Run3/{}/".format(ntupler_version)
 
 #### Run on all signal samples ####
 datasetList = OrderedDict()
 samples = os.listdir(datasetListDir)
 for sample_temp in samples:
     sample = sample_temp.replace('.txt', '')
+    if not "EXO" in sample:continue
     print("Preparing analyzer workflow for dataset: " + sample + "\n")
 
     inputfilelist  = datasetListDir + sample + '.txt'

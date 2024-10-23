@@ -174,8 +174,8 @@ void llp_MuonSystem_CA::Analyze(bool isData, int options, string outputfilename,
   TH1F *Total = new TH1F("Total", "Total", 1, 1, 2);
 
   TH1F *accep = new TH1F("accep", "acceptance", 1, 1, 2);
-  TH1F *accep_csccsc = new TH1F("accep_csccsc", "acceptance", 1, 1, 2);
-  TH1F *accep_cscdt = new TH1F("accep_cscdt", "acceptance", 1, 1, 2);
+  TH1F *accep_csccsc = new TH1F("accep_csccsc", "accep_csccsc", 1, 1, 2);
+  TH1F *accep_cscdt = new TH1F("accep_cscdt", "accep_cscdt", 1, 1, 2);
   TH1F *accep_met = new TH1F("accep_met", "acceptance_met", 1, 1, 2);
 
   TH1F *Nmet200 = new TH1F("Nmet200", "Nmet200", 1, 1, 2);

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
   // parse input list to get names of ROOT files
   if (argc < 4)
   {
-    cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [isData]" << endl;
+    cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [analysisTag]" << endl;
     return -1;
   }
   // string filenameNTuplers(argv[1]);
@@ -62,7 +62,6 @@ int main(int argc, char *argv[])
   {
     analysisTag = "Razor2016_80X";
   }
-
   // create output file
   TFile *outputFile = new TFile(outputfilename.c_str(), "RECREATE");
 
@@ -114,9 +113,11 @@ int main(int argc, char *argv[])
     }
     NtuplesLoaded++;
   }
-  std::cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events" <<endl;
   if ( ntupleChain == NULL ) return -1;
-
+  
+  bool is_mc = ntupleChain->GetBranch("gLLP_eta") != NULL;
+  is_mc = false;
+  cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events. is_mc = " << is_mc << endl;
 
   ////////////////////////
   ////// Load nanoAOD files
@@ -329,6 +330,35 @@ int main(int argc, char *argv[])
 
   }
 
+  int nGLLP;
+  float gLLP_eta[2], gLLP_phi[2], gLLP_csc[2], gLLP_dt[2], gLLP_beta[2], gLLP_e[2], gLLP_pt[2], gLLP_decay_vertex_r[2], gLLP_decay_vertex_x[2], gLLP_decay_vertex_y[2], gLLP_decay_vertex_z[2];
+  if (is_mc)
+  {
+    outputTree->Branch("nGLLP", &nGLLP, "nGLLP/I");
+    outputTree->Branch("gLLP_eta", gLLP_eta, "gLLP_eta[nGLLP]/F");
+    outputTree->Branch("gLLP_phi", gLLP_phi, "gLLP_phi[nGLLP]/F");
+    outputTree->Branch("gLLP_csc", gLLP_csc, "gLLP_csc[nGLLP]/F");
+    outputTree->Branch("gLLP_dt", gLLP_dt, "gLLP_dt[nGLLP]/F");
+    outputTree->Branch("gLLP_beta", gLLP_beta, "gLLP_beta[nGLLP]/F");
+    outputTree->Branch("gLLP_e", gLLP_e, "gLLP_e[nGLLP]/F");
+    outputTree->Branch("gLLP_pt", gLLP_pt, "gLLP_pt[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_r", gLLP_decay_vertex_r, "gLLP_decay_vertex_r[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_x", gLLP_decay_vertex_x, "gLLP_decay_vertex_x[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_y", gLLP_decay_vertex_y, "gLLP_decay_vertex_y[nGLLP]/F");
+    outputTree->Branch("gLLP_decay_vertex_z", gLLP_decay_vertex_z, "gLLP_decay_vertex_z[nGLLP]/F");
+    outputTree->SetBranchAddress("nGLLP", &nGLLP);
+    outputTree->SetBranchAddress("gLLP_eta", gLLP_eta);
+    outputTree->SetBranchAddress("gLLP_phi", gLLP_phi);
+    outputTree->SetBranchAddress("gLLP_csc", gLLP_csc);
+    outputTree->SetBranchAddress("gLLP_dt", gLLP_dt);
+    outputTree->SetBranchAddress("gLLP_beta", gLLP_beta);
+    outputTree->SetBranchAddress("gLLP_e", gLLP_e);
+    outputTree->SetBranchAddress("gLLP_pt", gLLP_pt);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_r", gLLP_decay_vertex_r);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_x", gLLP_decay_vertex_x);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_y", gLLP_decay_vertex_y);
+    outputTree->SetBranchAddress("gLLP_decay_vertex_z", gLLP_decay_vertex_z);
+  }
 
   /////////////////////////////////////////////////////
   /////// FILL OUTPUT TREE
@@ -339,7 +369,11 @@ int main(int argc, char *argv[])
     if (n % 10000 == 0) cout << "Processing entry " << n << "\n";
 
     // Check if found a match
-    if (!matchedevent[n])  continue; 
+    if (!matchedevent[n])  continue;
+     cout<< n <<endl;
+    // if (n == 6604)cout<< n << ", " << nano.event<< endl; 
+    // if (ntuple.ncscRechits >= 20000) cout<< n << ", " << ntuple.ncscRechits<< endl; 
+    // if (ntuple.nCscSeg >= 300) cout<< n << ", " << ntuple.nCscSeg<< endl; 
     nanoChain->GetEntry(EventIndexToEventIndexMap[n]); 
     ntupleChain->GetEntry(n);
 
@@ -387,6 +421,27 @@ int main(int argc, char *argv[])
       if (string(addBranchNamesIntSeg[i]).find("dtSeg") != std::string::npos) temp_nhits = nDtSeg;
       if (string(addBranchNamesIntSeg[i]).find("rpc") != std::string::npos) temp_nhits = nRpc;
       for (int j = 0; j < temp_nhits; j++) addBranchesInputVarIntSeg[i][j] = addBranchesRazorVarIntSeg[i][j];
+    }
+
+    if (is_mc)
+    {
+      nGLLP = 2;
+      for (int i = 0; i < nGLLP; i++)
+      {
+        gLLP_eta[i] = ntuple.gLLP_eta[i];
+        gLLP_phi[i] = ntuple.gLLP_phi[i];
+        gLLP_csc[i] = ntuple.gLLP_csc[i];
+        gLLP_dt[i] = ntuple.gLLP_dt[i];
+        gLLP_beta[i] = ntuple.gLLP_beta[i];
+        gLLP_e[i] = ntuple.gLLP_e[i];
+        gLLP_pt[i] = ntuple.gLLP_pt[i];
+        double x = ntuple.gLLP_decay_vertex_x[i];
+        double y = ntuple.gLLP_decay_vertex_y[i];
+        gLLP_decay_vertex_x[i] = x;
+        gLLP_decay_vertex_y[i] = y;
+        gLLP_decay_vertex_z[i] = ntuple.gLLP_decay_vertex_z[i];
+        gLLP_decay_vertex_r[i] = sqrt(x * x + y * y);
+      }
     }
 
     outputTree->Fill();

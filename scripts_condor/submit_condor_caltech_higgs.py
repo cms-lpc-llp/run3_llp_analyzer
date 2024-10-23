@@ -18,7 +18,7 @@ ntupler_version = 'V1p19/'
 #ntupler_version = "V1p19/MC_Summer22EE/v1/sixie/"
 
 
-analyzer_version = 'v14'
+analyzer_version = 'v15'
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 Analyzer_DIR = CMSSW_BASE+"/src/run3_llp_analyzer/"
