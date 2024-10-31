@@ -2,7 +2,7 @@
 
 N_JOBS="$(nproc)"
 _CMSSW_BASE=$(realpath ~/repo/LLP/CMSSW_9_4_4)
-JSON_DIR=../data/Certification/20230528/
+JSON_DIR=../data/Certification/
 BIN=
 
 while [[ $# -gt 0 ]]; do
@@ -83,23 +83,19 @@ function get_json_path {
     # This function should be adapted to the actual path of the golden JSON files
     INP_FILE=$(realpath $1)
     JSON_DIR=$2
-    RUN=$(echo $INP_FILE | grep -o "Run20[0-9]\{2\}[A-Z]\?")
-    YEAR=${RUN:3:4}
+    YEAR=$(echo $INP_FILE | grep -o "20[0-9]\{2\}[A-Z]\?")
+    YEAR=${YEAR:0:4}
+
     ERA=${RUN:7:1}
 
-    if [ $YEAR -eq 2022 ]; then
-        JSON_NAME=Cert_Collisions2022_*_Golden.json
-    elif [ $YEAR -eq 2023 ]; then
-        JSON_NAME=Cert_Collisions2023_*_Golden.json
-    else
-        echo "Year $YEAR not supported"
-        exit 1
-    fi
+    JSON_NAME=Cert_Collisions${YEAR}_*_Golden.json
 
     JSON_PATH=$(find $JSON_DIR -name $JSON_NAME)
 
     if [ -z $JSON_PATH ]; then
-        echo "JSON path not found for file $INP_FILE: expected golden JSON files at $JSON_PATH" 1>&2
+        echo "******************************************************************" 1>&2
+        echo "JSON path not found for file $INP_FILE:" 1>&2
+        echo "  CMD: find $JSON_DIR -name $JSON_NAME" 1>&2
         exit 1
     fi
 
@@ -142,4 +138,4 @@ if [ ! -d $DATA_PATH ]; then
     exit 1
 fi
 
-ls $DATA_PATH/*.root | grep "Run20[0-9]\{2\}[A-Z]\?" | parallel --progress -j $N_JOBS filter {} $JSON_DIR $BIN
+ls $DATA_PATH/*.root | grep "20[0-9]\{2\}[A-Z]\?" | parallel --progress -j $N_JOBS filter {} $JSON_DIR $BIN
