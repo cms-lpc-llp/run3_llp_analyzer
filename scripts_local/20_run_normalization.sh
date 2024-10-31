@@ -86,7 +86,7 @@ function launch {
 
     mkdir -p $TMP_PATH
 
-    IS_DATA=$(echo $INP_PATH | grep -q "Run20[0-9]\{2\}" && echo "yes" || echo "no")
+    IS_DATA=$(echo $INP_PATH | grep -q "20[0-9]\{2\}[A-Z]" && echo "yes" || echo "no")
     cd $INP_PATH
     if [ -f $INP_PATH.root ]; then
         rm $INP_PATH.root
