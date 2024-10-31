@@ -1,0 +1,15 @@
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/765/00000/de42c858-b756-4372-be08-cb32aff41092.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/918/00000/45287438-8b73-4231-a0cf-087e75b345b5.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/919/00000/d2ea8839-f572-452c-bf0c-ed5aaa46d2d7.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/927/00000/a84d360e-0826-4aca-b1ae-072570450035.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/929/00000/0545d49d-f699-412c-8730-d3a886e73cfa.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/962/00000/6f046772-f915-4e9b-a07e-18306c56d433.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/956/00000/a113d3be-bcaa-4f6c-9df0-37b554ee40f2.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/944/00000/aae8a23c-0b0f-4a47-8908-7453c289e0fd.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/968/00000/a4ae0244-7572-42f0-9ee2-b66e90ae807b.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/938/00000/c599b037-a912-499e-a04f-e56de3d97438.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/959/00000/dbc935f4-6fb2-4ee2-9472-8de0ff158c58.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/937/00000/6f66ee94-c617-4ea6-9bc3-d8915a1dec78.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/961/00000/adec679d-fee5-43ab-9edf-027c06f04a3c.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/960/00000/1aa96e85-3079-4436-bd83-b2ba3323936e.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET0/NANOAOD/PromptReco-v1/000/378/940/00000/1d1a5787-7e2e-4b18-84e5-c7ba740fe005.root

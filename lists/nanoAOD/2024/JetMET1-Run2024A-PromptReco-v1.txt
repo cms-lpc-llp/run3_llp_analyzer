@@ -1,0 +1,16 @@
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/765/00000/df4d15ca-387d-465b-9ead-ce3ff07fa864.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/920/00000/8dc80fe1-050c-4ffa-bd50-b250775e339e.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/918/00000/2c83350a-fad6-46b1-b6d5-46fd36b8b59c.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/919/00000/5450fcc2-be49-4543-a472-0ec9224fd415.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/929/00000/d9c322e4-85e8-40ec-a07d-c32714115ea8.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/927/00000/684bfb95-50ef-488b-bbea-e1755ba24a6d.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/937/00000/832c1753-2eed-40f7-9227-dd4fb90457f8.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/940/00000/74561cac-aebd-42c3-a4bc-fe4460219676.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/959/00000/16b33574-2802-4cee-87b1-00dcf3683b8c.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/960/00000/70679e53-fd38-4384-9026-d6430c7f3c41.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/962/00000/81969d8a-1ddf-49fc-ac47-efe936886afd.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/968/00000/169ef20b-8c29-4be4-aab9-d3c3424d3424.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/938/00000/7326f68b-7516-4a9c-9363-4d00d6907f99.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/944/00000/fca51054-f63d-4f0e-a88a-4514f139d497.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/956/00000/c3a65809-4f2c-4ef8-a063-5af844442498.root
+root://cmsxrootd.fnal.gov//store/data/Run2024A/JetMET1/NANOAOD/PromptReco-v1/000/378/961/00000/c0559719-8c57-450c-a458-972f0b47170f.root

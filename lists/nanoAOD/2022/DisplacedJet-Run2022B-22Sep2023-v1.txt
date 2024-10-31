@@ -1,7 +1,7 @@
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/c1ca686b-4003-4463-8fe9-a8cf8da9d77d.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/b1037291-c1a3-40b0-930e-3abd47f3fc89.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/9b6ef1ae-ddb6-42d4-8df6-d762cb0301b7.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/146f7acd-9ee5-4e24-b062-4620ac62e0ee.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/9b6d1896-6c0a-4929-b6cc-1b9e5248c552.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/dcd1cdc2-788c-4921-b6de-c03ea834a3b1.root
-root://cmsxrootd.fnal.gov//store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/40000/133cd7a7-4325-4835-99d9-b61bab7366a7.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/c1ca686b-4003-4463-8fe9-a8cf8da9d77d.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/b1037291-c1a3-40b0-930e-3abd47f3fc89.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/9b6ef1ae-ddb6-42d4-8df6-d762cb0301b7.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/146f7acd-9ee5-4e24-b062-4620ac62e0ee.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/9b6d1896-6c0a-4929-b6cc-1b9e5248c552.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/30000/dcd1cdc2-788c-4921-b6de-c03ea834a3b1.root
+/storage/cms/store/data/Run2022B/DisplacedJet/NANOAOD/22Sep2023-v1/40000/133cd7a7-4325-4835-99d9-b61bab7366a7.root
