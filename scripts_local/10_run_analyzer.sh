@@ -109,8 +109,8 @@ function prepare_chunks {
         printf "$i %s\n" "${chunk[@]}" > $LOCAL_TMP_PATH/$i.txt
     fi
 
-    IS_DATA=$(realpath $FILE | grep -q "Data" && echo "yes" || echo "no")
-    YEAR=$(realpath $FILE | grep -o "Data[0-9]\{4\}")
+    IS_DATA=$(realpath $FILE | grep -q "Run" && echo "yes" || echo "no")
+    YEAR=$(realpath $FILE | grep -o "Run[0-9]\{4\}")
     YEAR=${YEAR:4:4}
 
     echo -e "YEAR=$YEAR\nIS_DATA=$IS_DATA\nLABEL=$LABEL\n" > $LOCAL_TMP_PATH/config.env
@@ -166,4 +166,4 @@ for INP_LIST in $INP_LIST_FILES; do
     prepare_chunks $INP_LIST $TMP_PATH $CHUNK_SIZE
 done
 
-ls $TMP_PATH/*/*.txt | parallel -j $N_JOBS --bar --eta launch {} $OUT_PATH $BIN $SYNC
+echo $TMP_PATH/*/*.txt | tr ' ' '\n' | parallel -j $N_JOBS --bar --eta launch {} $OUT_PATH $BIN $SYNC
