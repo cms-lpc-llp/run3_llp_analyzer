@@ -1,0 +1,1 @@
+root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/V1p19/Data2024/v1/Muon0/Run3_displacedJetMuonNtupler_V1p19_Data2024_Run2024A-EXOCSCCluster-PromptReco-v1_v1_v1/240828_210355/0000/displacedJetMuon_ntupler_1.root
