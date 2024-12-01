@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
         cerr << "usage MergeNtuple [match_object.root] [output.root]" << endl;
         return -1;
     }
-    TFile *matchFile = new TFile(argv[1]);
+    TFile *matchFile = TFile::Open(argv[1]);
     TTree *inp_nano = (TTree *)matchFile->Get("inp1");
     TTree *inp_ntuple = (TTree *)matchFile->Get("inp2");
     TTree *matched_idx_tree = (TTree *)matchFile->Get("idx");
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     if (ntuple_chain == NULL)
         return -1;
 
-    bool is_mc = ntuple_chain->GetBranch("gLLP_eta") != NULL;
+    bool is_mc = false; // ntuple_chain->GetBranch("gLLP_eta") != NULL;
     cout << "Loaded ntuples: " << inp_ntuple->GetEntries() << " files and " << ntuple_chain->GetEntries() << " events. is_mc = " << is_mc << endl;
 
     ////////////////////////
