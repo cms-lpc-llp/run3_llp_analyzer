@@ -421,20 +421,20 @@ void TreeMuonSystemCombination::InitTree()
   assert(tree_);
   InitVariables();
 
-  tree_->SetBranchAddress("nCscRechits", &nCscRechits);
-  tree_->SetBranchAddress("nDtRechits", &nDTRechits);
-  tree_->SetBranchAddress("cscRechitsClusterId", cscRechitsClusterId);
-  tree_->SetBranchAddress("cscRechitsX", cscRechitsX);
-  tree_->SetBranchAddress("cscRechitsY", cscRechitsY);
-  tree_->SetBranchAddress("cscRechitsZ", cscRechitsZ);
-  tree_->SetBranchAddress("dtRechitsClusterId", dtRechitsClusterId);
-  tree_->SetBranchAddress("dtRechitsX", dtRechitsX);
-  tree_->SetBranchAddress("dtRechitsY", dtRechitsY);
-  tree_->SetBranchAddress("dtRechitsZ", dtRechitsZ);
-  tree_->SetBranchAddress("cscRechitsTime", cscRechitsTime);
-  tree_->SetBranchAddress("cscRechitsTimeW", cscRechitsTimeW);
-  tree_->SetBranchAddress("dtRechitsTime", dtRechitsTime);
-  tree_->SetBranchAddress("dtRechitsTimeW", dtRechitsTimeW);
+  // tree_->SetBranchAddress("nCscRechits", &nCscRechits);
+  // tree_->SetBranchAddress("nDtRechits", &nDTRechits);
+  // tree_->SetBranchAddress("cscRechitsClusterId", cscRechitsClusterId);
+  // tree_->SetBranchAddress("cscRechitsX", cscRechitsX);
+  // tree_->SetBranchAddress("cscRechitsY", cscRechitsY);
+  // tree_->SetBranchAddress("cscRechitsZ", cscRechitsZ);
+  // tree_->SetBranchAddress("dtRechitsClusterId", dtRechitsClusterId);
+  // tree_->SetBranchAddress("dtRechitsX", dtRechitsX);
+  // tree_->SetBranchAddress("dtRechitsY", dtRechitsY);
+  // tree_->SetBranchAddress("dtRechitsZ", dtRechitsZ);
+  // tree_->SetBranchAddress("cscRechitsTime", cscRechitsTime);
+  // tree_->SetBranchAddress("cscRechitsTimeW", cscRechitsTimeW);
+  // tree_->SetBranchAddress("dtRechitsTime", dtRechitsTime);
+  // tree_->SetBranchAddress("dtRechitsTimeW", dtRechitsTimeW);
 
   tree_->SetBranchAddress("nboostedTau", &nboostedTau);
   tree_->SetBranchAddress("nsoftActivityVH", &nsoftActivityVH);
@@ -831,20 +831,20 @@ void TreeMuonSystemCombination::CreateTree()
   tree_ = new TTree("MuonSystem", "MuonSystem");
   f_ = 0;
 
-  tree_->Branch("nCscRechits", &nCscRechits, "nCscRechits/i"); // number of csc rechits
-  tree_->Branch("nDtRechits", &nDTRechits, "nDtRechits/i");    // number of dt rechits
-  tree_->Branch("cscRechitsClusterId", cscRechitsClusterId, "cscRechitsClusterId[nCscRechits]/I");
-  tree_->Branch("cscRechitsX", cscRechitsX, "cscRechitsX[nCscRechits]/F");
-  tree_->Branch("cscRechitsY", cscRechitsY, "cscRechitsY[nCscRechits]/F");
-  tree_->Branch("cscRechitsZ", cscRechitsZ, "cscRechitsZ[nCscRechits]/F");
-  tree_->Branch("dtRechitsClusterId", dtRechitsClusterId, "dtRechitsClusterId[nDtRechits]/I");
-  tree_->Branch("dtRechitsX", dtRechitsX, "dtRechitsX[nDtRechits]/F");
-  tree_->Branch("dtRechitsY", dtRechitsY, "dtRechitsY[nDtRechits]/F");
-  tree_->Branch("dtRechitsZ", dtRechitsZ, "dtRechitsZ[nDtRechits]/F");
-  tree_->Branch("cscRechitsTime", cscRechitsTime, "cscRechitsTime[nCscRechits]/F");
-  tree_->Branch("dtRechitsTime", cscRechitsTime, "dtRechitsTime[nDTRechits]/F");
-  tree_->Branch("cscRechitsTimeW", cscRechitsTimeW, "cscRechitsTimeW[nCscRechits]/F");
-  tree_->Branch("dtRechitsTimeW", cscRechitsTimeW, "dtRechitsTimeW[nDtRechits]/F");
+  // tree_->Branch("nCscRechits", &nCscRechits, "nCscRechits/i"); // number of csc rechits
+  // tree_->Branch("nDtRechits", &nDTRechits, "nDtRechits/i");    // number of dt rechits
+  // tree_->Branch("cscRechitsClusterId", cscRechitsClusterId, "cscRechitsClusterId[nCscRechits]/I");
+  // tree_->Branch("cscRechitsX", cscRechitsX, "cscRechitsX[nCscRechits]/F");
+  // tree_->Branch("cscRechitsY", cscRechitsY, "cscRechitsY[nCscRechits]/F");
+  // tree_->Branch("cscRechitsZ", cscRechitsZ, "cscRechitsZ[nCscRechits]/F");
+  // tree_->Branch("dtRechitsClusterId", dtRechitsClusterId, "dtRechitsClusterId[nDtRechits]/I");
+  // tree_->Branch("dtRechitsX", dtRechitsX, "dtRechitsX[nDtRechits]/F");
+  // tree_->Branch("dtRechitsY", dtRechitsY, "dtRechitsY[nDtRechits]/F");
+  // tree_->Branch("dtRechitsZ", dtRechitsZ, "dtRechitsZ[nDtRechits]/F");
+  // tree_->Branch("cscRechitsTime", cscRechitsTime, "cscRechitsTime[nCscRechits]/F");
+  // tree_->Branch("dtRechitsTime", cscRechitsTime, "dtRechitsTime[nDTRechits]/F");
+  // tree_->Branch("cscRechitsTimeW", cscRechitsTimeW, "cscRechitsTimeW[nCscRechits]/F");
+  // tree_->Branch("dtRechitsTimeW", cscRechitsTimeW, "dtRechitsTimeW[nDtRechits]/F");
 
   tree_->Branch("runNum", &runNum, "runNum/i");                   // event run number
   tree_->Branch("MC_condition", &MC_condition, "MC_condition/i"); // event run number
