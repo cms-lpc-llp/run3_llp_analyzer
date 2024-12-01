@@ -34,11 +34,10 @@ def save_cache(fname: str | Path, data: dict[str, np.ndarray]) -> None:
             f.create_dataset(k, data=v, compression='lzf')
 
 
-def to_data(idxs: list[np.ndarray], paths: list[Path]) -> dict[str, np.ndarray]:
+def to_data(idxs: list[np.ndarray], paths: list[str]) -> dict[str, np.ndarray]:
     data = {}
     for arr, p in zip(idxs, paths):
-        name = p.with_suffix('').relative_to(p.parents[5]).__str__().replace('/', '=')
-        data[name] = arr
+        data[p] = arr
     return data
 
 
@@ -46,12 +45,11 @@ def batch_load(base_path: Path | str, j: int | None = None):
     base_path = Path(base_path)
     pool = Pool(j)
     if base_path.is_dir():
-        paths = list(base_path.glob('**/*.root'))
+        paths = [str(p) for p in base_path.glob('**/*.root')]
     else:
         paths = base_path.read_text().splitlines()
     r = pool.imap(load, paths)
     idxs = list(tqdm(r, total=len(paths), desc='Loading'))
-    paths = [Path(p) for p in paths]
     return to_data(idxs, paths)
 
 
