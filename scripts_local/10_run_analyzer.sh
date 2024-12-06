@@ -109,9 +109,9 @@ function prepare_chunks {
         printf "$i %s\n" "${chunk[@]}" > $LOCAL_TMP_PATH/$i.txt
     fi
 
-    IS_DATA=$(realpath $FILE | grep -q '\(202[0-9][A-Z]\|Data\)' && echo "yes" || echo "no")
-    YEAR=$(realpath $FILE | grep -o "Data[0-9]\{4\}")
-    YEAR=${YEAR:4:4}
+    IS_DATA=$(realpath $FILE | grep -q '\(202[0-9][A-Z]\)' && echo "yes" || echo "no")
+    YEAR=$(realpath $FILE | grep -o "[0-9]\{4\}")
+    # YEAR=${YEAR:4:4}
 
     echo -e "YEAR=$YEAR\nIS_DATA=$IS_DATA\nLABEL=$LABEL\n" > $LOCAL_TMP_PATH/config.env
 }
