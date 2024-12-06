@@ -105,6 +105,7 @@ void RazorAnalyzer::EnableAll()
 void RazorAnalyzer::EnableEventInfo()
 {
     fChain->SetBranchStatus("nPV", 1);
+    fChain->SetBranchStatus("Pileup_nTrueInt", 1);
     fChain->SetBranchStatus("pvX", 1);
     fChain->SetBranchStatus("pvY", 1);
     fChain->SetBranchStatus("pvZ", 1);
