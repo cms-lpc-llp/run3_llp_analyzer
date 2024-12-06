@@ -1582,6 +1582,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
     // get NPU
     MuonSystem->npv = nPV;
+    MuonSystem->pileupWeight = Pileup_nTrueInt;
     MuonSystem->rho = fixedGridRhoFastjetAll;
     MuonSystem->met = metType1Pt;
     MuonSystem->metPhi = metType1Phi;
