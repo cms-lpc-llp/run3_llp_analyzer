@@ -2372,7 +2372,7 @@ public:
    TBranch *b_OtherPV_score;                                                                                         //!
    TBranch *b_PV_npvs;                                                                                               //!
    TBranch *b_PV_npvsGood;                                                                                           //!
-   TBranch *b_PV_Pileup_nTrueInt;                                                                                    //!
+   TBranch *b_Pileup_nTrueInt;                                                                                    //!
    TBranch *b_PV_ndof;                                                                                               //!
    TBranch *b_PV_x;                                                                                                  //!
    TBranch *b_PV_y;                                                                                                  //!
@@ -4191,7 +4191,7 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("OtherPV_score", OtherPV_score, &b_OtherPV_score);
    fChain->SetBranchAddress("PV_npvs", &PV_npvs, &b_PV_npvs);
    fChain->SetBranchAddress("PV_npvsGood", &PV_npvsGood, &b_PV_npvsGood);
-   fChain->SetBranchAddress("PV_Pileup_nTrueInt", &PV_Pileup_nTrueInt, &b_PV_Pileup_nTrueInt);
+   fChain->SetBranchAddress("PV_Pileup_nTrueInt", &Pileup_nTrueInt, &b_Pileup_nTrueInt);
    fChain->SetBranchAddress("PV_ndof", &PV_ndof, &b_PV_ndof);
    fChain->SetBranchAddress("PV_x", &PV_x, &b_PV_x);
    fChain->SetBranchAddress("PV_y", &PV_y, &b_PV_y);
