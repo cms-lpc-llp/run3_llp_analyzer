@@ -87,7 +87,7 @@ fi
 function prepare_chunks {
     
     FILE=$1
-    LOCAL_TMP_PATH=$2/$(basename ${FILE%.list})
+    LOCAL_TMP_PATH=$2/$(basename ${FILE%.txt})
     CHUNK_SIZE=$3
     LABEL=test
 
@@ -124,7 +124,7 @@ function launch {
     SYNC=$4
     # read config from the same path, contains IS_DATA, LABEL, YEAR
     source $(dirname $LIST_FILE)/config.env
-    FILE_OUT_PATH=$OUT_PATH/$(basename $(dirname $LIST_FILE))/$(basename ${LIST_FILE%.list}).root
+    FILE_OUT_PATH=$OUT_PATH/$(basename $(dirname $LIST_FILE))/$(basename ${LIST_FILE%.txt}).root
 
     if [ -f $FILE_OUT_PATH ]; then
         return
@@ -136,7 +136,7 @@ function launch {
         if [ "$SYNC" == "_local_" ]; then
             LOCAL_ROOT_PATH=/eos/uscms/${f#$prefix}
         else
-            LOCAL_ROOT_PATH=${LIST_FILE%.list}.root
+            LOCAL_ROOT_PATH=${LIST_FILE%.txt}.root
             if [ ! -f $LOCAL_ROOT_PATH ]; then
                 rsync -a $SYNC/${f#$prefix} $LOCAL_ROOT_PATH > /dev/null 2> >(grep -i -v 'Warning: Permanently')
             fi
@@ -146,14 +146,14 @@ function launch {
 
 
     mkdir -p $(dirname $FILE_OUT_PATH)
-    $BIN $LIST_FILE -d=$IS_DATA -l=$LABEL -f=$FILE_OUT_PATH > ${LIST_FILE%.list}.log 2>&1
+    $BIN $LIST_FILE -d=$IS_DATA -l=$LABEL -f=$FILE_OUT_PATH > ${LIST_FILE%.txt}.log 2>&1
     
     if [ $? -ne 0 ]; then
-        echo "Failed to run $LIST_FILE: log at ${LIST_FILE%.list}.log" 1>&2
+        echo "Failed to run $LIST_FILE: log at ${LIST_FILE%.txt}.log" 1>&2
         rm $FILE_OUT_PATH
     else
         rm $LIST_FILE
-        rm ${LIST_FILE%.list}.log
+        rm ${LIST_FILE%.txt}.log
         if [ -n "$SYNC" ] && [ "$SYNC" != "_local_" ]; then
             rm $LOCAL_ROOT_PATH
         fi
