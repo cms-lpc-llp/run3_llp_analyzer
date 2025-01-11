@@ -18,6 +18,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job158_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job201_of_215_001.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job42_of_215_003.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_001.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job176_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job118_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job159_of_215_008.root
@@ -574,6 +575,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job77_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job97_of_215_009.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job7_of_215_001.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_008.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job161_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job90_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job45_of_215_006.root
@@ -655,6 +657,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job5_of_215_010.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job126_of_215_009.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job98_of_215_007.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job78_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job72_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job5_of_215_006.root
@@ -704,6 +707,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job23_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job108_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job143_of_215_006.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job1_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job4_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job108_of_215_001.root
@@ -835,6 +839,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job180_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job177_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job41_of_215_001.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_009.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job28_of_215_009.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job100_of_215_006.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job150_of_215_006.root
@@ -885,6 +890,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job134_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job184_of_215_001.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job47_of_215_001.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job97_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job61_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job166_of_215_001.root
@@ -924,6 +930,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job27_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job122_of_215_007.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job59_of_215_003.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_010.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job140_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job96_of_215_008.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job10_of_215_004.root
@@ -1107,6 +1114,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job183_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job26_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job81_of_215_003.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_007.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job144_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job177_of_215_009.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job46_of_215_001.root
@@ -1151,6 +1159,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job97_of_215_005.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job19_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job142_of_215_001.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_006.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job18_of_215_007.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job188_of_215_003.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job186_of_215_007.root
@@ -1210,6 +1219,7 @@
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job57_of_215_001.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job33_of_215_001.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job99_of_215_006.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job152_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job150_of_215_004.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job0_of_215_002.root
 /storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2024/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1/Muon1Run2024H-EXOCSCCluster-PromptReco-v1_v1_v1_Job170_of_215_011.root
