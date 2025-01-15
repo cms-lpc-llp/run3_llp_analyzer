@@ -35,6 +35,7 @@ void usage()
 {
   std::cerr << "Usage: Runllp_MuonSystem_SUEP  <input list>  [options]\n[options]:\n"
 	    << "-d  --isData\n"
+	    << "-w  --isWeighted\n"
 	    << "-f=  --outputFile=<output filename> (optional)\n"
 	    << "-n=  --optionNumber=<option number> (optional)\n"
 	    << "-l=  --optionLabel=<option Label> (optional)\n"
@@ -59,10 +60,15 @@ int main(int argc, char* argv[]){
   //--------------------------------
   //G e t t i n g   d a t a  f l a g
   //--------------------------------
-  std::string _isData = ParseCommandLine( argc, argv, "--isData" );
-  std::string _d = ParseCommandLine( argc, argv, "-d" );
+  std::string _isData = ParseCommandLine( argc, argv, "--isData=" );
+  std::string _isWeighted = ParseCommandLine( argc, argv, "--isWeighted=" );
+  std::string _d = ParseCommandLine( argc, argv, "-d=" );
+  std::string _w = ParseCommandLine( argc, argv, "-w=" );
   bool isData = false;
   if ( _isData == "yes" || _d == "yes" ) isData = true;
+  bool isWeighted = false;
+  cout << _isWeighted << endl;
+  if ( _isWeighted == "yes" || _w == "yes" ) isWeighted = true;
 
   //---------------------------------------------
   //G e t t i n g   o u t p u t F i l e   N a m e
@@ -120,6 +126,7 @@ int main(int argc, char* argv[]){
 
   std::cout << "[INFO]: <input list> --> " << inputFileName << std::endl;
   std::cout << "[INFO]: isData --> " << isData << std::endl;
+  std::cout << "[INFO]: isWeighted --> " << isWeighted << std::endl;
   std::cout << "[INFO]: outputFileName --> " << outputFileName << std::endl;
   std::cout << "[INFO]: option --> " << option << std::endl;
   std::cout << "[INFO]: optionalLabel --> " << label << std::endl;
@@ -129,85 +136,95 @@ int main(int argc, char* argv[]){
   int ctau = 0;
   int T = 0;
 
-    //build the TChain
-    //tree name is set give the structure in the first root file, see while loop below
-    TChain* theChain = new TChain();
-    string curFileName;
-    ifstream inputFile(inputFileName.c_str());
-    int NFilesLoaded = 0;
-    if ( !inputFile ){
-      cerr << "Error: input file not found!" << endl;
-      return -1;
+  //build the TChain
+  //tree name is set give the structure in the first root file, see while loop below
+  TChain* theChain = new TChain();
+  string curFileName;
+  ifstream inputFile(inputFileName.c_str());
+  int NFilesLoaded = 0;
+  if ( !inputFile ){
+    cerr << "Error: input file not found!" << endl;
+    return -1;
+  }
+
+
+  while ( getline(inputFile, curFileName) )
+    {
+      cout << "Here check if weighted or not! " << endl;
+      string outFileString;
+      if(isWeighted)
+	{
+	  string outDir = (curFileName.substr(0, curFileName.find_last_of("/"))) + "/weighted/";
+	  outFileString = outDir+(curFileName.substr(curFileName.find_last_of("/")+1,-1));
+	}
+      else
+	{
+	  outFileString = curFileName;
+	}
+      std::cout << "Opening " << outFileString << endl;
+
+      if ( NFilesLoaded == 0 )
+	{
+	  /*
+	    checks root file structure and add first file
+	  */
+	  string mh_substring = outFileString.substr(outFileString.find("mMed-")+5);
+	  mh = stoi(mh_substring.substr(0,mh_substring.find('_')));
+	  string mx_substring = outFileString.substr(outFileString.find("mDark-")+6);
+	  mx = stoi(mx_substring.substr(0,mx_substring.find('_')));
+	  string T_substring = outFileString.substr(outFileString.find("temp-")+5);
+	  T = stoi(T_substring.substr(0,T_substring.find('_')));
+	  string ctau_substring = outFileString.substr(outFileString.find("ctau-")+5);
+	  ctau = stoi(ctau_substring.substr(0,ctau_substring.find('p')));
+
+	  TFile* f_0 = TFile::Open( outFileString.c_str() );
+	  //TH1F *h_NEventsGen = (TH1F*) f_0->Get("ntuples/NEventsGen");
+	  //h_NEventsGen->SetDirectory(0);
+	  //double NEventsGen = h_NEventsGen->GetBinContent(1);
+	  //cout << "NEventsGen: " << NEventsGen << endl;//LB
+	  //TH1F *h_NEventsGenPass = (TH1F*) f_0->Get("ntuples/NEventsGenPass");
+	  //h_NEventsGenPass->SetDirectory(0);
+	  //double NEventsGenPass = h_NEventsGenPass->GetBinContent(1);
+	  //cout << "NEventsGenPass: " << NEventsGenPass << endl;//LB
+
+	  if(isWeighted)
+	    {
+	      theChain->SetName("llp");
+	      std::cout << "[INFO]: weighted tree configuration for tchain" << std::endl;
+	    }
+	  else
+	    {
+	      if( f_0->GetDirectory("ntuples") )
+		{
+		  theChain->SetName("ntuples/llp");
+		  std::cout << "[INFO]: default configuration for tchain" << std::endl;
+		}
+	      else
+		{
+		  theChain->SetName("Events");
+		  std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
+		}
+	    }
+	  theChain->Add( outFileString.c_str() );
+	  delete f_0;
+	}
+      else
+	{
+	  theChain->Add( outFileString.c_str() );
+	}
+      NFilesLoaded++;
     }
+  std::cout << "Loaded Total of " << NFilesLoaded << " files\n";
+  if ( theChain == NULL ) return -1;
 
-    while ( getline(inputFile, curFileName) )
-      {
-	std::cout << "Opening " << curFileName.c_str() << endl;
-	if ( NFilesLoaded == 0 )
-	  {
-	    /*
-	      checks root file structure and add first file
-	    */
-	    string mh_substring = curFileName.substr(curFileName.find("mMed-")+5);
-	    mh = stoi(mh_substring.substr(0,mh_substring.find('_')));
-	    string mx_substring = curFileName.substr(curFileName.find("mDark-")+6);
-	    mx = stoi(mx_substring.substr(0,mx_substring.find('_')));
-	    string T_substring = curFileName.substr(curFileName.find("temp-")+5);
-	    T = stoi(T_substring.substr(0,T_substring.find('_')));
-	    string ctau_substring = curFileName.substr(curFileName.find("ctau-")+5);
-	    ctau = stoi(ctau_substring.substr(0,ctau_substring.find('p')));
+  llp_MuonSystem_SUEP analyzer(theChain);
 
-	    TFile* f_0 = TFile::Open( curFileName.c_str() );
-	    //TH1F *h_NEventsGen = (TH1F*) f_0->Get("ntuples/NEventsGen");
-	    //h_NEventsGen->SetDirectory(0);
-	    //double NEventsGen = h_NEventsGen->GetBinContent(1);
-	    //cout << "NEventsGen: " << NEventsGen << endl;//LB
-	    //TH1F *h_NEventsGenPass = (TH1F*) f_0->Get("ntuples/NEventsGenPass");
-	    //h_NEventsGenPass->SetDirectory(0);
-	    //double NEventsGenPass = h_NEventsGenPass->GetBinContent(1);
-	    //cout << "NEventsGenPass: " << NEventsGenPass << endl;//LB
+  //------ EXECUTE ------//
+  cout << "Executing llp_MuonSystem_SUEP..." << endl;
+  analyzer.EnableAll();
+  analyzer.Analyze(isData, option, outputFileName, label, mh, mx, ctau, T);
+  cout << "Process completed!" << endl;
+  cerr << "------------------------------" << endl; //present so that an empty .err file corresponds to a failed job
 
-	    if( f_0->GetDirectory("ntuples") )
-	      {
-		theChain->SetName("ntuples/llp");
-		std::cout << "[INFO]: default configuration for tchain" << std::endl;
-	      }
-	    else
-	      {
-		theChain->SetName("Events");
-		std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
-	      }
-	    theChain->Add( curFileName.c_str() );
-	    delete f_0;
-	  }
-	else
-	  {
-	    //TFile* f_0 = TFile::Open( curFileName.c_str() );
-	    //TH1F *h_NEventsGen = (TH1F*) f_0->Get("ntuples/NEventsGen");
-	    //h_NEventsGen->SetDirectory(0);
-	    //double NEventsGen = h_NEventsGen->GetBinContent(1);
-	    //cout << "NEventsGen: " << NEventsGen << endl;//LB
-	    //TH1F *h_NEventsGenPass = (TH1F*) f_0->Get("ntuples/NEventsGenPass");
-	    //h_NEventsGenPass->SetDirectory(0);
-	    //double NEventsGenPass = h_NEventsGenPass->GetBinContent(1);
-	    //cout << "NEventsGenPass: " << NEventsGenPass << endl;//LB
-	    //delete f_0;
-	    //Addind remaining files after file structure is decided
-	    theChain->Add( curFileName.c_str() );
-	  }
-        NFilesLoaded++;
-      }
-    std::cout << "Loaded Total of " << NFilesLoaded << " files\n";
-    if ( theChain == NULL ) return -1;
-
-    llp_MuonSystem_SUEP analyzer(theChain);
-
-    //------ EXECUTE ------//
-    cout << "Executing llp_MuonSystem_SUEP..." << endl;
-    analyzer.EnableAll();
-    analyzer.Analyze(isData, option, outputFileName, label, mh, mx, ctau, T);
-    cout << "Process completed!" << endl;
-    cerr << "------------------------------" << endl; //present so that an empty .err file corresponds to a failed job
-
-    return 0;
+  return 0;
 }
