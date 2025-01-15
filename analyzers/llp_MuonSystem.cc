@@ -806,6 +806,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
       for (int i = 0; i < nDtRechits; i++) {
         Point p;
 
+	cout<<"DEBUG: dtRechitCorrectX " << dtRechitCorrectX[i] << endl;
         p.phi = dtRechitCorrectPhi[i];
         p.eta = dtRechitCorrectEta[i];
         p.x = dtRechitCorrectX[i];
@@ -849,6 +850,8 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
         }
         if (overlap) continue;
 
+
+	  std::cout<<"DEBUG: clustering x value " << tmp.x << std::endl;
 
           MuonSystem->dtRechitClusterX[MuonSystem->nDtRechitClusters] =tmp.x;
           MuonSystem->dtRechitClusterY[MuonSystem->nDtRechitClusters] =tmp.y;
@@ -914,6 +917,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
           {
             if (fabs(jetEta[i]>3.0)) continue;
             if (RazorAnalyzer::deltaR(jetEta[i], jetPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters],MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && jetPt[i] > MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] ) {
+	      std::cout<<"DEBUG: jetPt[i]: " << jetPt[i] << std::endl;
               MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters]  = jetPt[i];
               MuonSystem->dtRechitClusterJetVetoE[MuonSystem->nDtRechitClusters]  = jetE[i];
               MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters]  = jetPassIDLoose[i];
@@ -1050,8 +1054,10 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
           MuonSystem->dtRechitClusterMet_dPhi[MuonSystem->nDtRechitClusters] =  RazorAnalyzer::deltaPhi(MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters],MuonSystem->metPhi);
 
           MuonSystem->nDtRechitClusters++;
+	  std::cout<<"nDtRechitClusters in loop: " << MuonSystem->nDtRechitClusters << std::endl;
         }
 
+      std::cout<<"nDtRechitClusters after loop: " << MuonSystem->nDtRechitClusters << std::endl;
       // if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
 
       if(!isData && signalScan)
