@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 
-version = 'v3'
+version = 'v4'
 directory="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonNtuple_json/Run3/V1p19/2024/{0}/".format(version)
 golden_json_path = '../data/Certification/'
 if not os.path.exists(directory+'merged'): 
@@ -11,7 +11,6 @@ samples = os.listdir(directory)
 for sample in samples:
 	print(sample)
 	if "merge" in sample:continue
-	if not "2024I" in sample or not "Muon" in sample:continue
 	input_json = '{}/{}/*.json'.format(directory, sample)
 	output_json = '{}/merged/{}.json'.format(directory, sample)
 	goodLumi_json = '{}/merged/{}_goodLumi.json'.format(directory, sample)

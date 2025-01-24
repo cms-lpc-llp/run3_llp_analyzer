@@ -27,10 +27,8 @@ samples = os.listdir(list_path)
 print(samples)
 for sample in samples:
     if "lists" in sample:continue # run over JETMET dataset
+    if not "Muon0-Run2024H-EXOCSCCluster-PromptReco-v1_v1_v2" in sample and not "Muon1-Run2024I-EXOCSCCluster-PromptReco-v2_v1_v1" in sample:continue
     #if not "Muon0-EXOCSCCluster_Run2023C-PromptReco-v1" in sample:continue
-    if not "CSC" in sample:continue
-    if not "2024" in sample:continue
-    if not "Muon0Run2024F" in sample:continue
     # if not "ggH" in sample:continue
     print("Preparing workflow for dataset: " + sample + "\n")
 

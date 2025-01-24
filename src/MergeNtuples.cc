@@ -370,22 +370,144 @@ int main(int argc, char *argv[])
 
     // Check if found a match
     if (!matchedevent[n])  continue;
-     cout<< n <<endl;
     // if (n == 6604)cout<< n << ", " << nano.event<< endl; 
     // if (ntuple.ncscRechits >= 20000) cout<< n << ", " << ntuple.ncscRechits<< endl; 
     // if (ntuple.nCscSeg >= 300) cout<< n << ", " << ntuple.nCscSeg<< endl; 
     nanoChain->GetEntry(EventIndexToEventIndexMap[n]); 
     ntupleChain->GetEntry(n);
+    
+    /////////////////////////////////////////////////////
+    //////// cosmic shower veto ///////////
+    /////////////////////////////////////////////////////
+
+    int nCscRechitsChamberPlus11 = 0, nCscRechitsChamberPlus12 = 0, nCscRechitsChamberPlus13 = 0,
+    nCscRechitsChamberPlus21 = 0, nCscRechitsChamberPlus22 = 0, nCscRechitsChamberPlus31 = 0, nCscRechitsChamberPlus32 = 0,
+    nCscRechitsChamberPlus41 = 0, nCscRechitsChamberPlus42 = 0, 
+    nCscRechitsChamberMinus11 = 0, nCscRechitsChamberMinus12 = 0, nCscRechitsChamberMinus13 = 0,
+    nCscRechitsChamberMinus21 = 0, nCscRechitsChamberMinus22 = 0, nCscRechitsChamberMinus31, nCscRechitsChamberMinus32 = 0,
+    nCscRechitsChamberMinus41 = 0, nCscRechitsChamberMinus42 = 0, nCscRings = 0;
+    for (int i = 0; i < ntuple.ncscRechits; i++) {
+        if (ntuple.cscRechitsChamber[i] == 11)  nCscRechitsChamberPlus11++;
+        if (ntuple.cscRechitsChamber[i] == 12)  nCscRechitsChamberPlus12++;
+        if (ntuple.cscRechitsChamber[i] == 13)  nCscRechitsChamberPlus13++;
+        if (ntuple.cscRechitsChamber[i] == 21)  nCscRechitsChamberPlus21++;
+        if (ntuple.cscRechitsChamber[i] == 22)  nCscRechitsChamberPlus22++;
+        if (ntuple.cscRechitsChamber[i] == 31)  nCscRechitsChamberPlus31++;
+        if (ntuple.cscRechitsChamber[i] == 32)  nCscRechitsChamberPlus32++;
+        if (ntuple.cscRechitsChamber[i] == 41)  nCscRechitsChamberPlus41++;
+        if (ntuple.cscRechitsChamber[i] == 42)  nCscRechitsChamberPlus42++;
+        if (ntuple.cscRechitsChamber[i] == -11)  nCscRechitsChamberMinus11++;
+        if (ntuple.cscRechitsChamber[i] == -12)  nCscRechitsChamberMinus12++;
+        if (ntuple.cscRechitsChamber[i] == -13)  nCscRechitsChamberMinus13++;
+        if (ntuple.cscRechitsChamber[i] == -21)  nCscRechitsChamberMinus21++;
+        if (ntuple.cscRechitsChamber[i] == -22)  nCscRechitsChamberMinus22++;
+        if (ntuple.cscRechitsChamber[i] == -31)  nCscRechitsChamberMinus31++;
+        if (ntuple.cscRechitsChamber[i] == -32)  nCscRechitsChamberMinus32++;
+        if (ntuple.cscRechitsChamber[i] == -41)  nCscRechitsChamberMinus41++;
+        if (ntuple.cscRechitsChamber[i] == -42)  nCscRechitsChamberMinus42++;
+    }
+      if ( nCscRechitsChamberPlus11 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus12 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus13 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus21 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus22 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus31 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus32 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus41 > 50) nCscRings++;
+      if ( nCscRechitsChamberPlus42 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus11 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus12 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus13 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus21 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus22 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus31 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus32 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus41 > 50) nCscRings++;
+      if ( nCscRechitsChamberMinus42 > 50) nCscRings++;
+
+
+    int nDTRechitsChamberMinus12 = 0;
+    int nDTRechitsChamberMinus11 = 0;
+    int nDTRechitsChamber10 = 0;
+    int nDTRechitsChamberPlus11 = 0;
+    int nDTRechitsChamberPlus12 = 0;
+    int nDTRechitsChamberMinus22 = 0;
+    int nDTRechitsChamberMinus21 = 0;
+    int nDTRechitsChamber20 = 0;
+    int nDTRechitsChamberPlus21 = 0;
+    int nDTRechitsChamberPlus22 = 0;
+    int nDTRechitsChamberMinus32 = 0;
+    int nDTRechitsChamberMinus31 = 0;
+    int nDTRechitsChamber30 = 0;
+    int nDTRechitsChamberPlus31 = 0;
+    int nDTRechitsChamberPlus32 = 0;
+    int nDTRechitsChamberMinus42 = 0;
+    int nDTRechitsChamberMinus41 = 0;
+    int nDTRechitsChamber40 = 0;
+    int nDTRechitsChamberPlus41 = 0;
+    int nDTRechitsChamberPlus42 = 0;
+    int nDtRings = 0;
+
+    for (int i = 0; i < ntuple.nDtRechits; i++) {
+
+      if (ntuple.dtRechitStation[i] == 1 && ntuple.dtRechitWheel[i] == -2) nDTRechitsChamberMinus12++;
+      if (ntuple.dtRechitStation[i] == 1 && ntuple.dtRechitWheel[i] == -1) nDTRechitsChamberMinus11++;
+      if (ntuple.dtRechitStation[i] == 1 && ntuple.dtRechitWheel[i] == 0) nDTRechitsChamber10++;
+      if (ntuple.dtRechitStation[i] == 1 && ntuple.dtRechitWheel[i] == 1) nDTRechitsChamberPlus11++;
+      if (ntuple.dtRechitStation[i] == 1 && ntuple.dtRechitWheel[i] == 2) nDTRechitsChamberPlus12++;
+      if (ntuple.dtRechitStation[i] == 2 && ntuple.dtRechitWheel[i] == -2) nDTRechitsChamberMinus22++;
+      if (ntuple.dtRechitStation[i] == 2 && ntuple.dtRechitWheel[i] == -1) nDTRechitsChamberMinus21++;
+      if (ntuple.dtRechitStation[i] == 2 && ntuple.dtRechitWheel[i] == 0) nDTRechitsChamber20++;
+      if (ntuple.dtRechitStation[i] == 2 && ntuple.dtRechitWheel[i] == 1) nDTRechitsChamberPlus21++;
+      if (ntuple.dtRechitStation[i] == 2 && ntuple.dtRechitWheel[i] == 2) nDTRechitsChamberPlus22++;
+      if (ntuple.dtRechitStation[i] == 3 && ntuple.dtRechitWheel[i] == -2) nDTRechitsChamberMinus32++;
+      if (ntuple.dtRechitStation[i] == 3 && ntuple.dtRechitWheel[i] == -1) nDTRechitsChamberMinus31++;
+      if (ntuple.dtRechitStation[i] == 3 && ntuple.dtRechitWheel[i] == 0) nDTRechitsChamber30++;
+      if (ntuple.dtRechitStation[i] == 3 && ntuple.dtRechitWheel[i] == 1) nDTRechitsChamberPlus31++;
+      if (ntuple.dtRechitStation[i] == 3 && ntuple.dtRechitWheel[i] == 2) nDTRechitsChamberPlus32++;
+      if (ntuple.dtRechitStation[i] == 4 && ntuple.dtRechitWheel[i] == -2) nDTRechitsChamberMinus42++;
+      if (ntuple.dtRechitStation[i] == 4 && ntuple.dtRechitWheel[i] == -1) nDTRechitsChamberMinus41++;
+      if (ntuple.dtRechitStation[i] == 4 && ntuple.dtRechitWheel[i] == 0) nDTRechitsChamber40++;
+      if (ntuple.dtRechitStation[i] == 4 && ntuple.dtRechitWheel[i] == 1) nDTRechitsChamberPlus41++;
+      if (ntuple.dtRechitStation[i] == 4 && ntuple.dtRechitWheel[i] == 2) nDTRechitsChamberPlus42++;
+    }
+
+    if ( nDTRechitsChamberMinus12 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus11 > 50) nDtRings++;
+    if ( nDTRechitsChamber10 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus11 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus12 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus22 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus21 > 50) nDtRings++;
+    if ( nDTRechitsChamber20 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus21 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus22 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus32 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus31 > 50) nDtRings++;
+    if ( nDTRechitsChamber30 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus31 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus32 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus42 > 50) nDtRings++;
+    if ( nDTRechitsChamberMinus41 > 50) nDtRings++;
+    if ( nDTRechitsChamber40 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus41 > 50) nDtRings++;
+    if ( nDTRechitsChamberPlus42 > 50) nDtRings++;
+
+    if (nDtRings + nCscRings >= 10) continue;
+
+    /////////////////////////////////////////////////////
+    //////// end of cosmic shower veto ///////////
+    /////////////////////////////////////////////////////
 
 
     // fill the new added branches
-
     nCscRechits = ntuple.ncscRechits;
     nCscSeg = ntuple.nCscSeg;
     nDtRechits = ntuple.nDtRechits;
     nDtSeg = ntuple.nDtSeg;
     nRpc = ntuple.nRpc;
-    
+    // if (nCscRechits > 20000) continue;
+
     for (int i = 0; i < numFloatBranches; i++)
     {
       int temp_nhits = 0;

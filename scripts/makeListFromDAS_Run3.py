@@ -50,7 +50,7 @@ datasets = [
 #'/Muon0/Run2024E-PromptReco-v2/NANOAOD',
 #'/Muon0/Run2024F-PromptReco-v1/NANOAOD',
 #'/Muon0/Run2024G-PromptReco-v1/NANOAOD',
-#'/Muon0/Run2024H-PromptReco-v1/NANOAOD',
+'/Muon0/Run2024H-PromptReco-v1/NANOAOD',
 #'/Muon1/Run2024A-PromptReco-v1/NANOAOD',
 #'/Muon1/Run2024B-PromptReco-v1/NANOAOD',
 #'/Muon1/Run2024C-PromptReco-v1/NANOAOD',
@@ -59,7 +59,16 @@ datasets = [
 #'/Muon1/Run2024E-PromptReco-v2/NANOAOD',
 #'/Muon1/Run2024F-PromptReco-v1/NANOAOD',
 #'/Muon1/Run2024G-PromptReco-v1/NANOAOD',
-'/Muon1/Run2024H-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024I-PromptReco-v1/NANOAOD',
+#'/Muon0/Run2024I-PromptReco-v2/NANOAOD',
+#'/Muon1/Run2024I-PromptReco-v1/NANOAOD',
+#'/Muon1/Run2024I-PromptReco-v2/NANOAOD',
+#'/JetMET0/Run2024H-PromptReco-v1/NANOAOD',
+#'/JetMET0/Run2024I-PromptReco-v1/NANOAOD',
+#'/JetMET0/Run2024I-PromptReco-v2/NANOAOD',
+#'/JetMET1/Run2024H-PromptReco-v1/NANOAOD',
+#'/JetMET1/Run2024I-PromptReco-v1/NANOAOD',
+#'/JetMET1/Run2024I-PromptReco-v2/NANOAOD',
 ]
 
 

@@ -14,7 +14,7 @@ os.system("mkdir -p log")
 executable = "run_printJson.sh"
 filesPerJob = 10
 ntupler_version = 'V1p19/2024/'
-analyzer_version = 'v2'
+analyzer_version = 'v4'
 outputDirectoryBase="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonNtuple_json/Run3/{0}/{1}/".format(ntupler_version, analyzer_version)
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
@@ -27,7 +27,7 @@ datasetList = OrderedDict()
 samples = os.listdir(datasetListDir)
 for sample_temp in samples:
     sample = sample_temp.replace('.txt', '')
-    if not "EXO" in sample:continue
+    if  not "JetMET" in sample:continue
     print("Preparing analyzer workflow for dataset: " + sample + "\n")
 
     inputfilelist  = datasetListDir + sample + '.txt'

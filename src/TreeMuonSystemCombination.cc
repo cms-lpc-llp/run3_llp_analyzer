@@ -38,7 +38,9 @@ Flag_all = false;
   //CSC
 
   nCscRechitClusters = 0;
+  nCscRechitClusters_nocut = 0;
   nDtRechitClusters = 0;
+  nDtRechitClusters_nocut = 0;
   nDtRings = 0;
   nCscRings = 0;
 
@@ -352,6 +354,7 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("nDtRechitClusters",             &nDtRechitClusters);
+  tree_->SetBranchAddress("nDtRechitClusters_nocut",             &nDtRechitClusters_nocut);
 
 
   tree_->SetBranchAddress("dtRechitClusterNSegStation1",             &dtRechitClusterNSegStation1);
@@ -460,6 +463,7 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("nCscRechitClusters",             &nCscRechitClusters);
+  tree_->SetBranchAddress("nCscRechitClusters_nocut",             &nCscRechitClusters_nocut);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP",             &cscRechitCluster_match_gLLP);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_index",             &cscRechitCluster_match_gLLP_index);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_minDeltaR",             &cscRechitCluster_match_gLLP_minDeltaR);
@@ -679,6 +683,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("nDtRings",             &nDtRings, "nDtRings/I");
 
     tree_->Branch("nCscRechitClusters",             &nCscRechitClusters, "nCscRechitClusters/I");
+    tree_->Branch("nCscRechitClusters_nocut",             &nCscRechitClusters_nocut, "nCscRechitClusters_nocut/I");
 
     tree_->Branch("cscRechitCluster_match_gLLP",             cscRechitCluster_match_gLLP,             "cscRechitCluster_match_gLLP[nCscRechitClusters]/O");
     tree_->Branch("cscRechitCluster_match_gLLP_minDeltaR",             cscRechitCluster_match_gLLP_minDeltaR,             "cscRechitCluster_match_gLLP_minDeltaR[nCscRechitClusters]/F");
@@ -776,6 +781,7 @@ void TreeMuonSystemCombination::CreateTree()
 
 
     tree_->Branch("nDtRechitClusters",             &nDtRechitClusters, "nDtRechitClusters/I");
+    tree_->Branch("nDtRechitClusters_nocut",             &nDtRechitClusters_nocut, "nDtRechitClusters_nocut/I");
 
     tree_->Branch("dtRechitClusterNSegStation1",             dtRechitClusterNSegStation1,             "dtRechitClusterNSegStation1[nDtRechitClusters]/I");
     tree_->Branch("dtRechitClusterNSegStation2",             dtRechitClusterNSegStation2,             "dtRechitClusterNSegStation2[nDtRechitClusters]/I");

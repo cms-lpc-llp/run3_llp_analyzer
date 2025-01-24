@@ -11,10 +11,14 @@ import os
 
 def load(fname: str | Path) -> np.ndarray:
     try:
+        rm_flag = False
         if "cmsxrootd.fnal.gov" in fname:
-            os.system(f"xrdcp {fname} .")
-            fname_temp = str(Path(fname).name)
-            
+            if Path(fname.replace("root://cmsxrootd.fnal.gov//","/storage/cms/")).exists():
+                fname_temp = fname.replace("root://cmsxrootd.fnal.gov//","/storage/cms/")
+            else:
+                os.system(f"xrdcp {fname} .")
+                fname_temp = str(Path(fname).name)
+                rm_flag = True
         else:
             fname_temp = fname
         with up.open(fname_temp) as f:  # type: ignore
@@ -29,7 +33,7 @@ def load(fname: str | Path) -> np.ndarray:
                 event = f['Events/event'].array()  # type: ignore
             else:
                 raise ValueError(f'Could not find ntuple or Events in {fname}')
-        os.system(f"rm {fname_temp}")
+        if rm_flag: os.system(f"rm {fname_temp}")
         return np.asarray(np.stack([run, lumi, event], axis=1))
     except Exception as e:
         print(f'Error: {e} in {fname}')

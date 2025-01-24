@@ -66,6 +66,7 @@ public:
 
 
   int           nDtRechitClusters;
+  int           nDtRechitClusters_nocut;
   bool           dtRechitClusterOverlap[N_MAX_CSC];
   int           dtRechitClusterNSegStation1[N_MAX_CSC];
   int           dtRechitClusterNSegStation2[N_MAX_CSC];
@@ -172,6 +173,7 @@ public:
 
 
   int           nCscRechitClusters;
+  int           nCscRechitClusters_nocut;
 
 
   bool          cscRechitCluster_match_gLLP[N_MAX_CSC];

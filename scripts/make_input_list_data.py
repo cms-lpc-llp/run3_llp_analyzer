@@ -4,7 +4,7 @@ version = '/V1p19/'
 base_path  = "/eos/uscms//store/group/lpclonglived/displacedJetMuonNtuple/" + version 
 base_list_path = "../lists/displacedJetMuonNtuple/" + version
 year = ['Data2024']
-dataset_list=['JetMET0','JetMET1']
+dataset_list=['JetMET0','JetMET1','Muon0','Muon1']
 for y in year:
     for dataset in dataset_list:
         path = base_path + y + '/v1/' + dataset +'/'

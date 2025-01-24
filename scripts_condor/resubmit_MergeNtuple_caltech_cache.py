@@ -37,7 +37,7 @@ for sample_path in samples:
     #if not "Cluster" in sample:continue
 
     if "list" in sample:continue
-    if not "Muon0-Run2024H-EXOCSCCluster-PromptReco-v1_v1_v2" in sample and not "Muon1-Run2024I-EXOCSCCluster-PromptReco-v2_v1_v1" in sample:continue
+    if not "JetMET" in sample:continue
     if not "2024" in sample:continue
     print(sample)
     # if not "2022" in sample:continue

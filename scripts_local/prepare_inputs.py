@@ -58,8 +58,8 @@ campaigns = { # keyword for ntuples and nanoAOD
 #    '2024DMuon0': ['Muon0', 'Muon0'],
 #    '2024Ev1Muon0': ['Muon0', 'Muon0'],
 #    '2024Ev2Muon0': ['Muon0', 'Muon0'],
-    '2024FMuon0': ['Muon0', 'Muon0'],
-    '2024GMuon0': ['Muon0', 'Muon0'],
+#    '2024FMuon0': ['Muon0', 'Muon0'],
+#    '2024GMuon0': ['Muon0', 'Muon0'],
     '2024HMuon0': ['Muon0', 'Muon0'],
     
 #    '2024AMuon1': ['Muon1', 'Muon1'],
@@ -68,12 +68,41 @@ campaigns = { # keyword for ntuples and nanoAOD
 #    '2024DMuon1': ['Muon1', 'Muon1'],
 #    '2024Ev1Muon1': ['Muon1', 'Muon1'],
 #    '2024Ev2Muon1': ['Muon1', 'Muon1'],
-    '2024FMuon1': ['Muon1', 'Muon1'],
-    '2024GMuon1': ['Muon1', 'Muon1'],
-    '2024HMuon1': ['Muon1', 'Muon1'],
+#    '2024FMuon1': ['Muon1', 'Muon1'],
+#    '2024GMuon1': ['Muon1', 'Muon1'],
+#    '2024HMuon1': ['Muon1', 'Muon1'],
 
+    #'2024Iv1Muon0': ['Muon0', 'Muon0'],
+    #'2024Iv2Muon0': ['Muon0', 'Muon0'],
+    #'2024Iv1Muon1': ['Muon1', 'Muon1'],
+    #'2024Iv2Muon1': ['Muon1', 'Muon1'],
     
-    
+    #'2024Iv1JetMET0': ['JetMET0', 'JetMET0'],
+    #'2024Iv2JetMET0': ['JetMET0', 'JetMET0'],
+    #'2024Iv1JetMET1': ['JetMET1', 'JetMET1'],
+    #'2024Iv2JetMET1': ['JetMET1', 'JetMET1'],
+
+    #'2024AJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024BJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024CJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024DJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024Ev1JetMET0': ['JetMET0', 'JetMET0'],
+    #'2024Ev2JetMET0': ['JetMET0', 'JetMET0'],
+    #'2024FJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024GJetMET0': ['JetMET0', 'JetMET0'],
+    #'2024HJetMET0': ['JetMET0', 'JetMET0'],
+
+    #'2024AJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024BJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024CJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024DJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024Ev1JetMET1': ['JetMET1', 'JetMET1'],
+    #'2024Ev2JetMET1': ['JetMET1', 'JetMET1'],
+    #'2024FJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024GJetMET1': ['JetMET1', 'JetMET1'],
+    #'2024HJetMET1': ['JetMET1', 'JetMET1'],
+
+
 }
 
 

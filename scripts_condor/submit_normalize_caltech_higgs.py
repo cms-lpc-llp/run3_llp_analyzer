@@ -15,7 +15,7 @@ executable = "normalize.sh"
 HOME = os.getenv('HOME')
 CMSSW_BASE = os.getenv('CMSSW_BASE')
 
-version = "v16"
+version = "v20"
 
 #for CSC clusters
 lumi = {

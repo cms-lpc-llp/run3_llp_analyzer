@@ -79,7 +79,7 @@ then
 
 		while read line || [ -n "$line" ]; do echo $line; done < ${inputNtupleList}
 		while read line || [ -n "$line" ]; do xrdcp ${line} .; done < ${inputNtupleList}
-        ls *.root > inputNtupleList.txt
+        	ls *.root > inputNtupleList.txt
 		inputNtupleList=inputNtupleList.txt
 		
 		echo ""
@@ -92,7 +92,12 @@ then
 		echo ""
 		echo "************************************"
 		echo "Running on these input NANOAOD files:"
-		cat ${inputNanoList}
+		while read line || [ -n "$line" ]; do xrdcp ${line} nano.root; done < ${inputNanoList}
+		while read line || [ -n "$line" ]; do xrdcp ${line} nano.root; done < ${inputNanoList}
+		ls nano.root >  inputNanoList.txt
+		#sed -i -e 's/root:\/\/cmsxrootd.fnal.gov\//\/storage\/cms\//g' inputNanoList.txt
+		cat inputNanoList.txt
+
 		echo "************************************"
 		echo ""
 		split -d -l 1 ${inputNtupleList}  tempNtuple_ --additional-suffix=.txt --suffix-length=3 --numeric-suffixes=1
@@ -111,8 +116,8 @@ then
 			cat tempNtuple_${i}.txt
 			echo "************************************"
 
-			echo ./MergeNtuples tempNtuple_${i}.txt ${inputNanoList} ${outputfile}_${i}.root "";
-			./MergeNtuples tempNtuple_${i}.txt ${inputNanoList} ${outputfile}_${i}.root "";
+			echo ./MergeNtuples tempNtuple_${i}.txt inputNanoList.txt ${outputfile}_${i}.root "";
+			./MergeNtuples tempNtuple_${i}.txt inputNanoList.txt ${outputfile}_${i}.root "";
 		done
 
 		

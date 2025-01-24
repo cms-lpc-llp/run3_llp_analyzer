@@ -250,7 +250,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     auto eventNum = event;                                    // eventNum
     auto fixedGridRhoFastjetAll = Rho_fixedGridRhoFastjetAll; // fixedGridRhoFastjetAll
 
-    Float_t jetE[21] = {0}; // jetE
+    Float_t jetE[150] = {0}; // jetE
     for (int i = 0; i < nJet; ++i)
     {
       auto eta = Jet_eta[i];
@@ -260,12 +260,14 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       jetE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
     auto jetEta = Jet_eta;         // jetEta
-    bool jetPassIDLoose[21] = {0}; // jetPassIDLoose
-    bool jetPassIDTight[21] = {0}; // jetPassIDTight
+    bool jetPassIDTightLepVeto[150] = {0}; // jetPassIDLoose
+    bool jetPassIDTight[150] = {0}; // jetPassIDTight
+    cout<<nJet<<endl;
     for (int i = 0; i < nJet; ++i)
     {
-      jetPassIDLoose[i] = Jet_jetId[i] | 1 != 0;
-      jetPassIDTight[i] = Jet_jetId[i] | 2 != 0;
+      jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
+      jetPassIDTightLepVeto[i] = (Jet_jetId[i] & 4) != 0;
+
     }
     auto jetPhi = Jet_phi;          // jetPhi
     auto jetPt = Jet_pt;            // jetPt
@@ -278,7 +280,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     }
     
     auto muonCharge = Muon_charge;  // muonCharge
-    Float_t muonE[15] = {0};        // muonE
+    Float_t muonE[50] = {0};        // muonE
     for (int i = 0; i < nMuon; ++i)
     {
       auto eta = Muon_eta[i];
@@ -446,7 +448,6 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       //*************************************************************************
       //Start Object Selection
       //*************************************************************************
-
       std::vector<leptons> Leptons;
       //-------------------------------
       //Muons
@@ -536,7 +537,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     {
       if (fabs(jetEta[i]) >= 3.0)continue;
       if( jetPt[i] < 20 ) continue;
-      if (!jetPassIDLoose[i]) continue;
+      if (!jetPassIDTight[i] && !jetPassIDTightLepVeto[i]) continue;
       //------------------------------------------------------------
       //exclude selected muons and electrons from the jet collection
       //------------------------------------------------------------
@@ -551,7 +552,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
       jets tmpJet;
       tmpJet.jet    = thisJet;
-      tmpJet.passId = jetPassIDTight[i];
+      tmpJet.passId = jetPassIDTightLepVeto[i];
 
       Jets.push_back(tmpJet);
 
@@ -559,6 +560,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
       sort(Jets.begin(), Jets.end(), my_largest_pt_jet);
 
+      continue;
 
 
       for ( auto &tmp : Jets )
@@ -749,7 +751,10 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
 
       MuonSystem->nCscRechitClusters = 0;
+      MuonSystem->nCscRechitClusters_nocut = 0;
       for ( auto &tmp : ds.clusters  ) {
+	  MuonSystem->nCscRechitClusters_nocut++;
+	  if (tmp.nCscRechitsChamberPlus11 + tmp.nCscRechitsChamberPlus12 + tmp.nCscRechitsChamberMinus11 + tmp.nCscRechitsChamberMinus12 > 0)continue;
           MuonSystem->cscRechitClusterX[MuonSystem->nCscRechitClusters] =tmp.x;
           MuonSystem->cscRechitClusterY[MuonSystem->nCscRechitClusters] =tmp.y;
           MuonSystem->cscRechitClusterZ[MuonSystem->nCscRechitClusters] =tmp.z;
@@ -885,7 +890,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
               MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters]  = jetPt[i];
               MuonSystem->cscRechitClusterJetVetoE[MuonSystem->nCscRechitClusters]  = jetE[i];
               MuonSystem->cscRechitClusterJetVetoTightId[MuonSystem->nCscRechitClusters]  = jetPassIDTight[i];
-              MuonSystem->cscRechitClusterJetVetoLooseId[MuonSystem->nCscRechitClusters]  = jetPassIDLoose[i];
+              //MuonSystem->cscRechitClusterJetVetoLooseId[MuonSystem->nCscRechitClusters]  = jetPassIDLoose[i];
 
             }
 
@@ -999,7 +1004,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
 
       MuonSystem->nDtRechitClusters = 0;
-
+      MuonSystem->nDtRechitClusters_nocut = 0;
       for ( auto &tmp : ds_dtRechit.clusters  ) {
 
         //remove overlaps
@@ -1009,8 +1014,8 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           if (RazorAnalyzerMerged::deltaR(MuonSystem->cscRechitClusterEta[i],MuonSystem->cscRechitClusterPhi[i],tmp.eta, tmp.phi)<0.4) overlap = true;
         }
         if (overlap) continue;
-
-
+          MuonSystem->nDtRechitClusters_nocut++;
+	  //if (tmp.nDtRechitsStation1 > 0)continue;
           MuonSystem->dtRechitClusterX[MuonSystem->nDtRechitClusters] =tmp.x;
           MuonSystem->dtRechitClusterY[MuonSystem->nDtRechitClusters] =tmp.y;
           MuonSystem->dtRechitClusterZ[MuonSystem->nDtRechitClusters] =tmp.z;
@@ -1101,7 +1106,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
             if (RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters],MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && jetPt[i] > MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] ) {
               MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters]  = jetPt[i];
               MuonSystem->dtRechitClusterJetVetoE[MuonSystem->nDtRechitClusters]  = jetE[i];
-              MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters]  = jetPassIDLoose[i];
+              //MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters]  = jetPassIDLoose[i];
               MuonSystem->dtRechitClusterJetVetoTightId[MuonSystem->nDtRechitClusters]  = jetPassIDTight[i];
 
             }
@@ -1237,7 +1242,11 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           MuonSystem->nDtRechitClusters++;
         }
 
-      if (MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
+      //if (MuonSystem->nCscRechitClusters_nocut == 0)continue;
+      //if (MuonSystem->nCscRechitClusters == 0)continue;
+
+      if (MuonSystem->nDtRechitClusters_nocut + MuonSystem->nCscRechitClusters_nocut < 2) continue;
+      //if (MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
 
       if(!isData && signalScan)
       {
