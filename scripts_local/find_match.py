@@ -101,6 +101,7 @@ def gen_match_object(f1s: list[str | Path], f2s: list[str | Path], r=True):
 
 
 def save_match_object(match_obj: dict, f: str | Path):
+    Path(f).parent.mkdir(parents=True, exist_ok=True)
     with up.recreate(f) as f:  # type: ignore
         for k, v in match_obj.items():
             f[k] = v  # type: ignore
@@ -110,8 +111,9 @@ def main(fs1: list[str | Path], fs2: list[str | Path], out: str | Path):
     match_obj = gen_match_object(fs1, fs2)
     if match_obj is None:
         # print('No match found')
-        return
+        return 0
     save_match_object(match_obj, out)
+    return len(match_obj['idx']['1'])
 
 
 if __name__ == '__main__':

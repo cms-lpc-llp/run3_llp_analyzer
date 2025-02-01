@@ -18,129 +18,172 @@
 #include <vector>
 using namespace std;
 
-#define N_MAX_RECHITS 5000
+#define N_MAX_RECHITS 20000
 #define N_MAX_SEGMENT 1000
 
-std::string tmp_use_local_path(char *s) {
-    string _s(s);
-    if (_s.find("root://cmseos.fnal.gov/") != string::npos) {
-        _s.replace(0, 23, "/storage/cms/");
+std::string ParseCommandLine(int argc, char *argv[], std::string opt) {
+    for (int i = 1; i < argc; i++) {
+        std::string tmp(argv[i]);
+        if (tmp.find(opt) != std::string::npos) {
+            if (tmp.find("=") != std::string::npos)
+                return tmp.substr(tmp.find_last_of("=") + 1);
+            if (tmp.find("--") != std::string::npos)
+                return "yes";
+        }
     }
-    if (_s.find("root://cmsxrootd.fnal.gov/") != string::npos) {
-        _s.replace(0, 27, "/storage/cms/");
-    }
-    return _s;
-}
+
+    return "";
+};
 
 // get list of files to open, add normalization branch to the tree in each file
 int main(int argc, char *argv[]) {
     // parse input list to get names of ROOT files
-    if (argc < 3) {
-        cerr << "usage MergeNtuple [match_object.root] [output.root]" << endl;
+    if (argc < 4) {
+        cerr << "usage MergeNtuple [inputfile1] [inputfile2] [outputfile] [analysisTag]" << endl;
         return -1;
     }
-    TFile *matchFile = TFile::Open(argv[1]);
-    TTree *inp_nano = (TTree *)matchFile->Get("inp1");
-    TTree *inp_ntuple = (TTree *)matchFile->Get("inp2");
-    TTree *matched_idx_tree = (TTree *)matchFile->Get("idx");
-    // inp1
-    //  |-- str: paths
-    //  `-- i64: lengths
-    // inp2
-    //  |-- str: paths
-    //  `-- i64: lengths
-    // idx
-    //  |-- i64: 1
-    //  `-- i64: 2
+    // string filenameNTuplers(argv[1]);
+    string filenameNTuplerList(argv[1]);
+    string filenameNanoAODList(argv[2]);
+    string outputfilename(argv[3]);
+    string analysisTag(argv[4]); // analysisTag
 
-    string outputFname(argv[2]);
-    TFile *outputFile = new TFile(outputFname.c_str(), "RECREATE");
+    if (analysisTag == "") {
+        analysisTag = "Razor2016_80X";
+    }
+    // create output file
+    TFile *outputFile = new TFile(outputfilename.c_str(), "RECREATE");
 
-    // load ntuple
+    ////////////////////////
+    ////// Load ntuples
+    ////////////////////////
     TChain *ntupleChain = new TChain();
 
-    char ntuple_path[10000];
-    inp_ntuple->SetBranchAddress("paths", ntuple_path);
-
-    for (int i = 0; i < inp_ntuple->GetEntries(); i++) {
-        inp_ntuple->GetEntry(i);
-        string _ntuple_path(ntuple_path); // = tmp_use_local_path(ntuple_path);
-        cout << "curFileName = " << _ntuple_path.c_str() << endl;
-        // cout << "wtf" << endl;
-        if (i == 0) {
+    // TFile* f_0 = TFile::Open( filenameNTuplers.c_str() );
+    // ntupleChain->SetName("llp");
+    // ntupleChain->Add(filenameNTuplers.c_str());
+    // delete f_0;
+    string curNtupleName;
+    cout << "filenameNTuplerList.c_str() = " << filenameNTuplerList.c_str() << endl;
+    ifstream inputNtuple(filenameNTuplerList.c_str());
+    int NtuplesLoaded = 0;
+    if (!inputNtuple) {
+        cerr << "Error: input ntuple file list not found!" << endl;
+        return -1;
+    }
+    while (getline(inputNtuple, curNtupleName)) {
+        cout << "curFileName = " << curNtupleName << endl;
+        if (NtuplesLoaded == 0) {
             // checks root file structure and add first file
-            cout << "[INFO]: loading file: " << _ntuple_path.c_str() << endl;
-            TFile *f_0 = TFile::Open(_ntuple_path.c_str(), "READ");
+            std::cout << "[INFO]: loading file: " << curNtupleName.c_str() << std::endl;
+            TFile *f_0 = TFile::Open(curNtupleName.c_str());
             if (f_0->GetDirectory("ntuples")) {
                 ntupleChain->SetName("ntuples/llp");
-                cout << "[INFO]: default configuration for tchain" << endl;
+                std::cout << "[INFO]: default configuration for tchain" << std::endl;
             } else {
                 ntupleChain->SetName("llp");
-                cout << "[INFO]: alternative configuration for tchain" << endl;
+                std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
             }
-            ntupleChain->Add(_ntuple_path.c_str());
+            ntupleChain->Add(curNtupleName.c_str());
             delete f_0;
+
         } else {
             // Addind remaining files after file structure is decided
-            ntupleChain->Add(_ntuple_path.c_str());
+            ntupleChain->Add(curNtupleName.c_str());
         }
+        NtuplesLoaded++;
     }
-
     if (ntupleChain == NULL)
         return -1;
 
-    bool is_mc = false; // ntupleChain->GetBranch("gLLP_eta") != NULL;
-    cout << "Loaded ntuples: " << inp_ntuple->GetEntries() << " files and " << ntupleChain->GetEntries() << " events. is_mc = " << is_mc << endl;
+    bool is_mc = ntupleChain->GetBranch("gLLP_eta") != NULL;
+    is_mc = false;
+    cout << "Loaded ntuples: " << NtuplesLoaded << " files and " << ntupleChain->GetEntries() << " events. is_mc = " << is_mc << endl;
 
     ////////////////////////
     ////// Load nanoAOD files
     ////////////////////////
     TChain *nanoChain = new TChain();
+    string curFileName;
+    ifstream inputFile(filenameNanoAODList.c_str());
+    int NFilesLoaded = 0;
+    if (!inputFile) {
+        cerr << "Error: input nanoAOD file list not found!" << endl;
+        return -1;
+    }
 
-    char nano_path[1000];
-    inp_nano->SetBranchAddress("paths", nano_path);
-
-    for (int i = 0; i < inp_nano->GetEntries(); i++) {
-        inp_nano->GetEntry(i);
-        string _nano_path = tmp_use_local_path(nano_path);
-        cout << "curFileName = " << _nano_path.c_str() << endl;
-        if (i == 0) {
+    while (getline(inputFile, curFileName)) {
+        cout << "curFileName = " << curFileName << endl;
+        if (NFilesLoaded == 0) {
             // checks root file structure and add first file
-            cout << "[INFO]: loading file: " << _nano_path.c_str() << endl;
-            TFile *f_0 = TFile::Open(_nano_path.c_str(), "READ");
+            std::cout << "[INFO]: loading file: " << curFileName.c_str() << std::endl;
+            TFile *f_0 = TFile::Open(curFileName.c_str());
             f_0->ls();
             nanoChain->SetName("Events");
-            nanoChain->Add(_nano_path.c_str());
+            nanoChain->Add(curFileName.c_str());
             delete f_0;
         } else {
             // Addind remaining files after file structure is decided
-            nanoChain->Add(_nano_path.c_str());
+            nanoChain->Add(curFileName.c_str());
         }
+        NFilesLoaded++;
     }
-    cout << "Loaded nanoAOD: " << inp_nano->GetEntries() << " files and " << nanoChain->GetEntries() << " events" << endl;
+    std::cout << "Loaded nanoAOD: " << NFilesLoaded << " files and " << nanoChain->GetEntries() << " events" << endl;
     if (nanoChain == NULL)
         return -1;
+
+    uint NEventsTree1 = ntupleChain->GetEntries();
+    uint NEventsTree2 = nanoChain->GetEntries();
+
     //*****************************************************************************************
     // Make map of event number in tree 1 to event number in tree 2
     //*****************************************************************************************
+    int nMatchedEvents = 0;
+    std::map<uint, uint> EventIndexToEventIndexMap;
+
     nano_events nano = nano_events(nanoChain);
     llp_event ntuple = llp_event(ntupleChain);
 
-    // find intersection of the two maps
-    Long64_t idx_nano, idx_ntuple;
-    matched_idx_tree->SetBranchAddress("1", &idx_nano);
-    matched_idx_tree->SetBranchAddress("2", &idx_ntuple);
+    // loop over tree2
+    std::vector<std::pair<uint, ulong>> eventList2;
+    std::vector<bool> matchedevent;
 
-    std::vector<std::pair<int64_t, int64_t>> idx_pairs;
-    for (int i = 0; i < matched_idx_tree->GetEntries(); i++) {
-        matched_idx_tree->GetEntry(i);
-        idx_pairs.push_back(make_pair(idx_nano, idx_ntuple));
+    cout << "building nanoAOD tree index map" << endl;
+    for (UInt_t m = 0; m < NEventsTree2; m++) {
+        if (m % 10000 == 0)
+            cout << "Processing entry " << m << endl;
+        nano.fChain->GetEntry(m);
+        std::pair<uint, ulong> p(nano.run, nano.event);
+        eventList2.push_back(p);
     }
 
-    long n_ntuple = ntupleChain->GetEntries();
-    long n_matched = idx_pairs.size();
-    cout << "Matched events    = " << n_matched << " / " << n_ntuple << " \n";
-    cout << "Un-Matched events = " << n_ntuple - n_matched << " / " << n_ntuple << " \n";
+    cout << "Looping over ntuple tree to find matched events" << endl;
+    ;
+    // loop over tree1
+    for (uint n = 0; n < NEventsTree1; n++) {
+        ntupleChain->GetEntry(n);
+        if (n % 10000 == 0)
+            cout << "Event " << n << "\n";
+
+        bool matchFound = false;
+        for (uint m = 0; m < eventList2.size(); m++) {
+            if (eventList2[m].first != ntuple.runNum)
+                continue;
+            if (eventList2[m].second != ntuple.eventNum)
+                continue;
+            EventIndexToEventIndexMap[n] = m;
+            matchFound = true;
+            nMatchedEvents++;
+        }
+
+        if (matchFound)
+            matchedevent.push_back(true);
+        else
+            matchedevent.push_back(false);
+    }
+
+    cout << "Matched events    = " << nMatchedEvents << " / " << NEventsTree1 << " \n";
+    cout << "Un-Matched events = " << NEventsTree1 - nMatchedEvents << " / " << NEventsTree1 << " \n";
     //*****************************************************************************************
     // Produce Output Tree
     //*****************************************************************************************
@@ -317,24 +360,18 @@ int main(int argc, char *argv[]) {
     /////// FILL OUTPUT TREE
     /////////////////////////////////////////////////////
 
-    // for (uint n = 0; n < NEventsTree1; n++) {
-    int n = 0;
-    for (std::pair<int64_t, int64_t> it : idx_pairs) {
-        int64_t idx_ntuple = it.second;
-        int64_t idx_nano = it.first;
-        if (n % 100 == 0) {
+    for (uint n = 0; n < NEventsTree1; n++) {
+        if (n % 10000 == 0)
             cout << "Processing entry " << n << "\n";
-        }
-        n++;
 
-        nanoChain->GetEntry(idx_nano);
-        ntupleChain->GetEntry(idx_ntuple);
-
-        if (nano.run != ntuple.runNum || nano.luminosityBlock != ntuple.lumiNum || nano.event != ntuple.eventNum) {
-            std::cerr << "Mismatched event numbers: nano: " << nano.run << ":" << nano.luminosityBlock << ":" << nano.event << std::endl;
-            std::cerr << "Mismatched event numbers: ntuple: " << ntuple.runNum << ":" << ntuple.lumiNum << ":" << ntuple.eventNum << std::endl;
-            throw std::runtime_error("Mismatched event numbers");
-        }
+        // Check if found a match
+        if (!matchedevent[n])
+            continue;
+        // if (n == 6604)cout<< n << ", " << nano.event<< endl;
+        // if (ntuple.ncscRechits >= 20000) cout<< n << ", " << ntuple.ncscRechits<< endl;
+        // if (ntuple.nCscSeg >= 300) cout<< n << ", " << ntuple.nCscSeg<< endl;
+        nanoChain->GetEntry(EventIndexToEventIndexMap[n]);
+        ntupleChain->GetEntry(n);
 
         /////////////////////////////////////////////////////
         //////// cosmic shower veto ///////////
