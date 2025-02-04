@@ -3977,6 +3977,7 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("MET_covYY", &MET_covYY, &b_MET_covYY);
    fChain->SetBranchAddress("MET_phi", &MET_phi, &b_MET_phi);
    fChain->SetBranchAddress("MET_pt", &MET_pt, &b_MET_pt);
+   fChain->SetBranchAddress("PFMET_pt", &MET_pt, &b_MET_pt);
    fChain->SetBranchAddress("MET_significance", &MET_significance, &b_MET_significance);
    fChain->SetBranchAddress("MET_sumEt", &MET_sumEt, &b_MET_sumEt);
    fChain->SetBranchAddress("MET_sumPtUnclustered", &MET_sumPtUnclustered, &b_MET_sumPtUnclustered);
@@ -4053,7 +4054,7 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("PFMET_phi", &PFMET_phi, &b_PFMET_phi);
    fChain->SetBranchAddress("PFMET_phiUnclusteredDown", &PFMET_phiUnclusteredDown, &b_PFMET_phiUnclusteredDown);
    fChain->SetBranchAddress("PFMET_phiUnclusteredUp", &PFMET_phiUnclusteredUp, &b_PFMET_phiUnclusteredUp);
-   fChain->SetBranchAddress("PFMET_pt", &PFMET_pt, &b_PFMET_pt);
+   // fChain->SetBranchAddress("PFMET_pt", &PFMET_pt, &b_PFMET_pt);
    fChain->SetBranchAddress("PFMET_ptUnclusteredDown", &PFMET_ptUnclusteredDown, &b_PFMET_ptUnclusteredDown);
    fChain->SetBranchAddress("PFMET_ptUnclusteredUp", &PFMET_ptUnclusteredUp, &b_PFMET_ptUnclusteredUp);
    fChain->SetBranchAddress("PFMET_significance", &PFMET_significance, &b_PFMET_significance);
