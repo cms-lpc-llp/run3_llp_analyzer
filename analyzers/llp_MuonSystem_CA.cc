@@ -1465,8 +1465,8 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     auto jetPhi = Jet_phi;          // jetPhi
     auto jetPt = Jet_pt;            // jetPt
     auto lumiNum = luminosityBlock; // lumiNum
-    auto metType1Phi = MET_phi;     // metType1Phi
-    auto metType1Pt = MET_pt;       // metType1Pt
+    auto metType1Phi = PuppiMET_phi;     // metType1Phi
+    auto metType1Pt = PuppiMET_pt;       // metType1Pt
     auto muonCharge = Muon_charge;  // muonCharge
     Float_t muonE[15] = {0};        // muonE
     for (int i = 0; i < nMuon; ++i)

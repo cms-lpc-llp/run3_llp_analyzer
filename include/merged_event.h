@@ -3977,7 +3977,6 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("MET_covYY", &MET_covYY, &b_MET_covYY);
    fChain->SetBranchAddress("MET_phi", &MET_phi, &b_MET_phi);
    fChain->SetBranchAddress("MET_pt", &MET_pt, &b_MET_pt);
-   fChain->SetBranchAddress("PFMET_pt", &MET_pt, &b_MET_pt);
    fChain->SetBranchAddress("MET_significance", &MET_significance, &b_MET_significance);
    fChain->SetBranchAddress("MET_sumEt", &MET_sumEt, &b_MET_sumEt);
    fChain->SetBranchAddress("MET_sumPtUnclustered", &MET_sumPtUnclustered, &b_MET_sumPtUnclustered);
