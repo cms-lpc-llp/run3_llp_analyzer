@@ -84,6 +84,7 @@ void RazorHelper::loadHMTEfficiency() {
 void RazorHelper::loadTag_Summer22() {
   loadPileup_Summer22();
   loadHMTEfficiency();
+  loadJetVeto_Summer22();
 }
 
 void RazorHelper::loadPileup_Summer22() {
@@ -95,13 +96,20 @@ void RazorHelper::loadPileup_Summer22() {
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
 
+void RazorHelper::loadJetVeto_Summer22() {
+    // pileup weights
+    std::cout << "RazorHelper: loading jet veto map histograms" << std::endl;
+    JetVetoFile = TFile::Open("Summer22_23Sep2023_RunCD_v1.root");
+    if (!JetVetoFile) cout<<"Jet Veto File Not Found"<<endl;
+    JetVetoHist = (TH2F*)JetVetoFile->Get("jetvetomap");
+}
 ////////////////////////////////////////////////
 //  Summer 22EE
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer22EE() {
   loadPileup_Summer22EE();
    loadHMTEfficiency();
-
+    loadJetVeto_Summer22EE();
 }
 
 void RazorHelper::loadPileup_Summer22EE() {
@@ -112,13 +120,20 @@ void RazorHelper::loadPileup_Summer22EE() {
     pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
+
+void RazorHelper::loadJetVeto_Summer22EE() {
+    // pileup weights
+    std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
+    JetVetoFile = TFile::Open("Summer22EE_23Sep2023_RunEFG_v1.root");
+    JetVetoHist = (TH2F*)JetVetoFile->Get("jetvetomap");
+}
 ////////////////////////////////////////////////
 //  Summer 23
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23() {
   loadPileup_Summer23();
     loadHMTEfficiency();
-
+    loadPileup_Summer23();
 }
 
 void RazorHelper::loadPileup_Summer23() {
@@ -129,13 +144,19 @@ void RazorHelper::loadPileup_Summer23() {
     pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
-
+void RazorHelper::loadJetVeto_Summer23() {
+    // pileup weights
+    std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
+    JetVetoFile = TFile::Open("Summer23Prompt23_RunC_v1.root");
+    JetVetoHist = (TH2F*)JetVetoFile->Get("jetvetomap");
+}
 ////////////////////////////////////////////////
 //  Summer 23BPix
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23BPix() {
   loadPileup_Summer23BPix();
     loadHMTEfficiency();
+    loadPileup_Summer23BPix();
 
 }
 
@@ -147,13 +168,19 @@ void RazorHelper::loadPileup_Summer23BPix() {
     pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
-
+void RazorHelper::loadJetVeto_Summer23BPix() {
+    // pileup weights
+    std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
+    JetVetoFile = TFile::Open("Summer23BPixPrompt23_RunD_v1.root");
+    JetVetoHist = (TH2F*)JetVetoFile->Get("jetvetomap");
+}
 ////////////////////////////////////////////////
 //  Summer 24
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer24() {
   loadPileup_Summer24();
   loadHMTEfficiency();
+  loadJetVeto_Summer24();
 }
 
 void RazorHelper::loadPileup_Summer24() {
@@ -164,6 +191,17 @@ void RazorHelper::loadPileup_Summer24() {
     pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
 }
+
+void RazorHelper::loadJetVeto_Summer24() {
+    // pileup weights
+    std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
+    JetVetoFile = TFile::Open("Winter24Prompt24_2024BCDEFGHI.root");
+    cout<<"here"<<endl;
+    if (!JetVetoFile) cout<<"Jet Veto File Not Found"<<endl;
+    JetVetoHist = (TH2F*)JetVetoFile->Get("jetvetomap");
+    JetVetoFpixHist = (TH2F*)JetVetoFile->Get("jetvetomap_fpix");
+}
+
 ////////////////////////////////////////////////
 //  Utilities
 ////////////////////////////////////////////////
@@ -218,6 +256,28 @@ double RazorHelper::getPileupWeightDown(int NPU) {
     }
     else {
         std::cout << "RazorHelper error: 'down' pileup weight requested, but no histogram available!" << std::endl;
+        return 0;
+    }
+}
+
+
+double RazorHelper::getJetVetoMap(float eta, float phi) {
+    if (JetVetoHist) {
+        return JetVetoHist->GetBinContent(JetVetoHist->GetXaxis()->FindFixBin(eta), JetVetoHist->GetYaxis()->FindFixBin(phi));
+    }
+    else {
+        std::cout << "RazorHelper error: jet veto map requested, but no histogram available!" << std::endl;
+        return 0;
+    }
+}
+
+
+double RazorHelper::getJetVetoFpixMap(float eta, float phi) {
+    if (JetVetoHist) {
+        return JetVetoFpixHist->GetBinContent(JetVetoFpixHist->GetXaxis()->FindFixBin(eta), JetVetoFpixHist->GetYaxis()->FindFixBin(phi));
+    }
+    else {
+        std::cout << "RazorHelper error: jet veto map requested, but no histogram available!" << std::endl;
         return 0;
     }
 }

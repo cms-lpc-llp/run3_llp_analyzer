@@ -33,6 +33,8 @@ class RazorHelper {
         double getPileupWeightUp(int NPU);
         double getPileupWeightDown(int NPU);
 
+        double getJetVetoMap(float eta, float phi);
+        double getJetVetoFpixMap(float eta, float phi);
 
 
     private:
@@ -55,6 +57,13 @@ class RazorHelper {
         void loadPileup_Summer24();
         void loadHMTEfficiency();
 
+        void loadJetVeto_Summer22();
+        void loadJetVeto_Summer22EE();
+        void loadJetVeto_Summer23();
+        void loadJetVeto_Summer23BPix();
+        void loadJetVeto_Summer24();
+        
+
         //for Razor Razor2018
         void loadPileup_Razor2018_17SeptEarlyReReco();
         void loadTrigger_Razor2018_17SeptEarlyReReco();
@@ -73,6 +82,10 @@ class RazorHelper {
         TH1F *pileupWeightHist;
         TH1F *pileupWeightSysUpHist;
         TH1F *pileupWeightSysDownHist;
+
+        TFile *JetVetoFile;
+        TH2F *JetVetoHist;
+        TH2F *JetVetoFpixHist;
 
         TFile *HMTEffFile;
 

@@ -22,11 +22,13 @@ void TreeMuonSystemCombination::InitVariables()
   pileupWeightUp = 0;
   weight=-1.0;rho=-1;
   met=-1; metPhi=-1;
+  Puppimet=-1; PuppimetPhi=-1;
   HLT_CSCCSC = false;
   HLT_CSCDT = false;
-
+  jetVeto = true;
 Flag_eeBadScFilter = false; Flag_hfNoisyHitsFilter = false; Flag_BadPFMuonDzFilter = false; 
 Flag_BadPFMuonFilter = false; Flag_EcalDeadCellTriggerPrimitiveFilter= false;Flag_globalSuperTightHalo2016Filter = false;Flag_goodVertices= false;
+Flag_ecalBadCalibFilter = false;
 Flag_all = false;
 
   mH = 0; mX = 0; ctau = 0;
@@ -133,6 +135,7 @@ Flag_all = false;
 
 
         cscRechitClusterMet_dPhi[i] = 999.;
+        cscRechitClusterPuppiMet_dPhi[i] = 999.;
 
         dtRechitClusterNSegStation1[i] = 0;
         dtRechitClusterNSegStation2[i] = 0;
@@ -220,6 +223,7 @@ Flag_all = false;
           dtRechitClusterNHitWheel1[i] = -999;
           dtRechitClusterNHitWheel2[i] = -999;
           dtRechitClusterMet_dPhi[i] = 999.;
+          dtRechitClusterPuppiMet_dPhi[i] = 999.;
 	  dtRechitClusternXY[i] = -999;
 	  dtRechitClusternZ[i] = -999;
 	  dtRechitClusterXSpread[i] = -999.;
@@ -319,6 +323,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("weight",      &weight);
   tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
   tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
+  tree_->SetBranchAddress("jetVeto",      &jetVeto);
 
 
   tree_->SetBranchAddress("pileupWeight",      &pileupWeight);
@@ -332,6 +337,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("Flag_globalSuperTightHalo2016Filter",      &Flag_globalSuperTightHalo2016Filter);
   tree_->SetBranchAddress("Flag_goodVertices",      &Flag_goodVertices);
   tree_->SetBranchAddress("Flag_all",      &Flag_all);
+  tree_->SetBranchAddress("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter);
 
 
   tree_->SetBranchAddress("rho",         &rho);
@@ -437,6 +443,7 @@ void TreeMuonSystemCombination::InitTree()
 
 
     tree_->SetBranchAddress("dtRechitClusterMet_dPhi",             dtRechitClusterMet_dPhi);
+    tree_->SetBranchAddress("dtRechitClusterPuppiMet_dPhi",             dtRechitClusterPuppiMet_dPhi);
     tree_->SetBranchAddress("dtRechitClusternXY",             dtRechitClusternXY);
     tree_->SetBranchAddress("dtRechitClusternZ",             dtRechitClusternZ);
     tree_->SetBranchAddress("dtRechitClusterXSpread",             dtRechitClusterXSpread);
@@ -567,6 +574,7 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi);
+  tree_->SetBranchAddress("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi);
 
 
   tree_->SetBranchAddress("nGLLP",    &nGLLP);
@@ -644,6 +652,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("ctau",      &ctau,     "ctau/I");      // event number
   tree_->Branch("HLT_CSCCSC",      &HLT_CSCCSC,     "HLT_CSCCSC/O");
   tree_->Branch("HLT_CSCDT",      &HLT_CSCDT,     "HLT_CSCDT/O");
+  tree_->Branch("jetVeto",      &jetVeto,     "jetVeto/O");
 
   tree_->Branch("npv",         &npv,        "npv/i");         // number of primary vertices
   tree_->Branch("npu",         &npu,        "npu/i");         // number of in-time PU events (MC)
@@ -660,6 +669,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("Flag_EcalDeadCellTriggerPrimitiveFilter",      &Flag_EcalDeadCellTriggerPrimitiveFilter,     "Flag_EcalDeadCellTriggerPrimitiveFilter/O");
   tree_->Branch("Flag_goodVertices",      &Flag_goodVertices,     "Flag_goodVertices/O");
   tree_->Branch("Flag_all",      &Flag_all,     "Flag_all/O");
+  tree_->Branch("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter,     "Flag_ecalBadCalibFilter/O");
 
 
 
@@ -776,6 +786,7 @@ void TreeMuonSystemCombination::CreateTree()
 
     tree_->Branch("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency,             "cscRechitClusterHMTEfficiency[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi,             "cscRechitClusterMet_dPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi,             "cscRechitClusterPuppiMet_dPhi[nCscRechitClusters]/F");
 
 
 
@@ -858,7 +869,7 @@ void TreeMuonSystemCombination::CreateTree()
         tree_->Branch("dtRechitClusterNHitWheel1",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel1[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterNHitWheel2",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel2[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterMet_dPhi",             dtRechitClusterMet_dPhi,             "dtRechitClusterMet_dPhi[nDtRechitClusters]/F");
-
+        tree_->Branch("dtRechitClusterPuppiMet_dPhi",             dtRechitClusterPuppiMet_dPhi,             "dtRechitClusterPuppiMet_dPhi[nDtRechitClusters]/F");
 
 
         tree_->Branch("dtRechitCluster_match_RPChits_dPhi0p5",             dtRechitCluster_match_RPChits_dPhi0p5,             "dtRechitCluster_match_RPChits_dPhi0p5[nDtRechitClusters]/I");

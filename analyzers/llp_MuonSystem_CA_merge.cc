@@ -262,7 +262,6 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     auto jetEta = Jet_eta;         // jetEta
     bool jetPassIDTightLepVeto[150] = {0}; // jetPassIDLoose
     bool jetPassIDTight[150] = {0}; // jetPassIDTight
-    cout<<nJet<<endl;
     for (int i = 0; i < nJet; ++i)
     {
       jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
@@ -414,6 +413,10 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       MuonSystem->met = metType1Pt;
       MuonSystem->metPhi = metType1Phi;
 
+
+      MuonSystem->Puppimet = PuppiMET_pt;
+      MuonSystem->PuppimetPhi = PuppiMET_phi;
+
       if(signalScan && !isData)Total2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, genWeight*MuonSystem->pileupWeight);
       if(signalScan && !isData)
       {
@@ -437,6 +440,49 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       MuonSystem->Flag_eeBadScFilter = Flag_eeBadScFilter;
       MuonSystem->Flag_all = Flag_eeBadScFilter && Flag_hfNoisyHitsFilter && Flag_BadPFMuonDzFilter && Flag_BadPFMuonFilter && Flag_EcalDeadCellTriggerPrimitiveFilter
                               && Flag_globalSuperTightHalo2016Filter && Flag_goodVertices;
+      if (analysisTag == "Summer24") MuonSystem->Flag_all = Flag_ecalBadCalibFilter;
+
+      // Flag_ecalBadCalibFilter for nanoAOD: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#ECal_BadCalibration_Filter_Flag
+      if (analysisTag == "Summer24") MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
+      else{
+        MuonSystem->Flag_ecalBadCalibFilter = true;
+        if (isData && runNum<=367144 && runNum >= 362433)
+        {
+          if (PuppiMET_pt > 100)
+          {
+            for(int i = 0; i < nJets; i++)
+            {
+              if (jetPt[i]<50) continue;
+              if (!(jetEta[i] <= -0.1 && jetEta[i]>=-0.5 && jetPhi[i] <-1.8 && jetPhi[i]> -2.1)) continue;
+              if (!(Jet_neEmEF[i] >0.9 || Jet_chEmEF[i]>0.9)) continue;
+              if (deltaPhi(PuppiMET_phi, jetPhi[i])<2.9) continue;
+              Flag_ecalBadCalibFilter = false;
+            }
+          }
+        }
+      }
+      
+
+      // jet veto map, following selections here: https://cms-jerc.web.cern.ch/Recommendations/#jet-veto-maps
+      MuonSystem->jetVeto = true;
+      for(int i = 0; i < nJets; i++)
+      {
+        if (jetPt[i] <= 15) continue;
+        if (Jet_neEmEF[i] + Jet_chEmEF[i] >= 0.9) continue;
+        if (!jetPassIDTight[i]) continue;
+        //remove overlaps
+        bool overlap = false;
+        for(int j = 0; j < nMuons; j++)
+        {
+          if (!Muon_isPFcand[j])continue;
+          if (RazorAnalyzerMerged::deltaR(jetEta[i],jetPhi[i],muonEta[j], muonPhi[j]) < 0.2) overlap = true;
+        }
+        if (overlap) continue;
+
+        if (helper->getJetVetoMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
+        if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
+      } 
+      
 
       //Triggers
       // for(int i = 0; i < NTriggersMAX; i++){
@@ -576,6 +622,8 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
         MuonSystem->nJets++;
       }
+
+
 
 
       MuonSystem->nDTRechits  = 0;
@@ -962,6 +1010,8 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           }
 
           MuonSystem->cscRechitClusterMet_dPhi[MuonSystem->nCscRechitClusters] =  RazorAnalyzerMerged::deltaPhi(MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters],MuonSystem->metPhi);
+          MuonSystem->cscRechitClusterPuppiMet_dPhi[MuonSystem->nCscRechitClusters] =  RazorAnalyzerMerged::deltaPhi(MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters],MuonSystem->PuppimetPhi);
+
           MuonSystem->nCscRechitClusters++;
       }
 
@@ -1238,6 +1288,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           MuonSystem->dtRechitCluster_match_RPCBx_dPhi0p5[MuonSystem->nDtRechitClusters] = max_bx;
 
           MuonSystem->dtRechitClusterMet_dPhi[MuonSystem->nDtRechitClusters] =  RazorAnalyzerMerged::deltaPhi(MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters],MuonSystem->metPhi);
+          MuonSystem->dtRechitClusterPuppiMet_dPhi[MuonSystem->nDtRechitClusters] =  RazorAnalyzerMerged::deltaPhi(MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters],MuonSystem->PuppimetPhi);
 
           MuonSystem->nDtRechitClusters++;
         }

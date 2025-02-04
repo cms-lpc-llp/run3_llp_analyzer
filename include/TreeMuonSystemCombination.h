@@ -51,10 +51,10 @@ public:
   UInt_t  npv, npu;
   float rho, weight;
   float pileupWeight, pileupWeightUp, pileupWeightDown;
-  bool HLT_CSCCSC,HLT_CSCDT;
-  float met, metPhi;
+  bool HLT_CSCCSC,HLT_CSCDT, jetVeto;
+  float met, metPhi, Puppimet, PuppimetPhi;
   bool Flag_goodVertices, Flag_EcalDeadCellTriggerPrimitiveFilter, Flag_BadPFMuonFilter, Flag_BadPFMuonDzFilter, Flag_globalSuperTightHalo2016Filter,
-  Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_all;
+  Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;
   int mH, mX, ctau;
 
 
@@ -147,6 +147,7 @@ public:
   bool          dtRechitClusterMuonVetoGlobal[N_MAX_CSC];
 
   float         dtRechitClusterMet_dPhi[N_MAX_CSC];
+  float         dtRechitClusterPuppiMet_dPhi[N_MAX_CSC];
 
   int         dtRechitClusternXY[N_MAX_CSC];
   int         dtRechitClusternZ[N_MAX_CSC];
@@ -287,6 +288,7 @@ public:
 
 
   float         cscRechitClusterMet_dPhi[N_MAX_CSC];
+  float         cscRechitClusterPuppiMet_dPhi[N_MAX_CSC];
 
 
   //gLLP
