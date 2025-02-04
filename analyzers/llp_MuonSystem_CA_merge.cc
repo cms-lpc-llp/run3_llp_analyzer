@@ -440,13 +440,13 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       MuonSystem->Flag_eeBadScFilter = Flag_eeBadScFilter;
       MuonSystem->Flag_all = Flag_eeBadScFilter && Flag_hfNoisyHitsFilter && Flag_BadPFMuonDzFilter && Flag_BadPFMuonFilter && Flag_EcalDeadCellTriggerPrimitiveFilter
                               && Flag_globalSuperTightHalo2016Filter && Flag_goodVertices;
-      if (analysisTag == "Summer24") MuonSystem->Flag_all = Flag_ecalBadCalibFilter;
+      if (analysisTag == "Summer24") MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
 
       // Flag_ecalBadCalibFilter for nanoAOD: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#ECal_BadCalibration_Filter_Flag
       if (analysisTag == "Summer24") MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
       else{
         MuonSystem->Flag_ecalBadCalibFilter = true;
-        if (isData && runNum<=367144 && runNum >= 362433)
+        if (isData && runNum >= 362433 && runNum<=367144)
         {
           if (PuppiMET_pt > 100)
           {
