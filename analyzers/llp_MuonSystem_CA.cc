@@ -1497,6 +1497,50 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
     // event info
 
+      if (analysisTag == "Summer24") MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
+
+      // Flag_ecalBadCalibFilter for nanoAOD: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#ECal_BadCalibration_Filter_Flag
+      if (analysisTag == "Summer24") MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
+      else{
+        MuonSystem->Flag_ecalBadCalibFilter = true;
+        if (isData && runNum >= 362433 && runNum<=367144)
+        {
+          if (PuppiMET_pt > 100)
+          {
+            for(int i = 0; i < nJets; i++)
+            {
+              if (jetPt[i]<50) continue;
+              if (!(jetEta[i] <= -0.1 && jetEta[i]>=-0.5 && jetPhi[i] <-1.8 && jetPhi[i]> -2.1)) continue;
+              if (!(Jet_neEmEF[i] >0.9 || Jet_chEmEF[i]>0.9)) continue;
+              if (deltaPhi(PuppiMET_phi, jetPhi[i])<2.9) continue;
+              Flag_ecalBadCalibFilter = false;
+            }
+          }
+        }
+      }
+      
+
+      // jet veto map, following selections here: https://cms-jerc.web.cern.ch/Recommendations/#jet-veto-maps
+      MuonSystem->jetVeto = true;
+      for(int i = 0; i < nJets; i++)
+      {
+        if (jetPt[i] <= 15) continue;
+        if (Jet_neEmEF[i] + Jet_chEmEF[i] >= 0.9) continue;
+        if (!jetPassIDTight[i]) continue;
+        //remove overlaps
+        bool overlap = false;
+        for(int j = 0; j < nMuons; j++)
+        {
+          if (!Muon_isPFcand[j])continue;
+          if (RazorAnalyzerMerged::deltaR(jetEta[i],jetPhi[i],muonEta[j], muonPhi[j]) < 0.2) overlap = true;
+        }
+        if (overlap) continue;
+
+        if (helper->getJetVetoMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
+        if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
+      } 
+
+
     if (!isData && signalScan)
     {
 

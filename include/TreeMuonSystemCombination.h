@@ -83,6 +83,7 @@ public:
   bool Flag_HBHENoiseFilter;
   bool Flag_HBHEIsoNoiseFilter;
   bool Flag_CSCTightHaloFilter;
+  bool jetVeto;
 
   bool Flag_all;
 

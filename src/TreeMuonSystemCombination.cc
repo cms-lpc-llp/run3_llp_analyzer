@@ -58,6 +58,7 @@ void TreeMuonSystemCombination::InitVariables()
   Flag_CSCTightHaloFilter = false;
   Flag_BadChargedCandidateFilter = false;
   Flag_all = false;
+  jetVeto = false;
 
   Flag2_HBHENoiseFilter = false;
   Flag2_HBHEIsoNoiseFilter = false;
