@@ -478,7 +478,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           if (RazorAnalyzerMerged::deltaR(jetEta[i],jetPhi[i],muonEta[j], muonPhi[j]) < 0.2) overlap = true;
         }
         if (overlap) continue;
-
+        helper->getJetVetoMap(0,1);
         if (helper->getJetVetoMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
         if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
       } 

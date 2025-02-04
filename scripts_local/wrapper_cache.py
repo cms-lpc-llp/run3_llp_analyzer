@@ -14,7 +14,8 @@ list_path = Path(base_path + '/src/run3_llp_analyzer/lists/displacedJetMuonNtupl
 campaigns = {
     # 'Data2022': 'EXOCSCCluster'
     #'Data2023': 'EXOCSCCluster',
-    'Data2024': 'EXOCSCCluster',
+    #'Data2022': 'EXOHighMET',
+    'Data2023': 'EXOHighMET',
     # 'MC_Summer22': 'ggH',
     # 'MC_Summer22EE': 'ggH',
     # 'MC_Summer23'  : 'ggH',
@@ -23,8 +24,7 @@ campaigns = {
 for k, v in campaigns.items():
     paths = list(list_path.glob(f"{k}/**/*{v}*"))
     for p in paths:
-        if not "Muon0-Run2024H-EXOCSCCluster-PromptReco-v1_v1_v2" in str(p) and not "Muon1-Run2024I-EXOCSCCluster-PromptReco-v2_v1_v1" in str(p):continue
-
+        if not "Run2023C-PromptReco-v4" in str(p):continue
         print(f"running cache for: {p}")
         cache_path = str(p.parents[0]).replace('lists','/data/cache/')
         cache_name = p.stem

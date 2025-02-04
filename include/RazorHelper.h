@@ -84,8 +84,8 @@ class RazorHelper {
         TH1F *pileupWeightSysDownHist;
 
         TFile *JetVetoFile;
-        TH2F *JetVetoHist;
-        TH2F *JetVetoFpixHist;
+        TH2D *JetVetoHist;
+        TH2D *JetVetoFpixHist;
 
         TFile *HMTEffFile;
 

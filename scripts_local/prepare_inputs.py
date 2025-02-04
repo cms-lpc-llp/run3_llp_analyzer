@@ -60,7 +60,7 @@ campaigns = { # keyword for ntuples and nanoAOD
 #    '2024Ev2Muon0': ['Muon0', 'Muon0'],
 #    '2024FMuon0': ['Muon0', 'Muon0'],
 #    '2024GMuon0': ['Muon0', 'Muon0'],
-    '2024HMuon0': ['Muon0', 'Muon0'],
+#    '2024HMuon0': ['Muon0', 'Muon0'],
     
 #    '2024AMuon1': ['Muon1', 'Muon1'],
 #    '2024BMuon1': ['Muon1', 'Muon1'],
@@ -102,9 +102,31 @@ campaigns = { # keyword for ntuples and nanoAOD
     #'2024GJetMET1': ['JetMET1', 'JetMET1'],
     #'2024HJetMET1': ['JetMET1', 'JetMET1'],
 
+    '2022B': ['MET', 'MET'],
+    '2022CMet': ['MET', 'MET'],
+    '2022CJetMet': ['JetMET', 'JetMET'],
+    '2022D': ['JetMET', 'JetMET'],
+    '2022E': ['JetMET', 'JetMET'],
+    '2022F': ['JetMET', 'JetMET'],
+    '2022G': ['JetMET', 'JetMET'],
+
+    '2023BMet0': ['JetMET0', 'JetMET0'],
+    '2023Cv1Met0': ['JetMET0', 'JetMET0'],
+    '2023Cv2Met0': ['JetMET0', 'JetMET0'],
+    '2023Cv3Met0': ['JetMET0', 'JetMET0'],
+    '2023Cv4Met0': ['JetMET0', 'JetMET0'],
+    '2023Dv1Met0': ['JetMET0', 'JetMET0'],
+    '2023Dv2Met0': ['JetMET0', 'JetMET0'],
+
+    '2023BMet1': ['JetMET1', 'JetMET1'],
+    '2023Cv1Met1': ['JetMET1', 'JetMET1'],
+    '2023Cv2Met1': ['JetMET1', 'JetMET1'],
+    '2023Cv3Met1': ['JetMET1', 'JetMET1'],
+    '2023Cv4Met1': ['JetMET1', 'JetMET1'],
+    '2023Dv1Met1': ['JetMET1', 'JetMET1'],
+    '2023Dv2Met1': ['JetMET1', 'JetMET1'],
 
 }
-
 
 for key, names in campaigns.items():
     print(f"RUNNING FOR {key}")
@@ -114,20 +136,20 @@ for key, names in campaigns.items():
         nano_list_path = list(nano_base_path.glob(f"**/*{names[1]}*{key[:5]}*_{key[5:7]}*v2*"))
     elif 'v'in key:
         print(f"**/*{names[0]}*{key[:5]}*_{key[5:7]}*")
+        print(f"**/*{names[1]}*{key[:5]}*-{key[5:7]}*")
         ntuple_list_path = list(ntuple_base_path.glob(f"**/*{names[0]}*{key[:5]}*-{key[5:7]}*"))
-        nano_list_path = list(nano_base_path.glob(f"**/*{names[1]}*{key[:5]}*-{key[5:7]}*"))
+        nano_list_path = list(nano_base_path.glob(f"**/*{names[1]}*{key[:5]}*_{key[5:7]}*"))
     elif "2024F" in key or "2024G" in key or "2024H" in key or "2024I" in key:
         ntuple_list_path = list(ntuple_base_path.glob(f"**/*{names[0]}*{key[:5]}*EXO*"))
         nano_list_path = list(nano_base_path.glob(f"**/*{names[1]}*{key[:5]}*"))
     else:
-        ntuple_list_path = list(ntuple_base_path.glob(f"**/*{names[0]}*{key[:5]}*"))
-        nano_list_path = list(nano_base_path.glob(f"**/*{names[1]}*{key[:5]}*"))
+        ntuple_list_path = list(ntuple_base_path.glob(f"**/{names[0]}*{key[:5]}*"))
+        nano_list_path = list(nano_base_path.glob(f"**/{names[1]}*{key[:5]}*"))
     print(ntuple_list_path)
     print(nano_list_path)
     assert(len(nano_list_path)==len(ntuple_list_path)==1)
     ntuple_list_path = ntuple_list_path[0]
     nano_list_path = nano_list_path[0]
-
     ntuple_cache_path = str(ntuple_list_path).replace('lists','/data/cache/').split('.')[0]
     nano_cache_path = str(nano_list_path).replace('lists','/data/cache/').split('.')[0]
 
