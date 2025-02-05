@@ -22,7 +22,9 @@ void TreeMuonSystemCombination::InitVariables()
   MC_condition = 0;
   npv = 0;
   npu = 0;
-  pileupWeight = 0;
+  pileupWeight = -1;
+  pileupWeightUp = -1;
+  pileupWeightDown = -1;
   weight = -1.0;
   rho = -1;
   met = -1;
@@ -546,6 +548,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("weight", &weight);
 
   tree_->SetBranchAddress("pileupWeight", &pileupWeight);
+  tree_->SetBranchAddress("pileupWeightUp", &pileupWeightUp);
+  tree_->SetBranchAddress("pileupWeightDown", &pileupWeightDown);
   tree_->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
   tree_->SetBranchAddress("Flag_HBHEIsoNoiseFilter", &Flag_HBHEIsoNoiseFilter);
   tree_->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter);
@@ -860,6 +864,8 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("weight", &weight, "weight/F");
 
   tree_->Branch("pileupWeight", &pileupWeight, "pileupWeight/F");
+  tree_->Branch("pileupWeightUp", &pileupWeightUp, "pileupWeightUp/F");
+  tree_->Branch("pileupWeightDown", &pileupWeightDown, "pileupWeightDown/F");
 
   tree_->Branch("Flag_goodVertices", &Flag_goodVertices, "Flag_goodVertices/O");
   tree_->Branch("Flag_globalSuperTightHalo2016Filter", &Flag_globalSuperTightHalo2016Filter, "Flag_globalSuperTightHalo2016Filter/O");

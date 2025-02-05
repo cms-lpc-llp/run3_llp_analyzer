@@ -83,6 +83,31 @@ if [ $CHUNK_SIZE -ne 1 ] && [ -n "$SYNC" ]; then
     exit 1
 fi
 
+function get_label {
+    path=$1
+    YEAR=$(realpath $FILE | grep -o "Run[0-9]\{4\}.")
+    YEAR=${YEAR:3:6}
+    label=$(map_run_campaign Run$YEAR)
+    if [ -n "$label" ]; then
+        echo $label
+        return
+    fi
+
+    if [[ $path == *"Summer22EE"* ]]; then
+        echo "Summer22EE"
+    elif [[ $path == *"Summer22"* ]]; then
+        echo "Summer22"
+    elif [[ $path == *"Summer23BPix"* ]]; then
+        echo "Summer23BPix"
+    elif [[ $path == *"Summer23"* ]]; then
+        echo "Summer23"
+    elif [[ $path == *"Summer24"* ]]; then
+        echo "Summer24"
+    else
+        echo "Unknown campaign for $path" 1>&2
+    fi
+}
+
 function map_run_campaign {
     run=$1 # Run20xxX
     if [ "$run" == "Run2022C" ] || [ "$run" == "Run2022D" ]; then
@@ -93,11 +118,8 @@ function map_run_campaign {
         echo "Summer23"
     elif [ "$run" == "Run2023D" ]; then
         echo "Summer23BPix"
-    elif [ "$run" == "Run2024"* ]; then
+    elif [[ "$run" == "Run2024"* ]]; then
         echo "Summer24"
-    else
-        echo "Failed to map run $run" 1>&2
-        exit(1)
     fi
 }
 
@@ -126,9 +148,11 @@ function prepare_chunks {
     fi
 
     IS_DATA=$(realpath $FILE | grep -q '\(202[0-9][A-Z]\|Data\)' && echo "yes" || echo "no")
-    YEAR=$(realpath $FILE | grep -o "Data[0-9]\{4\}.")
-    YEAR=${YEAR:4:5}
-    LABEL=$(map_run_campaign Run$YEAR)
+    YEAR=$(realpath $FILE | grep -o "Run[0-9]\{4\}.")
+    YEAR=${YEAR:3:6}
+
+    LABEL=$(get_label $FILE)
+    
 
     echo -e "YEAR=$YEAR\nIS_DATA=$IS_DATA\nLABEL=$LABEL\n" > $LOCAL_TMP_PATH/config.env
 }

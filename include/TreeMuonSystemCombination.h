@@ -50,7 +50,7 @@ public:
   UInt_t runNum, lumiSec, evtNum, MC_condition;
   UInt_t npv, npu;
   float rho, weight;
-  float pileupWeight;
+  float pileupWeight, pileupWeightUp, pileupWeightDown;
 
   float met, metPhi;
 
