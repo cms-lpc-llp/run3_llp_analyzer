@@ -439,6 +439,7 @@ void TreeMuonSystemCombination::InitTree()
   // tree_->SetBranchAddress("dtRechitsTime", dtRechitsTime);
   // tree_->SetBranchAddress("dtRechitsTimeW", dtRechitsTimeW);
 
+  tree_->SetBranchAddress("jetVeto", &jetVeto);
   tree_->SetBranchAddress("nboostedTau", &nboostedTau);
   tree_->SetBranchAddress("nsoftActivityVH", &nsoftActivityVH);
   tree_->SetBranchAddress("nElectron", &nElectron);
@@ -851,6 +852,7 @@ void TreeMuonSystemCombination::CreateTree()
   // tree_->Branch("cscRechitsTimeW", cscRechitsTimeW, "cscRechitsTimeW[nCscRechits]/F");
   // tree_->Branch("dtRechitsTimeW", cscRechitsTimeW, "dtRechitsTimeW[nDtRechits]/F");
 
+  tree_->Branch("jetVeto", &jetVeto, "jetVeto/O");
   tree_->Branch("runNum", &runNum, "runNum/i");                   // event run number
   tree_->Branch("MC_condition", &MC_condition, "MC_condition/i"); // event run number
   tree_->Branch("lumiSec", &lumiSec, "lumiSec/i");                // event lumi section

@@ -1445,7 +1445,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     auto eventNum = event;                                    // eventNum
     auto fixedGridRhoFastjetAll = Rho_fixedGridRhoFastjetAll; // fixedGridRhoFastjetAll
 
-    Float_t jetE[21] = {0}; // jetE
+    Float_t jetE[150] = {0}; // jetE
     for (int i = 0; i < nJet; ++i)
     {
       auto eta = Jet_eta[i];
@@ -1455,12 +1455,13 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       jetE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
     auto jetEta = Jet_eta;         // jetEta
-    bool jetPassIDLoose[21] = {0}; // jetPassIDLoose
-    bool jetPassIDTight[21] = {0}; // jetPassIDTight
+    bool jetPassIDTightLepVeto[150] = {0}; // jetPassIDLoose
+    bool jetPassIDTight[150] = {0}; // jetPassIDTight
     for (int i = 0; i < nJet; ++i)
     {
-      jetPassIDLoose[i] = Jet_jetId[i] | 1 != 0;
-      jetPassIDTight[i] = Jet_jetId[i] | 2 != 0;
+      jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
+      jetPassIDTightLepVeto[i] = (Jet_jetId[i] & 4) != 0;
+
     }
     auto jetPhi = Jet_phi;          // jetPhi
     auto jetPt = Jet_pt;            // jetPt
@@ -1468,7 +1469,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     auto metType1Phi = PuppiMET_phi;     // metType1Phi
     auto metType1Pt = PuppiMET_pt;       // metType1Pt
     auto muonCharge = Muon_charge;  // muonCharge
-    Float_t muonE[15] = {0};        // muonE
+    Float_t muonE[150] = {0};        // muonE
     for (int i = 0; i < nMuon; ++i)
     {
       auto eta = Muon_eta[i];
@@ -1754,8 +1755,8 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
         continue;
       if (jetPt[i] < 20)
         continue;
-      if (!jetPassIDLoose[i])
-        continue;
+      if (!jetPassIDTight[i] && !jetPassIDTightLepVeto[i])
+          continue;
       //------------------------------------------------------------
       // exclude selected muons and electrons from the jet collection
       //------------------------------------------------------------
@@ -1773,7 +1774,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
       jets tmpJet;
       tmpJet.jet = thisJet;
-      tmpJet.passId = jetPassIDTight[i];
+      tmpJet.passId = jetPassIDTightLepVeto[i];
 
       Jets.push_back(tmpJet);
     }
@@ -2161,7 +2162,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
           MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters] = jetPt[i];
           MuonSystem->cscRechitClusterJetVetoE[MuonSystem->nCscRechitClusters] = jetE[i];
           MuonSystem->cscRechitClusterJetVetoTightId[MuonSystem->nCscRechitClusters] = jetPassIDTight[i];
-          MuonSystem->cscRechitClusterJetVetoLooseId[MuonSystem->nCscRechitClusters] = jetPassIDLoose[i];
+          // MuonSystem->cscRechitClusterJetVetoLooseId[MuonSystem->nCscRechitClusters] = jetPassIDLoose[i];
         }
       }
       float min_deltaR = 15.;
@@ -2390,7 +2391,7 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
         {
           MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] = jetPt[i];
           MuonSystem->dtRechitClusterJetVetoE[MuonSystem->nDtRechitClusters] = jetE[i];
-          MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters] = jetPassIDLoose[i];
+          // MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters] = jetPassIDLoose[i];
           MuonSystem->dtRechitClusterJetVetoTightId[MuonSystem->nDtRechitClusters] = jetPassIDTight[i];
         }
       }
