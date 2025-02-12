@@ -133,7 +133,7 @@ void RazorHelper::loadJetVeto_Summer22EE() {
 void RazorHelper::loadTag_Summer23() {
   loadPileup_Summer23();
     loadHMTEfficiency();
-    loadPileup_Summer23();
+    loadJetVeto_Summer23();
 }
 
 void RazorHelper::loadPileup_Summer23() {

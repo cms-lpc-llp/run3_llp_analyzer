@@ -344,7 +344,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("met",         &met);
   tree_->SetBranchAddress("metPhi",      &metPhi);
 
-
+ tree_->SetBranchAddress("Puppimet",         &Puppimet);
+  tree_->SetBranchAddress("PuppimetPhi",      &PuppimetPhi);
 
 
   tree_->SetBranchAddress("gHiggsPt",      &gHiggsPt);
@@ -679,7 +680,8 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("met",         &met,        "met/F");         // MET
   tree_->Branch("metPhi",      &metPhi,     "metPhi/F");      // phi(MET)
 
-
+  tree_->Branch("Puppimet",         &Puppimet,        "Puppimet/F");         // MET
+  tree_->Branch("PuppimetPhi",      &PuppimetPhi,     "PuppimetPhi/F");      // phi(MET)
 
   tree_->Branch("gHiggsPt",      &gHiggsPt,     "gHiggsPt/F");      // phi(MET)
   tree_->Branch("gHiggsE",      &gHiggsE,     "gHiggsE/F");      // phi(MET)
