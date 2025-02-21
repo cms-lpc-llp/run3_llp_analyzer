@@ -1,0 +1,10 @@
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/script.sh
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/nohup.out
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job2.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job5.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job3.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job1.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job4.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job0.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/MET-EXOHighMET_Run2022B-10Dec2022-v1/combined/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job6.root
