@@ -499,15 +499,16 @@ int main(int argc, char *argv[])
     //////// end of cosmic shower veto ///////////
     /////////////////////////////////////////////////////
 
-
     // fill the new added branches
     nCscRechits = ntuple.ncscRechits;
     nCscSeg = ntuple.nCscSeg;
     nDtRechits = ntuple.nDtRechits;
     nDtSeg = ntuple.nDtSeg;
     nRpc = ntuple.nRpc;
-    // if (nCscRechits > 20000) continue;
-
+    
+    bool noise_filter = nano.Flag_eeBadScFilter&& nano.Flag_hfNoisyHitsFilter&& nano.Flag_BadPFMuonDzFilter&& nano.Flag_BadPFMuonFilter
+        && nano.Flag_EcalDeadCellTriggerPrimitiveFilter&& nano.Flag_globalSuperTightHalo2016Filter&& nano.Flag_goodVertices;
+    if (!noise_filter) continue;
     for (int i = 0; i < numFloatBranches; i++)
     {
       int temp_nhits = 0;
@@ -517,6 +518,7 @@ int main(int argc, char *argv[])
 
     }
 
+       
     for (int i = 0; i < numFloatSegBranches; i++)
     {
       int temp_nhits = 0;
@@ -526,7 +528,7 @@ int main(int argc, char *argv[])
       for (int j = 0; j < temp_nhits; j++) addBranchesInputVarFloatSeg[i][j] = addBranchesRazorVarFloatSeg[i][j];
 
     }
-
+       
    for (int i = 0; i < numIntBranches; i++)
     {
       int temp_nhits = 0;
