@@ -1,0 +1,7 @@
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job2_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job5_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job0_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job4_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job1_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job3_of_7.root
+/storage/af/group/phys_exotica/delayedjets/MergedNtuples/Run3/V1p19/2022/v2/MET-EXOHighMET_Run2022B-10Dec2022-v1/MET-EXOHighMET_Run2022B-10Dec2022-v1_Job6_of_7.root
