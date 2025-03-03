@@ -1740,6 +1740,66 @@ public:
    Bool_t L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p1;
    Bool_t L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p6;
    Bool_t L1_Mu3er1p5_Jet100er2p5_ETMHF30;
+
+
+   ////// for MDS nano ////////
+   Int_t           ncscRechits;
+   Int_t           cscRechits_Quality[20000];   //[ncscRechits]
+   Int_t           cscRechits_Chamber[20000];   //[ncscRechits]
+   Int_t           cscRechits_Station[20000];   //[ncscRechits]
+   Float_t         cscRechits_X[20000];   //[ncscRechits]
+   Float_t         cscRechits_Y[20000];   //[ncscRechits]
+   Float_t         cscRechits_Z[20000];   //[ncscRechits]
+   Float_t         cscRechits_Phi[20000];   //[ncscRechits]
+   Float_t         cscRechits_Eta[20000];   //[ncscRechits]
+   Float_t         cscRechits_Tpeak[20000];   //[ncscRechits]
+   Float_t         cscRechits_Twire[20000];   //[ncscRechits]
+   Int_t           ncscSegments;
+   Int_t           cscSegments_Station[1512];   //[ncscSegments]
+   Int_t           cscSegments_Chamber[1512];   //[ncscSegments]
+   Int_t           cscSegments_IChamber[1512];   //[ncscSegments]
+   Float_t         cscSegments_X[1512];   //[ncscSegments]
+   Float_t         cscSegments_Y[1512];   //[ncscSegments]
+   Float_t         cscSegments_Z[1512];   //[ncscSegments]
+   Float_t         cscSegments_Phi[1512];   //[ncscSegments]
+   Float_t         cscSegments_Eta[1512];   //[ncscSegments]
+   Float_t         cscSegments_Time[1512];   //[ncscSegments]
+   Float_t         cscSegments_Chi2[1512];   //[ncscSegments]
+
+   Int_t           ndtRecHits;
+   Int_t           dtRecHits_Layer[20000];   //[ndtRecHits]
+   Int_t           dtRecHits_SuperLayer[20000];   //[ndtRecHits]
+   Int_t           dtRecHits_Station[20000];   //[ndtRecHits]
+   Int_t           dtRecHits_Wheel[20000];   //[ndtRecHits]
+   Float_t         dtRecHits_X[20000];   //[ndtRecHits]
+   Float_t         dtRecHits_Y[20000];   //[ndtRecHits]
+   Float_t         dtRecHits_Z[20000];   //[ndtRecHits]
+   Float_t         dtRecHits_Phi[20000];   //[ndtRecHits]
+   Float_t         dtRecHits_Eta[20000];   //[ndtRecHits]
+   Int_t           ndtSegments;
+   Int_t           dtSegments_Station[1512];   //[ndtSegments]
+   Int_t           dtSegments_Wheel[1512];   //[ndtSegments]
+   Float_t         dtSegments_X[1512];   //[ndtSegments]
+   Float_t         dtSegments_Y[1512];   //[ndtSegments]
+   Float_t         dtSegments_Z[1512];   //[ndtSegments]
+   Float_t         dtSegments_Phi[1512];   //[ndtSegments]
+   Float_t         dtSegments_Eta[1512];   //[ndtSegments]
+   Int_t           nrpcRecHits;
+   Int_t           rpcRecHits_Bx[2000];   //[nrpcRecHits]
+   Int_t           rpcRecHits_Region[2000];   //[nrpcRecHits]
+   Int_t           rpcRecHits_Ring[2000];   //[nrpcRecHits]
+   Int_t           rpcRecHits_Layer[2000];   //[nrpcRecHits]
+   Int_t           rpcRecHits_Station[2000];   //[nrpcRecHits]
+   Int_t           rpcRecHits_Sector[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_X[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_Y[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_Z[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_Phi[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_Eta[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_Time[2000];   //[nrpcRecHits]
+   Float_t         rpcRecHits_TimeError[2000];   //[nrpcRecHits]
+   /////////
+
    Int_t nCscSeg;
    Int_t nCscRechits;
    Int_t nDtSeg;
@@ -3499,7 +3559,63 @@ public:
    TBranch *b_L1_DoubleMu3_SQ_ETMHF40_Jet60er2p5_OR_DoubleJet40er2p5;                                                //!
    TBranch *b_L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p1;                                                               //!
    TBranch *b_L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p6;                                                               //!
-   TBranch *b_L1_Mu3er1p5_Jet100er2p5_ETMHF30;                                                                       //!
+   TBranch *b_L1_Mu3er1p5_Jet100er2p5_ETMHF30;            
+   ////// for MDS nano ////////
+   TBranch *b_ncscRechits;
+   TBranch *b_cscRechits_Quality;
+   TBranch *b_cscRechits_Chamber;
+   TBranch *b_cscRechits_Station;
+   TBranch *b_cscRechits_X;
+   TBranch *b_cscRechits_Y;
+   TBranch *b_cscRechits_Z;
+   TBranch *b_cscRechits_Phi;
+   TBranch *b_cscRechits_Eta;
+   TBranch *b_cscRechits_Tpeak;
+   TBranch *b_cscRechits_Twire;
+   TBranch *b_ncscSegments;
+   TBranch *b_cscSegments_Station;
+   TBranch *b_cscSegments_Chamber;
+   TBranch *b_cscSegments_IChamber;
+   TBranch *b_cscSegments_X;
+   TBranch *b_cscSegments_Y;
+   TBranch *b_cscSegments_Z;
+   TBranch *b_cscSegments_Phi;
+   TBranch *b_cscSegments_Eta;
+   TBranch *b_cscSegments_Time;
+   TBranch *b_cscSegments_Chi2;
+   TBranch *b_ndtRecHits;
+   TBranch *b_dtRecHits_Layer;
+   TBranch *b_dtRecHits_SuperLayer;
+   TBranch *b_dtRecHits_Station;
+   TBranch *b_dtRecHits_Wheel;
+   TBranch *b_dtRecHits_X;
+   TBranch *b_dtRecHits_Y;
+   TBranch *b_dtRecHits_Z;
+   TBranch *b_dtRecHits_Phi;
+   TBranch *b_dtRecHits_Eta;
+   TBranch *b_ndtSegments;
+   TBranch *b_dtSegments_Station;
+   TBranch *b_dtSegments_Wheel;
+   TBranch *b_dtSegments_X;
+   TBranch *b_dtSegments_Y;
+   TBranch *b_dtSegments_Z;
+   TBranch *b_dtSegments_Phi;
+   TBranch *b_dtSegments_Eta;
+   TBranch *b_nrpcRecHits;
+   TBranch *b_rpcRecHits_Bx;
+   TBranch *b_rpcRecHits_Region;
+   TBranch *b_rpcRecHits_Ring;
+   TBranch *b_rpcRecHits_Layer;
+   TBranch *b_rpcRecHits_Station;
+   TBranch *b_rpcRecHits_Sector;
+   TBranch *b_rpcRecHits_X;
+   TBranch *b_rpcRecHits_Y;
+   TBranch *b_rpcRecHits_Z;
+   TBranch *b_rpcRecHits_Phi;
+   TBranch *b_rpcRecHits_Eta;
+   TBranch *b_rpcRecHits_Time;
+   TBranch *b_rpcRecHits_TimeError;
+                                                   //!
    TBranch *b_nCscSeg;                                                                                               //!
    TBranch *b_nCscRechits;                                                                                           //!
    TBranch *b_nDtSeg;                                                                                                //!
@@ -5337,6 +5453,68 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p1", &L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p1, &b_L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p1);
    fChain->SetBranchAddress("L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p6", &L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p6, &b_L1_ETMHF80_SingleJet55er2p5_dPhi_Min2p6);
    fChain->SetBranchAddress("L1_Mu3er1p5_Jet100er2p5_ETMHF30", &L1_Mu3er1p5_Jet100er2p5_ETMHF30, &b_L1_Mu3er1p5_Jet100er2p5_ETMHF30);
+   
+   
+   fChain->SetBranchAddress("ncscRechits", &ncscRechits, &b_ncscRechits);
+   fChain->SetBranchAddress("cscRechits_Quality", cscRechits_Quality, &b_cscRechits_Quality);
+   fChain->SetBranchAddress("cscRechits_Chamber", cscRechits_Chamber, &b_cscRechits_Chamber);
+   fChain->SetBranchAddress("cscRechits_Station", cscRechits_Station, &b_cscRechits_Station);
+   fChain->SetBranchAddress("cscRechits_X", cscRechits_X, &b_cscRechits_X);
+   fChain->SetBranchAddress("cscRechits_Y", cscRechits_Y, &b_cscRechits_Y);
+   fChain->SetBranchAddress("cscRechits_Z", cscRechits_Z, &b_cscRechits_Z);
+   fChain->SetBranchAddress("cscRechits_Phi", cscRechits_Phi, &b_cscRechits_Phi);
+   fChain->SetBranchAddress("cscRechits_Eta", cscRechits_Eta, &b_cscRechits_Eta);
+   fChain->SetBranchAddress("cscRechits_Tpeak", cscRechits_Tpeak, &b_cscRechits_Tpeak);
+   fChain->SetBranchAddress("cscRechits_Twire", cscRechits_Twire, &b_cscRechits_Twire);
+
+   fChain->SetBranchAddress("ncscSegments", &ncscSegments, &b_ncscSegments);
+   fChain->SetBranchAddress("cscSegments_Station", cscSegments_Station, &b_cscSegments_Station);
+   fChain->SetBranchAddress("cscSegments_Chamber", cscSegments_Chamber, &b_cscSegments_Chamber);
+   fChain->SetBranchAddress("cscSegments_IChamber", cscSegments_IChamber, &b_cscSegments_IChamber);
+   fChain->SetBranchAddress("cscSegments_X", cscSegments_X, &b_cscSegments_X);
+   fChain->SetBranchAddress("cscSegments_Y", cscSegments_Y, &b_cscSegments_Y);
+   fChain->SetBranchAddress("cscSegments_Z", cscSegments_Z, &b_cscSegments_Z);
+   fChain->SetBranchAddress("cscSegments_Phi", cscSegments_Phi, &b_cscSegments_Phi);
+   fChain->SetBranchAddress("cscSegments_Eta", cscSegments_Eta, &b_cscSegments_Eta);
+   fChain->SetBranchAddress("cscSegments_Time", cscSegments_Time, &b_cscSegments_Time);
+   fChain->SetBranchAddress("cscSegments_Chi2", cscSegments_Chi2, &b_cscSegments_Chi2);
+   
+   fChain->SetBranchAddress("ndtRecHits", &ndtRecHits, &b_ndtRecHits);
+   fChain->SetBranchAddress("dtRecHits_Layer", dtRecHits_Layer, &b_dtRecHits_Layer);   
+   fChain->SetBranchAddress("dtRecHits_SuperLayer", dtRecHits_SuperLayer, &b_dtRecHits_SuperLayer);
+   fChain->SetBranchAddress("dtRecHits_Station", dtRecHits_Station, &b_dtRecHits_Station);
+   fChain->SetBranchAddress("dtRecHits_Wheel", dtRecHits_Wheel, &b_dtRecHits_Wheel);
+   fChain->SetBranchAddress("dtRecHits_X", dtRecHits_X, &b_dtRecHits_X);
+   fChain->SetBranchAddress("dtRecHits_Y", dtRecHits_Y, &b_dtRecHits_Y);
+   fChain->SetBranchAddress("dtRecHits_Z", dtRecHits_Z, &b_dtRecHits_Z);
+   fChain->SetBranchAddress("dtRecHits_Phi", dtRecHits_Phi, &b_dtRecHits_Phi);
+   fChain->SetBranchAddress("dtRecHits_Eta", dtRecHits_Eta, &b_dtRecHits_Eta);
+
+   fChain->SetBranchAddress("ndtSegments", &ndtSegments, &b_ndtSegments);
+   fChain->SetBranchAddress("dtSegments_Station", dtSegments_Station, &b_dtSegments_Station);
+   fChain->SetBranchAddress("dtSegments_Wheel", dtSegments_Wheel, &b_dtSegments_Wheel);
+   fChain->SetBranchAddress("dtSegments_X", dtSegments_X, &b_dtSegments_X);
+   fChain->SetBranchAddress("dtSegments_Y", dtSegments_Y, &b_dtSegments_Y);
+   fChain->SetBranchAddress("dtSegments_Z", dtSegments_Z, &b_dtSegments_Z);
+   fChain->SetBranchAddress("dtSegments_Phi", dtSegments_Phi, &b_dtSegments_Phi);
+   fChain->SetBranchAddress("dtSegments_Eta", dtSegments_Eta, &b_dtSegments_Eta);
+   
+   fChain->SetBranchAddress("nrpcRecHits", &nrpcRecHits, &b_nrpcRecHits);
+   fChain->SetBranchAddress("rpcRecHits_Bx", rpcRecHits_Bx, &b_rpcRecHits_Bx);
+   fChain->SetBranchAddress("rpcRecHits_Region", rpcRecHits_Region, &b_rpcRecHits_Region);
+   fChain->SetBranchAddress("rpcRecHits_Ring", rpcRecHits_Ring, &b_rpcRecHits_Ring);
+   fChain->SetBranchAddress("rpcRecHits_Layer", rpcRecHits_Layer, &b_rpcRecHits_Layer);
+   fChain->SetBranchAddress("rpcRecHits_Station", rpcRecHits_Station, &b_rpcRecHits_Station);
+   fChain->SetBranchAddress("rpcRecHits_Sector", rpcRecHits_Sector, &b_rpcRecHits_Sector);
+   fChain->SetBranchAddress("rpcRecHits_X", rpcRecHits_X, &b_rpcRecHits_X);
+   fChain->SetBranchAddress("rpcRecHits_Y", rpcRecHits_Y, &b_rpcRecHits_Y);
+   fChain->SetBranchAddress("rpcRecHits_Z", rpcRecHits_Z, &b_rpcRecHits_Z);
+   fChain->SetBranchAddress("rpcRecHits_Phi", rpcRecHits_Phi, &b_rpcRecHits_Phi);
+   fChain->SetBranchAddress("rpcRecHits_Eta", rpcRecHits_Eta, &b_rpcRecHits_Eta);
+   fChain->SetBranchAddress("rpcRecHits_Time", rpcRecHits_Time, &b_rpcRecHits_Time);
+   fChain->SetBranchAddress("rpcRecHits_TimeError", rpcRecHits_TimeError, &b_rpcRecHits_TimeError);
+  
+
    fChain->SetBranchAddress("nCscSeg", &nCscSeg, &b_nCscSeg);
    fChain->SetBranchAddress("nCscRechits", &nCscRechits, &b_nCscRechits);
    fChain->SetBranchAddress("nDtSeg", &nDtSeg, &b_nDtSeg);

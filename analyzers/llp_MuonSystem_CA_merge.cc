@@ -108,6 +108,8 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
   bool signalScan = int(options/10) == 1;
   int option = options%10;
+
+
   // if (options % 1){
   //   option = 1; // used when running condor
   // }
@@ -225,22 +227,60 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       cout << "Time taken by program is : " << time_taken << endl;
       start = clock();
     }
-    // if (jentry<4000)continue;
-    // cout<<jentry<<endl;
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
-    //GetEntry(ientry);
     nb = fChain->GetEntry(jentry); nbytes += nb;
 
     //fill normalization histogram
     MuonSystem->InitVariables();
-      auto eleCharge = Electron_charge;       // eleCharge
+    
+    //// USING MDS NANO
+    /*auto nCscSeg = ncscSegments;
+    auto nDtSeg = ndtSegments;
+    auto nDtRechits = ndtRecHits;
+    auto nRpc = nrpcRecHits;
+    auto cscRechitsPhi = cscRechits_Phi;
+    auto cscRechitsEta = cscRechits_Eta;
+    auto cscRechitsX = cscRechits_X;
+    auto cscRechitsY = cscRechits_Y;
+    auto cscRechitsZ = cscRechits_Z;
+    auto cscRechitsTpeak = cscRechits_Tpeak;
+    auto cscRechitsTwire = cscRechits_Twire;
+    auto cscRechitsChamber = cscRechits_Chamber;
+    auto cscRechitsStation = cscRechits_Station;
+
+    auto dtRechitCorrectX = dtRecHits_X;
+    auto dtRechitCorrectY = dtRecHits_Y;
+    auto dtRechitCorrectZ = dtRecHits_Z;
+    auto dtRechitCorrectEta = dtRecHits_Eta;
+    auto dtRechitCorrectPhi = dtRecHits_Phi;
+    auto dtRechitStation = dtRecHits_Station;
+    auto dtRechitWheel = dtRecHits_Wheel;
+    auto dtRechitSuperLayer = dtRecHits_SuperLayer;
+
+    auto dtSegStation = dtSegments_Station;
+    auto dtSegPhi = dtSegments_Phi;
+    auto dtSegEta = dtSegments_Eta;
+    auto rpcPhi = rpcRecHits_Phi;
+    auto rpcEta = rpcRecHits_Eta;
+    auto rpcX = rpcRecHits_X;
+    auto rpcY = rpcRecHits_Y;
+    auto rpcZ = rpcRecHits_Z;
+    
+    auto rpcBx = rpcRecHits_Bx;
+    auto rpcRegion = rpcRecHits_Region;
+    auto rpcRing = rpcRecHits_Ring;*/
+    ////////////////////       
+    
+    auto ncscRechits = nCscRechits;             // ncscRechits //comment out for MDS nano, leave it on for merged
+
+    auto eleCharge = Electron_charge;       // eleCharge
     auto eleEta = Electron_eta;             // eleEta
     auto elePhi = Electron_phi;             // elePhi
     auto elePt = Electron_pt;               // elePt
     auto ele_dZ = Electron_dz;              // ele_dZ
-    bool ele_passCutBasedIDTight[10] = {0}; // ele_passCutBasedIDTight
-    bool ele_passCutBasedIDVeto[10] = {0};  // ele_passCutBasedIDVeto
+    bool ele_passCutBasedIDTight[nElectron] = {0}; // ele_passCutBasedIDTight
+    bool ele_passCutBasedIDVeto[nElectron] = {0};  // ele_passCutBasedIDVeto
 
     for (int i = 0; i < nElectron; i++)
     {
@@ -250,7 +290,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     auto eventNum = event;                                    // eventNum
     auto fixedGridRhoFastjetAll = Rho_fixedGridRhoFastjetAll; // fixedGridRhoFastjetAll
 
-    Float_t jetE[150] = {0}; // jetE
+    Float_t jetE[nJet] = {0}; // jetE
     for (int i = 0; i < nJet; ++i)
     {
       auto eta = Jet_eta[i];
@@ -260,8 +300,8 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       jetE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
     auto jetEta = Jet_eta;         // jetEta
-    bool jetPassIDTightLepVeto[150] = {0}; // jetPassIDLoose
-    bool jetPassIDTight[150] = {0}; // jetPassIDTight
+    bool jetPassIDTightLepVeto[nJet] = {0}; // jetPassIDLoose
+    bool jetPassIDTight[nJet] = {0}; // jetPassIDTight
     for (int i = 0; i < nJet; ++i)
     {
       jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
@@ -279,7 +319,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     }
     
     auto muonCharge = Muon_charge;  // muonCharge
-    Float_t muonE[50] = {0};        // muonE
+    Float_t muonE[nMuon] = {0};        // muonE
     for (int i = 0; i < nMuon; ++i)
     {
       auto eta = Muon_eta[i];
@@ -300,7 +340,6 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     auto nJets = nJet;                          // nJets
     auto nMuons = nMuon;                        // nMuons
     int nPV = PV_npvs;                          // nPV
-    auto ncscRechits = nCscRechits;             // ncscRechits
     auto runNum = run;                          // runNum
 
     auto *lheComments = (string *)"123";
@@ -364,7 +403,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     MuonSystem->evtNum = eventNum;
 
     if (isData && runNum < 360019)continue;
-
+    bool llp_flag = false;
     if (!isData)
     {
        for(int i = 0; i < 2;i++)
@@ -392,6 +431,9 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
              && MuonSystem->gLLP_decay_vertex_r[i] < 800
               && MuonSystem->gLLP_decay_vertex_r[i] > 200.0) MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
 
+	   if (abs(MuonSystem->gLLP_decay_vertex_z[i])< 1500 && 
+			   MuonSystem->gLLP_decay_vertex_r[i] < 1000 &&
+			   MuonSystem->gLLP_decay_vertex_r[i]>100 )llp_flag = true;
             MuonSystem->nGLLP++;
        }
 
@@ -404,7 +446,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       MuonSystem->pileupWeightUp = helper->getPileupWeightUp(Pileup_nTrueInt) / MuonSystem->pileupWeight;
       MuonSystem->pileupWeightDown = helper->getPileupWeightDown(Pileup_nTrueInt) / MuonSystem->pileupWeight;
 
-
+    //  if (!llp_flag)continue;
     }//end of isData
 
       //get NPU
@@ -461,7 +503,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
           }
         }
       }
-      
+
 
       // jet veto map, following selections here: https://cms-jerc.web.cern.ch/Recommendations/#jet-veto-maps
       MuonSystem->jetVeto = true;
@@ -606,7 +648,6 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
       sort(Jets.begin(), Jets.end(), my_largest_pt_jet);
 
-      continue;
 
 
       for ( auto &tmp : Jets )
@@ -622,8 +663,6 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
 
         MuonSystem->nJets++;
       }
-
-
 
 
       MuonSystem->nDTRechits  = 0;
@@ -724,12 +763,13 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       int nCscRechitsChamberMinus41 = 0;
       int nCscRechitsChamberMinus42 = 0;
 
+      
       for (int i = 0; i < ncscRechits; i++) {
-
+        // cout<<cscRechitsChamber[i]<<endl;
         //pick out the right bits for chamber
-        int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
+        // int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
 
-        int layer = (cscRechitsDetId[i] & 07);
+        int layer = 0;
         Rechits p;
         p.phi = cscRechitsPhi[i];
         p.eta = cscRechitsEta[i];
@@ -802,7 +842,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       MuonSystem->nCscRechitClusters_nocut = 0;
       for ( auto &tmp : ds.clusters  ) {
 	  MuonSystem->nCscRechitClusters_nocut++;
-	  if (tmp.nCscRechitsChamberPlus11 + tmp.nCscRechitsChamberPlus12 + tmp.nCscRechitsChamberMinus11 + tmp.nCscRechitsChamberMinus12 > 0)continue;
+	  //if (tmp.nCscRechitsChamberPlus11 + tmp.nCscRechitsChamberPlus12 + tmp.nCscRechitsChamberMinus11 + tmp.nCscRechitsChamberMinus12 > 0)continue;
           MuonSystem->cscRechitClusterX[MuonSystem->nCscRechitClusters] =tmp.x;
           MuonSystem->cscRechitClusterY[MuonSystem->nCscRechitClusters] =tmp.y;
           MuonSystem->cscRechitClusterZ[MuonSystem->nCscRechitClusters] =tmp.z;
@@ -1296,7 +1336,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
       //if (MuonSystem->nCscRechitClusters_nocut == 0)continue;
       //if (MuonSystem->nCscRechitClusters == 0)continue;
 
-      if (MuonSystem->nDtRechitClusters_nocut + MuonSystem->nCscRechitClusters_nocut < 2) continue;
+      //if (MuonSystem->nDtRechitClusters_nocut + MuonSystem->nCscRechitClusters_nocut < 2) continue;
       //if (MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 2) continue;
 
       if(!isData && signalScan)
