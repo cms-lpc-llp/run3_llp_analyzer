@@ -2053,12 +2053,38 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     if (nCscRechitsChamberMinus42 > 50)
       MuonSystem->nCscRings++;
 
+    if (!MuonSystem->jetVeto)
+      continue;
+    
+    if (
+      !(
+      Flag_goodVertices &&
+      Flag_globalSuperTightHalo2016Filter &&
+      Flag_EcalDeadCellTriggerPrimitiveFilter &&
+      Flag_BadPFMuonFilter &&
+      Flag_BadPFMuonDzFilter &&
+      Flag_hfNoisyHitsFilter &&
+      Flag_eeBadScFilter &&
+      Flag_ecalBadCalibFilter
+      )
+    )
+      continue;
+
+
     if (MuonSystem->nCscRings + MuonSystem->nDtRings >= 10)
       continue;
-    if (ncscRechits > 5000)
-      continue;
-    if (nDtRechits > 5000)
-      continue;
+    if (ncscRechits > 8000)
+    {
+      std::cerr << "number of csc rechits is too high for " << runNum << ":" << eventNum << std::endl;
+      std::cerr << "(nCscRechits, nDtRechits) = (" << ncscRechits << ", " << nDtRechits << ")" << std::endl;
+      throw std::overflow_error("number of csc rechits is too high");
+    }
+    if (nDtRechits > 8000)
+    {
+      std::cerr << "number of dt rechits is too high for " << runNum << ":" << eventNum << std::endl;
+      std::cerr << "(nCscRechits, nDtRechits) = (" << ncscRechits << ", " << nDtRechits << ")" << std::endl;
+      throw std::overflow_error("number of dt rechits is too high");
+    }
 
     // Do DBSCAN Clustering
 
@@ -2239,6 +2265,8 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->cscRechitClusterMet_dPhi[MuonSystem->nCscRechitClusters] = RazorAnalyzerMerged::deltaPhi(MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters], MuonSystem->metPhi);
       MuonSystem->nCscRechitClusters++;
     }
+    if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1)
+      continue;
 
     // DT cluster
 
@@ -2639,9 +2667,6 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       memcpy(MuonSystem->Tau_genPartFlav, Tau_genPartFlav, sizeof(Tau_genPartFlav));
       memcpy(MuonSystem->Tau_genPartIdx, Tau_genPartIdx, sizeof(Tau_genPartIdx));
   }
-
-    if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1)
-      continue;
 
     if (!isData && signalScan)
     {
