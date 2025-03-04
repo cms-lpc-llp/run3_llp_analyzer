@@ -40,7 +40,14 @@ mc_map = {
     'Run2023B': 'Summer23',
     'Run2023C': 'Summer23',
     'Run2023D': 'Summer23BPix',
-    'Run2024': 'Summer24',
+    'Run2024B': 'Winter24',
+    'Run2024C': 'Winter24',
+    'Run2024D': 'Winter24',
+    'Run2024E': 'Winter24',
+    'Run2024F': 'Winter24',
+    'Run2024G': 'Winter24',
+    'Run2024H': 'Winter24',
+    'Run2024I': 'Winter24',
 }
 
 
@@ -64,7 +71,7 @@ def compute_jet_mask(f, campaign: str):
     eta = f['/Events/Jet_eta'].array()
     pt = f['/Events/Jet_pt'].array()
     phi = f['/Events/Jet_phi'].array()
-    met_phi = f['/Events/MET_phi'].array()
+    met_phi = f['/Events/PuppiMET_phi'].array()
     layout = ak.num(eta)
 
     np_eta = np.asarray(ak.ravel(eta))
@@ -81,7 +88,7 @@ def compute_jet_mask(f, campaign: str):
     else:
         run_num = f['/Events/run'].array()
         run_num = ak.broadcast_arrays(run_num, eta)[0]
-        met = f['/Events/MET_pt'].array()
+        met = f['/Events/PuppiMET_phi'].array()
         met = ak.broadcast_arrays(met, eta)[0]
         neEmEF, chEmEF = f['/Events/Jet_neEmEF'].array(), f['/Events/Jet_chEmEF'].array()
         _bad_ecal_cali_reject = (
