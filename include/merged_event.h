@@ -345,6 +345,8 @@ public:
    Float_t Jet_phi[150];                      //[nJet]
    Float_t Jet_pt[150];                       //[nJet]
    Float_t Jet_rawFactor[150];                //[nJet]
+   Int_t Jet_chMultiplicity[150];
+   Int_t Jet_neMultiplicity[150];
    Int_t nLowPtElectron;
    Bool_t LowPtElectron_convVeto[11];          //[nLowPtElectron]
    UChar_t LowPtElectron_convWP[11];           //[nLowPtElectron]
@@ -2105,6 +2107,8 @@ public:
    TBranch *b_Jet_phi;                                                                                               //!
    TBranch *b_Jet_pt;                                                                                                //!
    TBranch *b_Jet_rawFactor;                                                                                         //!
+   TBranch *b_Jet_chMultiplicity;
+   TBranch *b_Jet_neMultiplicity;
    TBranch *b_nLowPtElectron;                                                                                        //!
    TBranch *b_LowPtElectron_convVeto;                                                                                //!
    TBranch *b_LowPtElectron_convWP;                                                                                  //!
@@ -3546,6 +3550,63 @@ public:
    TBranch *b_rpcStation;                                                                                            //!
    TBranch *b_rpcLayer;                                                                                              //!
 
+
+   ////// for MDS nano ////////
+   // TBranch *b_ncscRechits;
+   // TBranch *b_cscRechits_Quality;
+   // TBranch *b_cscRechits_Chamber;
+   // TBranch *b_cscRechits_Station;
+   // TBranch *b_cscRechits_X;
+   // TBranch *b_cscRechits_Y;
+   // TBranch *b_cscRechits_Z;
+   // TBranch *b_cscRechits_Phi;
+   // TBranch *b_cscRechits_Eta;
+   // TBranch *b_cscRechits_Tpeak;
+   // TBranch *b_cscRechits_Twire;
+   // TBranch *b_ncscSegments;
+   // TBranch *b_cscSegments_Station;
+   // TBranch *b_cscSegments_Chamber;
+   // TBranch *b_cscSegments_IChamber;
+   // TBranch *b_cscSegments_X;
+   // TBranch *b_cscSegments_Y;
+   // TBranch *b_cscSegments_Z;
+   // TBranch *b_cscSegments_Phi;
+   // TBranch *b_cscSegments_Eta;
+   // TBranch *b_cscSegments_Time;
+   // TBranch *b_cscSegments_Chi2;
+   // TBranch *b_ndtRecHits;
+   // TBranch *b_dtRecHits_Layer;
+   // TBranch *b_dtRecHits_SuperLayer;
+   // TBranch *b_dtRecHits_Station;
+   // TBranch *b_dtRecHits_Wheel;
+   // TBranch *b_dtRecHits_X;
+   // TBranch *b_dtRecHits_Y;
+   // TBranch *b_dtRecHits_Z;
+   // TBranch *b_dtRecHits_Phi;
+   // TBranch *b_dtRecHits_Eta;
+   // TBranch *b_ndtSegments;
+   // TBranch *b_dtSegments_Station;
+   // TBranch *b_dtSegments_Wheel;
+   // TBranch *b_dtSegments_X;
+   // TBranch *b_dtSegments_Y;
+   // TBranch *b_dtSegments_Z;
+   // TBranch *b_dtSegments_Phi;
+   // TBranch *b_dtSegments_Eta;
+   // TBranch *b_nrpcRecHits;
+   // TBranch *b_rpcRecHits_Bx;
+   // TBranch *b_rpcRecHits_Region;
+   // TBranch *b_rpcRecHits_Ring;
+   // TBranch *b_rpcRecHits_Layer;
+   // TBranch *b_rpcRecHits_Station;
+   // TBranch *b_rpcRecHits_Sector;
+   // TBranch *b_rpcRecHits_X;
+   // TBranch *b_rpcRecHits_Y;
+   // TBranch *b_rpcRecHits_Z;
+   // TBranch *b_rpcRecHits_Phi;
+   // TBranch *b_rpcRecHits_Eta;
+   // TBranch *b_rpcRecHits_Time;
+   // TBranch *b_rpcRecHits_TimeError;
+
    merged_event(TTree *tree = 0);
    virtual ~merged_event();
    virtual Int_t Cut(Long64_t entry);
@@ -3941,6 +4002,8 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_phi", Jet_phi, &b_Jet_phi);
    fChain->SetBranchAddress("Jet_pt", Jet_pt, &b_Jet_pt);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
+   fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
+   fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
    fChain->SetBranchAddress("nLowPtElectron", &nLowPtElectron, &b_nLowPtElectron);
    fChain->SetBranchAddress("LowPtElectron_convVeto", LowPtElectron_convVeto, &b_LowPtElectron_convVeto);
    fChain->SetBranchAddress("LowPtElectron_convWP", LowPtElectron_convWP, &b_LowPtElectron_convWP);
@@ -5382,6 +5445,66 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("rpcSector", rpcSector, &b_rpcSector);
    fChain->SetBranchAddress("rpcStation", rpcStation, &b_rpcStation);
    fChain->SetBranchAddress("rpcLayer", rpcLayer, &b_rpcLayer);
+
+
+   // MDS Nano patch
+      
+   fChain->SetBranchAddress("ncscRechits", &b_nCscRechits, &b_nCscRechits);
+   // fChain->SetBranchAddress("cscRechits_Quality", cscRechitsQuality, &b_cscRechits_Quality);
+   fChain->SetBranchAddress("cscRechits_Chamber", cscRechitsChamber, &b_cscRechitsChamber);
+   fChain->SetBranchAddress("cscRechits_Station", cscRechitsStation, &b_cscRechitsStation);
+   fChain->SetBranchAddress("cscRechits_X", cscRechitsX, &b_cscRechitsX);
+   fChain->SetBranchAddress("cscRechits_Y", cscRechitsY, &b_cscRechitsY);
+   fChain->SetBranchAddress("cscRechits_Z", cscRechitsZ, &b_cscRechitsZ);
+   fChain->SetBranchAddress("cscRechits_Phi", cscRechitsPhi, &b_cscRechitsPhi);
+   fChain->SetBranchAddress("cscRechits_Eta", cscRechitsEta, &b_cscRechitsEta);
+   fChain->SetBranchAddress("cscRechits_Tpeak", cscRechitsTpeak, &b_cscRechitsTpeak);
+   fChain->SetBranchAddress("cscRechits_Twire", cscRechitsTwire, &b_cscRechitsTwire);
+   // fChain->SetBranchAddress("ncscSegments", &nCscSegments, &b_ncscSegments);
+   // fChain->SetBranchAddress("cscSegments_Station", cscSegments_Station, &b_cscSegments_Station);
+   // fChain->SetBranchAddress("cscSegments_Chamber", cscSegments_Chamber, &b_cscSegments_Chamber);
+   // fChain->SetBranchAddress("cscSegments_IChamber", cscSegments_IChamber, &b_cscSegments_IChamber);
+   // fChain->SetBranchAddress("cscSegments_X", cscSegments_X, &b_cscSegments_X);
+   // fChain->SetBranchAddress("cscSegments_Y", cscSegments_Y, &b_cscSegments_Y);
+   // fChain->SetBranchAddress("cscSegments_Z", cscSegments_Z, &b_cscSegments_Z);
+   // fChain->SetBranchAddress("cscSegments_Phi", cscSegments_Phi, &b_cscSegments_Phi);
+   // fChain->SetBranchAddress("cscSegments_Eta", cscSegments_Eta, &b_cscSegments_Eta);
+   // fChain->SetBranchAddress("cscSegments_Time", cscSegments_Time, &b_cscSegments_Time);
+   // fChain->SetBranchAddress("cscSegments_Chi2", cscSegments_Chi2, &b_cscSegments_Chi2);
+   
+   fChain->SetBranchAddress("ndtRecHits", &nDtRechits, &b_nDtRechits);
+   // fChain->SetBranchAddress("dtRecHits_Layer", dtRechitsChamber, &b_dtRechitsChamber);   
+   fChain->SetBranchAddress("dtRecHits_SuperLayer", dtRechitSuperLayer, &b_dtRechitSuperLayer);
+   fChain->SetBranchAddress("dtRecHits_Station", dtRechitStation, &b_dtRechitStation);
+   fChain->SetBranchAddress("dtRecHits_Wheel", dtRechitWheel, &b_dtRechitWheel);
+   fChain->SetBranchAddress("dtRecHits_X", dtRechitCorrectX, &b_dtRechitCorrectX);
+   fChain->SetBranchAddress("dtRecHits_Y", dtRechitCorrectY, &b_dtRechitCorrectY);
+   fChain->SetBranchAddress("dtRecHits_Z", dtRechitCorrectZ, &b_dtRechitCorrectZ);
+   fChain->SetBranchAddress("dtRecHits_Phi", dtRechitCorrectPhi, &b_dtRechitCorrectPhi);
+   fChain->SetBranchAddress("dtRecHits_Eta", dtRechitCorrectEta, &b_dtRechitCorrectEta);
+   // fChain->SetBranchAddress("ndtSegments", &ndtSegments, &b_ndtSegments);
+   // fChain->SetBranchAddress("dtSegments_Station", dtSegments_Station, &b_dtSegments_Station);
+   // fChain->SetBranchAddress("dtSegments_Wheel", dtSegments_Wheel, &b_dtSegments_Wheel);
+   // fChain->SetBranchAddress("dtSegments_X", dtSegments_X, &b_dtSegments_X);
+   // fChain->SetBranchAddress("dtSegments_Y", dtSegments_Y, &b_dtSegments_Y);
+   // fChain->SetBranchAddress("dtSegments_Z", dtSegments_Z, &b_dtSegments_Z);
+   // fChain->SetBranchAddress("dtSegments_Phi", dtSegments_Phi, &b_dtSegments_Phi);
+   // fChain->SetBranchAddress("dtSegments_Eta", dtSegments_Eta, &b_dtSegments_Eta);
+   
+   // fChain->SetBranchAddress("nrpcRecHits", &nrpcRecHits, &b_nrpcRecHits);
+   // fChain->SetBranchAddress("rpcRecHits_Bx", rpcRecHits_Bx, &b_rpcRecHits_Bx);
+   // fChain->SetBranchAddress("rpcRecHits_Region", rpcRecHits_Region, &b_rpcRecHits_Region);
+   // fChain->SetBranchAddress("rpcRecHits_Ring", rpcRecHits_Ring, &b_rpcRecHits_Ring);
+   // fChain->SetBranchAddress("rpcRecHits_Layer", rpcRecHits_Layer, &b_rpcRecHits_Layer);
+   // fChain->SetBranchAddress("rpcRecHits_Station", rpcRecHits_Station, &b_rpcRecHits_Station);
+   // fChain->SetBranchAddress("rpcRecHits_Sector", rpcRecHits_Sector, &b_rpcRecHits_Sector);
+   // fChain->SetBranchAddress("rpcRecHits_X", rpcRecHits_X, &b_rpcRecHits_X);
+   // fChain->SetBranchAddress("rpcRecHits_Y", rpcRecHits_Y, &b_rpcRecHits_Y);
+   // fChain->SetBranchAddress("rpcRecHits_Z", rpcRecHits_Z, &b_rpcRecHits_Z);
+   // fChain->SetBranchAddress("rpcRecHits_Phi", rpcRecHits_Phi, &b_rpcRecHits_Phi);
+   // fChain->SetBranchAddress("rpcRecHits_Eta", rpcRecHits_Eta, &b_rpcRecHits_Eta);
+   // fChain->SetBranchAddress("rpcRecHits_Time", rpcRecHits_Time, &b_rpcRecHits_Time);
+   // fChain->SetBranchAddress("rpcRecHits_TimeError", rpcRecHits_TimeError, &b_rpcRecHits_TimeError);
    Notify();
 }
 
