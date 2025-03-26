@@ -1459,9 +1459,37 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     bool jetPassIDTight[150] = {0}; // jetPassIDTight
     for (int i = 0; i < nJet; ++i)
     {
-      jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
-      jetPassIDTightLepVeto[i] = (Jet_jetId[i] & 4) != 0;
+      // jetPassIDTight[i] = (Jet_jetId[i] & 2) != 0;
+      // jetPassIDTightLepVeto[i] = (Jet_jetId[i] & 4) != 0;
 
+      bool Jet_passJetIdTight = false;
+      if (analysisTag=="Summer22" || analysisTag=="Summer22EE" || analysisTag=="Summer23" ||analysisTag=="Summer23BPix")
+      {
+        if (abs(Jet_eta[i]) <= 2.7) Jet_passJetIdTight = Jet_jetId[i] & (1 << 1);
+        else if (abs(Jet_eta[i]) > 2.7 && abs(Jet_eta[i]) <= 3.0) Jet_passJetIdTight = (Jet_jetId[i] & (1 << 1)) && (Jet_neHEF[i] < 0.99);
+        else if (abs(Jet_eta[i]) > 3.0) Jet_passJetIdTight = (Jet_jetId[i] & (1 << 1)) && (Jet_neEmEF[i] < 0.4);
+      }
+      else if (analysisTag == "Summer24"){
+        if (abs(Jet_eta[i]) <= 2.6) 
+          Jet_passJetIdTight = (Jet_neHEF[i] < 0.99) && (Jet_neEmEF[i] < 0.9) && (Jet_chHEF[i] > 0.01) && (Jet_chMultiplicity[i] > 0) && (Jet_chMultiplicity[i]+Jet_neMultiplicity[i] > 1);
+        else if (abs(Jet_eta[i]) > 2.6 && abs(Jet_eta[i]) <= 2.7)
+          Jet_passJetIdTight = (Jet_neHEF[i] < 0.90) && (Jet_neEmEF[i] < 0.99);
+        else if (abs(Jet_eta[i]) > 2.7 && abs(Jet_eta[i]) <= 3.0)
+          Jet_passJetIdTight = (Jet_neHEF[i] < 0.99);
+        else if (abs(Jet_eta[i]) > 3.0)
+          Jet_passJetIdTight = (Jet_neMultiplicity[i] >= 2) && (Jet_neEmEF[i] < 0.4);
+
+      }
+      else {
+        throw invalid_argument("Invalid analysis tag: " + analysisTag);
+      }
+
+      jetPassIDTight[i] = Jet_passJetIdTight;
+
+      bool Jet_passJetIdTightLepVeto = false;
+      if (abs(Jet_eta[i]) <= 2.7) Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF[i] < 0.8) && (Jet_chEmEF[i] < 0.8);
+      else Jet_passJetIdTightLepVeto = Jet_passJetIdTight;
+      jetPassIDTightLepVeto[i] = Jet_passJetIdTightLepVeto;
     }
     auto jetPhi = Jet_phi;          // jetPhi
     auto jetPt = Jet_pt;            // jetPt
@@ -2073,13 +2101,13 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
     if (MuonSystem->nCscRings + MuonSystem->nDtRings >= 10)
       continue;
-    if (ncscRechits > 8000)
+    if (ncscRechits > 8100)
     {
       std::cerr << "number of csc rechits is too high for " << runNum << ":" << eventNum << std::endl;
       std::cerr << "(nCscRechits, nDtRechits) = (" << ncscRechits << ", " << nDtRechits << ")" << std::endl;
       throw std::overflow_error("number of csc rechits is too high");
     }
-    if (nDtRechits > 8000)
+    if (nDtRechits > 8100)
     {
       std::cerr << "number of dt rechits is too high for " << runNum << ":" << eventNum << std::endl;
       std::cerr << "(nCscRechits, nDtRechits) = (" << ncscRechits << ", " << nDtRechits << ")" << std::endl;
