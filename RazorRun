@@ -7,6 +7,7 @@ else
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer22EE.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23BPix.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer24.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/L1_efficiencies_2022_2023_082324-TEff.root .
 
 
@@ -15,6 +16,7 @@ else
     cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Winter24Prompt24_2024BCDEFGHI.root .
     cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer22_23Sep2023_RunCD_v1.root .
     cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer23Prompt23_RunC_v1.root .
+    cp -r ${CMSSW_BASE}/src/run3_llp_analyzer/data/JEC .
    echo $1 $2
     ./Run$2 $1 ${@:3}
     rm -rf Run$2
