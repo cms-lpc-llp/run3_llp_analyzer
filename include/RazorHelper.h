@@ -14,6 +14,10 @@
 #include "TRandom.h"
 
 
+#include "JetCorrectionUncertainty.h"
+
+
+
 #include "RazorAnalyzer.h"
 
 class RazorHelper {
@@ -35,6 +39,8 @@ class RazorHelper {
 
         double getJetVetoMap(float eta, float phi);
         double getJetVetoFpixMap(float eta, float phi);
+        bool jetTightLepVeto(std::string tag, bool tightVeto, float Jet_neHEF, float Jet_neEmEF, float Jet_chEmEF, float Jet_muEF, float Jet_chHEF, UChar_t Jet_chMultiplicity,UChar_t Jet_neMultiplicity, float Jet_eta, bool Jet_jetId);
+        double getJecUnc( float pt, float eta , int run);
 
 
     private:
@@ -63,6 +69,7 @@ class RazorHelper {
         void loadJetVeto_Summer23BPix();
         void loadJetVeto_Summer24();
         
+        void loadJECs();
 
         //for Razor Razor2018
         void loadPileup_Razor2018_17SeptEarlyReReco();
@@ -86,6 +93,11 @@ class RazorHelper {
         TFile *JetVetoFile;
         TH2D *JetVetoHist;
         TH2D *JetVetoFpixHist;
+
+
+        std::vector<JetCorrectionUncertainty*> jecUnc;
+	    std::vector<std::pair<int,int> > JetCorrectionsIOV;
+
 
         TFile *HMTEffFile;
 

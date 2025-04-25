@@ -12,7 +12,7 @@
 #define N_CSC_CUT 20
 #define JET_PT_CUT 10
 #define MUON_PT_CUT 20
-#define N_MAX_GPARTICLES 5000
+#define N_MAX_GPARTICLES 500
 #define N_MAX_LLP 200
 
 #include <iostream>
@@ -53,10 +53,11 @@ public:
   float pileupWeight, pileupWeightUp, pileupWeightDown;
   bool HLT_CSCCSC,HLT_CSCDT, jetVeto;
   float met, metPhi, Puppimet, PuppimetPhi;
+  float PuppimetJESUp, PuppimetJESDown, PuppimetPhiJESDown, PuppimetPhiJESUp;
   bool Flag_goodVertices, Flag_EcalDeadCellTriggerPrimitiveFilter, Flag_BadPFMuonFilter, Flag_BadPFMuonDzFilter, Flag_globalSuperTightHalo2016Filter,
   Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;
   int mH, mX, ctau;
-
+  float scaleWeights[9];
 
   //csc
   int           nCscRechits;
@@ -134,6 +135,8 @@ public:
   int           dtRechitClusterNChamber[N_MAX_CSC];
 
   float         dtRechitClusterJetVetoPt[N_MAX_CSC];
+  float         dtRechitClusterJetVetoPtJESDown[N_MAX_CSC];
+  float         dtRechitClusterJetVetoPtJESUp[N_MAX_CSC];
   float         dtRechitClusterJetVetoE[N_MAX_CSC];
   bool         dtRechitClusterJetVetoLooseId[N_MAX_CSC];
   bool         dtRechitClusterJetVetoTightId[N_MAX_CSC];
@@ -231,6 +234,8 @@ public:
   int           cscRechitClusterNChamber[N_MAX_CSC];
 
   float         cscRechitClusterJetVetoPt[N_MAX_CSC];
+  float         cscRechitClusterJetVetoPtJESDown[N_MAX_CSC];
+  float         cscRechitClusterJetVetoPtJESUp[N_MAX_CSC];
   bool         cscRechitClusterJetVetoLooseId[N_MAX_CSC];
   bool         cscRechitClusterJetVetoTightId[N_MAX_CSC];
   float         cscRechitClusterJetVetoE[N_MAX_CSC];
@@ -291,6 +296,7 @@ public:
   float         cscRechitClusterPuppiMet_dPhi[N_MAX_CSC];
 
 
+
   //gLLP
   int nGLLP;
   float gLLP_eta[N_MAX_LLP];
@@ -310,6 +316,21 @@ public:
   float gHiggsEta;
   float gHiggsPhi;
   float gHiggsE;
+  
+  int nGenParticles;
+  float gParticleEta[N_MAX_GPARTICLES];
+  float gParticlePhi[N_MAX_GPARTICLES];
+  float gParticlePt[N_MAX_GPARTICLES];
+  int gParticleId[N_MAX_GPARTICLES];
+  float gParticle_decay_vertex_r[N_MAX_GPARTICLES];
+  float gParticle_decay_vertex_x[N_MAX_GPARTICLES];
+  float gParticle_decay_vertex_y[N_MAX_GPARTICLES];
+  float gParticle_decay_vertex_z[N_MAX_GPARTICLES];
+
+  float gParticle_ctau[N_MAX_GPARTICLES];
+  float gParticle_beta[N_MAX_GPARTICLES];
+
+
 
   //leptons
 

@@ -85,6 +85,8 @@ void RazorHelper::loadTag_Summer22() {
   loadPileup_Summer22();
   loadHMTEfficiency();
   loadJetVeto_Summer22();
+  loadJECs();
+
 }
 
 void RazorHelper::loadPileup_Summer22() {
@@ -110,6 +112,8 @@ void RazorHelper::loadTag_Summer22EE() {
   loadPileup_Summer22EE();
    loadHMTEfficiency();
     loadJetVeto_Summer22EE();
+    loadJECs();
+
 }
 
 void RazorHelper::loadPileup_Summer22EE() {
@@ -134,6 +138,8 @@ void RazorHelper::loadTag_Summer23() {
   loadPileup_Summer23();
     loadHMTEfficiency();
     loadJetVeto_Summer23();
+    loadJECs();
+
 }
 
 void RazorHelper::loadPileup_Summer23() {
@@ -157,7 +163,7 @@ void RazorHelper::loadTag_Summer23BPix() {
   loadPileup_Summer23BPix();
     loadHMTEfficiency();
     loadJetVeto_Summer23BPix();
-
+    loadJECs();
 }
 
 void RazorHelper::loadPileup_Summer23BPix() {
@@ -181,12 +187,14 @@ void RazorHelper::loadTag_Summer24() {
   loadPileup_Summer24();
   loadHMTEfficiency();
   loadJetVeto_Summer24();
+  loadJECs();
+
 }
 
 void RazorHelper::loadPileup_Summer24() {
     // pileup weights
     std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-    pileupWeightFile = TFile::Open("PileupReweight_Summer23BPix.root");
+    pileupWeightFile = TFile::Open("PileupReweight_Summer24.root");
     pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
     pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
     pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -205,6 +213,75 @@ void RazorHelper::loadJetVeto_Summer24() {
 //  Utilities
 ////////////////////////////////////////////////
 
+//// GET JET UNC for 22-24
+double RazorHelper::getJecUnc( float pt, float eta , int run) {
+
+    int foundIndex = -1;
+    for (uint i=0; i<JetCorrectionsIOV.size(); i++) {
+      if (run >= JetCorrectionsIOV[i].first && run <= JetCorrectionsIOV[i].second) {
+        foundIndex = i;
+      }
+    }
+    if (foundIndex == -1) {
+      std::cout << "Warning: run = " << run << " was not found in any valid IOV range. use default index = 0 for Jet energy corrections. \n";
+      foundIndex = 0;
+    }
+  
+    jecUnc[foundIndex]->setJetPt(pt);
+    jecUnc[foundIndex]->setJetEta(eta);
+    return jecUnc[foundIndex]->getUncertainty(true);
+  }
+
+void RazorHelper::loadJECs() {
+    std::cout << "RazorHelper: loading jet energy correction constants, using 2018_17SeptEarlyReReco" << std::endl;
+    // initialize
+    std::string jecPathname = "JEC/";
+
+    jecUnc = std::vector<JetCorrectionUncertainty*>();
+    JetCorrectionsIOV = std::vector<std::pair<int,int> >();
+    if (isData) {
+      std::string jecUncPathA = jecPathname+"/Summer22_22Sep2023_V2_MC_Uncertainty_AK4PFPuppi"; //place holder for now, since we dont evaluate on data
+      JetCorrectionUncertainty *jecUncA = new JetCorrectionUncertainty(jecUncPathA);
+      jecUnc.push_back(jecUncA);
+      JetCorrectionsIOV.push_back( std::pair<int,int>( 352319, 387121 ));
+    }
+    else {
+      std::cout << "Loading Jet Energy Corrections: 22-24 \n";
+      std::string jecUncPath = jecPathname+"/Summer22_22Sep2023_V2_MC_Uncertainty_AK4PFPuppi.txt"; //same file works for 22-24 2025/04/25
+      JetCorrectionUncertainty *jecUncMC = new JetCorrectionUncertainty(jecUncPath);
+      jecUnc.push_back(jecUncMC);
+      JetCorrectionsIOV.push_back( std::pair<int,int>( -1, 99999999 ));
+    }
+}
+
+
+//implemented based on these: https://gitlab.cern.ch/cms-jetmet/coordination/coordination/-/issues/117
+bool RazorHelper::jetTightLepVeto(std::string tag, bool tightVeto, float Jet_neHEF, float Jet_neEmEF, float Jet_chEmEF, float Jet_muEF, float Jet_chHEF, UChar_t Jet_chMultiplicity,UChar_t Jet_neMultiplicity, float Jet_eta, bool Jet_jetId){
+	bool Jet_passJetIdTightLepVeto = false;
+    bool Jet_passJetIdTight = false;
+
+    if (tag == "Summer24"){
+        if (abs(Jet_eta) <= 2.6) Jet_passJetIdTight = (Jet_neHEF < 0.99) && (Jet_neEmEF < 0.9) && (Jet_chMultiplicity+Jet_neMultiplicity > 1) && (Jet_chHEF > 0.01) && (Jet_chMultiplicity > 0);
+        else if (abs(Jet_eta) > 2.6 && abs(Jet_eta) <= 2.7)Jet_passJetIdTight = (Jet_neHEF < 0.90) && (Jet_neEmEF < 0.99);
+        else if (abs(Jet_eta) > 2.7 && abs(Jet_eta) <= 3.0)Jet_passJetIdTight = (Jet_neHEF < 0.99);
+        else if (abs(Jet_eta) > 3.0)Jet_passJetIdTight = (Jet_neMultiplicity >= 2) && (Jet_neEmEF < 0.4);
+
+        if (abs(Jet_eta) <= 2.7) Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF < 0.8) && (Jet_chEmEF < 0.8);
+		else Jet_passJetIdTightLepVeto = Jet_passJetIdTight;
+	}
+	else{
+        if (abs(Jet_eta) <= 2.7) Jet_passJetIdTight = Jet_jetId & (1 << 1);
+        else if (abs(Jet_eta) > 2.7 && abs(Jet_eta) <= 3.0) Jet_passJetIdTight = (Jet_jetId & (1 << 1)) && (Jet_neHEF < 0.99);
+        else if (abs(Jet_eta) > 3.0) Jet_passJetIdTight = (Jet_jetId & (1 << 1)) && (Jet_neEmEF < 0.4);
+
+        if (abs(Jet_eta) <= 2.7) Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF < 0.8) && (Jet_chEmEF < 0.8);
+        else Jet_passJetIdTightLepVeto = Jet_passJetIdTight;
+
+	}
+    if (tightVeto) return Jet_passJetIdTightLepVeto;
+    else return Jet_passJetIdTight;
+
+}
 
 
 double RazorHelper::getHMTTriggerEff(int chamber, int nhits){

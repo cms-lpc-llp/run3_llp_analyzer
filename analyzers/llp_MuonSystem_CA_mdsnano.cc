@@ -538,6 +538,14 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->pileupWeightUp = helper->getPileupWeightUp(Pileup_nTrueInt) / MuonSystem->pileupWeight;
       MuonSystem->pileupWeightDown = helper->getPileupWeightDown(Pileup_nTrueInt) / MuonSystem->pileupWeight;
 
+      for (unsigned int i = 0; i < 9; i++)
+      {
+       MuonSystem->scaleWeights[i]= LHEScaleWeight[i];
+      }
+     
+
+
+
     //  if (!llp_flag)continue;
     }//end of isData
 
@@ -617,11 +625,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(jetEta[i],jetPhi[i])>0.0) MuonSystem->jetVeto = false;
       } 
       
-
-      //Triggers
-      // for(int i = 0; i < NTriggersMAX; i++){
-      //   MuonSystem->HLTDecision[i] = HLTDecision[i];
-      // }
       MuonSystem->HLT_CSCCSC = HLT_CscCluster_Loose;
       MuonSystem->HLT_CSCDT = HLT_L1CSCShower_DTCluster50;
 
@@ -712,6 +715,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     //-----------------------------------------------
 
     std::vector<jets> Jets;
+    float MetX_JESDown = 0;
+    float MetY_JESDown = 0;
+
+    float MetX_JESUp = 0;
+    float MetY_JESUp = 0;
 
     for(int i = 0; i < nJets; i++)
     {
@@ -729,10 +737,32 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       if(deltaR > 0 && deltaR < 0.4) continue; //jet matches a selected lepton
 
       TLorentzVector thisJet = makeTLorentzVector( jetPt[i], jetEta[i], jetPhi[i], jetE[i] );
-
+      
       jets tmpJet;
       tmpJet.jet    = thisJet;
       tmpJet.passId = jetPassIDTightLepVeto[i];
+
+
+      // calculate jet energy scale uncertainty
+      double unc = helper->getJecUnc( jetPt[i], jetEta[i], runNum ); //use run=999 as default
+      tmpJet.jetPtJESUp = jetPt[i]*(1+unc);
+      tmpJet.jetPtJESDown = jetPt[i]*(1-unc);
+      tmpJet.jetEJESUp = jetE[i]*(1+unc);
+      tmpJet.jetEJESDown = jetE[i]*(1-unc);
+      // cout<<jetPt[i]<<","<<jetEta[i]<<","<<unc<<endl;
+      tmpJet.JecUnc = unc;
+      TLorentzVector thisJetJESUp = makeTLorentzVector(tmpJet.jetPtJESUp, jetEta[i], jetPhi[i], tmpJet.jetEJESUp);
+      TLorentzVector thisJetJESDown = makeTLorentzVector(tmpJet.jetPtJESDown, jetEta[i], jetPhi[i], tmpJet.jetEJESDown);
+
+      MetX_JESUp += -1 * (thisJetJESUp.Px() - thisJet.Px());
+      MetY_JESUp += -1 * (thisJetJESUp.Py() - thisJet.Py());
+
+      MetX_JESDown += -1 * (thisJetJESDown.Px() - thisJet.Px());
+      MetY_JESDown += -1 * (thisJetJESDown.Py() - thisJet.Py());
+      // done propogating JES uncertainty
+      
+
+
 
       Jets.push_back(tmpJet);
 
@@ -755,6 +785,23 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
         MuonSystem->nJets++;
       }
+
+      TLorentzVector met = makeTLorentzVectorPtEtaPhiM(MuonSystem->Puppimet, 0, MuonSystem->PuppimetPhi, 0);
+
+      //JES up
+      float MetXJESUp   = met.Px() + MetX_JESUp;
+      float MetYJESUp   = met.Py() + MetY_JESUp;
+      MuonSystem->PuppimetJESUp    = sqrt( pow(MetXJESUp,2) + pow(MetYJESUp,2) );
+      MuonSystem->PuppimetPhiJESUp    = atan(MetYJESUp/MetXJESUp);
+      if  (MetXJESUp < 0.0) MuonSystem->PuppimetPhiJESUp = RazorAnalyzerMerged::deltaPhi(TMath::Pi() + MuonSystem->PuppimetPhiJESUp,0.0);
+
+      //JES down
+      float MetXJESDown   = met.Px() + MetX_JESDown;
+      float MetYJESDown   = met.Py() + MetY_JESDown;
+      MuonSystem->PuppimetJESDown    =  sqrt( pow(MetXJESDown,2) + pow(MetYJESDown,2) );
+      MuonSystem->PuppimetPhiJESDown    = atan(MetYJESDown/MetXJESDown);
+      if  (MetXJESDown < 0.0) MuonSystem->PuppimetPhiJESDown = RazorAnalyzerMerged::deltaPhi(TMath::Pi() + MuonSystem->PuppimetPhiJESDown,0.0);
+
 
 
       MuonSystem->nDTRechits  = 0;
@@ -1070,8 +1117,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
               MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters]  = jetPt[i];
               MuonSystem->cscRechitClusterJetVetoE[MuonSystem->nCscRechitClusters]  = jetE[i];
               MuonSystem->cscRechitClusterJetVetoTightId[MuonSystem->nCscRechitClusters]  = jetPassIDTight[i];
-              //MuonSystem->cscRechitClusterJetVetoLooseId[MuonSystem->nCscRechitClusters]  = jetPassIDLoose[i];
 
+              double unc = helper->getJecUnc( jetPt[i], jetEta[i], runNum ); //use run=999 as default
+              MuonSystem->cscRechitClusterJetVetoPtJESUp[MuonSystem->nCscRechitClusters]  = jetPt[i]*(1+unc);
+              MuonSystem->cscRechitClusterJetVetoPtJESDown[MuonSystem->nCscRechitClusters]  = jetPt[i]*(1-unc);
             }
 
           }
@@ -1288,11 +1337,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
             if (RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters],MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && jetPt[i] > MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] ) {
               MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters]  = jetPt[i];
               MuonSystem->dtRechitClusterJetVetoE[MuonSystem->nDtRechitClusters]  = jetE[i];
-              //MuonSystem->dtRechitClusterJetVetoLooseId[MuonSystem->nDtRechitClusters]  = jetPassIDLoose[i];
               MuonSystem->dtRechitClusterJetVetoTightId[MuonSystem->nDtRechitClusters]  = jetPassIDTight[i];
 
+              double unc = helper->getJecUnc( jetPt[i], jetEta[i], runNum ); //use run=999 as default
+              MuonSystem->dtRechitClusterJetVetoPtJESUp[MuonSystem->nDtRechitClusters]  = jetPt[i]*(1+unc);
+              MuonSystem->dtRechitClusterJetVetoPtJESDown[MuonSystem->nDtRechitClusters]  = jetPt[i]*(1-unc);
             }
-
 
           }
 

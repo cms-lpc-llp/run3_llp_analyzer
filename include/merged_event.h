@@ -35,7 +35,7 @@ public:
    Float_t gLLP_decay_vertex_y[2];
    Float_t gLLP_decay_vertex_z[2];
    Float_t gLLP_decay_vertex_r[2];
-
+   Float_t         LHEScaleWeight[9];   //[nLHEScaleWeight]
    // ===================== MC =====================
 
    Int_t nsoftActivityVH;
@@ -58,6 +58,9 @@ public:
    Float_t GenPart_mass[125 * 10];             //[nGenPart]
    Float_t GenPart_phi[125 * 10];              //[nGenPart]
    Float_t GenPart_pt[125 * 10];               //[nGenPart]
+   Float_t GenPart_vx[125 * 10];   //[nGenPart]
+   Float_t GenPart_vy[125 * 10];   //[nGenPart]
+   Float_t GenPart_vz[125 * 10];   //[nGenPart]
    Int_t nGenProton;
    Bool_t GenProton_isPU[11 * 10]; //[nGenProton]
    Float_t GenProton_px[11 * 10];  //[nGenProton]
@@ -303,6 +306,10 @@ public:
    Float_t IsoTrack_miniPFRelIso_chg[20]; //[nIsoTrack]
    Int_t nJet;
    UChar_t Jet_jetId[150];                    //[nJet]
+   UChar_t Jet_chMultiplicity[150];
+   UChar_t Jet_neMultiplicity[150];
+
+
    UChar_t Jet_nConstituents[150];            //[nJet]
    UChar_t Jet_nElectrons[150];               //[nJet]
    UChar_t Jet_nMuons[150];                   //[nJet]
@@ -1867,6 +1874,10 @@ public:
    TBranch *b_GenPart_mass;               //!
    TBranch *b_GenPart_phi;                //!
    TBranch *b_GenPart_pt;                 //!
+   TBranch *b_GenPart_vx;
+   TBranch *b_GenPart_vy;
+   TBranch *b_GenPart_vz;
+   
    TBranch *b_nGenProton;                 //!
    TBranch *b_GenProton_isPU;             //!
    TBranch *b_GenProton_px;               //!
@@ -1947,6 +1958,7 @@ public:
    TBranch *b_gLLP_decay_vertex_y;
    TBranch *b_gLLP_decay_vertex_z;
    TBranch *b_gLLP_decay_vertex_r;
+   TBranch *b_LHEScaleWeight;
 
    TBranch *b_run;                                                                                                   //!
    TBranch *b_luminosityBlock;                                                                                       //!
@@ -2165,6 +2177,8 @@ public:
    TBranch *b_Jet_phi;                                                                                               //!
    TBranch *b_Jet_pt;                                                                                                //!
    TBranch *b_Jet_rawFactor;                                                                                         //!
+   TBranch *b_Jet_chMultiplicity;
+   TBranch *b_Jet_neMultiplicity;
    TBranch *b_nLowPtElectron;                                                                                        //!
    TBranch *b_LowPtElectron_convVeto;                                                                                //!
    TBranch *b_LowPtElectron_convWP;                                                                                  //!
@@ -3759,6 +3773,9 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("GenPart_mass", GenPart_mass, &b_GenPart_mass);
    fChain->SetBranchAddress("GenPart_phi", GenPart_phi, &b_GenPart_phi);
    fChain->SetBranchAddress("GenPart_pt", GenPart_pt, &b_GenPart_pt);
+   fChain->SetBranchAddress("GenPart_vx", GenPart_vx, &b_GenPart_vx);
+   fChain->SetBranchAddress("GenPart_vy", GenPart_vy, &b_GenPart_vy);
+   fChain->SetBranchAddress("GenPart_vz", GenPart_vz, &b_GenPart_vz);
    fChain->SetBranchAddress("nGenProton", &nGenProton, &b_nGenProton);
    fChain->SetBranchAddress("GenProton_isPU", GenProton_isPU, &b_GenProton_isPU);
    fChain->SetBranchAddress("GenProton_px", GenProton_px, &b_GenProton_px);
@@ -3839,6 +3856,7 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("gLLP_decay_vertex_y", gLLP_decay_vertex_y, &b_gLLP_decay_vertex_y);
    fChain->SetBranchAddress("gLLP_decay_vertex_z", gLLP_decay_vertex_z, &b_gLLP_decay_vertex_z);
    fChain->SetBranchAddress("gLLP_decay_vertex_r", gLLP_decay_vertex_r, &b_gLLP_decay_vertex_r);
+   fChain->SetBranchAddress("LHEScaleWeight", LHEScaleWeight, &b_LHEScaleWeight);
 
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("luminosityBlock", &luminosityBlock, &b_luminosityBlock);
@@ -4056,6 +4074,9 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_neHEF", Jet_neHEF, &b_Jet_neHEF);
    fChain->SetBranchAddress("Jet_phi", Jet_phi, &b_Jet_phi);
    fChain->SetBranchAddress("Jet_pt", Jet_pt, &b_Jet_pt);
+   fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
+   fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
+
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
    fChain->SetBranchAddress("nLowPtElectron", &nLowPtElectron, &b_nLowPtElectron);
    fChain->SetBranchAddress("LowPtElectron_convVeto", LowPtElectron_convVeto, &b_LowPtElectron_convVeto);

@@ -23,6 +23,9 @@ void TreeMuonSystemCombination::InitVariables()
   weight=-1.0;rho=-1;
   met=-1; metPhi=-1;
   Puppimet=-1; PuppimetPhi=-1;
+  PuppimetJESDown=-1; PuppimetPhiJESDown=-1;
+  PuppimetJESUp=-1; PuppimetPhiJESUp=-1;
+  
   HLT_CSCCSC = false;
   HLT_CSCDT = false;
   jetVeto = true;
@@ -45,7 +48,27 @@ Flag_all = false;
   nDtRechitClusters_nocut = 0;
   nDtRings = 0;
   nCscRings = 0;
+  nGenParticles =0;
+for(int i = 0;i < 9;i++)
+{
+  scaleWeights[i] = -999;
+}
 
+for(int i = 0;i < N_MAX_GPARTICLES;i++)
+{
+  gParticleEta[i] = -999;
+  gParticlePhi[i] = -999;
+  gParticlePt[i] = -999;
+  gParticleId[i] = -999;
+  gParticle_decay_vertex_r[i] = -999;
+  gParticle_decay_vertex_x[i] = -999;
+  gParticle_decay_vertex_y[i] = -999;
+  gParticle_decay_vertex_z[i] = -999;
+
+  gParticle_ctau[i] = -999;
+  gParticle_beta[i] = -999;
+
+}
 
 
   for( int i = 0; i < N_MAX_CSC; i++ )
@@ -97,6 +120,8 @@ Flag_all = false;
         cscRechitClusterEta[i] = -999.;
         cscRechitClusterPhi[i] = -999.;
         cscRechitClusterJetVetoPt[i] = 0.0;
+        cscRechitClusterJetVetoPtJESUp[i] = 0.0;
+        cscRechitClusterJetVetoPtJESDown[i] = 0.0;
         cscRechitClusterJetVetoLooseId[i] = false;
         cscRechitClusterJetVetoTightId[i] = false;
         cscRechitClusterJetVetoE[i] = 0.0;
@@ -192,6 +217,8 @@ Flag_all = false;
           dtRechitClusterEta[i] = -999.;
           dtRechitClusterPhi[i] = -999.;
           dtRechitClusterJetVetoPt[i] = 0.0;
+          dtRechitClusterJetVetoPtJESDown[i] = 0.0;
+          dtRechitClusterJetVetoPtJESUp[i] = 0.0;
           dtRechitClusterJetVetoLooseId[i] = false;
           dtRechitClusterJetVetoTightId[i] = false;
 
@@ -338,8 +365,9 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("Flag_goodVertices",      &Flag_goodVertices);
   tree_->SetBranchAddress("Flag_all",      &Flag_all);
   tree_->SetBranchAddress("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter);
+  tree_->SetBranchAddress("scaleWeights",      scaleWeights);
 
-
+  
   tree_->SetBranchAddress("rho",         &rho);
   tree_->SetBranchAddress("met",         &met);
   tree_->SetBranchAddress("metPhi",      &metPhi);
@@ -347,6 +375,12 @@ void TreeMuonSystemCombination::InitTree()
  tree_->SetBranchAddress("Puppimet",         &Puppimet);
   tree_->SetBranchAddress("PuppimetPhi",      &PuppimetPhi);
 
+  tree_->SetBranchAddress("PuppimetJESDown",         &PuppimetJESDown);
+  tree_->SetBranchAddress("PuppimetPhiJESDown",      &PuppimetPhiJESDown);
+
+
+ tree_->SetBranchAddress("PuppimetJESUp",         &PuppimetJESUp);
+ tree_->SetBranchAddress("PuppimetPhiJESUp",      &PuppimetPhiJESUp);
 
   tree_->SetBranchAddress("gHiggsPt",      &gHiggsPt);
   tree_->SetBranchAddress("gHiggsPhi",      &gHiggsPhi);
@@ -357,6 +391,21 @@ void TreeMuonSystemCombination::InitTree()
 
   tree_->SetBranchAddress("nCscRings",             &nCscRings);
   tree_->SetBranchAddress("nDtRings",             &nDtRings);
+
+
+
+  tree_->SetBranchAddress("nGenParticles",             &nGenParticles);
+  tree_->SetBranchAddress("gParticleEta",             &gParticleEta);
+  tree_->SetBranchAddress("gParticleId",             &gParticleId);
+  tree_->SetBranchAddress("gParticlePhi",             &gParticlePhi);
+  tree_->SetBranchAddress("gParticlePt",             &gParticlePt);
+  tree_->SetBranchAddress("gParticle_decay_vertex_r",             &gParticle_decay_vertex_r);
+  tree_->SetBranchAddress("gParticle_decay_vertex_x",             &gParticle_decay_vertex_x);
+  tree_->SetBranchAddress("gParticle_decay_vertex_y",             &gParticle_decay_vertex_y);
+  tree_->SetBranchAddress("gParticle_decay_vertex_z",             &gParticle_decay_vertex_z);
+  tree_->SetBranchAddress("gParticle_ctau",             &gParticle_ctau);
+  tree_->SetBranchAddress("gParticle_beta",             &gParticle_beta);
+
 
 
 
@@ -403,6 +452,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("dtRechitClusterPhi",             dtRechitClusterPhi);
 
   tree_->SetBranchAddress("dtRechitClusterJetVetoPt",             dtRechitClusterJetVetoPt);
+  tree_->SetBranchAddress("dtRechitClusterJetVetoPtJESDown",             dtRechitClusterJetVetoPtJESDown);
+  tree_->SetBranchAddress("dtRechitClusterJetVetoPtJESUp",             dtRechitClusterJetVetoPtJESUp);
   tree_->SetBranchAddress("dtRechitClusterJetVetoLooseId",             dtRechitClusterJetVetoLooseId);
   tree_->SetBranchAddress("dtRechitClusterJetVetoTightId",             dtRechitClusterJetVetoTightId);
   tree_->SetBranchAddress("dtRechitClusterJetVetoE",             dtRechitClusterJetVetoE);
@@ -529,6 +580,8 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("cscRechitClusterJetVetoPt",             cscRechitClusterJetVetoPt);
+  tree_->SetBranchAddress("cscRechitClusterJetVetoPtJESDown",             cscRechitClusterJetVetoPtJESDown);
+  tree_->SetBranchAddress("cscRechitClusterJetVetoPtJESUp",             cscRechitClusterJetVetoPtJESUp);
 
 
   tree_->SetBranchAddress("cscRechitClusterJetVetoLooseId",             cscRechitClusterJetVetoLooseId);
@@ -673,6 +726,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter,     "Flag_ecalBadCalibFilter/O");
 
 
+  tree_->Branch("scaleWeights",             scaleWeights,             "scaleWeights[9]/F");
 
 
 
@@ -682,6 +736,13 @@ void TreeMuonSystemCombination::CreateTree()
 
   tree_->Branch("Puppimet",         &Puppimet,        "Puppimet/F");         // MET
   tree_->Branch("PuppimetPhi",      &PuppimetPhi,     "PuppimetPhi/F");      // phi(MET)
+
+
+  tree_->Branch("PuppimetJESUp",         &PuppimetJESUp,        "PuppimetJESUp/F");         // MET
+  tree_->Branch("PuppimetPhiJESUp",      &PuppimetPhiJESUp,     "PuppimetPhiJESUp/F");      // phi(MET)
+
+  tree_->Branch("PuppimetJESDown",         &PuppimetJESDown,        "PuppimetJESDown/F");         // MET
+  tree_->Branch("PuppimetPhiJESDown",      &PuppimetPhiJESDown,     "PuppimetPhiJESDown/F");      // phi(MET)
 
   tree_->Branch("gHiggsPt",      &gHiggsPt,     "gHiggsPt/F");      // phi(MET)
   tree_->Branch("gHiggsE",      &gHiggsE,     "gHiggsE/F");      // phi(MET)
@@ -741,6 +802,8 @@ void TreeMuonSystemCombination::CreateTree()
     tree_->Branch("cscRechitClusterPhi",             cscRechitClusterPhi,             "cscRechitClusterPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterEta",             cscRechitClusterEta,             "cscRechitClusterEta[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterJetVetoPt",             cscRechitClusterJetVetoPt,             "cscRechitClusterJetVetoPt[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterJetVetoPtJESDown",             cscRechitClusterJetVetoPtJESDown,             "cscRechitClusterJetVetoPtJESDown[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterJetVetoPtJESUp",             cscRechitClusterJetVetoPtJESUp,             "cscRechitClusterJetVetoPtJESUp[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterJetVetoLooseId",             cscRechitClusterJetVetoLooseId,             "cscRechitClusterJetVetoLooseId[nCscRechitClusters]/O");
     tree_->Branch("cscRechitClusterJetVetoTightId",             cscRechitClusterJetVetoTightId,             "cscRechitClusterJetVetoTightId[nCscRechitClusters]/O");
     tree_->Branch("cscRechitClusterJetVetoE",             cscRechitClusterJetVetoE,             "cscRechitClusterJetVetoE[nCscRechitClusters]/F");
@@ -830,6 +893,8 @@ void TreeMuonSystemCombination::CreateTree()
 
 
         tree_->Branch("dtRechitClusterJetVetoPt",             dtRechitClusterJetVetoPt,             "dtRechitClusterJetVetoPt[nDtRechitClusters]/F");
+        tree_->Branch("dtRechitClusterJetVetoPtJESUp",             dtRechitClusterJetVetoPtJESUp,             "dtRechitClusterJetVetoPtJESUp[nDtRechitClusters]/F");
+        tree_->Branch("dtRechitClusterJetVetoPtJESDown",             dtRechitClusterJetVetoPtJESDown,             "dtRechitClusterJetVetoPtJESDown[nDtRechitClusters]/F");
         tree_->Branch("dtRechitClusterJetVetoLooseId",             dtRechitClusterJetVetoLooseId,             "dtRechitClusterJetVetoLooseId[nDtRechitClusters]/O");
         tree_->Branch("dtRechitClusterJetVetoTightId",             dtRechitClusterJetVetoTightId,             "dtRechitClusterJetVetoTightId[nDtRechitClusters]/O");
 
@@ -928,6 +993,21 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("gLLP_decay_vertex_x",          gLLP_decay_vertex_x,          "gLLP_decay_vertex_x[nGLLP]/F");
   tree_->Branch("gLLP_decay_vertex_y",          gLLP_decay_vertex_y,          "gLLP_decay_vertex_y[nGLLP]/F");
   tree_->Branch("gLLP_decay_vertex_z",          gLLP_decay_vertex_z,          "gLLP_decay_vertex_z[nGLLP]/F");
+
+
+  tree_->Branch("nGenParticles",             &nGenParticles, "nGenParticles/I");
+  tree_->Branch("gParticleEta",             &gParticleEta,          "gParticleEta[nGenParticles]/F");
+  tree_->Branch("gParticleId",             &gParticleId,          "gParticleId[nGenParticles]/I");
+  tree_->Branch("gParticlePhi",             &gParticlePhi,          "gParticlePhi[nGenParticles]/F");
+  tree_->Branch("gParticlePt",             &gParticlePt,          "gParticlePt[nGenParticles]/F");
+  tree_->Branch("gParticle_decay_vertex_r",             &gParticle_decay_vertex_r,          "gParticle_decay_vertex_r[nGenParticles]/F");
+  tree_->Branch("gParticle_decay_vertex_x",             &gParticle_decay_vertex_x,          "gParticle_decay_vertex_x[nGenParticles]/F");
+  tree_->Branch("gParticle_decay_vertex_y",             &gParticle_decay_vertex_y,          "gParticle_decay_vertex_y[nGenParticles]/F");
+  tree_->Branch("gParticle_decay_vertex_z",             &gParticle_decay_vertex_z,          "gParticle_decay_vertex_z[nGenParticles]/F");
+  tree_->Branch("gParticle_ctau",             &gParticle_ctau,          "gParticle_ctau[nGenParticles]/F");
+  tree_->Branch("gParticle_beta",             &gParticle_beta,          "gParticle_beta[nGenParticles]/F");
+
+
 
 
   //leptons
