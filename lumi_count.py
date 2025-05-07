@@ -39,7 +39,11 @@ def _run_lumi_to_dict(run_lumi: np.ndarray):
 
 def load_dict(root: str, nproc: int = 8):
     pools = Pool(nproc)
-    paths = list(Path(root).rglob("**/*.root"))
+    if Path(root).is_dir():
+        paths = list(Path(root).rglob("**/*.root"))
+    else:
+        with open(root) as f:
+            paths = [Path(line.strip()) for line in f.readlines()]
     run_lumis = []
     r = pools.imap_unordered(load_run_lumi, paths)
     for run_lumi in tqdm(r, total=len(paths)):

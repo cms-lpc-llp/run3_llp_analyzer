@@ -1094,6 +1094,9 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("dtRechitClusterKurtY", dtRechitClusterKurtY, "dtRechitClusterKurtY[nDtRechitClusters]/F");
   tree_->Branch("dtRechitClusterKurtZ", dtRechitClusterKurtZ, "dtRechitClusterKurtZ[nDtRechitClusters]/F");
 
+  tree_->Branch("nLHEScaleWeight", &nLHEScaleWeight, "nLHEScaleWeight/I");
+  tree_->Branch("LHEScaleWeight", LHEScaleWeight, "LHEScaleWeight[nLHEScaleWeight]/F");
+
   // gLLP branches
   tree_->Branch("nGLLP", &nGLLP, "nGLLP/I");
 

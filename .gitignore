@@ -1,3 +1,4 @@
+downstream_scripts/llp-cache-*/
 .vscode
 *.ipynb
 *.root

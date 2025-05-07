@@ -50,6 +50,13 @@ public:
    Float_t GenJet_phi[19 * 10];  //[nGenJet]
    Float_t GenJet_pt[19 * 10];   //[nGenJet]
    Int_t nGenPart;
+
+   Float_t GenPart_vx[125 * 10];
+   Float_t GenPart_vy[125 * 10];
+   Float_t GenPart_vz[125 * 10];
+   Int_t nLHEScaleWeight;
+   Float_t LHEScaleWeight[9];
+
    Short_t GenPart_genPartIdxMother[125 * 10]; //[nGenPart]
    UShort_t GenPart_statusFlags[125 * 10];     //[nGenPart]
    Int_t GenPart_pdgId[125 * 10];              //[nGenPart]
@@ -3549,8 +3556,11 @@ public:
    TBranch *b_rpcSector;                                                                                             //!
    TBranch *b_rpcStation;                                                                                            //!
    TBranch *b_rpcLayer;                                                                                              //!
-
-
+   TBranch *b_GenPart_vx;
+   TBranch *b_GenPart_vy;
+   TBranch *b_GenPart_vz;
+   TBranch *b_nLHEScaleWeight;
+   TBranch *b_LHEScaleWeight;
    ////// for MDS nano ////////
    // TBranch *b_ncscRechits;
    // TBranch *b_cscRechits_Quality;
@@ -3696,6 +3706,13 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("GenJet_phi", GenJet_phi, &b_GenJet_phi);
    fChain->SetBranchAddress("GenJet_pt", GenJet_pt, &b_GenJet_pt);
    fChain->SetBranchAddress("nGenPart", &nGenPart, &b_nGenPart);
+
+   fChain->SetBranchAddress("GenPart_vx", GenPart_vx, &b_GenPart_vx);
+   fChain->SetBranchAddress("GenPart_vy", GenPart_vy, &b_GenPart_vy);
+   fChain->SetBranchAddress("GenPart_vz", GenPart_vz, &b_GenPart_vz);
+   fChain->SetBranchAddress("nLHEScaleWeight", &nLHEScaleWeight, &b_nLHEScaleWeight);
+   fChain->SetBranchAddress("LHEScaleWeight", LHEScaleWeight, &b_LHEScaleWeight);
+
    fChain->SetBranchAddress("GenPart_genPartIdxMother", GenPart_genPartIdxMother, &b_GenPart_genPartIdxMother);
    fChain->SetBranchAddress("GenPart_statusFlags", GenPart_statusFlags, &b_GenPart_statusFlags);
    fChain->SetBranchAddress("GenPart_pdgId", GenPart_pdgId, &b_GenPart_pdgId);
@@ -5449,7 +5466,7 @@ void merged_event::Init(TTree *tree)
 
    // MDS Nano patch
       
-   fChain->SetBranchAddress("ncscRechits", &b_nCscRechits, &b_nCscRechits);
+   fChain->SetBranchAddress("ncscRechits", &nCscRechits, &b_nCscRechits);
    // fChain->SetBranchAddress("cscRechits_Quality", cscRechitsQuality, &b_cscRechits_Quality);
    fChain->SetBranchAddress("cscRechits_Chamber", cscRechitsChamber, &b_cscRechitsChamber);
    fChain->SetBranchAddress("cscRechits_Station", cscRechitsStation, &b_cscRechitsStation);

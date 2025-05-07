@@ -1410,8 +1410,21 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
     if (ientry < 0)
       break;
     // GetEntry(ientry);
+    gLLP_pt[0] = -100;
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
+
+    // b_PuppiMET_phi
+    // auto met = makeTLorentzVector(0., 0., 0., 0.);
+    // for (int i = 0; i < nJet; ++i) {
+    //   if (Jet_pt[i] > 10)
+    //     met -= makeTLorentzVectorPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]);
+    // }
+
+    // std::cout << "met: " << met.Pt() << "/" << PuppiMET_pt << std::endl;
+    // std::cout << "met phi: " << met.Phi() << "/" << PuppiMET_phi << std::endl;
+    // PuppiMET_phi = met.Phi();
+    // PuppiMET_pt = met.Pt();
 
     // if (nDtRechits > 5000){
     //   cout << run << " " << luminosityBlock << " " << event << endl;
@@ -1626,29 +1639,82 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
 
     if (!isData)
     {
-      for (int i = 0; i < 2; i++)
+      if(gLLP_pt[0] > -100){
+        for (int i = 0; i < 2; i++)
+        {
+          MuonSystem->gLLP_eta[MuonSystem->nGLLP] = gLLP_eta[i];
+          MuonSystem->gLLP_phi[MuonSystem->nGLLP] = gLLP_phi[i];
+          MuonSystem->gLLP_e[MuonSystem->nGLLP] = gLLP_e[i];
+          MuonSystem->gLLP_pt[MuonSystem->nGLLP] = gLLP_pt[i];
+
+          MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] = sqrt(gLLP_decay_vertex_x[i] * gLLP_decay_vertex_x[i] + gLLP_decay_vertex_y[i] * gLLP_decay_vertex_y[i]);
+          MuonSystem->gLLP_decay_vertex_x[MuonSystem->nGLLP] = gLLP_decay_vertex_x[i];
+          MuonSystem->gLLP_decay_vertex_y[MuonSystem->nGLLP] = gLLP_decay_vertex_y[i];
+          MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP] = gLLP_decay_vertex_z[i];
+          float beta = gLLP_beta[i];
+          float gLLP_decay_vertex = sqrt(pow(MuonSystem->gLLP_decay_vertex_r[i], 2) + pow(MuonSystem->gLLP_decay_vertex_z[i], 2));
+          float gamma = 1.0 / sqrt(1 - beta * beta);
+          MuonSystem->gLLP_ctau[MuonSystem->nGLLP] = gLLP_decay_vertex / (beta * gamma);
+          MuonSystem->gLLP_beta[MuonSystem->nGLLP] = gLLP_beta[i];
+
+          if (abs(MuonSystem->gLLP_eta[i]) < 2.4 && abs(MuonSystem->gLLP_decay_vertex_z[i]) < 1100 && abs(MuonSystem->gLLP_decay_vertex_z[i]) > 400 && MuonSystem->gLLP_decay_vertex_r[i] < 695.5)
+            MuonSystem->gLLP_csc[MuonSystem->nGLLP] = true;
+          if (abs(MuonSystem->gLLP_decay_vertex_z[i]) < 661.0 && MuonSystem->gLLP_decay_vertex_r[i] < 800 && MuonSystem->gLLP_decay_vertex_r[i] > 200.0)
+            MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
+
+          MuonSystem->nGLLP++;
+        }
+      }
+      else {
+      MuonSystem->nGLLP = 0;
+      for(int i = 0;i < nGenPart; i++)
       {
-        MuonSystem->gLLP_eta[MuonSystem->nGLLP] = gLLP_eta[i];
-        MuonSystem->gLLP_phi[MuonSystem->nGLLP] = gLLP_phi[i];
-        MuonSystem->gLLP_e[MuonSystem->nGLLP] = gLLP_e[i];
-        MuonSystem->gLLP_pt[MuonSystem->nGLLP] = gLLP_pt[i];
+        if (abs(GenPart_pdgId[i])==9000006)
+          {
+            MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[i];
+            MuonSystem->gLLP_phi[MuonSystem->nGLLP] = GenPart_phi[i];
+            MuonSystem->gLLP_pt[MuonSystem->nGLLP] = GenPart_pt[i];
+            float decay_x;
+            float decay_y;
+            float decay_z;
+            bool foundDaughter = false;
+            for (int j=0; j < nGenPart; j++)
+            {
+              if(GenPart_genPartIdxMother[j]==i)
+              {
+                decay_x = GenPart_vx[j];
+                decay_y = GenPart_vy[j];
+                decay_z = GenPart_vz[j];
+                foundDaughter = true;
+                break;
+              }
+            }
+            if (!foundDaughter)
+            {
+              throw std::runtime_error("No daughter found for gLLP");
+            }
+            MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] = sqrt(decay_x*decay_x+decay_y*decay_y);
+            MuonSystem->gLLP_decay_vertex_x[MuonSystem->nGLLP] = decay_x;
+            MuonSystem->gLLP_decay_vertex_y[MuonSystem->nGLLP] = decay_y;
+            MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP] = decay_z;
 
-        MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] = sqrt(gLLP_decay_vertex_x[i] * gLLP_decay_vertex_x[i] + gLLP_decay_vertex_y[i] * gLLP_decay_vertex_y[i]);
-        MuonSystem->gLLP_decay_vertex_x[MuonSystem->nGLLP] = gLLP_decay_vertex_x[i];
-        MuonSystem->gLLP_decay_vertex_y[MuonSystem->nGLLP] = gLLP_decay_vertex_y[i];
-        MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP] = gLLP_decay_vertex_z[i];
-        float beta = gLLP_beta[i];
-        float gLLP_decay_vertex = sqrt(pow(MuonSystem->gLLP_decay_vertex_r[i], 2) + pow(MuonSystem->gLLP_decay_vertex_z[i], 2));
-        float gamma = 1.0 / sqrt(1 - beta * beta);
-        MuonSystem->gLLP_ctau[MuonSystem->nGLLP] = gLLP_decay_vertex / (beta * gamma);
-        MuonSystem->gLLP_beta[MuonSystem->nGLLP] = gLLP_beta[i];
 
-        if (abs(MuonSystem->gLLP_eta[i]) < 2.4 && abs(MuonSystem->gLLP_decay_vertex_z[i]) < 1100 && abs(MuonSystem->gLLP_decay_vertex_z[i]) > 400 && MuonSystem->gLLP_decay_vertex_r[i] < 695.5)
-          MuonSystem->gLLP_csc[MuonSystem->nGLLP] = true;
-        if (abs(MuonSystem->gLLP_decay_vertex_z[i]) < 661.0 && MuonSystem->gLLP_decay_vertex_r[i] < 800 && MuonSystem->gLLP_decay_vertex_r[i] > 200.0)
-          MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
+            TLorentzVector LLP = makeTLorentzVectorPtEtaPhiM( GenPart_pt[i], GenPart_eta[i], GenPart_phi[i], GenPart_mass[i] );
 
-        MuonSystem->nGLLP++;
+            float gLLP_decay_vertex = sqrt(pow(MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP], 2) + pow(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP],2));
+
+            
+            MuonSystem->gLLP_ctau[MuonSystem->nGLLP] = gLLP_decay_vertex/(LLP.Beta()*LLP.Gamma());
+            MuonSystem->gLLP_beta[MuonSystem->nGLLP] = LLP.Beta();
+              if (abs(MuonSystem->gLLP_eta[MuonSystem->nGLLP]) < 2.4
+                && abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP])<1100 && abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP])>400
+                && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 695.5) MuonSystem->gLLP_csc[MuonSystem->nGLLP] = true;
+              if (abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP])< 661.0
+                && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 800
+                && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] > 200.0) MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
+              MuonSystem->nGLLP++;
+            }
+        }
       }
 
     } // end of isData
@@ -2293,8 +2359,6 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->cscRechitClusterMet_dPhi[MuonSystem->nCscRechitClusters] = RazorAnalyzerMerged::deltaPhi(MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters], MuonSystem->metPhi);
       MuonSystem->nCscRechitClusters++;
     }
-    if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1)
-      continue;
 
     // DT cluster
 
@@ -2596,9 +2660,18 @@ void llp_MuonSystem_CAM::Analyze(bool isData, int options, string outputfilename
       MuonSystem->nDtRechitClusters++;
     }
 
+    if (isData && MuonSystem->nDtRechitClusters + MuonSystem->nCscRechitClusters < 1)
+      continue;
+
 
     if (!isData)
     {
+      MuonSystem->nLHEScaleWeight = nLHEScaleWeight;
+      for (int i = 0; i < nLHEScaleWeight; i++)
+      {
+        MuonSystem->LHEScaleWeight[i] = LHEScaleWeight[i];
+      }
+
       MuonSystem->nboostedTau=nboostedTau;
       MuonSystem->nsoftActivityVH=nsoftActivityVH;
       MuonSystem->nElectron=nElectron;

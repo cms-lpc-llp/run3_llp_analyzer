@@ -300,6 +300,9 @@ public:
   float gLLP_decay_vertex_y[N_MAX_LLP];
   float gLLP_decay_vertex_z[N_MAX_LLP];
 
+  int nLHEScaleWeight;
+  float LHEScaleWeight[9];
+
   float gHiggsPt;
   float gHiggsEta;
   float gHiggsPhi;

@@ -2,6 +2,8 @@
 ## Cross section in pb for datasets
 ##
 ggH_HToSSTobbbb_MH-125_MS-15_CTau1000_13p6TeV	5.22E+01
+HiddenValley_higgs_m_15_ctau_1000_xiO_2p5_xiL_1 5.22E+01
+HiddenValley_higgs_m_15_ctau_10000_xiO_2p5_xiL_1 5.22E+01
 
 ggH_Hto2Sto4D_MH-125-MS-1-ctauS-100000_TuneCP5_13p6TeV_powheg-pythia8 5.22E+01
 ggH_Hto2Sto4D_MH-125-MS-1-ctauS-10000_TuneCP5_13p6TeV_powheg-pythia8 5.22E+01
