@@ -91,6 +91,9 @@ function launch {
     if [ -f $INP_PATH.root ]; then
         rm $INP_PATH.root
     fi
+    # if [ -f ${INP_PATH}_1pb_weighted.root ]; then
+    #     return
+    # fi
     hadd $INP_PATH.root $(ls *.root | sort -h | tr '\n' ' ') >> /dev/null
 
     if [ $? -ne 0 ]; then
