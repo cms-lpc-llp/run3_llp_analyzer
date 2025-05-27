@@ -1,3 +1,6 @@
+src/Run*
+analyzers/.llp_MuonSys*
+*swp
 fastjet*/
 MergeNtuples
 NormalizeNtuple

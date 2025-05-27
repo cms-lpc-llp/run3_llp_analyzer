@@ -1694,6 +1694,15 @@ public:
    Bool_t HLT_L1CSCShower_DTCluster75;
    Bool_t HLT_DoubleCscCluster75;
    Bool_t  HLT_DoubleCscCluster100;
+   Bool_t HLT_CscCluster50_Photon20Unseeded;
+   Bool_t HLT_CscCluster50_Photon30Unseeded;
+   Bool_t HLT_CscCluster100_PNetTauhPFJet10_Loose;
+   Bool_t HLT_CscCluster100_Ele5;
+   Bool_t HLT_CscCluster100_Mu5;
+
+
+
+
    Bool_t HLT_PFMET105_IsoTrk50;
    Bool_t HLT_PFMET110_PFJet100;
    Bool_t HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;
@@ -3521,6 +3530,14 @@ public:
    TBranch *b_HLT_L1CSCShower_DTCluster75;                                                                           //!
    TBranch *b_HLT_DoubleCscCluster75;
    TBranch *b_HLT_DoubleCscCluster100;
+
+   TBranch *b_HLT_CscCluster50_Photon20Unseeded;
+   TBranch *b_HLT_CscCluster50_Photon30Unseeded;
+   TBranch *b_HLT_CscCluster100_PNetTauhPFJet10_Loose;
+   TBranch *b_HLT_CscCluster100_Ele5;
+   TBranch *b_HLT_CscCluster100_Mu5;
+
+
    TBranch *b_HLT_PFMET105_IsoTrk50;                                                                                 //!
    TBranch *b_HLT_PFMET110_PFJet100;                                                                                 //!
    TBranch *b_HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack;                                              //!
@@ -5421,6 +5438,15 @@ void merged_event::Init(TTree *tree)
    fChain->SetBranchAddress("HLT_L1CSCShower_DTCluster75", &HLT_L1CSCShower_DTCluster75, &b_HLT_L1CSCShower_DTCluster75);
    fChain->SetBranchAddress("HLT_DoubleCscCluster75", &HLT_DoubleCscCluster75, &b_HLT_DoubleCscCluster75);
    fChain->SetBranchAddress("HLT_DoubleCscCluster100", &HLT_DoubleCscCluster100, &b_HLT_DoubleCscCluster100);
+
+   fChain->SetBranchAddress("HLT_L1CSCShower_DTCluster50", &HLT_L1CSCShower_DTCluster50, &b_HLT_L1CSCShower_DTCluster50);
+   fChain->SetBranchAddress("HLT_CscCluster100_PNetTauhPFJet10_Loose", &HLT_CscCluster100_PNetTauhPFJet10_Loose, &b_HLT_CscCluster100_PNetTauhPFJet10_Loose);
+   fChain->SetBranchAddress("HLT_CscCluster100_Ele5", &HLT_CscCluster100_Ele5, &b_HLT_CscCluster100_Ele5);
+   fChain->SetBranchAddress("HLT_CscCluster100_Mu5", &HLT_CscCluster100_Mu5, &b_HLT_CscCluster100_Mu5);
+   fChain->SetBranchAddress("HLT_CscCluster50_Photon30Unseeded", &HLT_CscCluster50_Photon30Unseeded, &b_HLT_CscCluster50_Photon30Unseeded);
+   fChain->SetBranchAddress("HLT_CscCluster50_Photon20Unseeded", &HLT_CscCluster50_Photon20Unseeded, &b_HLT_CscCluster50_Photon20Unseeded);
+
+
    fChain->SetBranchAddress("HLT_PFMET105_IsoTrk50", &HLT_PFMET105_IsoTrk50, &b_HLT_PFMET105_IsoTrk50);
    fChain->SetBranchAddress("HLT_PFMET110_PFJet100", &HLT_PFMET110_PFJet100, &b_HLT_PFMET110_PFJet100);
    fChain->SetBranchAddress("HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack", &HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack, &b_HLT_HT170_L1SingleLLPJet_DisplacedDijet40_DisplacedTrack);

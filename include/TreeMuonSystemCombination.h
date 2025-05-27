@@ -54,17 +54,27 @@ public:
   bool HLT_CSCCSC,HLT_CSCDT, jetVeto;
   float met, metPhi, Puppimet, PuppimetPhi;
   float PuppimetJESUp, PuppimetJESDown, PuppimetPhiJESDown, PuppimetPhiJESUp;
+  float metJESUp, metJESDown, metPhiJESDown, metPhiJESUp;
   bool Flag_goodVertices, Flag_EcalDeadCellTriggerPrimitiveFilter, Flag_BadPFMuonFilter, Flag_BadPFMuonDzFilter, Flag_globalSuperTightHalo2016Filter,
   Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;
   int mH, mX, ctau;
-  float scaleWeights[9];
+  float LHEScaleWeight[9];
 
   //csc
   int           nCscRechits;
   int           nCscRings;
   int           nDTRechits;
   int           nDtRings;
+  bool HLT_CscCluster100_PNetTauhPFJet10_Loose;
+  bool HLT_CscCluster100_Ele5;
+  bool HLT_CscCluster100_Mu5;
+  bool HLT_CscCluster50_Photon30Unseeded;
+  bool HLT_CscCluster50_Photon20Unseeded;
+  bool HLT_PFMET120_PFMHT120_IDTight;
 
+  float MetTriggerEff;
+  float MetTriggerEffUp;
+  float MetTriggerEffDown;
 
   int           nDtRechitClusters;
   int           nDtRechitClusters_nocut;
@@ -150,6 +160,8 @@ public:
   bool          dtRechitClusterMuonVetoGlobal[N_MAX_CSC];
 
   float         dtRechitClusterMet_dPhi[N_MAX_CSC];
+  float        dtRechitClusterMetJESUp_dPhi[N_MAX_CSC];
+  float        dtRechitClusterMetJESDown_dPhi[N_MAX_CSC];
   float         dtRechitClusterPuppiMet_dPhi[N_MAX_CSC];
 
   int         dtRechitClusternXY[N_MAX_CSC];
@@ -293,6 +305,8 @@ public:
 
 
   float         cscRechitClusterMet_dPhi[N_MAX_CSC];
+  float         cscRechitClusterMetJESDown_dPhi[N_MAX_CSC];
+  float         cscRechitClusterMetJESUp_dPhi[N_MAX_CSC]; 
   float         cscRechitClusterPuppiMet_dPhi[N_MAX_CSC];
 
 
@@ -352,14 +366,33 @@ public:
   int nJets;
   float jetE[N_MAX_JETS];
   float jetPt[N_MAX_JETS];
+  float jetPtJESUp[N_MAX_JETS];
+  float jetPtJESDown[N_MAX_JETS];
   float jetEta[N_MAX_JETS];
   float jetPhi[N_MAX_JETS];
-
+ 
 
   bool jetTightPassId[N_MAX_JETS];
   // bool HLTDecision[NTriggersMAX];
 
 
+  int nTaus;//other variable for ID taus
+  float tauM[N_MAX_JETS];
+  float tauPt[N_MAX_JETS];
+  float tauEta[N_MAX_JETS];
+  float tauPhi[N_MAX_JETS];
+  float tauDeltaR[N_MAX_JETS];
+  int   tauDecayMode[N_MAX_JETS];
+  float tauDz[N_MAX_JETS];
+  bool  tauIsVVVLoose[N_MAX_JETS];
+  bool  tauIsVVLoose[N_MAX_JETS];
+  bool  tauIsVLoose[N_MAX_JETS];
+  bool  tauIsLoose[N_MAX_JETS];
+  bool  tauIsMedium[N_MAX_JETS];
+  bool  tauIsTight[N_MAX_JETS];
+  bool  tauIsVTight[N_MAX_JETS];
+  bool  tauIsVVTight[N_MAX_JETS];
+  int   tauGenPartFlav[N_MAX_JETS];
 
 
 

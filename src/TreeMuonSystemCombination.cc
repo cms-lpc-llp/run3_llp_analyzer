@@ -25,6 +25,8 @@ void TreeMuonSystemCombination::InitVariables()
   Puppimet=-1; PuppimetPhi=-1;
   PuppimetJESDown=-1; PuppimetPhiJESDown=-1;
   PuppimetJESUp=-1; PuppimetPhiJESUp=-1;
+  metJESDown=-1; metPhiJESDown=-1;
+  metJESUp=-1; metPhiJESUp=-1;
   
   HLT_CSCCSC = false;
   HLT_CSCDT = false;
@@ -33,6 +35,17 @@ Flag_eeBadScFilter = false; Flag_hfNoisyHitsFilter = false; Flag_BadPFMuonDzFilt
 Flag_BadPFMuonFilter = false; Flag_EcalDeadCellTriggerPrimitiveFilter= false;Flag_globalSuperTightHalo2016Filter = false;Flag_goodVertices= false;
 Flag_ecalBadCalibFilter = false;
 Flag_all = false;
+
+HLT_CscCluster100_PNetTauhPFJet10_Loose = false;
+HLT_CscCluster100_Ele5 = false;
+HLT_CscCluster100_Mu5 = false;
+HLT_CscCluster50_Photon30Unseeded = false;
+HLT_CscCluster50_Photon20Unseeded = false;
+HLT_PFMET120_PFMHT120_IDTight = false;
+
+MetTriggerEff = 0.;
+MetTriggerEffUp = 0.;
+MetTriggerEffDown = 0.;
 
   mH = 0; mX = 0; ctau = 0;
 
@@ -51,7 +64,7 @@ Flag_all = false;
   nGenParticles =0;
 for(int i = 0;i < 9;i++)
 {
-  scaleWeights[i] = -999;
+  LHEScaleWeight[i] = -999;
 }
 
 for(int i = 0;i < N_MAX_GPARTICLES;i++)
@@ -160,6 +173,8 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
 
 
         cscRechitClusterMet_dPhi[i] = 999.;
+        cscRechitClusterMetJESUp_dPhi[i] = 999.;
+        cscRechitClusterMetJESDown_dPhi[i] = 999.;  
         cscRechitClusterPuppiMet_dPhi[i] = 999.;
 
         dtRechitClusterNSegStation1[i] = 0;
@@ -250,6 +265,8 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
           dtRechitClusterNHitWheel1[i] = -999;
           dtRechitClusterNHitWheel2[i] = -999;
           dtRechitClusterMet_dPhi[i] = 999.;
+          dtRechitClusterMetJESUp_dPhi[i] = 999.;
+          dtRechitClusterMetJESDown_dPhi[i] = 999.;  
           dtRechitClusterPuppiMet_dPhi[i] = 999.;
 	  dtRechitClusternXY[i] = -999;
 	  dtRechitClusternZ[i] = -999;
@@ -321,11 +338,37 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
   {
     jetE[i]      = -999.;
     jetPt[i]     = -999.;
+    jetPtJESDown[i] = -999.;
+    jetPtJESUp[i] = -999.;
     jetEta[i]    = -999.;
     jetPhi[i]    = -999.;
     jetTightPassId[i] = false;
   }
 
+
+   //taus
+   nTaus = 0;
+   for( int i = 0; i < N_MAX_JETS; i++ )
+   {
+     tauM[i] = 0;
+     tauPt[i] = 0;
+     tauEta[i] = 0;
+     tauPhi[i] = 0;
+     tauDeltaR[i] = 0;
+     tauDecayMode[i] = 0;
+     tauDz[i] = 0;
+    tauIsVVVLoose[i] = false;
+    tauIsVVLoose[i] = false;
+    tauIsVLoose[i] = false;
+    tauIsLoose[i] = false;
+    tauIsMedium[i] = false;
+    tauIsTight[i] = false;
+    tauIsVTight[i] = false;
+    tauIsVVTight[i] = false;
+    tauGenPartFlav[i] = 0;
+  
+  
+   }
   // for(int i = 0; i <NTriggersMAX; i++){
   //   HLTDecision[i] = false;
   // }
@@ -349,8 +392,20 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("npu",         &npu);
   tree_->SetBranchAddress("weight",      &weight);
   tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
-  tree_->SetBranchAddress("HLT_CSCCSC",      &HLT_CSCCSC);
+  tree_->SetBranchAddress("HLT_CSCDT",      &HLT_CSCDT);
+
+
+  tree_->SetBranchAddress("HLT_CscCluster100_Ele5",      &HLT_CscCluster100_Ele5);
+  tree_->SetBranchAddress("HLT_CscCluster100_Mu5",      &HLT_CscCluster100_Mu5);
+  tree_->SetBranchAddress("HLT_CscCluster50_Photon30Unseeded",      &HLT_CscCluster50_Photon30Unseeded);
+  tree_->SetBranchAddress("HLT_CscCluster50_Photon20Unseeded",      &HLT_CscCluster50_Photon20Unseeded);
+  tree_->SetBranchAddress("HLT_CscCluster100_PNetTauhPFJet10_Loose",      &HLT_CscCluster100_PNetTauhPFJet10_Loose);
+  tree_->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight",      &HLT_PFMET120_PFMHT120_IDTight);
+
   tree_->SetBranchAddress("jetVeto",      &jetVeto);
+  tree_->SetBranchAddress("MetTriggerEff",      &MetTriggerEff);
+  tree_->SetBranchAddress("MetTriggerEffUp",      &MetTriggerEffUp);
+  tree_->SetBranchAddress("MetTriggerEffDown",      &MetTriggerEffDown);
 
 
   tree_->SetBranchAddress("pileupWeight",      &pileupWeight);
@@ -365,7 +420,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("Flag_goodVertices",      &Flag_goodVertices);
   tree_->SetBranchAddress("Flag_all",      &Flag_all);
   tree_->SetBranchAddress("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter);
-  tree_->SetBranchAddress("scaleWeights",      scaleWeights);
+  tree_->SetBranchAddress("LHEScaleWeight",      LHEScaleWeight);
 
   
   tree_->SetBranchAddress("rho",         &rho);
@@ -374,9 +429,12 @@ void TreeMuonSystemCombination::InitTree()
 
  tree_->SetBranchAddress("Puppimet",         &Puppimet);
   tree_->SetBranchAddress("PuppimetPhi",      &PuppimetPhi);
-
   tree_->SetBranchAddress("PuppimetJESDown",         &PuppimetJESDown);
   tree_->SetBranchAddress("PuppimetPhiJESDown",      &PuppimetPhiJESDown);
+  tree_->SetBranchAddress("metJESDown",         &metJESDown);
+  tree_->SetBranchAddress("metPhiJESDown",      &metPhiJESDown);
+ tree_->SetBranchAddress("metJESUp",         &metJESUp);
+  tree_->SetBranchAddress("metPhiJESUp",      &metPhiJESUp);
 
 
  tree_->SetBranchAddress("PuppimetJESUp",         &PuppimetJESUp);
@@ -495,6 +553,8 @@ void TreeMuonSystemCombination::InitTree()
 
 
     tree_->SetBranchAddress("dtRechitClusterMet_dPhi",             dtRechitClusterMet_dPhi);
+    tree_->SetBranchAddress("dtRechitClusterMetJESUp_dPhi",             dtRechitClusterMetJESUp_dPhi);
+    tree_->SetBranchAddress("dtRechitClusterMetJESDown_dPhi",             dtRechitClusterMetJESDown_dPhi);
     tree_->SetBranchAddress("dtRechitClusterPuppiMet_dPhi",             dtRechitClusterPuppiMet_dPhi);
     tree_->SetBranchAddress("dtRechitClusternXY",             dtRechitClusternXY);
     tree_->SetBranchAddress("dtRechitClusternZ",             dtRechitClusternZ);
@@ -628,6 +688,8 @@ void TreeMuonSystemCombination::InitTree()
 
 
   tree_->SetBranchAddress("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi);
+  tree_->SetBranchAddress("cscRechitClusterMetJESUp_dPhi",             cscRechitClusterMetJESUp_dPhi);
+  tree_->SetBranchAddress("cscRechitClusterMetJESDown_dPhi",             cscRechitClusterMetJESDown_dPhi);
   tree_->SetBranchAddress("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi);
 
 
@@ -674,9 +736,33 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("nJets",     &nJets);
   tree_->SetBranchAddress("jetE",      jetE);
   tree_->SetBranchAddress("jetPt",     jetPt);
+  tree_->SetBranchAddress("jetPtJESUp",     jetPtJESUp);
+  tree_->SetBranchAddress("jetPtJESDown",     jetPtJESDown);
   tree_->SetBranchAddress("jetEta",    jetEta);
   tree_->SetBranchAddress("jetPhi",    jetPhi);
   tree_->SetBranchAddress("jetTightPassId", jetTightPassId);
+
+//tau
+
+tree_->SetBranchAddress("nTaus", &nTaus);
+  tree_->SetBranchAddress("tauM", tauM);
+  tree_->SetBranchAddress("tauPt", tauPt);
+  tree_->SetBranchAddress("tauEta", tauEta);
+  tree_->SetBranchAddress("tauPhi", tauPhi);
+  tree_->SetBranchAddress("tauDecayMode", tauDecayMode);
+  tree_->SetBranchAddress("tauDeltaR", tauDeltaR);
+  tree_->SetBranchAddress("tauIsVVVLoose", tauIsVVVLoose);
+  tree_->SetBranchAddress("tauIsVVLoose", tauIsVVLoose);      
+  tree_->SetBranchAddress("tauIsVLoose", tauIsVLoose);
+  tree_->SetBranchAddress("tauIsLoose", tauIsLoose);
+  tree_->SetBranchAddress("tauIsMedium", tauIsMedium);
+  tree_->SetBranchAddress("tauIsTight", tauIsTight);
+  tree_->SetBranchAddress("tauIsVTight", tauIsVTight);
+  tree_->SetBranchAddress("tauIsVVTight", tauIsVVTight);
+  tree_->SetBranchAddress("tauDz", tauDz);
+  tree_->SetBranchAddress("tauGenPartFlav", tauGenPartFlav);
+
+
   // triggers
   // tree_->SetBranchAddress("HLTDecision",   HLTDecision);
 
@@ -706,6 +792,15 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("ctau",      &ctau,     "ctau/I");      // event number
   tree_->Branch("HLT_CSCCSC",      &HLT_CSCCSC,     "HLT_CSCCSC/O");
   tree_->Branch("HLT_CSCDT",      &HLT_CSCDT,     "HLT_CSCDT/O");
+  tree_->Branch("HLT_CscCluster100_PNetTauhPFJet10_Loose",      &HLT_CscCluster100_PNetTauhPFJet10_Loose,     "HLT_CscCluster100_PNetTauhPFJet10_Loose/O");
+  tree_->Branch("HLT_CscCluster100_Ele5",      &HLT_CscCluster100_Ele5,     "HLT_CscCluster100_Ele5/O");
+  tree_->Branch("HLT_CscCluster100_Mu5",      &HLT_CscCluster100_Mu5,     "HLT_CscCluster100_Mu5/O");
+  tree_->Branch("HLT_CscCluster50_Photon30Unseeded",      &HLT_CscCluster50_Photon30Unseeded,     "HLT_CscCluster50_Photon30Unseeded/O");
+  tree_->Branch("HLT_CscCluster50_Photon20Unseeded",      &HLT_CscCluster50_Photon20Unseeded,     "HLT_CscCluster50_Photon20Unseeded/O");
+
+  tree_->Branch("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight, "HLT_PFMET120_PFMHT120_IDTight/O");
+
+
   tree_->Branch("jetVeto",      &jetVeto,     "jetVeto/O");
 
   tree_->Branch("npv",         &npv,        "npv/i");         // number of primary vertices
@@ -726,9 +821,14 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("Flag_ecalBadCalibFilter",      &Flag_ecalBadCalibFilter,     "Flag_ecalBadCalibFilter/O");
 
 
-  tree_->Branch("scaleWeights",             scaleWeights,             "scaleWeights[9]/F");
+  tree_->Branch("LHEScaleWeight",             LHEScaleWeight,             "LHEScaleWeight[9]/F");
+
+  tree_->Branch("MetTriggerEffDown",             &MetTriggerEffDown,             "MetTriggerEffDown/F");
+  tree_->Branch("MetTriggerEffUp",             &MetTriggerEffUp,             "MetTriggerEffUp/F");
+  tree_->Branch("MetTriggerEff",             &MetTriggerEff,             "MetTriggerEff/F");
 
 
+  
 
   tree_->Branch("rho",         &rho,        "rho/F");
   tree_->Branch("met",         &met,        "met/F");         // MET
@@ -743,6 +843,10 @@ void TreeMuonSystemCombination::CreateTree()
 
   tree_->Branch("PuppimetJESDown",         &PuppimetJESDown,        "PuppimetJESDown/F");         // MET
   tree_->Branch("PuppimetPhiJESDown",      &PuppimetPhiJESDown,     "PuppimetPhiJESDown/F");      // phi(MET)
+  tree_->Branch("metJESUp",      &metJESUp,     "metJESUp/F");      // phi(MET)
+  tree_->Branch("metJESDown",      &metJESDown,     "metJESDown/F");      // phi(MET)
+  tree_->Branch("metPhiJESUp",      &metPhiJESUp,     "metPhiJESUp/F");      // phi(MET)
+  tree_->Branch("metPhiJESDown",      &metPhiJESDown,     "metPhiJESDown/F");      // phi(MET)
 
   tree_->Branch("gHiggsPt",      &gHiggsPt,     "gHiggsPt/F");      // phi(MET)
   tree_->Branch("gHiggsE",      &gHiggsE,     "gHiggsE/F");      // phi(MET)
@@ -851,6 +955,8 @@ void TreeMuonSystemCombination::CreateTree()
 
     tree_->Branch("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency,             "cscRechitClusterHMTEfficiency[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi,             "cscRechitClusterMet_dPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterMetJESUp_dPhi",             cscRechitClusterMetJESUp_dPhi,             "cscRechitClusterMetJESUp_dPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterMetJESDown_dPhi",             cscRechitClusterMetJESDown_dPhi,             "cscRechitClusterMetJESDown_dPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi,             "cscRechitClusterPuppiMet_dPhi[nCscRechitClusters]/F");
 
 
@@ -936,6 +1042,8 @@ void TreeMuonSystemCombination::CreateTree()
         tree_->Branch("dtRechitClusterNHitWheel1",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel1[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterNHitWheel2",             dtRechitClusterNHitWheel0,             "dtRechitClusterNHitWheel2[nDtRechitClusters]/I");
         tree_->Branch("dtRechitClusterMet_dPhi",             dtRechitClusterMet_dPhi,             "dtRechitClusterMet_dPhi[nDtRechitClusters]/F");
+        tree_->Branch("dtRechitClusterMetJESUp_dPhi",             dtRechitClusterMetJESUp_dPhi,             "dtRechitClusterMetJESUp_dPhi[nDtRechitClusters]/F");
+        tree_->Branch("dtRechitClusterMetJESDown_dPhi",             dtRechitClusterMetJESDown_dPhi,             "dtRechitClusterMetJESDown_dPhi[nDtRechitClusters]/F");
         tree_->Branch("dtRechitClusterPuppiMet_dPhi",             dtRechitClusterPuppiMet_dPhi,             "dtRechitClusterPuppiMet_dPhi[nDtRechitClusters]/F");
 
 
@@ -1030,9 +1138,32 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("nJets",     &nJets,    "nJets/I");
   tree_->Branch("jetE",      jetE,      "jetE[nJets]/F");
   tree_->Branch("jetPt",     jetPt,     "jetPt[nJets]/F");
+  tree_->Branch("jetPtJESUp",     jetPtJESUp,     "jetPtJESUp[nJets]/F");
+  tree_->Branch("jetPtJESDown",     jetPtJESDown,     "jetPtJESDown[nJets]/F");
   tree_->Branch("jetEta",    jetEta,    "jetEta[nJets]/F");
   tree_->Branch("jetPhi",    jetPhi,    "jetPhi[nJets]/F");
   tree_->Branch("jetTightPassId", jetTightPassId, "jetTightPassId[nJets]/O");
+
+
+
+  tree_->Branch("nTaus", &nTaus,                  "nTaus/i");
+  tree_->Branch("tauM", tauM,                    "tauM[nTaus]/F");
+  tree_->Branch("tauPt", tauPt,                  "tauPt[nTaus]/F");
+  tree_->Branch("tauEta", tauEta,                "tauEta[nTaus]/F");
+  tree_->Branch("tauPhi", tauPhi,                "tauPhi[nTaus]/F");
+  tree_->Branch("tauDeltaR", tauDeltaR,          "tauDeltaR[nTaus]/F");
+  tree_->Branch("tauDecayMode", tauDecayMode,    "tauDecayMode[nTaus]/I");
+  tree_->Branch("tauIsVVVLoose", tauIsVVVLoose,"tauIsVVVLoose[nTaus]/O");
+  tree_->Branch("tauIsVVLoose", tauIsVVLoose,  "tauIsVVLoose[nTaus]/O");
+  tree_->Branch("tauIsVLoose", tauIsVLoose,    "tauIsVLoose[nTaus]/O");
+  tree_->Branch("tauIsLoose", tauIsLoose,      "tauIsLoose[nTaus]/O");
+  tree_->Branch("tauIsMedium", tauIsMedium,    "tauIsMedium[nTaus]/O");
+  tree_->Branch("tauIsTight", tauIsTight,      "tauIsTight[nTaus]/O");
+  tree_->Branch("tauIsVTight", tauIsVTight,    "tauIsVTight[nTaus]/O");
+  tree_->Branch("tauIsVVTight", tauIsVVTight,  "tauIsVVTight[nTaus]/O");
+  tree_->Branch("tauDz",          tauDz,            "tauDz[nTaus]/F");
+  tree_->Branch("tauGenPartFlav", tauGenPartFlav,   "tauGenPartFlav[nTaus]/I");
+  
   // tree_->Branch("HLTDecision", HLTDecision, "HLTDecision[1201]/O"); //hardcoded
 
 };

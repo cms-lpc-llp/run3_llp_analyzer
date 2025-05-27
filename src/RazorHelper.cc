@@ -86,7 +86,17 @@ void RazorHelper::loadTag_Summer22() {
   loadHMTEfficiency();
   loadJetVeto_Summer22();
   loadJECs();
+  loadMetTrigger_Summer22();
 
+}
+
+
+void RazorHelper::loadMetTrigger_Summer22() {
+    std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
+    MetTriggerFile = TFile::Open("METTriggerEff_Summer22.root");
+    MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
+    MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
+    MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
 }
 
 void RazorHelper::loadPileup_Summer22() {
@@ -113,9 +123,17 @@ void RazorHelper::loadTag_Summer22EE() {
    loadHMTEfficiency();
     loadJetVeto_Summer22EE();
     loadJECs();
+    loadMetTrigger_Summer22EE();
 
 }
 
+void RazorHelper::loadMetTrigger_Summer22EE() {
+    std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
+    MetTriggerFile = TFile::Open("METTriggerEff_Summer22EE.root");
+    MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
+    MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
+    MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
+}
 void RazorHelper::loadPileup_Summer22EE() {
     // pileup weights
     std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
@@ -139,9 +157,17 @@ void RazorHelper::loadTag_Summer23() {
     loadHMTEfficiency();
     loadJetVeto_Summer23();
     loadJECs();
+    loadMetTrigger_Summer23();
 
 }
 
+void RazorHelper::loadMetTrigger_Summer23() {
+    std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
+    MetTriggerFile = TFile::Open("METTriggerEff_Summer23.root");
+    MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
+    MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
+    MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
+}
 void RazorHelper::loadPileup_Summer23() {
     // pileup weights
     std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
@@ -164,8 +190,16 @@ void RazorHelper::loadTag_Summer23BPix() {
     loadHMTEfficiency();
     loadJetVeto_Summer23BPix();
     loadJECs();
+    loadMetTrigger_Summer23BPix();
 }
 
+void RazorHelper::loadMetTrigger_Summer23BPix() {
+    std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
+    MetTriggerFile = TFile::Open("METTriggerEff_Summer23BPix.root");
+    MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
+    MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
+    MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
+}
 void RazorHelper::loadPileup_Summer23BPix() {
     // pileup weights
     std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
@@ -188,9 +222,17 @@ void RazorHelper::loadTag_Summer24() {
   loadHMTEfficiency();
   loadJetVeto_Summer24();
   loadJECs();
+  loadMetTrigger_Summer24();
 
 }
 
+void RazorHelper::loadMetTrigger_Summer24() {
+    std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
+    MetTriggerFile = TFile::Open("METTriggerEff_Summer24.root");
+    MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
+    MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
+    MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
+}
 void RazorHelper::loadPileup_Summer24() {
     // pileup weights
     std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
@@ -212,6 +254,40 @@ void RazorHelper::loadJetVeto_Summer24() {
 ////////////////////////////////////////////////
 //  Utilities
 ////////////////////////////////////////////////
+
+
+double RazorHelper::getMetTriggerEff(float met) {
+    if (MetTriggerHist) {
+        return MetTriggerHist->GetBinContent(MetTriggerHist->GetXaxis()->FindFixBin(met));
+    }
+    else {
+        std::cout << "RazorHelper error: MET trigger eff requested, but no histogram available!" << std::endl;
+        return 0;
+    }
+}
+
+
+double RazorHelper::getMetTriggerEffUp(float met) {
+    if (MetTriggerSysUpHist) {
+        return MetTriggerSysUpHist->GetBinContent(MetTriggerSysUpHist->GetXaxis()->FindFixBin(met));
+    }
+    else {
+        std::cout << "RazorHelper error: MET trigger eff requested, but no histogram available!" << std::endl;
+        return 0;
+    }
+}
+
+double RazorHelper::getMetTriggerEffDown(float met) {
+    if (MetTriggerSysDownHist) {
+        return MetTriggerSysDownHist->GetBinContent(MetTriggerSysDownHist->GetXaxis()->FindFixBin(met));
+    }
+    else {
+        std::cout << "RazorHelper error: MET trigger eff requested, but no histogram available!" << std::endl;
+        return 0;
+    }
+}
+
+
 
 //// GET JET UNC for 22-24
 double RazorHelper::getJecUnc( float pt, float eta , int run) {

@@ -30,13 +30,15 @@ class RazorHelper {
         std::pair<double,double> METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int runnb, int year, bool isMC, int npv);
 
 
-        double getMetTriggerSF(float met);
+
         double getHMTTriggerEff(int chamber, int nhits);
         // retrieve pileup weights (nominal, up, and down versions)
         double getPileupWeight(int NPU);
         double getPileupWeightUp(int NPU);
         double getPileupWeightDown(int NPU);
-
+        double getMetTriggerEff(float met);
+        double getMetTriggerEffUp(float met);
+        double getMetTriggerEffDown(float met);
         double getJetVetoMap(float eta, float phi);
         double getJetVetoFpixMap(float eta, float phi);
         bool jetTightLepVeto(std::string tag, bool tightVeto, float Jet_neHEF, float Jet_neEmEF, float Jet_chEmEF, float Jet_muEF, float Jet_chHEF, UChar_t Jet_chMultiplicity,UChar_t Jet_neMultiplicity, float Jet_eta, bool Jet_jetId);
@@ -68,6 +70,12 @@ class RazorHelper {
         void loadJetVeto_Summer23();
         void loadJetVeto_Summer23BPix();
         void loadJetVeto_Summer24();
+
+        void loadMetTrigger_Summer24();
+        void loadMetTrigger_Summer22();
+        void loadMetTrigger_Summer22EE();
+        void loadMetTrigger_Summer23();
+        void loadMetTrigger_Summer23BPix();
         
         void loadJECs();
 
@@ -81,8 +89,7 @@ class RazorHelper {
         bool isData;
         std::string cmsswPath;
 
-        TFile *metTriggerSFFile;
-        TH1F *metTriggerSFHist;
+
 
         // for pileup reweighting
         TFile *pileupWeightFile;
@@ -93,6 +100,13 @@ class RazorHelper {
         TFile *JetVetoFile;
         TH2D *JetVetoHist;
         TH2D *JetVetoFpixHist;
+
+
+        TFile *MetTriggerFile;
+        TH1F *MetTriggerHist;
+        TH1F *MetTriggerSysUpHist;
+        TH1F *MetTriggerSysDownHist;
+
 
 
         std::vector<JetCorrectionUncertainty*> jecUnc;

@@ -18,11 +18,10 @@ struct hits
 const double theWireError_ = 8.6;
 const double theStripError_ = 7.0;
 const double thePruneCut_ = 9.0;
-const int nRechitMin_ = 50;
 const int nStationThres_ = 10;
 int CACluster::run()
 {
-  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.6);
+  fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, m_epsilon);
   std::vector<fastjet::PseudoJet> fjInput;
   vector<Rechits>::iterator iter;
 
@@ -49,7 +48,7 @@ int CACluster::run()
   // auto clusters = std::make_unique<RecHitClusterCollection>();
   for (auto const& fjJet : fjJets) {
     // skip if the cluster has too few rechits
-    if (int(fjJet.constituents().size()) < nRechitMin_) continue;
+    if (int(fjJet.constituents().size()) < m_minPoints) continue;
     // get the constituents from fastjet
     vector<Rechits> rechits;
     for (auto const& constituent : fjJet.constituents()) {
@@ -137,9 +136,12 @@ void CACluster::clusterProperties()
         cscHits.push_back(thisHit);
 
       }
+
       size ++;
 
     }
+
+
 
     if (size_xy > 0 && size_z > 0) //for DT correct position, calculate average Z using sl2 and average XY using sl1/3
     {
@@ -152,7 +154,6 @@ void CACluster::clusterProperties()
       avg_x = avg_x/size;
       avg_y = avg_y/size;
       avg_z = avg_z/size;
-      // cout<<avg_x<<","<<avg_y<<","<<avg_z<<endl;
     }
     else if (size_xy > 0 && size_z == 0)
     {
@@ -172,6 +173,8 @@ void CACluster::clusterProperties()
     tmpCluster.x = avg_x;
     tmpCluster.y = avg_y;
     tmpCluster.z = avg_z;
+
+    
 
     // calculate cluster eta and phi
     avg_phi = atan(tmpCluster.y/tmpCluster.x);

@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
   }
   // create output file
   TFile *outputFile = new TFile(outputfilename.c_str(), "RECREATE");
+  TH1F *NEvents = new TH1F("NEvents", "NEvents", 1, 1, 2);
 
 
   ////////////////////////
@@ -375,7 +376,7 @@ int main(int argc, char *argv[])
     // if (ntuple.nCscSeg >= 300) cout<< n << ", " << ntuple.nCscSeg<< endl; 
     nanoChain->GetEntry(EventIndexToEventIndexMap[n]); 
     ntupleChain->GetEntry(n);
-    
+    NEvents->Fill(1); 
     /////////////////////////////////////////////////////
     //////// cosmic shower veto ///////////
     /////////////////////////////////////////////////////
@@ -493,7 +494,7 @@ int main(int argc, char *argv[])
     if ( nDTRechitsChamberPlus41 > 50) nDtRings++;
     if ( nDTRechitsChamberPlus42 > 50) nDtRings++;
 
-    if (nDtRings + nCscRings >= 10) continue;
+    if (!is_mc && nDtRings + nCscRings >= 10) continue;
 
     /////////////////////////////////////////////////////
     //////// end of cosmic shower veto ///////////
@@ -508,7 +509,21 @@ int main(int argc, char *argv[])
     
     bool noise_filter = nano.Flag_eeBadScFilter&& nano.Flag_hfNoisyHitsFilter&& nano.Flag_BadPFMuonDzFilter&& nano.Flag_BadPFMuonFilter
         && nano.Flag_EcalDeadCellTriggerPrimitiveFilter&& nano.Flag_globalSuperTightHalo2016Filter&& nano.Flag_goodVertices;
-    if (!noise_filter) continue;
+    if (!is_mc && !noise_filter) continue;
+
+    // if (ntuple.ncscRechits > 8000)
+    //{
+    //  std::cerr << "number of csc rechits is too high for " << ntuple.runNum << ":" << ntuple.eventNum << std::endl;
+    //  std::cerr << "(nCscRechits, nDtRechits) = (" << ntuple.ncscRechits << ", " << ntuple.nDtRechits << ")" << std::endl;
+    //  throw std::overflow_error("number of csc rechits is too high");
+    //}
+    //if (ntuple.nDtRechits > 8000)
+    //{
+    //  std::cerr << "number of dt rechits is too high for " << ntuple.runNum << ":" << ntuple.eventNum << std::endl;
+    //  std::cerr << "(nCscRechits, nDtRechits) = (" << ntuple.ncscRechits << ", " << ntuple.nDtRechits << ")" << std::endl;
+    //  throw std::overflow_error("number of dt rechits is too high");
+    //}
+
     for (int i = 0; i < numFloatBranches; i++)
     {
       int temp_nhits = 0;
@@ -574,7 +589,7 @@ int main(int argc, char *argv[])
   cout << "Filled Total of " << outputTree->GetEntries() << " Matched Events\n";
   cout << "Writing output trees..." << endl;
   outputFile->cd();
-
+  NEvents->Write();
   outputTree->Write();
   outputFile->Close();
   delete outputFile;

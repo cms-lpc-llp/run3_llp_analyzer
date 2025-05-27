@@ -1,7 +1,8 @@
 ######################################
 ## Cross section in pb for datasets
 ##
-
+HiddenValley_higgs_m_15_ctau_1000_xiO_2p5_xiL_1			52.2
+HiddenValley_higgs_m_15_ctau_10000_xiO_2p5_xiL_1		52.2
 ggH_Hto2Sto4B_MH-125-MS-15-ctauS-0p1_TuneCP5_13p6TeV_powheg-pythia8       52.2
 ggH_Hto2Sto4B_MH-125-MS-15-ctauS-100000_TuneCP5_13p6TeV_powheg-pythia8       52.2
 ggH_Hto2Sto4B_MH-125-MS-15-ctauS-10000_TuneCP5_13p6TeV_powheg-pythia8       52.2
