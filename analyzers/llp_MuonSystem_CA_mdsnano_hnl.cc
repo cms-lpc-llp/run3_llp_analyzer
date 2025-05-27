@@ -155,13 +155,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
   MuonSystem->tree_->SetAutoFlush(0);
   MuonSystem->InitTree();
 
-  // for signals, need one output file for each signal point
-  map<pair<int,int>, TFile*> Files2D;
-  map<pair<int,int>, TTree*>Trees2D;
-  map<pair<int,int>, TH1F*> NEvents2D;
-  map<pair<int,int>, TH1F*> accep2D;
-  map<pair<int,int>, TH1F*> accep_met2D;
-  map<pair<int,int>, TH1F*> Total2D;
+
 
 
 
@@ -336,46 +330,6 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     auto genWeight = Generator_weight; // genWeight
 
 
-    if (!isData && signalScan)
-    {
-
-      string mh_substring = lheComments->substr(lheComments->find("MH-")+3);
-      int mh = stoi(mh_substring.substr(0,mh_substring.find('_')));
-      string mx_substring = lheComments->substr(lheComments->find("MS-")+3);
-      int mx = stoi(mx_substring.substr(0,mx_substring.find('_')));
-      string ctau_substring = lheComments->substr(lheComments->find("ctauS-")+6);
-      int ctau = stoi(ctau_substring.substr(0,ctau_substring.find('_')));
-      MuonSystem->mH = mh;
-      MuonSystem->mX = mx;
-      MuonSystem->ctau = ctau;
-
-      // if (mh2 != mh || mx2!=mx || ctau2!=ctau) continue;
-      // cout<<*lheComments<<endl;
-
-      pair<int,int> signalPair = make_pair(mx, ctau);
-
-      if (Files2D.count(signalPair) == 0){ //create file and tree
-        //format file name
-        string thisFileName = outfilename;
-        thisFileName.erase(thisFileName.end()-5, thisFileName.end());
-        thisFileName += "_" + to_string(mx) + "_" + to_string(ctau) + ".root";
-
-        Files2D[signalPair] = new TFile(thisFileName.c_str(), "recreate");
-        Trees2D[signalPair] =  MuonSystem->tree_->CloneTree(0);
-        NEvents2D[signalPair] = new TH1F(Form("NEvents%d%d", mx, ctau), "NEvents", 1,0.5,1.5);
-        Total2D[signalPair] = new TH1F(Form("Total%d%d", mx, ctau), "Total", 1,0.5,1.5);
-        accep2D[signalPair] = new TH1F(Form("accep2D%d%d", mx, ctau), "acceptance", 1,0.5,1.5);
-        accep_met2D[signalPair] = new TH1F(Form("accep_met2D%d%d", mx, ctau), "acceptance_met", 1,0.5,1.5);
-
-
-
-        cout << "Created new output file " << thisFileName << endl;
-      }
-          //Fill NEvents hist
-      NEvents2D[signalPair]->Fill(1.0, genWeight);
-
-
-    }
     //event info
     if (isData)
     {
@@ -557,12 +511,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       MuonSystem->Puppimet = PuppiMET_pt;
       MuonSystem->PuppimetPhi = PuppiMET_phi;
 
-      if(signalScan && !isData)Total2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, genWeight*MuonSystem->pileupWeight);
-      if(signalScan && !isData)
-      {
-        accep2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, genWeight*MuonSystem->pileupWeight);
-      }
-      else if (!isData)
+      if (!isData)
       {
         if (MuonSystem->gLLP_csc[0] && MuonSystem->gLLP_csc[1]) accep_csccsc->Fill(1.0, genWeight*MuonSystem->pileupWeight);
         if ((MuonSystem->gLLP_dt[0] && MuonSystem->gLLP_csc[1]) || (MuonSystem->gLLP_dt[1] && MuonSystem->gLLP_csc[0])) accep_cscdt->Fill(1.0, genWeight*MuonSystem->pileupWeight);
@@ -1189,34 +1138,13 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
 
       if (MuonSystem->nCscRechitClusters_nocut == 0) continue;
 
-      if(!isData && signalScan)
-      {
-        pair<int,int> smsPair = make_pair(MuonSystem->mX, MuonSystem->ctau);
-        Trees2D[smsPair]->Fill();
-      }
-      else
-      {
-        MuonSystem->tree_->Fill();
-      }
+
+      MuonSystem->tree_->Fill();
 
 
     }
-      if(!isData && signalScan)
-      {
-        for(auto &filePtr : Files2D)
-         {
-           cout << "Writing output tree (" << filePtr.second->GetName() << ")" << endl;
-           filePtr.second->cd();
-           Trees2D[filePtr.first]->Write();
-           NEvents2D[filePtr.first]->Write("NEvents");
-           Total2D[filePtr.first]->Write("Total");
-           accep2D[filePtr.first]->Write("acceptance");
-           accep_met2D[filePtr.first]->Write("acceptance_met");
-           filePtr.second->Close();
 
-         }
-      }
-      else if (!isData)
+      if (!isData)
       {
          cout << "Filled Total of " << NEvents->GetBinContent(1) << " Events\n";
          cout << "Writing output trees..." << endl;
@@ -1229,8 +1157,6 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
          accep_met->Write("acceptance_met");
          outFile->Close();
       }
-
-
       else
       {
         cout << "Filled Total of " << NEvents->GetBinContent(1) << " Events\n";
