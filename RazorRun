@@ -8,8 +8,9 @@ else
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23BPix.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer24.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/L1_efficiencies_2022_2023_082324-TEff.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/*root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/L1_efficiencies_2022_2023_032625-Hists-TEff.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/HMT_Efficiencies_2024.root .
+  
 
     cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer22EE_23Sep2023_RunEFG_v1.root .
     cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer23BPixPrompt23_RunD_v1.root  .

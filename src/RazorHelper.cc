@@ -60,10 +60,27 @@ void RazorHelper::loadTag_Null() {
 }
 
 
-void RazorHelper::loadHMTEfficiency() {
+void RazorHelper::loadHMTEfficiency2223() {
     // pileup weights
     std::cout << "RazorHelper: loading HMT L1 efficiency histograms" << std::endl;
-    HMTEffFile = TFile::Open("L1_efficiencies_2022_2023_082324-TEff.root");
+    HMTEffFile = TFile::Open("L1_efficiencies_2022_2023_032625-Hists-TEff.root");
+
+    
+    HMTEffHist[11] = (TEfficiency*)HMTEffFile->Get("ME11");
+    HMTEffHist[12] = (TEfficiency*)HMTEffFile->Get("ME12");
+    HMTEffHist[13] = (TEfficiency*)HMTEffFile->Get("ME13");
+    HMTEffHist[21] = (TEfficiency*)HMTEffFile->Get("ME21");
+    HMTEffHist[22] = (TEfficiency*)HMTEffFile->Get("ME22");
+    HMTEffHist[31] = (TEfficiency*)HMTEffFile->Get("ME31");
+    HMTEffHist[32] = (TEfficiency*)HMTEffFile->Get("ME32");
+    HMTEffHist[41] = (TEfficiency*)HMTEffFile->Get("ME41");
+    HMTEffHist[42] = (TEfficiency*)HMTEffFile->Get("ME42");
+
+}
+void RazorHelper::loadHMTEfficiency24() {
+    // pileup weights
+    std::cout << "RazorHelper: loading HMT L1 efficiency histograms" << std::endl;
+    HMTEffFile = TFile::Open("HMT_Efficiencies_2024.root");
     
     HMTEffHist[11] = (TEfficiency*)HMTEffFile->Get("ME11");
     HMTEffHist[12] = (TEfficiency*)HMTEffFile->Get("ME12");
@@ -77,13 +94,12 @@ void RazorHelper::loadHMTEfficiency() {
 
 }
 
-
 ////////////////////////////////////////////////
 //  Summer 22
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer22() {
   loadPileup_Summer22();
-  loadHMTEfficiency();
+  loadHMTEfficiency2223();
   loadJetVeto_Summer22();
   loadJECs();
   loadMetTrigger_Summer22();
@@ -120,7 +136,7 @@ void RazorHelper::loadJetVeto_Summer22() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer22EE() {
   loadPileup_Summer22EE();
-   loadHMTEfficiency();
+   loadHMTEfficiency2223();
     loadJetVeto_Summer22EE();
     loadJECs();
     loadMetTrigger_Summer22EE();
@@ -154,7 +170,7 @@ void RazorHelper::loadJetVeto_Summer22EE() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23() {
   loadPileup_Summer23();
-    loadHMTEfficiency();
+    loadHMTEfficiency2223();
     loadJetVeto_Summer23();
     loadJECs();
     loadMetTrigger_Summer23();
@@ -187,7 +203,7 @@ void RazorHelper::loadJetVeto_Summer23() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer23BPix() {
   loadPileup_Summer23BPix();
-    loadHMTEfficiency();
+    loadHMTEfficiency2223();
     loadJetVeto_Summer23BPix();
     loadJECs();
     loadMetTrigger_Summer23BPix();
@@ -219,7 +235,7 @@ void RazorHelper::loadJetVeto_Summer23BPix() {
 ////////////////////////////////////////////////
 void RazorHelper::loadTag_Summer24() {
   loadPileup_Summer24();
-  loadHMTEfficiency();
+  loadHMTEfficiency24();
   loadJetVeto_Summer24();
   loadJECs();
   loadMetTrigger_Summer24();

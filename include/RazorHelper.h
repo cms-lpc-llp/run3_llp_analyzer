@@ -63,7 +63,8 @@ class RazorHelper {
         void loadPileup_Summer23();
         void loadPileup_Summer23BPix();
         void loadPileup_Summer24();
-        void loadHMTEfficiency();
+        void loadHMTEfficiency2223();
+        void loadHMTEfficiency24();
 
         void loadJetVeto_Summer22();
         void loadJetVeto_Summer22EE();
