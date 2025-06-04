@@ -540,7 +540,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       for (unsigned int i = 0; i < 9; i++)
       {
-       MuonSystem->scaleWeights[i]= LHEScaleWeight[i];
+       MuonSystem->LHEScaleWeight[i]= LHEScaleWeight[i];
       }
      
 

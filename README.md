@@ -4,12 +4,13 @@
 
 Class for analyzing the 2015 razor ntuples
 
-Setup
+Setup (for el9 machines)
 -------------
 
-    cmsrel CMSSW_10_6_30
-    cd CMSSW_10_6_30/src
+    cmsrel CMSSW_14_1_0_pre4
+    cd CMSSW_14_1_0_pre4/src
     cmsenv
+    source /cvmfs/cms.cern.ch/el9_amd64_gcc12/lcg/root/6.30.07-024df6516c17fd2edef848a927a788f1/bin/thisroot.sh
     git clone git@github.com:cms-lpc-llp/run3_llp_analyzer.git run3_llp_analyzer
     cd run3_llp_analyzer
     make
