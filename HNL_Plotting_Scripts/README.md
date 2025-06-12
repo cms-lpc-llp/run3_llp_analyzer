@@ -13,6 +13,6 @@ Generating a Kernel (after cmsenv)
 
     /cvmfs/cms.cern.ch/el8_amd64_gcc12/cms/cmssw/CMSSW_14_1_0_pre4/external/el8_amd64_gcc12/bin/python3 -m ipykernel install --user --name Pyroot_Local --display-name "PyROOT + Local Site Packages"
     #You should see *Installed kernelspec Pyroot_Local in <directory>*
-    cp kernel.json <directory>.kernel.json #remember to modify local paths in PYTHONPATH in kernel.json
+    cp kernel.json <directory>/kernel.json #remember to modify local paths in PYTHONPATH in kernel.json
 
 Then, restart VSCode, and select *PyROOT + Local Site Packages* from the kernel manager when opening a notebook.
