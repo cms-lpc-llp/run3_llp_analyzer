@@ -24,7 +24,6 @@ int CACluster::run()
   fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, m_epsilon);
   std::vector<fastjet::PseudoJet> fjInput;
   vector<Rechits>::iterator iter;
-
   int recIt = 0;
   for(iter = m_points.begin(); iter != m_points.end(); ++iter)
   {      
@@ -38,8 +37,6 @@ int CACluster::run()
     recIt++;
   }
   fastjet::ClusterSequence clus_seq(fjInput, jet_def);
-
-
   //keep all the clusters
   double ptmin = 0.0;
   std::vector<fastjet::PseudoJet> fjJets = clus_seq.inclusive_jets(ptmin);
@@ -60,6 +57,7 @@ int CACluster::run()
     }
    nClusters++;
   }
+  return 0; //return statement needed for el9 it seems
 }
 void CACluster::clusterProperties()
 {

@@ -20,7 +20,7 @@ print(outNames)
 if analyzer.find("Run1") > 0:
 	inNames = ['include/AnalyzerTemplateRun1.txt','src/RunAnalyzerTemplateRun1.txt']
 
-if analyzer.find("UpgradeTiming") > 0:
+if analyzer.find("UpgradeTiming") > 0: 
 	inNames = ['include/AnalyzerTemplateUpgradeTiming.txt','src/RunAnalyzerTemplateUpgradeTiming.txt']
 
 for i in range(len(inNames)):

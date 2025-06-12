@@ -401,11 +401,11 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       }
 
 
-      //for Twin higgs model
+      //for HNL
        MuonSystem->nGLLP = 0;
       for(int i = 0;i < nGenPart; i++)
       {
-        if (abs(GenPart_pdgId[i])==9000006)
+        if (abs(GenPart_pdgId[i])==9900012)
         {
           // cout<<eventNum<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
           MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[i];
@@ -581,7 +581,8 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       MuonSystem->HLT_CscCluster50_Photon20Unseeded = HLT_CscCluster50_Photon20Unseeded;
 
 
-      if (!HLT_CscCluster100_PNetTauhPFJet10_Loose) continue;
+      //if (!HLT_CscCluster100_PNetTauhPFJet10_Loose) continue; UNCOMMET WHEN WE HAVE CLUSTERS
+      //cout<<"Pass trigger"<<endl;
       //*************************************************************************
       //Start Object Selection
       //*************************************************************************
@@ -666,6 +667,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       //********************************
       //Tau
       //********************************
+      cout<<"nTau: "<<nTau<<endl;
       for(int i = 0; i < nTau;  i++){
         // if(Tau_pt[i] < 20) continue;
         if(abs(Tau_eta[i]) > 2.3) continue;
@@ -692,6 +694,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         // TLorentzVector thisTau; thisTau.SetPtEtaPhiM(Tau_pt[i], Tau_eta[i], Tau_phi[i], Tau_mass[i]);
       }
       if (MuonSystem->nTaus == 0)continue;
+      cout<<"Found Event with Tau: "<<eventNum<<", nTaus: "<<MuonSystem->nTaus<<endl;
     //-----------------------------------------------
     //Select Jets
     //-----------------------------------------------
@@ -907,15 +910,20 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       if ( nCscRechitsChamberMinus42 > 50) MuonSystem->nCscRings++;
       //Do DBSCAN Clustering
 
+
+      cout<<"About to cluster csc rechits"<<ncscRechits<<" rechits"<<endl;
       int min_point = 50;  //minimum number of Rechitss to call it a cluster
       float epsilon = 0.4; //cluster radius parameter
       CACluster ds(min_point, epsilon, points);
+      cout<<"About to call ds.run()"<<endl;
       ds.run();
+      cout<<"About to call ds.clusterProperties()"<<endl;
       ds.clusterProperties();
+      cout<<"About to call ds.sort_clusters()"<<endl;
       //ds.merge_clusters();
       //ds.clusterProperties();
       ds.sort_clusters();
-
+      cout<<"Finished clustering csc rechits"<<endl;
 
 
       MuonSystem->nCscRechitClusters = 0;
@@ -1136,7 +1144,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
 
 
 
-      if (MuonSystem->nCscRechitClusters_nocut == 0) continue;
+      //if (MuonSystem->nCscRechitClusters_nocut == 0) continue; #commented out for now, checking tau kinematics with prompt HNL
 
 
       MuonSystem->tree_->Fill();
