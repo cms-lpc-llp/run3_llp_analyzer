@@ -13,8 +13,9 @@ Setup (for el9 machines)
     source /cvmfs/cms.cern.ch/el9_amd64_gcc12/lcg/root/6.30.07-024df6516c17fd2edef848a927a788f1/bin/thisroot.sh
     git clone git@github.com:cms-lpc-llp/run3_llp_analyzer.git run3_llp_analyzer
     cd run3_llp_analyzer
-    source set_SSL_vars.sh
     make
+
+Note: for certain commands on LPC, (like eos, etc) you man need to install openSSL (at least to use this CMSSW for el9. See *set_SSL_vars.sh* for installation and setting enviroment variables)
   
 Defining a new analysis
 -------------
