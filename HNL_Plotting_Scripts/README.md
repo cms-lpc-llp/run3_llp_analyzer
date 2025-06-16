@@ -6,7 +6,7 @@ Notebooks for applying cuts to the output of HNL Analyzers
 
 Jupyter Notebook Kernel Setup (for cmslpc el9 on VSCode)
 --------------
-I tried to get the Jupyter Notebook to run with ROOT on VSCode. I found that after adding ROOT to the PYTHONPATH in the kernel env, it seem to lose access to the local site packages (numpy, pandas, etc), so they have to be re-added to the PYTHONPATH specified in the kernel config file (*kernel.json*) to have access to these packages. I recommend using the supplied kernel.json file here if initializing your own kernel (please change the few local paths with */uscms/amalbert/*), though the script find_pkg_path.py can be used to append package paths to the PYTHONPATH of an existing kernel config file. This kernel config will get you almost all of the required packages, but pip install may be occasionally required within the notebook.
+I tried to get the Jupyter Notebook to run with ROOT on VSCode. I found that after adding ROOT to the PYTHONPATH in the kernel env, it seems to lose access to the local site packages (numpy, pandas, etc), so they have to be re-added to the PYTHONPATH specified in the kernel config file (*kernel.json*) to have access to these packages. I recommend using the supplied kernel.json file here if initializing your own kernel (please change the few local paths with */uscms/amalbert/*), though the script find_pkg_path.py can be used to append package paths to the PYTHONPATH of an existing kernel config file. This kernel config will get you almost all of the required packages, but pip install may be occasionally required within the notebook.
 
 Generating a Kernel (after cmsenv)
 -------------

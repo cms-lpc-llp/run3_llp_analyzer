@@ -1,0 +1,11 @@
+#define histograms for tau properties
+tau_pt:
+  nbins: 50
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: "p$_{T}$ [GeV]"
+  y_label: "Counts"
+  title: "Tau p$_{T}$ Distribution"
+  MuonSystem_Branch_Expression: "tauPt"

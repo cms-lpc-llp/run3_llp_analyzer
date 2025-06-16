@@ -1,0 +1,11 @@
+#define histograms for CSC Rechit Cluster properties
+CSC_Cluster_Size:
+  nbins: 50
+  xmin: 0
+  xmax: 500
+  underflow: false
+  overflow: false
+  x_label: "N_{hit}"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster Size Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterSize"
