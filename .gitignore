@@ -1,7 +1,8 @@
 #txt files in main directory
 ./*.txt
+condor_job_output
 
-
+*tar.gz
 src/Run*
 analyzers/.llp_MuonSys*
 *swp
