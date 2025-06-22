@@ -11,7 +11,7 @@ import uproot
 repoPath = "/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/"
 
 def loadTree_nanoFactory(f):
-    return NanoEventsFactory.from_root(repoPath+f,schemaclass=BaseSchema, metadata={"dataset":"HNL" }).events()
+    return NanoEventsFactory.from_root(f,schemaclass=BaseSchema, metadata={"dataset":"HNL" }).events()
 
 def loadTree_dask(f, treePath="MuonSystem"):
     return uproot.dask(repoPath+f, library="ak")

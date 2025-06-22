@@ -366,6 +366,11 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     tauIsVTight[i] = false;
     tauIsVVTight[i] = false;
     tauGenPartFlav[i] = 0;
+    deltaR_GenTauRecoTau[i] = 1000.;
+    tauIdDeepTau2018v2p5VSjet[i] = 0;
+    tauIdDeepTau2018v2p5VSe[i] = 0;
+    tauIdDeepTau2018v2p5VSmu[i] = 0;
+
   
   
    }
@@ -761,6 +766,11 @@ tree_->SetBranchAddress("nTaus", &nTaus);
   tree_->SetBranchAddress("tauIsVVTight", tauIsVVTight);
   tree_->SetBranchAddress("tauDz", tauDz);
   tree_->SetBranchAddress("tauGenPartFlav", tauGenPartFlav);
+  tree_->SetBranchAddress("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau);
+  tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet);
+  tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu);
+  tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe);
+
 
 
   // triggers
@@ -1163,7 +1173,10 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("tauIsVVTight", tauIsVVTight,  "tauIsVVTight[nTaus]/O");
   tree_->Branch("tauDz",          tauDz,            "tauDz[nTaus]/F");
   tree_->Branch("tauGenPartFlav", tauGenPartFlav,   "tauGenPartFlav[nTaus]/I");
-  
+  tree_->Branch("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau,   "deltaR_GenTauRecoTau[nTaus]/F");
+  tree_->Branch("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet,   "tauIdDeepTau2018v2p5VSjet[nTaus]/I");
+  tree_->Branch("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe,   "tauIdDeepTau2018v2p5VSe[nTaus]/I");
+  tree_->Branch("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu,   "tauIdDeepTau2018v2p5VSmu[nTaus]/I");
   // tree_->Branch("HLTDecision", HLTDecision, "HLTDecision[1201]/O"); //hardcoded
 
 };

@@ -1,6 +1,7 @@
 #txt files in main directory
 ./*.txt
 condor_job_output
+fileList_normalization
 
 *tar.gz
 src/Run*

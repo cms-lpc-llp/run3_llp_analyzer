@@ -393,6 +393,10 @@ public:
   bool  tauIsVTight[N_MAX_JETS];
   bool  tauIsVVTight[N_MAX_JETS];
   int   tauGenPartFlav[N_MAX_JETS];
+  float deltaR_GenTauRecoTau[N_MAX_JETS];
+  int   tauIdDeepTau2018v2p5VSjet[N_MAX_JETS];
+  int   tauIdDeepTau2018v2p5VSe[N_MAX_JETS];
+  int   tauIdDeepTau2018v2p5VSmu[N_MAX_JETS];
 
 
 

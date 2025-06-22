@@ -139,10 +139,11 @@ class HNL_Processor(processor.ProcessorABC):
 
     
     def eventSelections(self, events):
-        initial_mask = ak.ones_like(events, dtype=bool)
-        nTau = events.nTaus==1
-        noiseFilters = (events.Flag_all) & (events.jetVeto)
-        event_mask = ak.zip({"nTau_mask":nTau, "noiseFilters":noiseFilters})
+        #initial_mask = ak.ones_like(events, dtype=bool)
+        #nTau = events.nTaus==1
+        #tauID_mask  = events.
+        noiseFilters = (events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)
+        event_mask = ak.zip({"noiseFilters":noiseFilters})
         return event_mask
     
     def cscClusterSelections(self, cscClusters):
@@ -160,7 +161,6 @@ class HNL_Processor(processor.ProcessorABC):
     def process(self, events):
         
         output = self.accumulator.copy()
-        print(output)
         #generate analysis objects
         taus = self.buildRecoTaus(events)
         cscClusters = self.buildCscRechitClusters(events)
@@ -182,6 +182,7 @@ class HNL_Processor(processor.ProcessorABC):
         #     cscClusterHist.fill(plot=ak.flatten(events[cscClusterHist.metadata["branch"]][total_mask_cscCluster].compute()))
         #     output[plot] = cscClusterHist
         for plot in self.eventLevel_hists_dict.keys():
+            #print(plot)
             eventLevelHist = self.eventLevel_hists_dict[plot]
             eventLevelHist.fill(plot=events[eventLevelHist.metadata["branch"]][total_mask_event].compute())
             output[plot] = eventLevelHist

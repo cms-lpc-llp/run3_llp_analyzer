@@ -31,3 +31,91 @@ tau_phi:
   y_label: Counts
   title: Tau $\phi$ Distribution
   MuonSystem_Branch_Expression: tauPhi
+
+tau_vvvlooseID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: VVV Loose ID
+  y_label: Counts
+  title: Tau VVV Loose ID Distribution
+  MuonSystem_Branch_Expression: tauIsVVVLoose
+
+tau_vvlooseID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: VV Loose ID
+  y_label: Counts
+  title: Tau VV Loose ID Distribution
+  MuonSystem_Branch_Expression: tauIsVVLoose
+
+tau_vlooseID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: V Loose ID
+  y_label: Counts
+  title: Tau V Loose ID Distribution
+  MuonSystem_Branch_Expression: tauIsVLoose
+
+tau_looseID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: Loose ID
+  y_label: Counts
+  title: Tau Loose ID Distribution
+  MuonSystem_Branch_Expression: tauIsLoose
+
+tau_mediumID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: Medium ID
+  y_label: Counts
+  title: Tau Medium ID Distribution
+  MuonSystem_Branch_Expression: tauIsMedium
+
+tau_tightID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: Tight ID
+  y_label: Counts
+  title: Tau Tight ID Distribution
+  MuonSystem_Branch_Expression: tauIsTight
+
+tau_vtightID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: V Tight ID
+  y_label: Counts
+  title: Tau V Tight ID Distribution
+  MuonSystem_Branch_Expression: tauIsVTight
+
+tau_vvtightID:
+  nbins: 2
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: false
+  x_label: VV Tight ID
+  y_label: Counts
+  title: Tau VV Tight ID Distribution
+  MuonSystem_Branch_Expression: tauIsVVTight
