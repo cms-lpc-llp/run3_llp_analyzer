@@ -231,6 +231,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto nCscSeg = ncscSegments;
     auto nDtSeg = ndtSegments;
     auto nDtRechits = ndtRecHits;
+    auto nCscRechits = ncscRechits;
     auto nRpc = nrpcRecHits;
     auto cscRechitsPhi = cscRechits_Phi;
     auto cscRechitsEta = cscRechits_Eta;
@@ -880,7 +881,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
 
       vector<Rechits> points;
-      vector<int> cscRechitsClusterId;
+      vector<int> CscRechitsClusterId;
       points.clear();
       int nCscRechitsChamberPlus11 = 0;
       int nCscRechitsChamberPlus12 = 0;
@@ -902,11 +903,14 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       int nCscRechitsChamberMinus41 = 0;
       int nCscRechitsChamberMinus42 = 0;
 
-      
-      for (int i = 0; i < ncscRechits; i++) {
+      if(jentry==126)std::cout<<"entry: "<<jentry<<"   event: "<<eventNum<<std::endl;
+      MuonSystem->nCscRechits = nCscRechits;
+      for (int i = 0; i < nCscRechits; i++) {
         // cout<<cscRechitsChamber[i]<<endl;
         //pick out the right bits for chamber
         // int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
+        if(jentry==126) std::cout<<"Eta: "<<cscRechitsEta[i]<<std::endl; 
+        MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
 
         int layer = 0;
         Rechits p;
@@ -924,7 +928,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         p.wheel = 0;
         p.clusterID = UNCLASSIFIED;
         points.push_back(p);
-        cscRechitsClusterId.push_back(-1);
+        CscRechitsClusterId.push_back(-999);
 
         if (cscRechitsChamber[i] == 11)  nCscRechitsChamberPlus11++;
         if (cscRechitsChamber[i] == 12)  nCscRechitsChamberPlus12++;
@@ -975,6 +979,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       //ds.clusterProperties();
       ds.sort_clusters();
 
+      int r=0;
+      for (auto &tmp : points) {
+        if(jentry == 126) std::cout<<"ID= "<<tmp.clusterID<<std::endl;
+        MuonSystem->CscRechitsClusterId[r] = tmp.clusterID;
+        r++;
+      }
 
 
       MuonSystem->nCscRechitClusters = 0;
@@ -1409,8 +1419,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
 
           //match to MB1 DT segments
-          MuonSystem->nCscRechits = ncscRechits;
-
           for (int i = 0; i < nDtRechits; i++) {
             if (RazorAnalyzerMerged::deltaR(dtRechitCorrectEta[i], dtRechitCorrectPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters],MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.5 )
             {

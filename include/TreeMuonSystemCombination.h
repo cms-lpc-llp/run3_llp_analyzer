@@ -191,6 +191,8 @@ public:
   int           nCscRechitClusters;
   int           nCscRechitClusters_nocut;
 
+  float         CscRechitsEta[N_MAX_CSCRECHITS];
+  int           CscRechitsClusterId[N_MAX_CSCRECHITS];
 
   bool          cscRechitCluster_match_gLLP[N_MAX_CSC];
   int           cscRechitCluster_match_gLLP_index[N_MAX_CSC];
