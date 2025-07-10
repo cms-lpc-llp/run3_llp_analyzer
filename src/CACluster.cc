@@ -356,7 +356,6 @@ void CACluster::clusterProperties()
     tmpCluster.MajorAxis = sqrt((a+b)/(float)tmpCluster.nhits);
     tmpCluster.MinorAxis = sqrt((a-b)/(float)tmpCluster.nhits);
 
-
     // Nstation avg station
     tmpCluster.nStation10 = 0;
     tmpCluster.avgStation10 = 0;

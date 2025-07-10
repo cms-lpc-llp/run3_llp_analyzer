@@ -88,6 +88,7 @@ for(int i = 0; i < N_MAX_CSCRECHITS; i++)
 {
   CscRechitsClusterId[i] = -999;
   CscRechitsEta[i] = -999;
+  CscRechitsPhi[i] = -999;
 }
 
 
@@ -598,6 +599,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("nCscRechitClusters_nocut",             &nCscRechitClusters_nocut);
 
   tree_->SetBranchAddress("CscRechitsEta",                   CscRechitsEta);
+  tree_->SetBranchAddress("CscRechitsPhi",                   CscRechitsPhi);
   tree_->SetBranchAddress("CscRechitsClusterId",             CscRechitsClusterId);
 
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP",             &cscRechitCluster_match_gLLP);
@@ -886,6 +888,7 @@ void TreeMuonSystemCombination::CreateTree()
 
   tree_->Branch("nCscRechits",             &nCscRechits, "nCscRechits/I");
   tree_->Branch("CscRechitsEta",                   CscRechitsEta,       "CscRechitsEta[nCscRechits]/F");
+  tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
   tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
 
 

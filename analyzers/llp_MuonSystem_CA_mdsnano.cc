@@ -911,6 +911,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         // int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
         if(jentry==126) std::cout<<"Eta: "<<cscRechitsEta[i]<<std::endl; 
         MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
+        MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
 
         int layer = 0;
         Rechits p;
@@ -975,16 +976,16 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       CACluster ds(min_point, epsilon, points);
       ds.run();
       ds.clusterProperties();
-      //ds.merge_clusters();
-      //ds.clusterProperties();
-      ds.sort_clusters();
-
       int r=0;
       for (auto &tmp : points) {
         if(jentry == 126) std::cout<<"ID= "<<tmp.clusterID<<std::endl;
         MuonSystem->CscRechitsClusterId[r] = tmp.clusterID;
         r++;
       }
+      //ds.merge_clusters();
+      //ds.clusterProperties();
+      ds.sort_clusters();
+
 
 
       MuonSystem->nCscRechitClusters = 0;
