@@ -903,13 +903,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       int nCscRechitsChamberMinus41 = 0;
       int nCscRechitsChamberMinus42 = 0;
 
-      if(jentry==126)std::cout<<"entry: "<<jentry<<"   event: "<<eventNum<<std::endl;
+      //if(jentry==126)std::cout<<"entry: "<<jentry<<"   event: "<<eventNum<<std::endl;
       MuonSystem->nCscRechits = nCscRechits;
       for (int i = 0; i < nCscRechits; i++) {
         // cout<<cscRechitsChamber[i]<<endl;
         //pick out the right bits for chamber
         // int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
-        if(jentry==126) std::cout<<"Eta: "<<cscRechitsEta[i]<<std::endl; 
         MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
         MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
 
@@ -978,7 +977,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       ds.clusterProperties();
       int r=0;
       for (auto &tmp : points) {
-        if(jentry == 126) std::cout<<"ID= "<<tmp.clusterID<<std::endl;
+        //if(jentry == 126) std::cout<<"ID= "<<tmp.clusterID<<std::endl;
         MuonSystem->CscRechitsClusterId[r] = tmp.clusterID;
         r++;
       }
