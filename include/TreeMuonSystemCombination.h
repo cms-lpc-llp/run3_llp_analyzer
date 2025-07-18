@@ -63,7 +63,7 @@ public:
   //csc
   int           nCscRechits;
   int           nCscRings;
-  int           nDTRechits;
+  int           nDtRechits;
   int           nDtRings;
   bool HLT_CscCluster100_PNetTauhPFJet10_Loose;
   bool HLT_CscCluster100_Ele5;

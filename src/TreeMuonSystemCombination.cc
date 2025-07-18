@@ -902,9 +902,9 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
   tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
 
-  tree_->Branch("DtRechitsEta",                    DtRechitsEta,        "DtRechitsEta[nDTRechits]/F");
-  tree_->Branch("DtRechitsPhi",                    DtRechitsPhi,        "DtRechitsPhi[nDTRechits]/F");
-  tree_->Branch("DtRechitsClusterId",              DtRechitsClusterId,  "DtRechitsClusterId[nDTRechits]/I");
+  tree_->Branch("DtRechitsEta",                    DtRechitsEta,        "DtRechitsEta[nDtRechits]/F");
+  tree_->Branch("DtRechitsPhi",                    DtRechitsPhi,        "DtRechitsPhi[nDtRechits]/F");
+  tree_->Branch("DtRechitsClusterId",              DtRechitsClusterId,  "DtRechitsClusterId[nDtRechits]/I");
 
 
     tree_->Branch("cscRechitCluster_match_gLLP",             cscRechitCluster_match_gLLP,             "cscRechitCluster_match_gLLP[nCscRechitClusters]/O");
