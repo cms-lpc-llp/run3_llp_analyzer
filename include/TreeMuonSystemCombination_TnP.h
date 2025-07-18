@@ -66,7 +66,7 @@ public:
   //csc
   int           nCscRechits;
   int           nCscRings;
-  int           nDTRechits;
+  int           nDtRechits;
   int           nDtRings;
 
 

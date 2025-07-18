@@ -609,6 +609,7 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("CscRechitsPhi",                   CscRechitsPhi);
   tree_->SetBranchAddress("CscRechitsClusterId",             CscRechitsClusterId);
 
+  tree_->SetBranchAddress("nDtRechits",                      &nDtRechits);
   tree_->SetBranchAddress("DtRechitsEta",                    DtRechitsEta);
   tree_->SetBranchAddress("DtRechitsPhi",                    DtRechitsPhi);
   tree_->SetBranchAddress("DtRechitsClusterId",              DtRechitsClusterId);
@@ -902,6 +903,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
   tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
 
+  tree_->Branch("nDtRechits",             &nDtRechits, "nDtRechits/I");
   tree_->Branch("DtRechitsEta",                    DtRechitsEta,        "DtRechitsEta[nDtRechits]/F");
   tree_->Branch("DtRechitsPhi",                    DtRechitsPhi,        "DtRechitsPhi[nDtRechits]/F");
   tree_->Branch("DtRechitsClusterId",              DtRechitsClusterId,  "DtRechitsClusterId[nDtRechits]/I");
