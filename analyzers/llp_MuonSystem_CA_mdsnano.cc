@@ -1210,9 +1210,14 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       // DT cluster
 
       points.clear();
+      vector<int> DtRechitsClusterId;
       // cout<<"here"<<endl;
 
+      MuonSystem->nDTRechits = nDtRechits;
       for (int i = 0; i < nDtRechits; i++) {
+        MuonSystem->DtRechitsEta[i] = dtRechitCorrectEta[i];
+        MuonSystem->DtRechitsPhi[i] = dtRechitCorrectPhi[i];
+
         Rechits p;
 
         p.phi = dtRechitCorrectPhi[i];
@@ -1228,6 +1233,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         p.wheel = dtRechitWheel[i];
         p.clusterID = UNCLASSIFIED;
         points.push_back(p);
+        DtRechitsClusterId.push_back(-999);
 
       }
       // cout<<"here"<<endl;
@@ -1243,6 +1249,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       ds_dtRechit.sort_clusters();
 
+      int dt_r=0;
+      for (auto &tmp : points) {
+        MuonSystem->DtRechitsClusterId[dt_r] = tmp.clusterID;
+        dt_r++;
+      }
 
       MuonSystem->nDtRechitClusters = 0;
       MuonSystem->nDtRechitClusters_nocut = 0;

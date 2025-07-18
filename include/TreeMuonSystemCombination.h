@@ -195,6 +195,10 @@ public:
   float         CscRechitsPhi[N_MAX_CSCRECHITS];
   int           CscRechitsClusterId[N_MAX_CSCRECHITS];
 
+  float         DtRechitsEta[N_MAX_DTRECHITS];
+  float         DtRechitsPhi[N_MAX_DTRECHITS];
+  int           DtRechitsClusterId[N_MAX_DTRECHITS];
+
   bool          cscRechitCluster_match_gLLP[N_MAX_CSC];
   int           cscRechitCluster_match_gLLP_index[N_MAX_CSC];
   float         cscRechitCluster_match_gLLP_minDeltaR[N_MAX_CSC];

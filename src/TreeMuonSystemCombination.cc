@@ -91,6 +91,13 @@ for(int i = 0; i < N_MAX_CSCRECHITS; i++)
   CscRechitsPhi[i] = -999;
 }
 
+for(int i = 0; i < N_MAX_DTRECHITS; i++)
+{
+  DtRechitsClusterId[i] = -999;
+  DtRechitsEta[i] = -999;
+  DtRechitsPhi[i] = -999;
+}
+
 
   for( int i = 0; i < N_MAX_CSC; i++ )
   {
@@ -602,6 +609,10 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("CscRechitsPhi",                   CscRechitsPhi);
   tree_->SetBranchAddress("CscRechitsClusterId",             CscRechitsClusterId);
 
+  tree_->SetBranchAddress("DtRechitsEta",                    DtRechitsEta);
+  tree_->SetBranchAddress("DtRechitsPhi",                    DtRechitsPhi);
+  tree_->SetBranchAddress("DtRechitsClusterId",              DtRechitsClusterId);
+
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP",             &cscRechitCluster_match_gLLP);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_index",             &cscRechitCluster_match_gLLP_index);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_minDeltaR",             &cscRechitCluster_match_gLLP_minDeltaR);
@@ -890,6 +901,10 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("CscRechitsEta",                   CscRechitsEta,       "CscRechitsEta[nCscRechits]/F");
   tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
   tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
+
+  tree_->Branch("DtRechitsEta",                    DtRechitsEta,        "DtRechitsEta[nDTRechits]/F");
+  tree_->Branch("DtRechitsPhi",                    DtRechitsPhi,        "DtRechitsPhi[nDTRechits]/F");
+  tree_->Branch("DtRechitsClusterId",              DtRechitsClusterId,  "DtRechitsClusterId[nDTRechits]/I");
 
 
     tree_->Branch("cscRechitCluster_match_gLLP",             cscRechitCluster_match_gLLP,             "cscRechitCluster_match_gLLP[nCscRechitClusters]/O");
