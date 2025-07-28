@@ -1,0 +1,33 @@
+#cuts to apply to data for building a cutflow
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_PNetTauhPFJet10_Loose
+  minVal: 1
+  maxVal: 1
+  collection: event
+
+has_CSC_Cluster:
+  name: ">1 CSC Rechit Cluster"
+  branch: nCscRechitClusters
+  minVal: 1
+  maxVal: 100000
+  collection: event
+
+has_reco_tau:
+  name: ">1 tau"
+  branch: nTaus
+  minVal: 1
+  maxVal: 10000
+  collection: event
+
+tau_looseID:
+  name: tau pass looseID
+  branch: tauIsLoose
+  minVal: 1
+  maxVal: 1
+  collection: tau
+
+
+
+

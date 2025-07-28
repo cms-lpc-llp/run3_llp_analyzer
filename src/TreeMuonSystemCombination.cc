@@ -62,6 +62,9 @@ MetTriggerEffDown = 0.;
   nDtRings = 0;
   nCscRings = 0;
   nGenParticles =0;
+  nGenTaus = 0;
+  nGenVisTau=0;
+  
 for(int i = 0;i < 9;i++)
 {
   LHEScaleWeight[i] = -999;
@@ -311,6 +314,26 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
 
 
   }
+  //separate branch made for gen taus for HNL+tau
+  for(int i = 0;i<N_MAX_GTAU;i++)
+  {
+    gTauEta[i] = 0.0;
+    gTauPhi[i] = 0.0;
+    gTauE[i] = 0.0;
+    gTauPt[i] = 0.0;
+    gTauPdgId[i] = 0;
+    gVisTauDecayMode[i] = -999;
+    gTauHadronicDecay[i] = false;
+    gTauEDecay[i] = false;
+    gTauMuDecay[i] = false;
+    gVisTauEta[i] = 0.0;
+    gVisTauPhi[i] = 0.0;
+    gVisTauPt[i] = 0.0;
+    gVisTauE[i] = 0.0;
+    gVisTauFractionOfTotalPt[i] = 0.0;
+    gVisTauFractionOfTotalEnergy[i] = 0.0;
+  }
+
 
 
   //leptons
@@ -357,6 +380,7 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
      tauDeltaR[i] = 0;
      tauDecayMode[i] = 0;
      tauDz[i] = 0;
+     tauE[i] = 0;
     tauIsVVVLoose[i] = false;
     tauIsVVLoose[i] = false;
     tauIsVLoose[i] = false;
@@ -370,6 +394,8 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     tauIdDeepTau2018v2p5VSjet[i] = 0;
     tauIdDeepTau2018v2p5VSe[i] = 0;
     tauIdDeepTau2018v2p5VSmu[i] = 0;
+    tauFractionOfGenVisEnergy[i] = 0.;
+    tauFractionOfGenVisPt[i] = 0.;
 
   
   
@@ -716,7 +742,24 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("gLLP_decay_vertex_y",    gLLP_decay_vertex_y);
   tree_->SetBranchAddress("gLLP_decay_vertex_z",    gLLP_decay_vertex_z);
 
-
+  //gen taus for HNL
+  tree_->SetBranchAddress("nGenVisTau", &nGenVisTau);
+  tree_->SetBranchAddress("nGenTaus",    &nGenTaus);
+  tree_->SetBranchAddress("gTauEta",    gTauEta);
+  tree_->SetBranchAddress("gTauPhi",    gTauPhi);
+  tree_->SetBranchAddress("gTauPt",    gTauPt);
+  tree_->SetBranchAddress("gTauE",    gTauE);
+  tree_->SetBranchAddress("gTauPdgId",    gTauPdgId);
+  tree_->SetBranchAddress("gVisTauDecayMode",    gVisTauDecayMode);
+  tree_->SetBranchAddress("gTauHadronicDecay",    gTauHadronicDecay);
+  tree_->SetBranchAddress("gTauEDecay",    gTauEDecay);
+  tree_->SetBranchAddress("gTauMuDecay",    gTauMuDecay);
+  tree_->SetBranchAddress("gVisTauEta",    gVisTauEta);
+  tree_->SetBranchAddress("gVisTauPhi",    gVisTauPhi);
+  tree_->SetBranchAddress("gVisTauPt",    gVisTauPt);
+  tree_->SetBranchAddress("gVisTauE",    gVisTauE);
+  tree_->SetBranchAddress("gVisTauFractionOfTotalPt",    gVisTauFractionOfTotalPt);
+  tree_->SetBranchAddress("gVisTauFractionOfTotalEnergy",    gVisTauFractionOfTotalEnergy);
 
   //Leptons
 
@@ -754,6 +797,7 @@ tree_->SetBranchAddress("nTaus", &nTaus);
   tree_->SetBranchAddress("tauPt", tauPt);
   tree_->SetBranchAddress("tauEta", tauEta);
   tree_->SetBranchAddress("tauPhi", tauPhi);
+  tree_->SetBranchAddress("tauE", tauE);
   tree_->SetBranchAddress("tauDecayMode", tauDecayMode);
   tree_->SetBranchAddress("tauDeltaR", tauDeltaR);
   tree_->SetBranchAddress("tauIsVVVLoose", tauIsVVVLoose);
@@ -770,6 +814,8 @@ tree_->SetBranchAddress("nTaus", &nTaus);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe);
+  tree_->SetBranchAddress("tauFractionOfGenVisEnergy", tauFractionOfGenVisEnergy);
+  tree_->SetBranchAddress("tauFractionOfGenVisPt", tauFractionOfGenVisPt);
 
 
 
@@ -1126,6 +1172,26 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("gParticle_beta",             &gParticle_beta,          "gParticle_beta[nGenParticles]/F");
 
 
+  //gen Tau branches
+  tree_->Branch("nGenTaus", &nGenTaus, "nGenTaus/I");
+  tree_->Branch("nGenVisTau", &nGenVisTau, "nGenVisTau/I");
+  tree_->Branch("gTauEta", gTauEta, "gTauEta[nGenTaus]/F");
+  tree_->Branch("gTauPhi", gTauPhi, "gTauPhi[nGenTaus]/F");
+  tree_->Branch("gTauPt", gTauPt, "gTauPt[nGenTaus]/F");
+  tree_->Branch("gTauE", gTauE, "gTauE[nGenTaus]/F");
+  tree_->Branch("gVisTauDecayMode", gVisTauDecayMode, "gVisTauDecayMode[nGenTaus]/I");
+  tree_->Branch("gTauPdgId", gTauPdgId, "gTauPdgId[nGenTaus]/I");
+  tree_->Branch("gTauHadronicDecay", gTauHadronicDecay, "gTauHadronicDecay[nGenTaus]/O");
+  tree_->Branch("gTauEDecay", gTauEDecay, "gTauEDecay[nGenTaus]/O");
+  tree_->Branch("gTauMuDecay", gTauMuDecay, "gTauMuDecay[nGenTaus]/O");
+  tree_->Branch("gVisTauEta", gVisTauEta, "gVisTauEta[nGenVisTau]/F");
+  tree_->Branch("gVisTauPhi", gVisTauPhi, "gVisTauPhi[nGenVisTau]/F");
+  tree_->Branch("gVisTauPt", gVisTauPt, "gVisTauPt[nGenVisTau]/F");
+  tree_->Branch("gVisTauE", gVisTauE, "gVisTauE[nGenVisTau]/F");
+  tree_->Branch("gVisTauFractionOfTotalPt",    gVisTauFractionOfTotalPt, "gVisTauFractionOfTotalPt[nGenVisTau]/F");
+  tree_->Branch("gVisTauFractionOfTotalEnergy",    gVisTauFractionOfTotalEnergy, "gVisTauFractionOfTotalEnergy[nGenVisTau]/F");
+
+
 
 
   //leptons
@@ -1161,6 +1227,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("tauPt", tauPt,                  "tauPt[nTaus]/F");
   tree_->Branch("tauEta", tauEta,                "tauEta[nTaus]/F");
   tree_->Branch("tauPhi", tauPhi,                "tauPhi[nTaus]/F");
+  tree_->Branch("tauE", tauE,          "tauE[nTaus]/I");
   tree_->Branch("tauDeltaR", tauDeltaR,          "tauDeltaR[nTaus]/F");
   tree_->Branch("tauDecayMode", tauDecayMode,    "tauDecayMode[nTaus]/I");
   tree_->Branch("tauIsVVVLoose", tauIsVVVLoose,"tauIsVVVLoose[nTaus]/O");
@@ -1177,6 +1244,8 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet,   "tauIdDeepTau2018v2p5VSjet[nTaus]/I");
   tree_->Branch("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe,   "tauIdDeepTau2018v2p5VSe[nTaus]/I");
   tree_->Branch("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu,   "tauIdDeepTau2018v2p5VSmu[nTaus]/I");
+  tree_->Branch("tauFractionOfGenVisEnergy", tauFractionOfGenVisEnergy, "tauFractionOfGenVisEnergy[nTaus]/F");
+  tree_->Branch("tauFractionOfGenVisPt", tauFractionOfGenVisPt, "tauFractionOfGenVisPt[nTaus]/F");
   // tree_->Branch("HLTDecision", HLTDecision, "HLTDecision[1201]/O"); //hardcoded
 
 };

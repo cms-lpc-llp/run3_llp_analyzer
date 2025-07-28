@@ -14,6 +14,7 @@
 #define MUON_PT_CUT 20
 #define N_MAX_GPARTICLES 500
 #define N_MAX_LLP 200
+#define N_MAX_GTAU 100
 
 #include <iostream>
 #include <string>
@@ -381,6 +382,7 @@ public:
   float tauPt[N_MAX_JETS];
   float tauEta[N_MAX_JETS];
   float tauPhi[N_MAX_JETS];
+  float tauE[N_MAX_JETS];
   float tauDeltaR[N_MAX_JETS];
   int   tauDecayMode[N_MAX_JETS];
   float tauDz[N_MAX_JETS];
@@ -397,8 +399,27 @@ public:
   int   tauIdDeepTau2018v2p5VSjet[N_MAX_JETS];
   int   tauIdDeepTau2018v2p5VSe[N_MAX_JETS];
   int   tauIdDeepTau2018v2p5VSmu[N_MAX_JETS];
+  float tauFractionOfGenVisEnergy[N_MAX_JETS];
+  float tauFractionOfGenVisPt[N_MAX_JETS];
 
-
+  //gen Tau branches for HNL+Tau
+  int nGenTaus;
+  int nGenVisTau;
+  int gTauPdgId[N_MAX_GTAU];
+  float gTauEta[N_MAX_GTAU];
+  float gTauPhi[N_MAX_GTAU];
+  float gTauPt[N_MAX_GTAU];
+  float gTauE[N_MAX_GTAU];
+  int gVisTauDecayMode[N_MAX_GTAU];
+  bool gTauHadronicDecay[N_MAX_GTAU];
+  bool gTauEDecay[N_MAX_GTAU];
+  bool gTauMuDecay[N_MAX_GTAU];
+  float gVisTauEta[N_MAX_GTAU];
+  float gVisTauPhi[N_MAX_GTAU];
+  float gVisTauPt[N_MAX_GTAU];
+  float gVisTauE[N_MAX_GTAU];
+  float gVisTauFractionOfTotalPt[N_MAX_GTAU];
+  float gVisTauFractionOfTotalEnergy[N_MAX_GTAU];
 
 
   void InitVariables();

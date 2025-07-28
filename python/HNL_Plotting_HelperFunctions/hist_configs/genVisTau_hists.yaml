@@ -1,0 +1,111 @@
+#define histograms for tau properties
+gVisTau_pt:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: Gen p$_{T}$ [GeV]
+  y_label: Counts
+  title: Gen Vis Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: gVisTauPt
+
+gVisTau_eta:
+  nbins: 50
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: $\eta$
+  y_label: Counts
+  title: Gen Vis Tau $\eta$ Distribution
+  MuonSystem_Branch_Expression: gVisTauEta
+
+gVisTau_phi:
+  nbins: 20
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: $\phi$
+  y_label: Counts
+  title: Gen Vis Tau $\phi$ Distribution
+  MuonSystem_Branch_Expression: gVisTauPhi
+
+gVisTau_e:
+  nbins: 30
+  xmin: 0
+  xmax: 1000
+  underflow: false
+  overflow: true
+  x_label: E [GeV]
+  y_label: Counts
+  title: Gen Vis Tau Energy Distribution
+  MuonSystem_Branch_Expression: gVisTauE
+
+gVisTauFractionOfTotalPt:
+  nbins: 50
+  xmin: 0
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: Fraction of Total p$_{T}$
+  y_label: Counts
+  title: Visible Fraction of Total Gen Tau p$_{T}$
+  MuonSystem_Branch_Expression: gVisTauFractionOfTotalPt
+
+gVisTauFractionOfTotalEnergy:
+  nbins: 50
+  xmin: 0
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: Fraction of Total Energy
+  y_label: Counts
+  title: Visible Fraction of Total Gen Tau Energy
+  MuonSystem_Branch_Expression: gVisTauFractionOfTotalEnergy
+
+gVisTau_pt_matchedReco:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: Gen p$_{T}$ [GeV]
+  y_label: Counts
+  title: Reco-Matched Gen Vis Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: gVisTauPt
+  mask_collection: tau
+  mask_branch: deltaR_GenTauRecoTau
+  mask_lowVal: 0
+  mask_highVal: 0.2
+
+gVisTau_eta_matchedReco:
+  nbins: 50
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: $\eta$
+  y_label: Counts
+  title: Reco-Matched Gen Vis Tau $\eta$ Distribution
+  MuonSystem_Branch_Expression: gVisTauEta
+  mask_collection: tau
+  mask_branch: deltaR_GenTauRecoTau
+  mask_lowVal: 0
+  mask_highVal: 0.2
+
+gVisTau_phi_matchedReco:
+  nbins: 20
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: $\phi$
+  y_label: Counts
+  title: Reco-Matched Gen Vis Tau $\phi$ Distribution
+  MuonSystem_Branch_Expression: gVisTauPhi
+  mask_collection: tau
+  mask_branch: deltaR_GenTauRecoTau
+  mask_lowVal: 0
+  mask_highVal: 0.2

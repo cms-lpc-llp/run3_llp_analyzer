@@ -68,7 +68,7 @@ for s in samples:
 
 print("Preparing analyzer workflow for dataset: " + sample + "\n")
 
-#inputfilelist  = datasetListDir + sample +'-AOD.txt' \\ UNCOMMENT FOR DATA
+#inputfilelist  = datasetListDir + sample +'-AOD.txt' # UNCOMMENT FOR DATA
 inputfilelist  = datasetListDir + sample +'.txt'
 if not os.path.exists(inputfilelist):
     print("listfile: " + inputfilelist + " does not exist. skipping.")

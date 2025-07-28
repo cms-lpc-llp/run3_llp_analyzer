@@ -1,0 +1,67 @@
+#cuts to apply to signal for building a cutflow
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_PNetTauhPFJet10_Loose
+  minVal: 1
+  maxVal: 1
+  collection: event
+
+cscClusterSize>100:
+  name: ">160 rechits in CSC Cluster"
+  branch: cscRechitClusterSize
+  minVal: 160
+  maxVal: 1000000
+  collection: cscCluster
+
+MuonVetoPt<30:
+  name: "MuonVetoPt<30t"
+  branch: cscRechitClusterMuonVetoPt
+  minVal: 0
+  maxVal: 30
+  collection: cscCluster
+
+JetVetoPt<30:
+  name: "JetVetoPt<30t"
+  branch: cscRechitClusterJetVetoPt
+  minVal: 0
+  maxVal: 30
+  collection: cscCluster
+
+
+dPhi(cluster, MET):
+  name: "|dPhi(cluster, MET)|<1.5"
+  branch: cscRechitClusterPuppiMet_dPhi
+  minVal: -1.5
+  maxVal: 1.5
+  collection: cscCluster
+
+has_reco_tau:
+  name: ">1 tau"
+  branch: nTaus
+  minVal: 1
+  maxVal: 10000
+  collection: event
+
+tau_pt_>30GeV:
+  name: "tauPt>30GeV"
+  branch: tauPt
+  minVal: 30
+  maxVal: 10000000
+  collection: tau
+
+tau_looseID:
+  name: tau pass looseID
+  branch: tauIsLoose
+  minVal: 1
+  maxVal: 1
+  collection: tau
+
+
+
+
+
+
+
+
+

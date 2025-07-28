@@ -1,0 +1,105 @@
+#define histograms for tau properties
+gTau_pt:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: Gen p$_{T}$ [GeV]
+  y_label: Counts
+  title: Gen Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: gTauPt
+
+gTau_eta:
+  nbins: 20
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: $\eta$
+  y_label: Counts
+  title: Gen Tau $\eta$ Distribution
+  MuonSystem_Branch_Expression: gTauEta
+
+gTau_phi:
+  nbins: 20
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: $\phi$
+  y_label: Counts
+  title: Gen Tau $\phi$ Distribution
+  MuonSystem_Branch_Expression: gTauPhi
+
+gTau_e:
+  nbins: 30
+  xmin: 0
+  xmax: 1000
+  underflow: false
+  overflow: true
+  x_label: E [GeV]
+  y_label: Counts
+  title: Gen Tau Energy Distribution
+  MuonSystem_Branch_Expression: gTauE
+
+# gTauHadronic_pt:
+#   nbins: 30
+#   xmin: 0
+#   xmax: 100
+#   underflow: false
+#   overflow: false
+#   x_label: Gen p$_{T}$ [GeV]
+#   y_label: Counts
+#   title: Hadronic Gen Tau p$_{T}$ Distribution
+#   MuonSystem_Branch_Expression: gTauPt
+
+# gTauHadronic_eta:
+#   nbins: 20
+#   xmin: -3
+#   xmax: 3
+#   underflow: false
+#   overflow: false
+#   x_label: $\eta$
+#   y_label: Counts
+#   title: Hadronic Gen Tau $\eta$ Distribution
+#   MuonSystem_Branch_Expression: gTauEta
+
+# gTauHadronic_phi:
+#   nbins: 20
+#   xmin: -4
+#   xmax: 4
+#   underflow: false
+#   overflow: false
+#   x_label: $\phi$
+#   y_label: Counts
+#   title: Hadronic Gen Tau $\phi$ Distribution
+#   MuonSystem_Branch_Expression: gTauPhi
+
+# gTauHadronic_matchedRecoTau_pt:
+#   nbins: 30
+#   xmin: 0
+#   xmax: 100
+#   underflow: false
+#   overflow: false
+#   x_label: Gen p$_{T}$ [GeV]
+#   y_label: Counts
+#   title: Hadronic Gen Tau p$_{T}$ Distribution with matched reco tau
+#   MuonSystem_Branch_Expression: gTauPt
+
+gTau_pt_withVisTau:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: Gen p$_{T}$ [GeV]
+  y_label: Counts
+  title: Gen Tau p$_{T}$ Distribution with visible tau
+  MuonSystem_Branch_Expression: gTauPt
+  mask_collection: event
+  mask_branch: nGenVisTau
+  mask_lowVal: 1
+  mask_highVal: 9999
+
+

@@ -1,14 +1,14 @@
 #define histograms for event-level properties
-# PUPPI_MET:
-#   nbins: 50
-#   xmin: 0
-#   xmax: 200
-#   underflow: false
-#   overflow: false
-#   x_label: "PUPPI MET [GeV]"
-#   y_label: "Counts"
-#   title: "PUPPI MET Distribution"
-#   MuonSystem_Branch_Expression: "Puppimet"
+PUPPI_MET:
+  nbins: 20
+  xmin: 0
+  xmax: 200
+  underflow: false
+  overflow: false
+  x_label: "PUPPI MET [GeV]"
+  y_label: "Counts"
+  title: "PUPPI MET Distribution"
+  MuonSystem_Branch_Expression: "Puppimet"
 
 Num_Taus:
   nbins: 6

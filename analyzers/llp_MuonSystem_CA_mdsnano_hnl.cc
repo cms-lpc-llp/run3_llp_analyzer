@@ -174,6 +174,15 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
   TH1F *Njet1 = new TH1F("Njet1", "Njet1", 1, 1, 2);
   TH1F *NcosmicVeto = new TH1F("NcosmicVeto", "NcosmicVeto", 1, 1, 2);
 
+  //for clustering efficiency study
+  TH1I *nCscRechits_matchedLLP = new TH1I("nCscRechits_matchedLLP", "nCscRechits_matched_LLP_Total", 25, 0, 300);
+  TH1I *nCscRechits_inCluster = new TH1I("nCscRechits_inCluster", "nCscRechits_inCluster", 25, 0, 300);
+  TH1F *fractionOfRechitsInCluster = new TH1F("fractionOfRechitsInCluster", "fractionOfRechitsInCluster", 25, 0, 1);
+
+  TH1I *nCscRechits_noLLP = new TH1I("nCscRechits_noLLP", "nCscRechits_no_LLP_Total", 25, 0, 300);
+  TH1I *nCscRechits_inCluster_noLLP = new TH1I("nCscRechits_inCluster_noLLP", "nCscRechits_inCluster_noLLP", 25, 0, 300);
+  TH1F *fractionOfRechitsInCluster_noLLP = new TH1F("fractionOfRechitsInCluster_noLLP", "fractionOfRechitsInCluster_noLLP", 25, 0, 1);
+
   //JetDefinition jet_def( antikt_algorithm, .4 );
   //fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
 
@@ -215,6 +224,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       cout << "Time taken by program is : " << time_taken << endl;
       start = clock();
     }
+    //if (jentry>100) break;
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry); nbytes += nb;
@@ -346,6 +356,67 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     MuonSystem->evtNum = eventNum;
 
     bool llp_flag = false;
+
+    //new code to find the index of the HNL that displaced HNL and the prompt tau
+    //changed from what was here before to account for scenario with two HNLs with different status codes - only select the one that decays directly to tau or tau neturino
+    int HNL_idx = -1;
+    int promptTau_idx = -1;
+    int HNLs_found = 0;
+    int promptTaus_found = 0;
+    if (!isData)
+    {
+      for (int i = 0; i < nGenPart; i++)
+      {
+        // check if particle is tau or tau neutrino and mother is HNL, if so save mothder Idx
+        if ((abs(GenPart_pdgId[i]) == 15 || abs(GenPart_pdgId[i]) == 16) && GenPart_pdgId[GenPart_genPartIdxMother[i]]==9900012) 
+        {
+          if (GenPart_genPartIdxMother[i]!=HNL_idx){
+              HNL_idx = GenPart_genPartIdxMother[i];
+              HNLs_found++;
+          }
+          
+        }
+        //second loop to find HNL (though maybe not the "right" one needed for the previous if statement), then we check if it and the tau have the same W mother
+      
+        if (abs(GenPart_pdgId[i]) != 15 || abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=24) continue;
+        for (int j = 0; j < nGenPart; j++)
+        {
+          if (GenPart_genPartIdxMother[j] == GenPart_genPartIdxMother[i] && GenPart_pdgId[j] == 9900012)
+          {
+            promptTau_idx = i;
+            promptTaus_found++;
+          }
+        }
+      }
+        
+      //now, find updated pythia tau if applicable - if there is no tau whose mother is the tagged prompt tau, or if theres a daugter tau that has tau neutrino as a daugter, it is the "final" tau
+      bool found_final_tau = false;
+      for (int i = 0; i < nGenPart; i++)
+      {
+        if (GenPart_genPartIdxMother[i] == promptTau_idx && abs(GenPart_pdgId[i]) == 15)
+        {
+          promptTau_idx = i;
+          
+          for (int j = 0; j < nGenPart; j++)
+          {
+            if (GenPart_genPartIdxMother[j] == promptTau_idx && abs(GenPart_pdgId[j]) == 16)
+            {
+              found_final_tau = true;
+              break;
+            }
+          }
+        }
+        if (found_final_tau) break;
+      } 
+    
+      if (HNLs_found != 1 || promptTaus_found != 1)
+        {
+          cout << "Warning: found " << HNLs_found << " HNLs and " << promptTaus_found << " prompt taus in event " << eventNum << endl;
+          cout << "Skipping this event, something is wrong!" << endl;
+          continue;
+        }
+  
+    /*
     if (!isData)
     {
 
@@ -420,21 +491,27 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       }
 
 }
+     
       if (nPromptTau!=1){
         cout<<"Warning: found "<<nPromptTau<<" prompt taus in event "<<eventNum<<endl;
         cout<<"Skipping this event"<<endl;
         continue;
       }
+     */
       //for HNL
        MuonSystem->nGLLP = 0;
+       /*
       for(int i = 0;i < nGenPart; i++)
       {
         if (abs(GenPart_pdgId[i])==9900012)
         {
+        */
           // cout<<eventNum<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
-          MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[i];
-          MuonSystem->gLLP_phi[MuonSystem->nGLLP] = GenPart_phi[i];
-          MuonSystem->gLLP_pt[MuonSystem->nGLLP] = GenPart_pt[i];
+          TLorentzVector LLP= makeTLorentzVectorPtEtaPhiM( GenPart_pt[HNL_idx], GenPart_eta[HNL_idx], GenPart_phi[HNL_idx], GenPart_mass[HNL_idx] );
+          MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[HNL_idx];
+          MuonSystem->gLLP_phi[MuonSystem->nGLLP] = GenPart_phi[HNL_idx];
+          MuonSystem->gLLP_pt[MuonSystem->nGLLP] = GenPart_pt[HNL_idx];
+          MuonSystem->gLLP_e[MuonSystem->nGLLP] = LLP.E();
           // MuonSystem->gLLP_e[MuonSystem->nGenParticles] = GenPart_pdgId[i];
           float decay_x;
           float decay_y;
@@ -442,11 +519,11 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
           bool foundDaughter = false;
           for (int j=0; j < nGenPart; j++)
           {
-            if(GenPart_genPartIdxMother[j]==i)
+            if(GenPart_genPartIdxMother[j]==HNL_idx)
             {
-              decay_x = GenPart_vx[j];
-              decay_y = GenPart_vy[j];
-              decay_z = GenPart_vz[j];
+              decay_x = GenPart_vx[j]-PV_x;
+              decay_y = GenPart_vy[j]-PV_y;
+              decay_z = GenPart_vz[j]-PV_z;
               foundDaughter = true;
               break;
             }
@@ -458,7 +535,6 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
           MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP] = decay_z;
 
 
-          TLorentzVector LLP = makeTLorentzVectorPtEtaPhiM( GenPart_pt[i], GenPart_eta[i], GenPart_phi[i], GenPart_mass[i] );
 
           float gLLP_decay_vertex = sqrt(pow(MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP], 2) + pow(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP],2));
 
@@ -472,9 +548,69 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
               && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 800
                && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] > 200.0) MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
             MuonSystem->nGLLP++;
+          
+          
+          
+          //now gen taus
+          MuonSystem->nGenTaus = 0;
+          TLorentzVector gTau= makeTLorentzVectorPtEtaPhiM( GenPart_pt[promptTau_idx], GenPart_eta[promptTau_idx], GenPart_phi[promptTau_idx], GenPart_mass[promptTau_idx] );
+          MuonSystem->gTauEta[MuonSystem->nGenTaus] = GenPart_eta[promptTau_idx];
+          MuonSystem->gTauPhi[MuonSystem->nGenTaus] = GenPart_phi[promptTau_idx];
+          MuonSystem->gTauPt[MuonSystem->nGenTaus] = GenPart_pt[promptTau_idx];
+          MuonSystem->gTauE[MuonSystem->nGenTaus] = gTau.E();
+          //MuonSystem->gTauE[MuonSystem->nGenTaus] = GenPart_pt[promptTau_idx];
+          MuonSystem->gTauPdgId[MuonSystem->nGenTaus] = GenPart_pdgId[promptTau_idx];
+
+          //determine decay of prompt gen tau by tagging daughter electron or muon
+          //if none found, assume hadronic decay
+          bool foundElectron = false; bool foundMuon = false;
+          for (int i=0; i<nGenPart; i++)
+          {
+            if (GenPart_genPartIdxMother[i] == promptTau_idx)
+            {
+              if (abs(GenPart_pdgId[i]) == 11) foundElectron = true;
+              if (abs(GenPart_pdgId[i]) == 13) foundMuon = true;
+            }
+          }
+          MuonSystem->gTauEDecay[MuonSystem->nGenTaus] = foundElectron;
+          MuonSystem->gTauMuDecay[MuonSystem->nGenTaus] = foundMuon;
+          MuonSystem->gTauHadronicDecay[MuonSystem->nGenTaus] = !(foundElectron || foundMuon);
+          MuonSystem->nGenTaus++;
+          
+          //bool foundMatchHadronic = false;
+          MuonSystem->nGenVisTau = 0;
+          for (int j=0; j < nGenVisTau; j++){
+            //cout<<"in vistau loop"<<endl;
+            //cout<<GenPart_pdgId[GenVisTau_genPartIdxMother[j]]<<endl;
+            if (GenVisTau_genPartIdxMother[j] == promptTau_idx) //if there is a visTau in the output, it is necessarily from the genTau
+            {
+              TLorentzVector visTau= makeTLorentzVectorPtEtaPhiM( GenVisTau_pt[j], GenVisTau_eta[j], GenVisTau_phi[j], GenVisTau_mass[j] );
+              //foundMatchHadronic = true;
+              MuonSystem->gVisTauDecayMode[MuonSystem->nGenVisTau] = GenVisTau_status[j];
+              MuonSystem->gVisTauEta[MuonSystem->nGenVisTau] = GenVisTau_eta[j];
+              MuonSystem->gVisTauPhi[MuonSystem->nGenVisTau] = GenVisTau_phi[j];
+              MuonSystem->gVisTauPt[MuonSystem->nGenVisTau] = GenVisTau_pt[j];
+              MuonSystem->gVisTauE[MuonSystem->nGenVisTau] = visTau.E();
+              MuonSystem->gVisTauFractionOfTotalPt[MuonSystem->nGenVisTau] = GenVisTau_pt[j]/GenPart_pt[promptTau_idx];
+              MuonSystem->gVisTauFractionOfTotalEnergy[MuonSystem->nGenVisTau] = visTau.E()/gTau.E();
+              MuonSystem->nGenVisTau++;
+              break;
+            }
+          }
+          
+          //MuonSystem->nGenTaus++;
+          /*
+          MuonSystem->nGenVisTau=nGenVisTau;
+          if( MuonSystem->nGenVisTau > 0 && !foundMatchHadronic){
+              cout<<eventNum<<" tau_idx: "<<promptTau_idx<<" vis tau mother idx: "<<GenVisTau_genPartIdxMother[0]<<endl;
+
+          }
+          */
+            /*
           }
 	
       }
+          */
 
 
 
@@ -509,7 +645,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     //         MuonSystem->nGLLP++;
     //    }
 
-
+        }
       MuonSystem->npu = Pileup_nTrueInt;
       MuonSystem->pileupWeight = helper->getPileupWeight(Pileup_nTrueInt);
       MuonSystem->pileupWeightUp = helper->getPileupWeightUp(Pileup_nTrueInt) / MuonSystem->pileupWeight;
@@ -523,7 +659,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
 
 
 
-    }//end of isData
+    //end of isData
 
       //get NPU
       MuonSystem->npv = nPV;
@@ -604,8 +740,9 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       MuonSystem->HLT_CscCluster50_Photon30Unseeded = HLT_CscCluster50_Photon30Unseeded;
       MuonSystem->HLT_CscCluster50_Photon20Unseeded = HLT_CscCluster50_Photon20Unseeded;
 
-
-      //if (!HLT_CscCluster100_PNetTauhPFJet10_Loose) continue; //UNCOMMENT WHEN WE HAVE CLUSTERS
+      
+      if (!HLT_CscCluster100_PNetTauhPFJet10_Loose && isData) continue; //UNCOMMENT WHEN WE HAVE CLUSTERS
+      
       //cout<<"Pass trigger"<<endl;
       //*************************************************************************
       //Start Object Selection
@@ -694,7 +831,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       //cout<<"nTau: "<<nTau<<endl;
       for(int i = 0; i < nTau;  i++){
         // if(Tau_pt[i] < 20) continue;
-        if(abs(Tau_eta[i]) > 2.3) continue;
+        //if(abs(Tau_eta[i]) > 2.3) continue;
         if(abs(Tau_dz[i]) > 0.2) continue;
         if(Tau_decayMode[i]==5 || Tau_decayMode[i]==6) continue;
         
@@ -716,21 +853,30 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->tauDz[MuonSystem->nTaus]           = Tau_dz[i];
         MuonSystem->tauGenPartFlav[MuonSystem->nTaus]  = Tau_genPartFlav[i];
         MuonSystem->tauDecayMode[MuonSystem->nTaus]    = Tau_decayMode[i];
-
+        TLorentzVector thisTau = makeTLorentzVectorPtEtaPhiM(Tau_pt[i], Tau_eta[i], Tau_phi[i], Tau_mass[i]);
+        MuonSystem->tauE[MuonSystem->nTaus]            = thisTau.E();
+        float deltaRGenReco = 9999.;
+        float matching_threshold = 0.2;
         if (!isData){
-          for (int j = 0; j < nGenPart; j++){
-            if (abs(MuonSystem->gParticleId[j])!=15) continue;
-            MuonSystem->deltaR_GenTauRecoTau[MuonSystem->nTaus] = (float) RazorAnalyzerMerged::deltaR(Tau_eta[i], Tau_phi[i], MuonSystem->gParticleEta[j], MuonSystem->gParticlePhi[j]);
-            }
-          }
+            MuonSystem->deltaR_GenTauRecoTau[MuonSystem->nTaus] = RazorAnalyzerMerged::deltaR(Tau_eta[i], Tau_phi[i], GenPart_eta[promptTau_idx], GenPart_phi[promptTau_idx]);
+            if (MuonSystem->deltaR_GenTauRecoTau[MuonSystem->nTaus] <= matching_threshold && MuonSystem->nGenVisTau>0){ //determine pt and energy fractions of reco tau and vis tau
+            MuonSystem->tauFractionOfGenVisEnergy[MuonSystem->nTaus] = thisTau.E()/MuonSystem->gVisTauE[0];
+            MuonSystem->tauFractionOfGenVisPt[MuonSystem->nTaus] = thisTau.Pt()/MuonSystem->gVisTauPt[0];
+        }
+        }
+          
+          
+          
+       
         //load discriminator values
         MuonSystem->tauIdDeepTau2018v2p5VSjet[MuonSystem->nTaus] = Tau_idDeepTau2018v2p5VSjet[i];
         MuonSystem->tauIdDeepTau2018v2p5VSe[MuonSystem->nTaus] = Tau_idDeepTau2018v2p5VSe[i];
         MuonSystem->tauIdDeepTau2018v2p5VSmu[MuonSystem->nTaus] = Tau_idDeepTau2018v2p5VSmu[i];
         MuonSystem->nTaus++;
         // TLorentzVector thisTau; thisTau.SetPtEtaPhiM(Tau_pt[i], Tau_eta[i], Tau_phi[i], Tau_mass[i]);
-      }
-      if (MuonSystem->nTaus == 0)continue;
+      
+    }
+      if (MuonSystem->nTaus == 0 && isData) continue; //no taus found, skip event
       //cout<<"Found Event with Tau: "<<eventNum<<", nTaus: "<<MuonSystem->nTaus<<endl;
     //-----------------------------------------------
     //Select Jets
@@ -1144,6 +1290,20 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
             MuonSystem->cscRechitCluster_match_gLLP_csc[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_csc[index];
             MuonSystem->cscRechitCluster_match_gLLP_dt[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_dt[index];
             MuonSystem->cscRechitCluster_match_gLLP_e[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_e[index];
+          
+            if (MuonSystem->cscRechitCluster_match_gLLP[MuonSystem->nCscRechitClusters] = true && abs(MuonSystem->cscRechitCluster_match_gLLP_decay_z[MuonSystem->nCscRechitClusters])>400 && abs(MuonSystem->cscRechitCluster_match_gLLP_decay_z[MuonSystem->nCscRechitClusters]<1100)){
+              nCscRechits_matchedLLP->Fill(ncscRechits);
+              nCscRechits_inCluster->Fill(MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters]);
+              float ratio = (float) MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters]/ncscRechits;
+              fractionOfRechitsInCluster->Fill(ratio);
+            }
+            else{
+              nCscRechits_noLLP->Fill(ncscRechits);
+              nCscRechits_inCluster_noLLP->Fill(MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters]);
+              float ratio = (float) MuonSystem->cscRechitClusterSize[MuonSystem->nCscRechitClusters]/ncscRechits;
+              fractionOfRechitsInCluster_noLLP->Fill(ratio);
+            }
+          
           }
 
           //match to MB1 DT segments
@@ -1173,7 +1333,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
 
 
 
-      //if (MuonSystem->nCscRechitClusters_nocut == 0) continue; //commented out for now, checking tau kinematics with prompt HNL
+      if (MuonSystem->nCscRechitClusters_nocut == 0 && isData) continue; //commented out for now, checking tau kinematics with prompt HNL
 
 
       MuonSystem->tree_->Fill();
@@ -1192,6 +1352,12 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
          accep_csccsc->Write("acceptance_csccsc");
          accep_cscdt->Write("acceptance_cscdt");
          accep_met->Write("acceptance_met");
+         nCscRechits_matchedLLP->Write("nCscRechits_matchedLLP");
+         nCscRechits_inCluster->Write("nCscRechits_inCluster");
+         fractionOfRechitsInCluster->Write("fractionOfRechitsInCluster");
+         nCscRechits_noLLP->Write("nCscRechits_noLLP");
+         nCscRechits_inCluster_noLLP->Write("nCscRechits_inCluster_noLLP");
+         fractionOfRechitsInCluster_noLLP->Write("fractionOfRechitsInCluster_noLLP");
          outFile->Close();
       }
       else

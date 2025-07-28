@@ -1,6 +1,6 @@
 #define histograms for tau properties
 tau_pt:
-  nbins: 30
+  nbins: 15
   xmin: 0
   xmax: 100
   underflow: false
@@ -11,7 +11,7 @@ tau_pt:
   MuonSystem_Branch_Expression: tauPt
 
 tau_eta:
-  nbins: 20
+  nbins: 10
   xmin: -3
   xmax: 3
   underflow: false
@@ -22,7 +22,7 @@ tau_eta:
   MuonSystem_Branch_Expression: tauEta
 
 tau_phi:
-  nbins: 20
+  nbins: 10
   xmin: -4
   xmax: 4
   underflow: false
@@ -31,6 +31,39 @@ tau_phi:
   y_label: Counts
   title: Tau $\phi$ Distribution
   MuonSystem_Branch_Expression: tauPhi
+
+tau_e:
+  nbins: 30
+  xmin: 0
+  xmax: 1000
+  underflow: false
+  overflow: true
+  x_label: E [GeV]
+  y_label: Counts
+  title: Tau Energy Distribution
+  MuonSystem_Branch_Expression: tauE
+
+tauFractionOfGenVisPt:
+  nbins: 50
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: true
+  x_label: Fraction of Total p$_{T}$
+  y_label: Counts
+  title: Reconstructed Fraction of Vis Tau p$_{T}$
+  MuonSystem_Branch_Expression: tauFractionOfGenVisPt
+
+tauFractionOfGenVisEnergy:
+  nbins: 50
+  xmin: 0
+  xmax: 2
+  underflow: false
+  overflow: true
+  x_label: Fraction of Total Energy
+  y_label: Counts
+  title: Reconstructed Fraction of Vis Tau Energy
+  MuonSystem_Branch_Expression: tauFractionOfGenVisEnergy
 
 tau_vvvlooseID:
   nbins: 2
@@ -119,3 +152,82 @@ tau_vvtightID:
   y_label: Counts
   title: Tau VV Tight ID Distribution
   MuonSystem_Branch_Expression: tauIsVVTight
+
+jet_discriminator_score:
+  nbins: 10
+  xmin: 0
+  xmax: 10
+  underflow: false
+  overflow: false
+  x_label: Jet Discriminator Score
+  y_label: Counts
+  title: Tau Jet Discriminator Score Distribution
+  MuonSystem_Branch_Expression: tauIdDeepTau2018v2p5VSjet
+
+ele_discriminator_score:
+  nbins: 10
+  xmin: 0
+  xmax: 10
+  underflow: false
+  overflow: false
+  x_label: Electron Discriminator Score
+  y_label: Counts
+  title: Tau Electron Discriminator Score Distribution
+  MuonSystem_Branch_Expression: tauIdDeepTau2018v2p5VSe
+
+mu_discriminator_score:
+  nbins: 10
+  xmin: 0
+  xmax: 10
+  underflow: false
+  overflow: false
+  x_label: Muon Discriminator Score
+  y_label: Counts
+  title: Tau Muon Discriminator Score Distribution
+  MuonSystem_Branch_Expression: tauIdDeepTau2018v2p5VSmu
+
+tau_pt_pass_vvvlooseID:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: p$_{T}$ [GeV]
+  y_label: Counts
+  title: Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: tauPt
+  mask_collection: tau
+  mask_branch: tauIsVVVLoose
+  mask_lowVal: 1
+  mask_highVal: 1
+
+tau_pt_pass_mediumID:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: p$_{T}$ [GeV]
+  y_label: Counts
+  title: Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: tauPt
+  mask_collection: tau
+  mask_branch: tauIsMedium
+  mask_lowVal: 1
+  mask_highVal: 1
+
+
+tau_pt_pass_vvtightID:
+  nbins: 30
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: p$_{T}$ [GeV]
+  y_label: Counts
+  title: Tau p$_{T}$ Distribution
+  MuonSystem_Branch_Expression: tauPt
+  mask_collection: tau
+  mask_branch: tauIsVVTight
+  mask_lowVal: 1
+  mask_highVal: 1

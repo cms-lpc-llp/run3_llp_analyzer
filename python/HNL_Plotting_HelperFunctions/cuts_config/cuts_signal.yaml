@@ -1,0 +1,83 @@
+#cuts to apply to signal for building a cutflow
+
+LLP_matched_CSCCluster:
+  name: "CSC Rechit Cluster Matched to LLP"
+  branch: cscRechitCluster_match_gLLP
+  minVal: 1
+  maxVal: 1
+  collection: cscCluster
+
+# # In_OuterRing:
+# #   name: Cluster Centroid in Outer Ring
+# #   branch: cscRechitClusterEta
+# #   minVal: -1.9
+# #   maxVal: 1.9
+# #   collection: cscCluster
+
+# In_InnerRing: #cut will be inverted in cutflow code itself
+#   name: Cluster Centroid in Inner Ring
+#   branch: cscRechitClusterEta
+#   minVal: -1.9
+#   maxVal: 1.9
+#   collection: cscCluster
+
+# In_ME13:
+#   name: Cluster Centriod in ME13
+#   branch: cscRechitClusterEta
+#   minVal: -1
+#   maxVal: 1
+#   collection: cscCluster
+
+
+cscClusterSize>100:
+  name: ">100 rechits in CSC Cluster"
+  branch: cscRechitClusterSize
+  minVal: 100
+  maxVal: 1000000
+  collection: cscCluster
+
+tau_matchedGenTauIsVisTau:
+  name: ">1 GenVisTau"
+  branch: "nGenVisTau"
+  minVal: 1
+  maxVal: 1000
+  collection: event
+
+has_reco_tau:
+  name: ">1 tau"
+  branch: nTaus
+  minVal: 1
+  maxVal: 10000
+  collection: event
+
+
+tau_matchGenTau:
+  name: "DeltaR(genVisTau, reco tau)<0.2"
+  branch: deltaR_GenTauRecoTau
+  minVal: 0
+  maxVal: 0.2
+  collection: tau
+
+
+
+
+tau_looseID:
+  name: tau pass looseID
+  branch: tauIsLoose
+  minVal: 1
+  maxVal: 1
+  collection: tau
+
+
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_PNetTauhPFJet10_Loose
+  minVal: 1
+  maxVal: 1
+  collection: event
+
+
+
+
+
