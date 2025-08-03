@@ -783,7 +783,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
         p.layer = layer;
         p.superlayer = 0;
         p.wheel = 0;
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
         cscRechitsClusterId.push_back(-1);
 
@@ -1075,7 +1075,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
         p.chamber = dtRechitWheel[i];
         p.superlayer = dtRechitSuperLayer[i];
         p.wheel = dtRechitWheel[i];
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
 
       }

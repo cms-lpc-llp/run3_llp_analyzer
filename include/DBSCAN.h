@@ -8,7 +8,7 @@
 #include "fastjet/Selector.hh"
 using namespace std;
 
-#define UNCLASSIFIED -1
+const int UNINITIALIZED = -999;
 // #define CORE_POINT 1
 // #define BORDER_POINT 2
 #define NOISE -2

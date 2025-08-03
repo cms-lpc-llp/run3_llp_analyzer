@@ -249,6 +249,10 @@ void CACluster::clusterProperties()
     tmpCluster.nDtRechitsWheel1 = 0;    
     tmpCluster.nDtRechitsWheel2 = 0;    
 
+    tmpCluster.maxChamber = -999;
+    tmpCluster.maxChamberRechits = -999;
+    tmpCluster.nChamber = 0;
+
     for (auto const& rechit : rechits) 
     {
       
@@ -381,6 +385,23 @@ void CACluster::clusterProperties()
       }
     }
     if (counter != 0) tmpCluster.avgStation10 = tmpCluster.avgStation10 / counter;
+
+    //chamber statistics
+    std::map<int, int> chamber_count_map;
+    for (auto const& rechit : rechits) {
+      chamber_count_map[rechit.chamber]++;
+    }
+    int max_chamber_tmp = -999;
+    int max_chamber_rechit_tmp = -999;
+    for (auto const& [chamber, count] : chamber_count_map) {
+      if (count > max_chamber_rechit_tmp) {
+        max_chamber_tmp = chamber;
+        max_chamber_rechit_tmp = count;
+      }
+    }
+    tmpCluster.maxChamber = max_chamber_tmp;
+    tmpCluster.maxChamberRechits = max_chamber_rechit_tmp;
+    tmpCluster.nChamber = chamber_count_map.size();
 
     clusters.push_back(tmpCluster);
 

@@ -926,7 +926,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         p.layer = layer;
         p.superlayer = 0;
         p.wheel = 0;
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
         CscRechitsClusterId.push_back(-999);
 
@@ -1230,7 +1230,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         p.chamber = dtRechitWheel[i];
         p.superlayer = dtRechitSuperLayer[i];
         p.wheel = dtRechitWheel[i];
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
 
       }

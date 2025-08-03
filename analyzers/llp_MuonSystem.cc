@@ -600,7 +600,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
         p.chamber = cscRechitsChamber[i];
         p.layer = layer;
         p.superlayer = 0;
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
         cscRechitsClusterId.push_back(-1);
 
@@ -816,7 +816,7 @@ void llp_MuonSystem::Analyze(bool isData, int options, string outputfilename, st
         p.station = dtRechitStation[i];
         p.chamber = dtRechitWheel[i];
         p.superlayer = dtRechitSuperLayer[i];
-        p.clusterID = UNCLASSIFIED;
+        p.clusterID = -999;
         points.push_back(p);
 
       }

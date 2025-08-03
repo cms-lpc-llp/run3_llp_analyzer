@@ -26,7 +26,7 @@ int DBSCAN::run()
     vector<Point>::iterator iter;
     for(iter = m_points.begin(); iter != m_points.end(); ++iter)
     {
-        if ( iter->clusterID == UNCLASSIFIED )
+        if ( iter->clusterID == -999 )
         {
             if ( expandCluster(*iter, clusterID) != FAILURE )
             {
@@ -749,9 +749,9 @@ int DBSCAN::expandCluster(Point point, int clusterID)
                 vector<int>::iterator iterNeighors;
                 for ( iterNeighors = clusterNeighors.begin(); iterNeighors != clusterNeighors.end(); ++iterNeighors )
                 {
-                    if ( m_points.at(*iterNeighors).clusterID == UNCLASSIFIED || m_points.at(*iterNeighors).clusterID == NOISE )
+                    if ( m_points.at(*iterNeighors).clusterID == -999 || m_points.at(*iterNeighors).clusterID == NOISE )
                     {
-                        if ( m_points.at(*iterNeighors).clusterID == UNCLASSIFIED )
+                        if ( m_points.at(*iterNeighors).clusterID == -999 )
                         {
                             clusterSeeds.push_back(*iterNeighors);
                             n = clusterSeeds.size();
