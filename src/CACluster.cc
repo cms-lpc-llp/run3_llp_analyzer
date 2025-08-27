@@ -4,6 +4,7 @@
 #include "TVector3.h"
 #include "TGraph.h"
 #include "TF1.h"
+
 struct largest_nhit_cluster_
 {
   inline bool operator() (const cluster& c1, const cluster& c2){return c1.nhits > c2.nhits;}
@@ -222,32 +223,32 @@ void CACluster::clusterProperties()
     int nXY = 0;
     int nZ = 0;
 
-    tmpCluster.nCscRechitsChamberPlus11 = 0;
-    tmpCluster.nCscRechitsChamberPlus12 = 0;
-    tmpCluster.nCscRechitsChamberPlus13 = 0;
-    tmpCluster.nCscRechitsChamberPlus21 = 0;
-    tmpCluster.nCscRechitsChamberPlus22 = 0;
-    tmpCluster.nCscRechitsChamberPlus31 = 0;
-    tmpCluster.nCscRechitsChamberPlus32 = 0;
-    tmpCluster.nCscRechitsChamberPlus41 = 0;
-    tmpCluster.nCscRechitsChamberPlus42 = 0;
-    tmpCluster.nCscRechitsChamberMinus11 = 0;
-    tmpCluster.nCscRechitsChamberMinus12 = 0;
-    tmpCluster.nCscRechitsChamberMinus13 = 0;
-    tmpCluster.nCscRechitsChamberMinus21 = 0;
-    tmpCluster.nCscRechitsChamberMinus22 = 0;
-    tmpCluster.nCscRechitsChamberMinus31 = 0;
-    tmpCluster.nCscRechitsChamberMinus32 = 0;
-    tmpCluster.nCscRechitsChamberMinus41 = 0;
-    tmpCluster.nCscRechitsChamberMinus42 = 0;
+    tmpCluster.nCscRechitsChamberPlus11 = -999  ;
+    tmpCluster.nCscRechitsChamberPlus12 = -999;
+    tmpCluster.nCscRechitsChamberPlus13 = -999;
+    tmpCluster.nCscRechitsChamberPlus21 = -999;
+    tmpCluster.nCscRechitsChamberPlus22 = -999;
+    tmpCluster.nCscRechitsChamberPlus31 = -999;
+    tmpCluster.nCscRechitsChamberPlus32 = -999;
+    tmpCluster.nCscRechitsChamberPlus41 = -999;
+    tmpCluster.nCscRechitsChamberPlus42 = -999;
+    tmpCluster.nCscRechitsChamberMinus11 = -999;
+    tmpCluster.nCscRechitsChamberMinus12 = -999;
+    tmpCluster.nCscRechitsChamberMinus13 = -999;
+    tmpCluster.nCscRechitsChamberMinus21 = -999;
+    tmpCluster.nCscRechitsChamberMinus22 = -999;
+    tmpCluster.nCscRechitsChamberMinus31 = -999;
+    tmpCluster.nCscRechitsChamberMinus32 = -999;
+    tmpCluster.nCscRechitsChamberMinus41 = -999;
+    tmpCluster.nCscRechitsChamberMinus42 = -999;
 
-    tmpCluster.nDtRechitsStation1 = 0;
-    tmpCluster.nDtRechitsStation2 = 0;
-    tmpCluster.nDtRechitsStation3 = 0;
-    tmpCluster.nDtRechitsStation4 = 0;
-    tmpCluster.nDtRechitsWheel0 = 0;    
-    tmpCluster.nDtRechitsWheel1 = 0;    
-    tmpCluster.nDtRechitsWheel2 = 0;    
+    tmpCluster.nDtRechitsStation1 = -999;
+    tmpCluster.nDtRechitsStation2 = -999;
+    tmpCluster.nDtRechitsStation3 = -999;
+    tmpCluster.nDtRechitsStation4 = -999;
+    tmpCluster.nDtRechitsWheel0 = -999;    
+    tmpCluster.nDtRechitsWheel1 = -999;    
+    tmpCluster.nDtRechitsWheel2 = -999;    
 
     tmpCluster.maxChamber = -999;
     tmpCluster.maxChamberRechits = -999;
