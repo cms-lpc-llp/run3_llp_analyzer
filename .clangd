@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - -I/uscms/home/tlee/nobackup/work/mds-ml/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/include
+    - -I/cvmfs/cms.cern.ch/el9_amd64_gcc12/cms/cmssw/CMSSW_14_1_0_pre4/external/el9_amd64_gcc12/bin/../../../../../../../el9_amd64_gcc12/lcg/root/6.30.07-8b1a11e1ef0e074fdfd44e162b27e71c/include
+    - -I/cvmfs/cms.cern.ch/el9_amd64_gcc12/external/fastjet/3.4.1-cc6ce46a28fb676c9080adb13b99f03c/include
+    - -std=c++17
