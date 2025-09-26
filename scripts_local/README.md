@@ -1,6 +1,7 @@
-
 ## Environment Setup
+
 Run `source setup.sh` to get `python 3.9`
+
 ## Get Cache of Ntuple and NanoAOD
 
 Run `python3 wrapper_cache.py`, make sure to `base_path` and `list_path` point to the correct git repo path and list path for both ntuples and nanoAOD
