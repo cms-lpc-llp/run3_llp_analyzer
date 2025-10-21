@@ -4,13 +4,13 @@
 #include "TVector3.h"
 #include "TGraph.h"
 #include "TF1.h"
-struct largest_nhit_cluster_
-{
-  inline bool operator()(const cluster &c1, const cluster &c2) { return c1.nhits > c2.nhits; }
+struct largest_nhit_cluster_ {
+  inline bool operator()(const cluster& c1, const cluster& c2) {
+    return c1.nhits > c2.nhits;
+  }
 } largest_nhit_cluster;
 
-struct hits
-{
+struct hits {
   float time;
   float error;
   bool strip;
@@ -20,16 +20,13 @@ const double theStripError_ = 7.0;
 const double thePruneCut_ = 9.0;
 const int nRechitMin_ = 50;
 const int nStationThres_ = 10;
-int CACluster::run()
-{
+int CACluster::run() {
   fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.6);
   std::vector<fastjet::PseudoJet> fjInput;
   vector<Rechits>::iterator iter;
 
   int recIt = 0;
-  for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-  {
-
+  for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
     float x = (*iter).x;
     float y = (*iter).y;
     float z = (*iter).z;
@@ -46,18 +43,15 @@ int CACluster::run()
 
   nClusters = 0;
   // auto clusters = std::make_unique<RecHitClusterCollection>();
-  for (auto const &fjJet : fjJets)
-  {
+  for (auto const& fjJet : fjJets) {
     // skip if the cluster has too few rechits
     if (int(fjJet.constituents().size()) < nRechitMin_)
       continue;
     // get the constituents from fastjet
     vector<Rechits> rechits;
-    for (auto const &constituent : fjJet.constituents())
-    {
+    for (auto const& constituent : fjJet.constituents()) {
       auto index = constituent.user_index();
-      if (index >= 0 && static_cast<unsigned int>(index) < m_points.size())
-      {
+      if (index >= 0 && static_cast<unsigned int>(index) < m_points.size()) {
         m_points[index].clusterID = nClusters;
         rechits.push_back(m_points[index]);
       }
@@ -65,15 +59,11 @@ int CACluster::run()
     nClusters++;
   }
 }
-void CACluster::clusterProperties()
-{
-
-  for (int i = 0; i < nClusters; i++)
-  {
+void CACluster::clusterProperties() {
+  for (int i = 0; i < nClusters; i++) {
     cluster tmpCluster;
     vector<Rechits> rechits;
-    for (int j = 0; j < m_points.size(); j++)
-    {
+    for (int j = 0; j < m_points.size(); j++) {
       if (m_points[j].clusterID != i)
         continue;
       rechits.push_back(m_points[j]);
@@ -92,8 +82,7 @@ void CACluster::clusterProperties()
     tmpCluster.nhits = rechits.size();
 
     tmpCluster.tTotal = 0.0;
-    for (auto const &rechit : rechits)
-    {
+    for (auto const& rechit : rechits) {
       tmpCluster.tTotal += rechit.twire;
       tmpCluster.tTotal += rechit.t;
     }
@@ -104,24 +93,20 @@ void CACluster::clusterProperties()
     bool modified = false;
     double totalWeightTimeVtx = 0;
     double timeVtx = 0;
-    for (auto const &rechit : rechits)
-    {
+    for (auto const& rechit : rechits) {
       if (rechit.superlayer == 2) // for DT rechits that only have coordinates in Z
       {
         avg_x_sl2 += rechit.x;
         avg_y_sl2 += rechit.y;
         avg_z_sl2 += rechit.z;
         size_z++;
-      }
-      else if (rechit.superlayer == 1 || rechit.superlayer == 3)
-      {
+      } else if (rechit.superlayer == 1 || rechit.superlayer == 3) {
         avg_x += rechit.x;
         avg_y += rechit.y;
         avg_z += rechit.z;
         avg_t += rechit.t;
         size_xy++;
-      }
-      else // csc or for DT "wrong" rechit coordinates
+      } else // csc or for DT "wrong" rechit coordinates
       {
         avg_x += rechit.x;
         avg_y += rechit.y;
@@ -148,22 +133,17 @@ void CACluster::clusterProperties()
       avg_x = avg_x / size_xy;
       avg_y = avg_y / size_xy;
       avg_z = avg_z_sl2 / size_z;
-    }
-    else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
+    } else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
     {
       avg_x = avg_x / size;
       avg_y = avg_y / size;
       avg_z = avg_z / size;
       // cout<<avg_x<<","<<avg_y<<","<<avg_z<<endl;
-    }
-    else if (size_xy > 0 && size_z == 0)
-    {
+    } else if (size_xy > 0 && size_z == 0) {
       avg_x = avg_x / size_xy;
       avg_y = avg_y / size_xy;
       avg_z = avg_z / size_xy;
-    }
-    else
-    {
+    } else {
       avg_x = avg_x_sl2 / size_z;
       avg_y = avg_y_sl2 / size_z;
       avg_z = avg_z_sl2 / size_z;
@@ -185,13 +165,11 @@ void CACluster::clusterProperties()
     tmpCluster.eta = avg_eta;
     tmpCluster.phi = avg_phi;
 
-    do
-    {
+    do {
       modified = false;
       totalWeightTimeVtx = 0;
       timeVtx = 0;
-      for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it)
-      {
+      for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it) {
         timeVtx += it->time * it->error;
         totalWeightTimeVtx += it->error;
       }
@@ -201,19 +179,16 @@ void CACluster::clusterProperties()
       double diff_tvtx;
       double chimax = 0.0;
       int tmmax;
-      for (unsigned int i = 0; i < cscHits.size(); i++)
-      {
+      for (unsigned int i = 0; i < cscHits.size(); i++) {
         diff_tvtx = (cscHits[i].time - timeVtx) * (cscHits[i].time - timeVtx) * cscHits[i].error;
 
-        if (diff_tvtx > chimax)
-        {
+        if (diff_tvtx > chimax) {
           tmmax = i;
           chimax = diff_tvtx;
         }
       }
       // cut away the outliers
-      if (chimax > thePruneCut_)
-      {
+      if (chimax > thePruneCut_) {
         cscHits.erase(cscHits.begin() + tmmax);
         modified = true;
       }
@@ -254,9 +229,7 @@ void CACluster::clusterProperties()
     tmpCluster.nDtRechitsWheel1 = 0;
     tmpCluster.nDtRechitsWheel2 = 0;
 
-    for (auto const &rechit : rechits)
-    {
-
+    for (auto const& rechit : rechits) {
       m11 += (rechit.eta - tmpCluster.eta) * (rechit.eta - tmpCluster.eta);
       m12 += (rechit.eta - tmpCluster.eta) * deltaPhi(rechit.phi, tmpCluster.phi);
       m22 += deltaPhi(rechit.phi, tmpCluster.phi) * deltaPhi(rechit.phi, tmpCluster.phi);
@@ -266,24 +239,17 @@ void CACluster::clusterProperties()
       // DT superlayers 1 & 3 -> measure XY only
       // CSCs -> take only one Z value per each station
 
-      if (rechit.superlayer > 0)
-      { // hit in DT
+      if (rechit.superlayer > 0) { // hit in DT
         // save nhits per wheel
-        if (abs(rechit.wheel) == 0)
-        {
+        if (abs(rechit.wheel) == 0) {
           tmpCluster.nDtRechitsWheel0++;
-        }
-        else if (abs(rechit.wheel) == 1)
-        {
+        } else if (abs(rechit.wheel) == 1) {
           tmpCluster.nDtRechitsWheel1++;
-        }
-        else if (abs(rechit.wheel) == 2)
-        {
+        } else if (abs(rechit.wheel) == 2) {
           tmpCluster.nDtRechitsWheel2++;
         }
 
-        if (rechit.superlayer == 1 || rechit.superlayer == 3)
-        { // XY information
+        if (rechit.superlayer == 1 || rechit.superlayer == 3) { // XY information
           XYSpread += (rechit.x - tmpCluster.x) * (rechit.y - tmpCluster.y);
           XSpread += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
           YSpread += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
@@ -294,17 +260,13 @@ void CACluster::clusterProperties()
           p3_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
           p4_y += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
           nXY++;
-        }
-        else if (rechit.superlayer == 2)
-        { // Z information
+        } else if (rechit.superlayer == 2) { // Z information
           ZSpread += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
           p3_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
           p4_z += (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z) * (rechit.z - tmpCluster.z);
           nZ++;
         }
-      }
-      else
-      { // hit in CSC
+      } else { // hit in CSC
         XYSpread += (rechit.x - tmpCluster.x) * (rechit.y - tmpCluster.y);
         XSpread += (rechit.x - tmpCluster.x) * (rechit.x - tmpCluster.x);
         YSpread += (rechit.y - tmpCluster.y) * (rechit.y - tmpCluster.y);
@@ -402,22 +364,18 @@ void CACluster::clusterProperties()
     int counter = 0;
     int max_count = -999;
     std::map<int, int> station_count_map;
-    for (auto const &rechit : rechits)
-    {
+    for (auto const& rechit : rechits) {
       station_count_map[rechit.station]++;
     }
     // station statistics
     std::map<int, int>::iterator it;
-    for (auto const &[station, count] : station_count_map)
-    {
-      if (count >= nStationThres_)
-      {
+    for (auto const& [station, count] : station_count_map) {
+      if (count >= nStationThres_) {
         tmpCluster.nStation10++;
         tmpCluster.avgStation10 += station * count;
         counter += count;
       }
-      if (count > max_count)
-      {
+      if (count > max_count) {
         tmpCluster.maxStation = station;
         tmpCluster.maxStationRechits = count;
         max_count = count;
@@ -434,52 +392,43 @@ void CACluster::sort_clusters() // only run sort after merg_clusters, or it will
   sort(clusters.begin(), clusters.end(), largest_nhit_cluster);
 }
 
-void CACluster::merge_clusters()
-{
+void CACluster::merge_clusters() {
   // clear all the cluster variables
   // change cluster ID of points
 
   // get the list of eta and phi of the clusters
   vector<float> clusterEta;
   vector<float> clusterPhi;
-  for (unsigned int j = 0; j < nClusters; j++)
-  {
+  for (unsigned int j = 0; j < nClusters; j++) {
     clusterEta.push_back(clusters.at(j).eta);
     clusterPhi.push_back(clusters.at(j).phi);
   }
   bool modified = true;
-  while (modified)
-  {
+  while (modified) {
     modified = false;
     float mindR = 15;
     int cluster1 = 999;
     int cluster2 = 999;
 
-    for (unsigned int i = 0; i < nClusters; i++)
-    { // find the min_deltaR between any two clusters
-      for (unsigned int j = i + 1; j < nClusters; j++)
-      {
+    for (unsigned int i = 0; i < nClusters; i++) { // find the min_deltaR between any two clusters
+      for (unsigned int j = i + 1; j < nClusters; j++) {
         float current_dR = deltaR(clusters[i].eta, clusters[i].phi, clusters[j].eta, clusters[j].phi);
-        if (current_dR < mindR)
-        {
+        if (current_dR < mindR) {
           mindR = current_dR;
           cluster1 = i;
           cluster2 = j;
         }
       }
     }
-    if (mindR < CA_MERGE_CLUSTER_DR)
-    { // if min deltaR < the deltaR merging threshold, then merge the two clusters
+    if (mindR < CA_MERGE_CLUSTER_DR) { // if min deltaR < the deltaR merging threshold, then merge the two clusters
       vector<Rechits>::iterator iter;
       float avg_x(0.0), avg_y(0.0), avg_z(0.0);
       float avg_x_sl2(0.0), avg_y_sl2(0.0), avg_z_sl2(0.0);
       float avg_eta(0.0), avg_phi(0.0);
       int size(0), size_z(0), size_xy(0);
 
-      for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-      {
-        if (iter->clusterID == cluster2)
-        { // change the clusterID from cluster 2 to cluster1
+      for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
+        if (iter->clusterID == cluster2) { // change the clusterID from cluster 2 to cluster1
           iter->clusterID = cluster1;
         }
         if (iter->clusterID > cluster2)
@@ -487,22 +436,18 @@ void CACluster::merge_clusters()
 
         if (iter->clusterID == cluster1) // recalculate the eta/phi position of the new cluster
         {
-
           if (iter->superlayer == 2) // for DT rechits that only have coordinates in Z
           {
             avg_x_sl2 += iter->x;
             avg_y_sl2 += iter->y;
             avg_z_sl2 += iter->z;
             size_z++;
-          }
-          else if (iter->superlayer == 1 || iter->superlayer == 3)
-          {
+          } else if (iter->superlayer == 1 || iter->superlayer == 3) {
             avg_x += iter->x;
             avg_y += iter->y;
             avg_z += iter->z;
             size_xy++;
-          }
-          else // csc or for DT "wrong" rechit coordinates
+          } else // csc or for DT "wrong" rechit coordinates
           {
             avg_x += iter->x;
             avg_y += iter->y;
@@ -515,21 +460,16 @@ void CACluster::merge_clusters()
           avg_x = avg_x / size_xy;
           avg_y = avg_y / size_xy;
           avg_z = avg_z_sl2 / size_z;
-        }
-        else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
+        } else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
         {
           avg_x = avg_x / size;
           avg_y = avg_y / size;
           avg_z = avg_z / size;
-        }
-        else if (size_xy > 0 && size_z == 0)
-        {
+        } else if (size_xy > 0 && size_z == 0) {
           avg_x = avg_x / size_xy;
           avg_y = avg_y / size_xy;
           avg_z = avg_z / size_xy;
-        }
-        else
-        {
+        } else {
           avg_x = avg_x_sl2 / size_z;
           avg_y = avg_y_sl2 / size_z;
           avg_z = avg_z_sl2 / size_z;
@@ -556,22 +496,18 @@ void CACluster::merge_clusters()
   clusters.clear();
 }
 
-double CACluster::deltaPhi(double phi1, double phi2)
-{
+double CACluster::deltaPhi(double phi1, double phi2) {
   double dphi = phi1 - phi2;
-  while (dphi > TMath::Pi())
-  {
+  while (dphi > TMath::Pi()) {
     dphi -= TMath::TwoPi();
   }
-  while (dphi <= -TMath::Pi())
-  {
+  while (dphi <= -TMath::Pi()) {
     dphi += TMath::TwoPi();
   }
   return dphi;
 };
 
-double CACluster::deltaR(double eta1, double phi1, double eta2, double phi2)
-{
+double CACluster::deltaR(double eta1, double phi1, double eta2, double phi2) {
   double dphi = deltaPhi(phi1, phi2);
   double deta = eta1 - eta2;
   return sqrt(dphi * dphi + deta * deta);

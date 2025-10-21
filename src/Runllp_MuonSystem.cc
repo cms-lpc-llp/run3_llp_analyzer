@@ -15,13 +15,10 @@
 
 using namespace std;
 
-std::string ParseCommandLine(int argc, char *argv[], std::string opt)
-{
-  for (int i = 1; i < argc; i++)
-  {
+std::string ParseCommandLine(int argc, char* argv[], std::string opt) {
+  for (int i = 1; i < argc; i++) {
     std::string tmp(argv[i]);
-    if (tmp.find(opt) != std::string::npos)
-    {
+    if (tmp.find(opt) != std::string::npos) {
       if (tmp.find("=") != std::string::npos)
         return tmp.substr(tmp.find_last_of("=") + 1);
       if (tmp.find("--") != std::string::npos)
@@ -32,8 +29,7 @@ std::string ParseCommandLine(int argc, char *argv[], std::string opt)
   return "";
 };
 
-void usage()
-{
+void usage() {
   std::cerr << "Usage: Runllp_MuonSystem  <input list>  [options]\n[options]:\n"
             << "-d  --isData\n"
             << "-f=  --outputFile=<output filename> (optional)\n"
@@ -43,12 +39,9 @@ void usage()
             << std::endl;
 };
 
-int main(int argc, char *argv[])
-{
-
+int main(int argc, char* argv[]) {
   // get input files and analysis type from command line
-  if (ParseCommandLine(argc, argv, "--help") != "" || ParseCommandLine(argc, argv, "-h") != "" || argc < 2)
-  {
+  if (ParseCommandLine(argc, argv, "--help") != "" || ParseCommandLine(argc, argv, "-h") != "" || argc < 2) {
     usage();
     return -1;
   }
@@ -73,16 +66,11 @@ int main(int argc, char *argv[])
   std::string _outFile = ParseCommandLine(argc, argv, "--outputFile=");
   std::string _f = ParseCommandLine(argc, argv, "-f=");
   string outputFileName = "";
-  if (_outFile != "")
-  {
+  if (_outFile != "") {
     outputFileName = _outFile;
-  }
-  else if (_f != "")
-  {
+  } else if (_f != "") {
     outputFileName = _f;
-  }
-  else
-  {
+  } else {
     std::cerr << "[WARNING]: output ROOT file not provided, using default output" << std::endl;
   }
 
@@ -92,32 +80,22 @@ int main(int argc, char *argv[])
   int option = -1;
   std::string _optionNumber = ParseCommandLine(argc, argv, "--optionNumber=");
   std::string _n = ParseCommandLine(argc, argv, "-n=");
-  if (_optionNumber != "")
-  {
+  if (_optionNumber != "") {
     option = atoi(_optionNumber.c_str());
-  }
-  else if (_n != "")
-  {
+  } else if (_n != "") {
     option = atoi(_n.c_str());
-  }
-  else
-  {
+  } else {
     std::cerr << "[WARNING]: option number not provided, using default option number" << std::endl;
   }
 
   string label = "";
   std::string _optionLabel = ParseCommandLine(argc, argv, "--optionLabel=");
   std::string _l = ParseCommandLine(argc, argv, "-l=");
-  if (_optionLabel != "")
-  {
+  if (_optionLabel != "") {
     label = _optionLabel;
-  }
-  else if (_l != "")
-  {
+  } else if (_l != "") {
     label = _l;
-  }
-  else
-  {
+  } else {
     std::cerr << "[WARNING]: optional label not provided, using default optional label" << std::endl;
   }
 
@@ -129,39 +107,31 @@ int main(int argc, char *argv[])
 
   // build the TChain
   // tree name is set give the structure in the first root file, see while loop below
-  TChain *theChain = new TChain();
+  TChain* theChain = new TChain();
   string curFileName;
   ifstream inputFile(inputFileName.c_str());
   int NFilesLoaded = 0;
-  if (!inputFile)
-  {
+  if (!inputFile) {
     cerr << "Error: input file not found!" << endl;
     return -1;
   }
 
-  while (getline(inputFile, curFileName))
-  {
-    if (NFilesLoaded == 0)
-    {
+  while (getline(inputFile, curFileName)) {
+    if (NFilesLoaded == 0) {
       /*
         checks root file structure and add first file
       */
-      TFile *f_0 = TFile::Open(curFileName.c_str());
-      if (f_0->GetDirectory("ntuples"))
-      {
+      TFile* f_0 = TFile::Open(curFileName.c_str());
+      if (f_0->GetDirectory("ntuples")) {
         theChain->SetName("ntuples/llp");
         std::cout << "[INFO]: default configuration for tchain" << std::endl;
-      }
-      else
-      {
+      } else {
         theChain->SetName("HSCParticleAnalyzer/BaseName/HscpCandidates");
         std::cout << "[INFO]: alternative configuration for tchain" << std::endl;
       }
       theChain->Add(curFileName.c_str());
       delete f_0;
-    }
-    else
-    {
+    } else {
       // Addind remaining files after file structure is decided
       theChain->Add(curFileName.c_str());
     }

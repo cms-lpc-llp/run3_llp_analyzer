@@ -4,13 +4,13 @@
 #include "TVector3.h"
 #include "TGraph.h"
 #include "TF1.h"
-struct largest_nCsc_cluster_
-{
-  inline bool operator()(const cscCluster &c1, const cscCluster &c2) { return c1.nCscSegments > c2.nCscSegments; }
+struct largest_nCsc_cluster_ {
+  inline bool operator()(const cscCluster& c1, const cscCluster& c2) {
+    return c1.nCscSegments > c2.nCscSegments;
+  }
 } largest_nCsc_cluster;
 
-struct hits
-{
+struct hits {
   float time;
   float error;
   bool strip;
@@ -19,17 +19,13 @@ const double theWireError_ = 8.6;
 const double theStripError_ = 7.0;
 const double thePruneCut_ = 9.0;
 
-int DBSCAN::run()
-{
+int DBSCAN::run() {
   fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
   int clusterID = 1;
   vector<Point>::iterator iter;
-  for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-  {
-    if (iter->clusterID == UNCLASSIFIED)
-    {
-      if (expandCluster(*iter, clusterID) != FAILURE)
-      {
+  for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
+    if (iter->clusterID == UNCLASSIFIED) {
+      if (expandCluster(*iter, clusterID) != FAILURE) {
         clusterID += 1;
       }
     }
@@ -37,8 +33,7 @@ int DBSCAN::run()
   nClusters = clusterID - 1;
   return (clusterID - 1);
 }
-void DBSCAN::clear_clusters()
-{
+void DBSCAN::clear_clusters() {
   // nClusters = 0;
   clusterSize.clear();
   cscLabels.clear();
@@ -66,16 +61,13 @@ void DBSCAN::clear_clusters()
 
   CscCluster.clear();
 }
-int DBSCAN::result()
-{
-
+int DBSCAN::result() {
   // for (unsigned int i = 0;i < m_pointSize;i++)
   // {
   //   cscLabels.push_back(m_points[i].clusterID);
   //
   // }
-  for (int i = 0; i < nClusters; i++)
-  {
+  for (int i = 0; i < nClusters; i++) {
     float avg_x(0.0), avg_y(0.0), avg_z(0.0), avg_tWire(0.0), avg_tWirePruned(0.0), avg_t(0.0), avg_tTotal(0.0), tTotalSpreadPruned(0.0);
     float avg_x_sl2(0.0), avg_y_sl2(0.0), avg_z_sl2(0.0);
     float avg_eta(0.0), avg_phi(0.0);
@@ -85,26 +77,21 @@ int DBSCAN::result()
     std::vector<hits> cscHits;
 
     vector<Point>::iterator iter;
-    for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-    {
-      if (iter->clusterID == i + 1)
-      {
+    for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
+      if (iter->clusterID == i + 1) {
         if (iter->superlayer == 2) // for DT rechits that only have coordinates in Z
         {
           avg_x_sl2 += iter->x;
           avg_y_sl2 += iter->y;
           avg_z_sl2 += iter->z;
           size_z++;
-        }
-        else if (iter->superlayer == 1 || iter->superlayer == 3)
-        {
+        } else if (iter->superlayer == 1 || iter->superlayer == 3) {
           avg_x += iter->x;
           avg_y += iter->y;
           avg_z += iter->z;
           avg_t += iter->t;
           size_xy++;
-        }
-        else // csc or for DT "wrong" rechit coordinates
+        } else // csc or for DT "wrong" rechit coordinates
         {
           avg_x += iter->x;
           avg_y += iter->y;
@@ -131,22 +118,17 @@ int DBSCAN::result()
       avg_x = avg_x / size_xy;
       avg_y = avg_y / size_xy;
       avg_z = avg_z_sl2 / size_z;
-    }
-    else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
+    } else if (size_xy == 0 && size_z == 0) // csc or DT wrong position
     {
       avg_x = avg_x / size;
       avg_y = avg_y / size;
       avg_z = avg_z / size;
       // cout<<avg_x<<","<<avg_y<<","<<avg_z<<endl;
-    }
-    else if (size_xy > 0 && size_z == 0)
-    {
+    } else if (size_xy > 0 && size_z == 0) {
       avg_x = avg_x / size_xy;
       avg_y = avg_y / size_xy;
       avg_z = avg_z / size_xy;
-    }
-    else
-    {
+    } else {
       avg_x = avg_x_sl2 / size_z;
       avg_y = avg_y_sl2 / size_z;
       avg_z = avg_z_sl2 / size_z;
@@ -161,14 +143,12 @@ int DBSCAN::result()
     double totalWeightTimeVtx = 0;
     double timeVtx = 0;
     double timeSpread = 0;
-    do
-    {
+    do {
       modified = false;
       totalWeightTimeVtx = 0;
       timeVtx = 0;
       timeSpread = 0;
-      for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it)
-      {
+      for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it) {
         timeVtx += it->time * it->error;
         totalWeightTimeVtx += it->error;
       }
@@ -178,28 +158,23 @@ int DBSCAN::result()
       double diff_tvtx;
       double chimax = 0.0;
       int tmmax;
-      for (unsigned int i = 0; i < cscHits.size(); i++)
-      {
+      for (unsigned int i = 0; i < cscHits.size(); i++) {
         diff_tvtx = (cscHits[i].time - timeVtx) * (cscHits[i].time - timeVtx) * cscHits[i].error;
 
-        if (diff_tvtx > chimax)
-        {
+        if (diff_tvtx > chimax) {
           tmmax = i;
           chimax = diff_tvtx;
         }
       }
       // cut away the outliers
-      if (chimax > thePruneCut_)
-      {
+      if (chimax > thePruneCut_) {
         cscHits.erase(cscHits.begin() + tmmax);
         modified = true;
       }
     } while (modified);
     int count = 0;
-    for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it)
-    {
-      if (it->strip)
-      {
+    for (std::vector<hits>::iterator it = cscHits.begin(); it != cscHits.end(); ++it) {
+      if (it->strip) {
         timeSpread += (it->time - timeVtx) * (it->time - timeVtx);
         count++;
       }
@@ -208,8 +183,7 @@ int DBSCAN::result()
 
     // calculate cluster eta and phi
     avg_phi = atan(avg_y / avg_x);
-    if (avg_x < 0.0)
-    {
+    if (avg_x < 0.0) {
       avg_phi = TMath::Pi() + avg_phi;
     }
     avg_phi = deltaPhi(avg_phi, 0.0);
@@ -227,20 +201,14 @@ int DBSCAN::result()
   }
   return 0;
 }
-int DBSCAN::clusterMoments()
-{
-
-  for (int i = 0; i < nClusters; i++)
-  {
+int DBSCAN::clusterMoments() {
+  for (int i = 0; i < nClusters; i++) {
     float m11(0.0), m12(0.0), m22(0.0);
     float XSpread(0.0), YSpread(0.0), ZSpread(0.0), TSpread(0.0), TSpreadAll(0.0), XYSpread(0.0), RSpread(0.0), DeltaRSpread(0.0);
 
     vector<Point>::iterator iter;
-    for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-    {
-      if (iter->clusterID == i + 1)
-      {
-
+    for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
+      if (iter->clusterID == i + 1) {
         m11 += (iter->eta - clusterEta[i]) * (iter->eta - clusterEta[i]);
         m12 += (iter->eta - clusterEta[i]) * deltaPhi(iter->phi, clusterPhi[i]);
         m22 += deltaPhi(iter->phi, clusterPhi[i]) * deltaPhi(iter->phi, clusterPhi[i]);
@@ -276,10 +244,8 @@ int DBSCAN::clusterMoments()
   return 0;
 }
 // input x,y,z of segments in cluster, avgX, avgY, avgZ
-void DBSCAN::sort_clusters()
-{
-  for (int i = 0; i < nClusters; i++)
-  {
+void DBSCAN::sort_clusters() {
+  for (int i = 0; i < nClusters; i++) {
     vector<int> cscStations;
     vector<int> cscStations_copy;
     vector<int> cscChambers;
@@ -332,10 +298,8 @@ void DBSCAN::sort_clusters()
     tmpCluster.nDtSegmentStation2 = 0;
     tmpCluster.nDtSegmentStation3 = 0;
     tmpCluster.nDtSegmentStation4 = 0;
-    for (unsigned int l = 0; l < m_pointSize; l++)
-    {
-      if (m_points[l].clusterID == i + 1)
-      {
+    for (unsigned int l = 0; l < m_pointSize; l++) {
+      if (m_points[l].clusterID == i + 1) {
         cscStations.push_back(m_points[l].station);
         cscChambers.push_back(m_points[l].chamber);
         cscStations_copy.push_back(m_points[l].station);
@@ -504,19 +468,16 @@ void DBSCAN::sort_clusters()
     std::sort(cscChambers.begin(), cscChambers.end());
     chamber_it = std::unique(cscChambers.begin(), cscChambers.end());
     cscChambers.resize(std::distance(cscChambers.begin(), chamber_it));
-    int max_chamber = 999;       // station with the maximum number of cscsegment in this cluster
+    int max_chamber = 999; // station with the maximum number of cscsegment in this cluster
     int max_chamber_segment = 0; // station with the maximum number of cscsegment in this cluster
     tmpCluster.nChamber = 0;
-    for (unsigned int l = 0; l < cscChambers.size(); l++)
-    {
+    for (unsigned int l = 0; l < cscChambers.size(); l++) {
       int counter = 0;
-      for (unsigned int j = 0; j < cscChambers_copy.size(); j++)
-      {
+      for (unsigned int j = 0; j < cscChambers_copy.size(); j++) {
         if (cscChambers_copy[j] == cscChambers[l])
           counter++;
       }
-      if (counter > max_chamber_segment)
-      {
+      if (counter > max_chamber_segment) {
         max_chamber_segment = counter;
         max_chamber = cscChambers[l];
       }
@@ -530,8 +491,8 @@ void DBSCAN::sort_clusters()
     std::sort(cscStations.begin(), cscStations.end());
     station_it = std::unique(cscStations.begin(), cscStations.end());
     cscStations.resize(std::distance(cscStations.begin(), station_it)); // list of unique stations
-    int max_station = 999;                                              // station with the maximum number of cscsegment in this cluster
-    int max_station_segment = 0;                                        // station with the maximum number of cscsegment in this cluster
+    int max_station = 999; // station with the maximum number of cscsegment in this cluster
+    int max_station_segment = 0; // station with the maximum number of cscsegment in this cluster
     tmpCluster.nStation = 0;
     tmpCluster.nStation5 = 0;
     tmpCluster.nStation10 = 0;
@@ -543,36 +504,30 @@ void DBSCAN::sort_clusters()
     int nSeg10perc = 0;
     int nSeg5 = 0;
     int nSeg10 = 0;
-    for (unsigned int l = 0; l < cscStations.size(); l++)
-    {
+    for (unsigned int l = 0; l < cscStations.size(); l++) {
       int counter = 0;
-      for (unsigned int j = 0; j < cscStations_copy.size(); j++)
-      {
+      for (unsigned int j = 0; j < cscStations_copy.size(); j++) {
         if (cscStations_copy[j] == cscStations[l])
           counter++;
       }
-      if (counter > max_station_segment)
-      {
+      if (counter > max_station_segment) {
         max_station_segment = counter;
         max_station = cscStations[l];
       }
       tmpCluster.nStation++;
       tmpCluster.avgStation += counter * cscStations[l];
 
-      if (counter >= 5.0)
-      {
+      if (counter >= 5.0) {
         tmpCluster.avgStation5 += counter * cscStations[l];
         tmpCluster.nStation5++;
         nSeg5 += counter;
       }
-      if (counter >= 10.0)
-      {
+      if (counter >= 10.0) {
         tmpCluster.avgStation10 += counter * cscStations[l];
         tmpCluster.nStation10++;
         nSeg10 += counter;
       }
-      if (1.0 * counter / clusterSize[i] > 0.1)
-      {
+      if (1.0 * counter / clusterSize[i] > 0.1) {
         tmpCluster.avgStation10perc += counter * cscStations[l];
         tmpCluster.nStation10perc++;
         nSeg10perc += counter;
@@ -593,39 +548,31 @@ void DBSCAN::sort_clusters()
   sort(CscCluster.begin(), CscCluster.end(), largest_nCsc_cluster);
 }
 
-void DBSCAN::merge_clusters()
-{
+void DBSCAN::merge_clusters() {
   // clear all the cluster variables
   // change cluster ID of points
   bool modified = true;
-  while (modified)
-  {
+  while (modified) {
     modified = false;
     float mindR = 15;
     int cluster1 = 999;
     int cluster2 = 999;
 
-    for (unsigned int i = 0; i < clusterEta.size(); i++)
-    {
-      for (unsigned int j = i + 1; j < clusterEta.size(); j++)
-      {
+    for (unsigned int i = 0; i < clusterEta.size(); i++) {
+      for (unsigned int j = i + 1; j < clusterEta.size(); j++) {
         float current_dR = deltaR(clusterEta[i], clusterPhi[i], clusterEta[j], clusterPhi[j]);
-        if (current_dR < mindR)
-        {
+        if (current_dR < mindR) {
           mindR = current_dR;
           cluster1 = i;
           cluster2 = j;
         }
       }
     }
-    if (mindR < MERGE_CLUSTER_DR)
-    {
+    if (mindR < MERGE_CLUSTER_DR) {
       vector<Point>::iterator iter;
       int count = 0;
-      for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-      {
-        if (iter->clusterID == cluster2 + 1)
-        {
+      for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
+        if (iter->clusterID == cluster2 + 1) {
           iter->clusterID = cluster1 + 1;
           count++;
         }
@@ -642,20 +589,16 @@ void DBSCAN::merge_clusters()
   clear_clusters(); // clear all the vectors, but nClusters is kept to keep track of the number of clusters.
 }
 
-int DBSCAN::vertexing()
-{
-  for (int i = 0; i < nClusters; i++)
-  {
+int DBSCAN::vertexing() {
+  for (int i = 0; i < nClusters; i++) {
     TVector3 vecDir;
     TVector3 vecCsc;
-    TF1 *fit = new TF1();
+    TF1* fit = new TF1();
 
-    TGraph *gr = new TGraph(clusterSize[i]);
+    TGraph* gr = new TGraph(clusterSize[i]);
 
-    for (unsigned int j = 0; j < m_pointSize; j++)
-    {
-      if (m_points[j].clusterID == i + 1)
-      {
+    for (unsigned int j = 0; j < m_pointSize; j++) {
+      if (m_points[j].clusterID == i + 1) {
         vecCsc.SetXYZ(m_points[j].x, m_points[j].y, m_points[j].z);
         vecDir.SetXYZ(m_points[j].dirX, m_points[j].dirY, m_points[j].dirZ);
         double slope = (vecCsc.Perp() - (vecCsc + vecDir).Perp()) / (vecCsc.Z() - (vecCsc + vecDir).Z());
@@ -682,37 +625,30 @@ int DBSCAN::vertexing()
     float vertexChi2(0.0), vertexDis(0.0), vertexZ(0.0), vertexR(0.0);
 
     // cout << "starting with " << gr->GetN() << " segments" << endl;
-    while (!goodVtx && gr->GetN() >= 3)
-    {
+    while (!goodVtx && gr->GetN() >= 3) {
       maxDistance = 0.0;
       // gr->Fit("pol 1");
       // fit = gr->GetFunction("pol 1");
       gr->Fit("1++x", "Q");
       fit = gr->GetFunction("1++x");
-      for (int j = 0; j < gr->GetN(); j++)
-      {
+      for (int j = 0; j < gr->GetN(); j++) {
         // Distance from point (x_0, y_0) to line ax + by + c = 0 is |ax_0 + by_0 + c| / sqrt(a^2 + b^2)
         // Here: a = slope = "X"; b = -1,;c = intercept = "Y"; (x_0, y_0) = (z, r) = (-p[1], p[0]);
         distance = abs(gr->GetX()[j] * fit->GetParameter(1) * -1.0 + -1.0 * fit->GetParameter(0) + gr->GetY()[j]);
         distance = distance / sqrt(pow(gr->GetX()[j], 2) + pow(-1.0, 2));
-        if (distance > maxDistance)
-        {
+        if (distance > maxDistance) {
           maxDistance = distance;
           farSegment = j;
         }
       }
-      if (maxDistance < 30.0)
-      {
+      if (maxDistance < 30.0) {
         goodVtx = true;
-      }
-      else
-      {
+      } else {
         gr->RemovePoint(farSegment);
       }
     }
     // count number of segment in distance 1,5,10,20cm
-    for (int j = 0; j < gr->GetN(); j++)
-    {
+    for (int j = 0; j < gr->GetN(); j++) {
       // Distance from point (x_0, y_0) to line ax + by + c = 0 is |ax_0 + by_0 + c| / sqrt(a^2 + b^2)
       // Here: a = slope = "X"; b = -1,;c = intercept = "Y"; (x_0, y_0) = (z, r) = (-p[1], p[0]);
       distance = abs(gr->GetX()[j] * fit->GetParameter(1) * -1.0 + -1.0 * fit->GetParameter(0) + gr->GetY()[j]);
@@ -728,16 +664,13 @@ int DBSCAN::vertexing()
       if (distance < 20.0)
         vertexN20cm++;
     }
-    if (goodVtx && gr->GetN() >= 3)
-    {
+    if (goodVtx && gr->GetN() >= 3) {
       vertexR = fit->GetParameter(0);
       vertexZ = -1.0 * fit->GetParameter(1);
       vertexN = gr->GetN();
       vertexDis = maxDistance;
       vertexChi2 = fit->GetChisquare();
-    }
-    else
-    {
+    } else {
       vertexR = 0.0;
       vertexZ = 0.0;
       vertexN = 0;
@@ -763,28 +696,23 @@ int DBSCAN::vertexing()
   return 0;
 }
 
-int DBSCAN::expandCluster(Point point, int clusterID)
-{
+int DBSCAN::expandCluster(Point point, int clusterID) {
   vector<int> clusterSeeds = calculateCluster(point); // neighbors, including itself
 
-  if (clusterSeeds.size() < m_minPoints)
-  {
+  if (clusterSeeds.size() < m_minPoints) {
     point.clusterID = NOISE;
     return FAILURE;
-  }
-  else // core points
+  } else // core points
   {
     int index = 0, indexCorePoint = 0;
     vector<int>::iterator iterSeeds;
     // loop through neighbors of core points
-    for (iterSeeds = clusterSeeds.begin(); iterSeeds != clusterSeeds.end(); ++iterSeeds)
-    {
+    for (iterSeeds = clusterSeeds.begin(); iterSeeds != clusterSeeds.end(); ++iterSeeds) {
       m_points.at(*iterSeeds).clusterID = clusterID; // setting all the neighbors to the same clusterID
       // get the index of the core point itself
 
       // if (m_points.at(*iterSeeds).x == point.x && m_points.at(*iterSeeds).y == point.y && m_points.at(*iterSeeds).z == point.z )
-      if (m_points.at(*iterSeeds).eta == point.eta && m_points.at(*iterSeeds).phi == point.phi)
-      {
+      if (m_points.at(*iterSeeds).eta == point.eta && m_points.at(*iterSeeds).phi == point.phi) {
         indexCorePoint = index;
       }
       ++index;
@@ -792,19 +720,14 @@ int DBSCAN::expandCluster(Point point, int clusterID)
 
     clusterSeeds.erase(clusterSeeds.begin() + indexCorePoint);
     // now clusterSeeds only contains neighbors, not itself; loop through the neighbors
-    for (vector<int>::size_type i = 0, n = clusterSeeds.size(); i < n; ++i)
-    {
+    for (vector<int>::size_type i = 0, n = clusterSeeds.size(); i < n; ++i) {
       vector<int> clusterNeighors = calculateCluster(m_points.at(clusterSeeds[i]));
       // if this neighbor point is a core point
-      if (clusterNeighors.size() >= m_minPoints)
-      {
+      if (clusterNeighors.size() >= m_minPoints) {
         vector<int>::iterator iterNeighors;
-        for (iterNeighors = clusterNeighors.begin(); iterNeighors != clusterNeighors.end(); ++iterNeighors)
-        {
-          if (m_points.at(*iterNeighors).clusterID == UNCLASSIFIED || m_points.at(*iterNeighors).clusterID == NOISE)
-          {
-            if (m_points.at(*iterNeighors).clusterID == UNCLASSIFIED)
-            {
+        for (iterNeighors = clusterNeighors.begin(); iterNeighors != clusterNeighors.end(); ++iterNeighors) {
+          if (m_points.at(*iterNeighors).clusterID == UNCLASSIFIED || m_points.at(*iterNeighors).clusterID == NOISE) {
+            if (m_points.at(*iterNeighors).clusterID == UNCLASSIFIED) {
               clusterSeeds.push_back(*iterNeighors);
               n = clusterSeeds.size();
             }
@@ -818,19 +741,16 @@ int DBSCAN::expandCluster(Point point, int clusterID)
   }
 }
 
-vector<int> DBSCAN::calculateCluster(Point point)
-{
+vector<int> DBSCAN::calculateCluster(Point point) {
   int index = 0;
   vector<Point>::iterator iter;
   vector<int> clusterIndex;
   Point minimum;
   float min_dis = 1000000.0;
-  for (iter = m_points.begin(); iter != m_points.end(); ++iter)
-  {
+  for (iter = m_points.begin(); iter != m_points.end(); ++iter) {
     if (min_dis > calculateDistance(point, *iter))
       minimum = *iter;
-    if (calculateDistance(point, *iter) <= m_epsilon)
-    {
+    if (calculateDistance(point, *iter) <= m_epsilon) {
       clusterIndex.push_back(index);
     }
     index++;
@@ -839,27 +759,22 @@ vector<int> DBSCAN::calculateCluster(Point point)
   return clusterIndex;
 }
 
-inline double DBSCAN::calculateDistance(Point pointCore, Point pointTarget)
-{
+inline double DBSCAN::calculateDistance(Point pointCore, Point pointTarget) {
   // return sqrt(pow(pointCore.x - pointTarget.x,2)+pow(pointCore.y - pointTarget.y,2)+pow(pointCore.z - pointTarget.z,2));
   // return sqrt(pow(pointCore.eta - pointTarget.eta,2)+pow(deltaPhi(pointCore.phi, pointTarget.phi),2)+pow((pointCore.t - pointTarget.t)/100.0,2));
   return sqrt(pow(pointCore.eta - pointTarget.eta, 2) + pow(deltaPhi(pointCore.phi, pointTarget.phi), 2));
 }
-double DBSCAN::deltaPhi(double phi1, double phi2)
-{
+double DBSCAN::deltaPhi(double phi1, double phi2) {
   double dphi = phi1 - phi2;
-  while (dphi > TMath::Pi())
-  {
+  while (dphi > TMath::Pi()) {
     dphi -= TMath::TwoPi();
   }
-  while (dphi <= -TMath::Pi())
-  {
+  while (dphi <= -TMath::Pi()) {
     dphi += TMath::TwoPi();
   }
   return dphi;
 };
-double DBSCAN::deltaR(double eta1, double phi1, double eta2, double phi2)
-{
+double DBSCAN::deltaR(double eta1, double phi1, double eta2, double phi2) {
   double dphi = deltaPhi(phi1, phi2);
   double deta = eta1 - eta2;
   return sqrt(dphi * dphi + deta * deta);

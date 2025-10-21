@@ -5,17 +5,14 @@
 #include "DBSCAN.h"
 
 // Constructor
-TreeMuonSystemCombination_TnP::TreeMuonSystemCombination_TnP()
-{
+TreeMuonSystemCombination_TnP::TreeMuonSystemCombination_TnP() {
   InitVariables();
 };
-TreeMuonSystemCombination_TnP::~TreeMuonSystemCombination_TnP()
-{
+TreeMuonSystemCombination_TnP::~TreeMuonSystemCombination_TnP() {
   if (f_)
     f_->Close();
 };
-void TreeMuonSystemCombination_TnP::InitVariables()
-{
+void TreeMuonSystemCombination_TnP::InitVariables() {
   runNum = 0;
   lumiSec = 0;
   evtNum = 0;
@@ -63,9 +60,7 @@ void TreeMuonSystemCombination_TnP::InitVariables()
   nDtRings = 0;
   nCscRings = 0;
 
-  for (int i = 0; i < N_MAX_CSC; i++)
-  {
-
+  for (int i = 0; i < N_MAX_CSC; i++) {
     cscRechitCluster_match_gLLP[i] = false;
     cscRechitCluster_match_gLLP_minDeltaR[i] = 999;
     cscRechitCluster_match_gLLP_index[i] = 999;
@@ -203,9 +198,7 @@ void TreeMuonSystemCombination_TnP::InitVariables()
   }
 
   nGLLP = 0;
-  for (int i = 0; i < N_MAX_LLP; i++)
-  {
-
+  for (int i = 0; i < N_MAX_LLP; i++) {
     gLLP_eta[i] = 0.0;
     gLLP_phi[i] = 0.0;
     gLLP_beta[i] = 0.0;
@@ -222,8 +215,7 @@ void TreeMuonSystemCombination_TnP::InitVariables()
 
   // leptons
   nLeptons = 0;
-  for (int i = 0; i < N_MAX_LEPTONS; i++)
-  {
+  for (int i = 0; i < N_MAX_LEPTONS; i++) {
     lepE[i] = -999.;
     lepPt[i] = -999.;
     lepEta[i] = -999.;
@@ -239,8 +231,7 @@ void TreeMuonSystemCombination_TnP::InitVariables()
 
   // jets
   nJets = 0;
-  for (int i = 0; i < N_MAX_JETS; i++)
-  {
+  for (int i = 0; i < N_MAX_JETS; i++) {
     jetE[i] = -999.;
     jetPt[i] = -999.;
     jetEta[i] = -999.;
@@ -248,14 +239,12 @@ void TreeMuonSystemCombination_TnP::InitVariables()
     jetTightPassId[i] = false;
   }
 
-  for (int i = 0; i < NTriggersMAX; i++)
-  {
+  for (int i = 0; i < NTriggersMAX; i++) {
     HLTDecision[i] = false;
   }
 };
 
-void TreeMuonSystemCombination_TnP::InitTree()
-{
+void TreeMuonSystemCombination_TnP::InitTree() {
   assert(tree_);
   InitVariables();
 
@@ -500,27 +489,25 @@ void TreeMuonSystemCombination_TnP::InitTree()
   tree_->SetBranchAddress("HLTDecision", HLTDecision);
 };
 
-void TreeMuonSystemCombination_TnP::LoadTree(const char *file)
-{
+void TreeMuonSystemCombination_TnP::LoadTree(const char* file) {
   f_ = TFile::Open(file);
   assert(f_);
-  tree_ = dynamic_cast<TTree *>(f_->Get("MuonSystem"));
+  tree_ = dynamic_cast<TTree*>(f_->Get("MuonSystem"));
   InitTree();
   assert(tree_);
 };
 
-void TreeMuonSystemCombination_TnP::CreateTree()
-{
+void TreeMuonSystemCombination_TnP::CreateTree() {
   tree_ = new TTree("MuonSystem", "MuonSystem");
   f_ = 0;
 
-  tree_->Branch("runNum", &runNum, "runNum/i");                   // event run number
+  tree_->Branch("runNum", &runNum, "runNum/i"); // event run number
   tree_->Branch("MC_condition", &MC_condition, "MC_condition/i"); // event run number
-  tree_->Branch("lumiSec", &lumiSec, "lumiSec/i");                // event lumi section
-  tree_->Branch("evtNum", &evtNum, "evtNum/i");                   // event number
-  tree_->Branch("mH", &mH, "mH/I");                               // event number
-  tree_->Branch("mX", &mX, "mX/I");                               // event number
-  tree_->Branch("ctau", &ctau, "ctau/I");                         // event number
+  tree_->Branch("lumiSec", &lumiSec, "lumiSec/i"); // event lumi section
+  tree_->Branch("evtNum", &evtNum, "evtNum/i"); // event number
+  tree_->Branch("mH", &mH, "mH/I"); // event number
+  tree_->Branch("mX", &mX, "mX/I"); // event number
+  tree_->Branch("ctau", &ctau, "ctau/I"); // event number
 
   tree_->Branch("npv", &npv, "npv/i"); // number of primary vertices
   tree_->Branch("npu", &npu, "npu/i"); // number of in-time PU events (MC)
@@ -550,11 +537,11 @@ void TreeMuonSystemCombination_TnP::CreateTree()
   tree_->Branch("Flag2_all", &Flag2_all, "Flag2_all/O");
 
   tree_->Branch("rho", &rho, "rho/F");
-  tree_->Branch("met", &met, "met/F");          // MET
+  tree_->Branch("met", &met, "met/F"); // MET
   tree_->Branch("metPhi", &metPhi, "metPhi/F"); // phi(MET)
 
-  tree_->Branch("gHiggsPt", &gHiggsPt, "gHiggsPt/F");    // phi(MET)
-  tree_->Branch("gHiggsE", &gHiggsE, "gHiggsE/F");       // phi(MET)
+  tree_->Branch("gHiggsPt", &gHiggsPt, "gHiggsPt/F"); // phi(MET)
+  tree_->Branch("gHiggsE", &gHiggsE, "gHiggsE/F"); // phi(MET)
   tree_->Branch("gHiggsEta", &gHiggsEta, "gHiggsEta/F"); // phi(MET)
   tree_->Branch("gHiggsPhi", &gHiggsPhi, "gHiggsPhi/F"); // phi(MET)
 

@@ -5,17 +5,14 @@
 #include "DBSCAN.h"
 
 // Constructor
-TreeMuonSystemCombination::TreeMuonSystemCombination()
-{
+TreeMuonSystemCombination::TreeMuonSystemCombination() {
   InitVariables();
 };
-TreeMuonSystemCombination::~TreeMuonSystemCombination()
-{
+TreeMuonSystemCombination::~TreeMuonSystemCombination() {
   if (f_)
     f_->Close();
 };
-void TreeMuonSystemCombination::InitVariables()
-{
+void TreeMuonSystemCombination::InitVariables() {
   runNum = 0;
   lumiSec = 0;
   evtNum = 0;
@@ -44,7 +41,6 @@ void TreeMuonSystemCombination::InitVariables()
   memset(dtRechitsTime, 0, sizeof(dtRechitsTime));
   memset(cscRechitsTimeW, 0, sizeof(cscRechitsTimeW));
   memset(dtRechitsTimeW, 0, sizeof(dtRechitsTimeW));
-
 
   Flag_goodVertices = false;
   Flag_globalSuperTightHalo2016Filter = false;
@@ -87,9 +83,7 @@ void TreeMuonSystemCombination::InitVariables()
   nDtRings = 0;
   nCscRings = 0;
 
-  for (int i = 0; i < N_MAX_CSC; i++)
-  {
-
+  for (int i = 0; i < N_MAX_CSC; i++) {
     cscRechitCluster_match_gLLP[i] = false;
     cscRechitCluster_match_gLLP_minDeltaR[i] = 999;
     cscRechitCluster_match_gLLP_index[i] = 999;
@@ -267,12 +261,9 @@ void TreeMuonSystemCombination::InitVariables()
     dtRechitClusterKurtZ[i] = -999.;
   }
 
-  for (int i = 0; i < 4; i++)
-  {
-    for (int j = 0; j < 5; j++)
-    {
-      for (int k = 0; k < 12; k++)
-      {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 5; j++) {
+      for (int k = 0; k < 12; k++) {
         nDTRechitsSector[i][j][k] = 0;
         // nDTSegSector[i][j][k] = 0;
       }
@@ -280,9 +271,7 @@ void TreeMuonSystemCombination::InitVariables()
   }
 
   nGLLP = 0;
-  for (int i = 0; i < N_MAX_LLP; i++)
-  {
-
+  for (int i = 0; i < N_MAX_LLP; i++) {
     gLLP_eta[i] = 0.0;
     gLLP_phi[i] = 0.0;
     gLLP_beta[i] = 0.0;
@@ -299,8 +288,7 @@ void TreeMuonSystemCombination::InitVariables()
 
   // leptons
   nLeptons = 0;
-  for (int i = 0; i < N_MAX_LEPTONS; i++)
-  {
+  for (int i = 0; i < N_MAX_LEPTONS; i++) {
     lepE[i] = -999.;
     lepPt[i] = -999.;
     lepEta[i] = -999.;
@@ -316,8 +304,7 @@ void TreeMuonSystemCombination::InitVariables()
 
   // jets
   nJets = 0;
-  for (int i = 0; i < N_MAX_JETS; i++)
-  {
+  for (int i = 0; i < N_MAX_JETS; i++) {
     jetE[i] = -999.;
     jetPt[i] = -999.;
     jetEta[i] = -999.;
@@ -325,8 +312,7 @@ void TreeMuonSystemCombination::InitVariables()
     jetTightPassId[i] = false;
   }
 
-  for (int i = 0; i < NTriggersMAX; i++)
-  {
+  for (int i = 0; i < NTriggersMAX; i++) {
     HLTDecision[i] = false;
   }
 
@@ -419,8 +405,7 @@ void TreeMuonSystemCombination::InitVariables()
   memset(Tau_genPartIdx, 0, sizeof(Tau_genPartIdx));
 };
 
-void TreeMuonSystemCombination::InitTree()
-{
+void TreeMuonSystemCombination::InitTree() {
   assert(tree_);
   InitVariables();
 
@@ -823,17 +808,15 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("HLTDecision", HLTDecision);
 };
 
-void TreeMuonSystemCombination::LoadTree(const char *file)
-{
+void TreeMuonSystemCombination::LoadTree(const char* file) {
   f_ = TFile::Open(file);
   assert(f_);
-  tree_ = dynamic_cast<TTree *>(f_->Get("MuonSystem"));
+  tree_ = dynamic_cast<TTree*>(f_->Get("MuonSystem"));
   InitTree();
   assert(tree_);
 };
 
-void TreeMuonSystemCombination::CreateTree()
-{
+void TreeMuonSystemCombination::CreateTree() {
   tree_ = new TTree("MuonSystem", "MuonSystem");
   f_ = 0;
 
@@ -853,13 +836,13 @@ void TreeMuonSystemCombination::CreateTree()
   // tree_->Branch("dtRechitsTimeW", cscRechitsTimeW, "dtRechitsTimeW[nDtRechits]/F");
 
   tree_->Branch("jetVeto", &jetVeto, "jetVeto/O");
-  tree_->Branch("runNum", &runNum, "runNum/i");                   // event run number
+  tree_->Branch("runNum", &runNum, "runNum/i"); // event run number
   tree_->Branch("MC_condition", &MC_condition, "MC_condition/i"); // event run number
-  tree_->Branch("lumiSec", &lumiSec, "lumiSec/i");                // event lumi section
-  tree_->Branch("evtNum", &evtNum, "evtNum/i");                   // event number
-  tree_->Branch("mH", &mH, "mH/I");                               // event number
-  tree_->Branch("mX", &mX, "mX/I");                               // event number
-  tree_->Branch("ctau", &ctau, "ctau/I");                         // event number
+  tree_->Branch("lumiSec", &lumiSec, "lumiSec/i"); // event lumi section
+  tree_->Branch("evtNum", &evtNum, "evtNum/i"); // event number
+  tree_->Branch("mH", &mH, "mH/I"); // event number
+  tree_->Branch("mX", &mX, "mX/I"); // event number
+  tree_->Branch("ctau", &ctau, "ctau/I"); // event number
 
   tree_->Branch("npv", &npv, "npv/i"); // number of primary vertices
   tree_->Branch("npu", &npu, "npu/i"); // number of in-time PU events (MC)
@@ -896,11 +879,11 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("nDTRechitsSector", nDTRechitsSector, "nDTRechitsSector[4][5][12]/I");
 
   tree_->Branch("rho", &rho, "rho/F");
-  tree_->Branch("met", &met, "met/F");          // MET
+  tree_->Branch("met", &met, "met/F"); // MET
   tree_->Branch("metPhi", &metPhi, "metPhi/F"); // phi(MET)
 
-  tree_->Branch("gHiggsPt", &gHiggsPt, "gHiggsPt/F");    // phi(MET)
-  tree_->Branch("gHiggsE", &gHiggsE, "gHiggsE/F");       // phi(MET)
+  tree_->Branch("gHiggsPt", &gHiggsPt, "gHiggsPt/F"); // phi(MET)
+  tree_->Branch("gHiggsE", &gHiggsE, "gHiggsE/F"); // phi(MET)
   tree_->Branch("gHiggsEta", &gHiggsEta, "gHiggsEta/F"); // phi(MET)
   tree_->Branch("gHiggsPhi", &gHiggsPhi, "gHiggsPhi/F"); // phi(MET)
 
