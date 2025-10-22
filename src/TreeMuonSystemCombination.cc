@@ -42,6 +42,8 @@ HLT_CscCluster100_Mu5 = false;
 HLT_CscCluster50_Photon30Unseeded = false;
 HLT_CscCluster50_Photon20Unseeded = false;
 HLT_PFMET120_PFMHT120_IDTight = false;
+L1_SingleMuShower_Nominal = false;
+L1_SingleMuShower_Tight = false;
 
 MetTriggerEff = 0.;
 MetTriggerEffUp = 0.;
@@ -64,6 +66,7 @@ MetTriggerEffDown = 0.;
   nGenParticles =0;
   nGenTaus = 0;
   nGenVisTau=0;
+  nGenLeptons=0;
   
 for(int i = 0;i < 9;i++)
 {
@@ -172,6 +175,9 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
         cscRechitClusterNRechitChamberMinus41[i] = -999;
         cscRechitClusterNRechitChamberMinus42[i] = -999;
 
+        cscRechitClusterNRechitME1112[i] = -999;
+        cscRechitClusterNRechitStation12[i]= -999;
+
         cscRechitClusterHMTEfficiency[i] = -999;
 
 
@@ -179,6 +185,16 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
         cscRechitClusterMetJESUp_dPhi[i] = 999.;
         cscRechitClusterMetJESDown_dPhi[i] = 999.;  
         cscRechitClusterPuppiMet_dPhi[i] = 999.;
+
+        cscRechitClusterPromptTauDeltaEta[i] = 999.;
+        cscRechitClusterPromptTauDeltaPhi[i] = 999.;
+        cscRechitClusterPromptTauDeltaR[i] = 999.;
+        cscRechitClusterPromptMuDeltaEta[i] = 999.;
+        cscRechitClusterPromptMuDeltaPhi[i] = 999.;
+        cscRechitClusterPromptMuDeltaR[i] = 999.;
+        cscRechitClusterPromptEleDeltaEta[i] = 999.;
+        cscRechitClusterPromptEleDeltaPhi[i] = 999.;
+        cscRechitClusterPromptEleDeltaR[i] = 999.;
 
         dtRechitClusterNSegStation1[i] = 0;
         dtRechitClusterNSegStation2[i] = 0;
@@ -314,7 +330,7 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
 
 
   }
-  //separate branch made for gen taus for HNL+tau
+  //separate branch made for gen taus for HNL+tau + gen prompt leptons for electron and muon channels
   for(int i = 0;i<N_MAX_GTAU;i++)
   {
     gTauEta[i] = 0.0;
@@ -332,6 +348,11 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     gVisTauE[i] = 0.0;
     gVisTauFractionOfTotalPt[i] = 0.0;
     gVisTauFractionOfTotalEnergy[i] = 0.0;
+    gLepEta[i] = 0.0;
+    gLepPhi[i] = 0.0;
+    gLepE[i] = 0.0;
+    gLepPt[i] = 0.0;
+    gLepPdgId[i] = 0;
   }
 
 
@@ -391,6 +412,7 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     tauIsVVTight[i] = false;
     tauGenPartFlav[i] = 0;
     deltaR_GenTauRecoTau[i] = 1000.;
+    deltaR_GenLepRecoLep[i] = 1000.;
     tauIdDeepTau2018v2p5VSjet[i] = 0;
     tauIdDeepTau2018v2p5VSe[i] = 0;
     tauIdDeepTau2018v2p5VSmu[i] = 0;
@@ -432,6 +454,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("HLT_CscCluster50_Photon20Unseeded",      &HLT_CscCluster50_Photon20Unseeded);
   tree_->SetBranchAddress("HLT_CscCluster100_PNetTauhPFJet10_Loose",      &HLT_CscCluster100_PNetTauhPFJet10_Loose);
   tree_->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight",      &HLT_PFMET120_PFMHT120_IDTight);
+  tree_->SetBranchAddress("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal);
+  tree_->SetBranchAddress("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight);
 
   tree_->SetBranchAddress("jetVeto",      &jetVeto);
   tree_->SetBranchAddress("MetTriggerEff",      &MetTriggerEff);
@@ -715,6 +739,8 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus32",             cscRechitClusterNRechitChamberMinus32);
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus41",             cscRechitClusterNRechitChamberMinus41);
   tree_->SetBranchAddress("cscRechitClusterNRechitChamberMinus42",             cscRechitClusterNRechitChamberMinus42);
+  tree_->SetBranchAddress("cscRechitClusterNRechitME1112",             cscRechitClusterNRechitME1112);
+  tree_->SetBranchAddress("cscRechitClusterNRechitStation12",             cscRechitClusterNRechitStation12);
   tree_->SetBranchAddress("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency);
 
 
@@ -722,6 +748,20 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("cscRechitClusterMetJESUp_dPhi",             cscRechitClusterMetJESUp_dPhi);
   tree_->SetBranchAddress("cscRechitClusterMetJESDown_dPhi",             cscRechitClusterMetJESDown_dPhi);
   tree_->SetBranchAddress("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi);
+
+  tree_->SetBranchAddress("cscRechitClusterPromptTauDeltaEta",             cscRechitClusterPromptTauDeltaEta);
+  tree_->SetBranchAddress("cscRechitClusterPromptTauDeltaPhi",             cscRechitClusterPromptTauDeltaPhi);
+  tree_->SetBranchAddress("cscRechitClusterPromptTauDeltaR",             cscRechitClusterPromptTauDeltaR);
+
+  tree_->SetBranchAddress("cscRechitClusterPromptMuDeltaEta",             cscRechitClusterPromptMuDeltaEta);
+  tree_->SetBranchAddress("cscRechitClusterPromptMuDeltaPhi",             cscRechitClusterPromptMuDeltaPhi);
+  tree_->SetBranchAddress("cscRechitClusterPromptMuDeltaR",             cscRechitClusterPromptMuDeltaR);
+
+  tree_->SetBranchAddress("cscRechitClusterPromptEleDeltaEta",             cscRechitClusterPromptEleDeltaEta);
+  tree_->SetBranchAddress("cscRechitClusterPromptEleDeltaPhi",             cscRechitClusterPromptEleDeltaPhi);
+  tree_->SetBranchAddress("cscRechitClusterPromptEleDeltaR",             cscRechitClusterPromptEleDeltaR);
+
+  
 
 
   tree_->SetBranchAddress("nGLLP",    &nGLLP);
@@ -760,6 +800,14 @@ void TreeMuonSystemCombination::InitTree()
   tree_->SetBranchAddress("gVisTauE",    gVisTauE);
   tree_->SetBranchAddress("gVisTauFractionOfTotalPt",    gVisTauFractionOfTotalPt);
   tree_->SetBranchAddress("gVisTauFractionOfTotalEnergy",    gVisTauFractionOfTotalEnergy);
+
+  //gen prompt leptons for HNL
+  tree_->SetBranchAddress("nGenLeptons",    &nGenLeptons);
+  tree_->SetBranchAddress("gLepEta",    gLepEta);
+  tree_->SetBranchAddress("gLepPhi",    gLepPhi);
+  tree_->SetBranchAddress("gLepPt",    gLepPt);
+  tree_->SetBranchAddress("gLepE",    gLepE);
+  tree_->SetBranchAddress("gLepPdgId",    gLepPdgId);
 
   //Leptons
 
@@ -811,6 +859,7 @@ tree_->SetBranchAddress("nTaus", &nTaus);
   tree_->SetBranchAddress("tauDz", tauDz);
   tree_->SetBranchAddress("tauGenPartFlav", tauGenPartFlav);
   tree_->SetBranchAddress("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau);
+  tree_->SetBranchAddress("deltaR_GenLepRecoLep", deltaR_GenLepRecoLep);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu);
   tree_->SetBranchAddress("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe);
@@ -855,6 +904,9 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("HLT_CscCluster50_Photon20Unseeded",      &HLT_CscCluster50_Photon20Unseeded,     "HLT_CscCluster50_Photon20Unseeded/O");
 
   tree_->Branch("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight, "HLT_PFMET120_PFMHT120_IDTight/O");
+
+  tree_->Branch("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal, "L1_SingleMuShower_Nominal");
+  tree_->Branch("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight, "L1_SingleMuShower_Tight");
 
 
   tree_->Branch("jetVeto",      &jetVeto,     "jetVeto/O");
@@ -1008,13 +1060,25 @@ void TreeMuonSystemCombination::CreateTree()
     tree_->Branch("cscRechitClusterNRechitChamberMinus32",             cscRechitClusterNRechitChamberMinus32,             "cscRechitClusterNRechitChamberMinus32[nCscRechitClusters]/I");
     tree_->Branch("cscRechitClusterNRechitChamberMinus41",             cscRechitClusterNRechitChamberMinus41,             "cscRechitClusterNRechitChamberMinus41[nCscRechitClusters]/I");
     tree_->Branch("cscRechitClusterNRechitChamberMinus42",             cscRechitClusterNRechitChamberMinus42,             "cscRechitClusterNRechitChamberMinus42[nCscRechitClusters]/I");
+    tree_->Branch("cscRechitClusterNRechitME1112",             cscRechitClusterNRechitME1112,             "cscRechitClusterNRechitME1112[nCscRechitClusters]/I");
+    tree_->Branch("cscRechitClusterNRechitStation12",             cscRechitClusterNRechitStation12,             "cscRechitClusterNRechitStation12[nCscRechitClusters]/I");
 
     tree_->Branch("cscRechitClusterHMTEfficiency",             cscRechitClusterHMTEfficiency,             "cscRechitClusterHMTEfficiency[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMet_dPhi",             cscRechitClusterMet_dPhi,             "cscRechitClusterMet_dPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMetJESUp_dPhi",             cscRechitClusterMetJESUp_dPhi,             "cscRechitClusterMetJESUp_dPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterMetJESDown_dPhi",             cscRechitClusterMetJESDown_dPhi,             "cscRechitClusterMetJESDown_dPhi[nCscRechitClusters]/F");
     tree_->Branch("cscRechitClusterPuppiMet_dPhi",             cscRechitClusterPuppiMet_dPhi,             "cscRechitClusterPuppiMet_dPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptTauDeltaEta",             cscRechitClusterPromptTauDeltaEta,             "cscRechitClusterPromptTauDeltaEta[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptTauDeltaPhi",             cscRechitClusterPromptTauDeltaPhi,             "cscRechitClusterPromptTauDeltaPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptTauDeltaR",             cscRechitClusterPromptTauDeltaR,             "cscRechitClusterPromptTauDeltaR[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptMuDeltaEta",             cscRechitClusterPromptMuDeltaEta,             "cscRechitClusterPromptMuDeltaEta[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptMuDeltaPhi",             cscRechitClusterPromptMuDeltaPhi,             "cscRechitClusterPromptMuDeltaPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptMuDeltaR",             cscRechitClusterPromptMuDeltaR,             "cscRechitClusterPromptMuDeltaR[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptEleDeltaEta",             cscRechitClusterPromptEleDeltaEta,             "cscRechitClusterPromptEleDeltaEta[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptEleDeltaPhi",             cscRechitClusterPromptEleDeltaPhi,             "cscRechitClusterPromptEleDeltaPhi[nCscRechitClusters]/F");
+    tree_->Branch("cscRechitClusterPromptEleDeltaR",             cscRechitClusterPromptEleDeltaR,             "cscRechitClusterPromptEleDeltaR[nCscRechitClusters]/F");
 
+    
 
 
 
@@ -1191,6 +1255,14 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("gVisTauFractionOfTotalPt",    gVisTauFractionOfTotalPt, "gVisTauFractionOfTotalPt[nGenVisTau]/F");
   tree_->Branch("gVisTauFractionOfTotalEnergy",    gVisTauFractionOfTotalEnergy, "gVisTauFractionOfTotalEnergy[nGenVisTau]/F");
 
+  //gen prompt leptons
+  tree_->Branch("nGenLeptons", &nGenLeptons, "nGenLeptons/I");
+  tree_->Branch("gLepEta", gLepEta, "gLepEta[nGenLeptons]/F");
+  tree_->Branch("gLepPhi", gLepPhi, "gLepPhi[nGenLeptons]/F");
+  tree_->Branch("gLepPt", gLepPt, "gLepPt[nGenLeptons]/F");
+  tree_->Branch("gLepE", gLepE, "gLepE[nGenLeptons]/F");
+  tree_->Branch("gLepPdgId", gLepPdgId, "gLepPdgId[nGenLeptons]/I");
+
 
 
 
@@ -1241,6 +1313,7 @@ void TreeMuonSystemCombination::CreateTree()
   tree_->Branch("tauDz",          tauDz,            "tauDz[nTaus]/F");
   tree_->Branch("tauGenPartFlav", tauGenPartFlav,   "tauGenPartFlav[nTaus]/I");
   tree_->Branch("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau,   "deltaR_GenTauRecoTau[nTaus]/F");
+  tree_->Branch("deltaR_GenLepRecoLep", deltaR_GenLepRecoLep,   "deltaR_GenLepRecoLep[nLeptons]/F");
   tree_->Branch("tauIdDeepTau2018v2p5VSjet", tauIdDeepTau2018v2p5VSjet,   "tauIdDeepTau2018v2p5VSjet[nTaus]/I");
   tree_->Branch("tauIdDeepTau2018v2p5VSe", tauIdDeepTau2018v2p5VSe,   "tauIdDeepTau2018v2p5VSe[nTaus]/I");
   tree_->Branch("tauIdDeepTau2018v2p5VSmu", tauIdDeepTau2018v2p5VSmu,   "tauIdDeepTau2018v2p5VSmu[nTaus]/I");

@@ -26,6 +26,6 @@ samples_list=(
 
 for sample in "${samples_list[@]}"; do
     echo "Submitting job for sample: $sample"
-    python3 scripts_condor/submit_condor_LPC.py "$sample" mdsnano_hnl 2024_Data_noEtaCut 2024_Data_noEtaCut
+    python3 scripts_condor/submit_condor_LPC.py "$sample" mdsnano_hnl 2024_Data_allChannels 2024_Data_allChannels
 done
 echo "All jobs submitted for samples in the list."

@@ -103,6 +103,38 @@ CSC_Cluster_PuppiMetDPhi:
   title: d$\phi$(PuppiMET, Cluster)
   MuonSystem_Branch_Expression: cscRechitClusterPuppiMet_dPhi
 
+CSC_Cluster_DNNScore:
+  nbins: 25
+  xmin: 0.5
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: DNN Score
+  y_label: Density
+  title: DNN Score Distribution
+  MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
+
+CSC_Cluster_Tau_DeltaEta:
+  nbins: 25
+  xmin: -5
+  xmax: 5
+  underflow: false
+  overflow: false
+  x_label: d$\eta$(tau, Cluster)
+  y_label: Density
+  title: d$\eta$(tau, Cluster)
+  MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaEta
+
+CSC_Cluster_Tau_DeltaPhi:
+  nbins: 25
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: d$\phi$(tau, Cluster)
+  y_label: Density
+  title: d$\phi$(tau, Cluster)
+  MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaPhi
 
 
 
@@ -110,16 +142,3 @@ CSC_Cluster_PuppiMetDPhi:
 
 
 
-
-
-
-# CSC_DNN_Score:
-#   nbins: 25
-#   xmin: 0
-#   xmax: 1
-#   underflow: false
-#   overflow: false
-#   x_label: "DNN Score"
-#   y_label: "Counts"
-#   title: "CSC Rechit Cluster DNN Score Distribution"
-#   MuonSystem_Branch_Expression: "cscRechitCluster"

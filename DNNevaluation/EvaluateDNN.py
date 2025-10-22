@@ -63,7 +63,7 @@ if __name__ == '__main__':
             cscRechitClusterDNN_bkgMC_plusBeamHalo[i] = model_bkgMC_plusBeamHalo.predict(inputs)[0]
             #cscRechitClusterDNN_bkgOOTData[i] = model_bkgOOTData.predict(inputs)[0]
 
-        # Fill untouched array elements
+        # Fill untouched array elements - fully commented out by Alex
         for i in range(eval('event.nCscRechitClusters'), len(cscRechitClusterDNN_bkgMC)):
             #cscRechitClusterDNN_bkgMC[i] = -999.9
             cscRechitClusterDNN_bkgMC_plusBeamHalo[i] = -999.9

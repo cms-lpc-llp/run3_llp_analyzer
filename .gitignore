@@ -2,6 +2,7 @@
 ./*.txt
 condor_job_output
 fileList_normalization
+dask_temp
 
 *tar.gz
 src/Run*

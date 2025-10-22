@@ -383,6 +383,24 @@ void CACluster::clusterProperties()
     }
     if (counter != 0) tmpCluster.avgStation10 = tmpCluster.avgStation10 / counter;
 
+
+    std::map<int, int> chamber_count_map;
+    for (auto const& rechit : rechits) {
+      chamber_count_map[rechit.chamber]++;
+    }
+    //chamber statistics
+    counter = 0;
+    max_count = -999;
+    std::map<int, int>::iterator it2;
+    for (auto const& [chamber, count] : chamber_count_map) {
+      if (count > max_count)
+      {
+        tmpCluster.maxChamber  = chamber;
+        tmpCluster.maxChamberRechits = count;
+        max_count = count;
+      }
+    }
+
     clusters.push_back(tmpCluster);
 
   }

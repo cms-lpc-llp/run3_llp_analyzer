@@ -14,6 +14,9 @@ import hist
 import yaml
 import sys
 import copy
+import dask
+from dask.distributed import Client
+import gc
 
 sys.path.append('.')
 import Processing_Helpers
@@ -145,7 +148,7 @@ def buildTauMask(event_mask, cluster_mask, tau_mask, gTauMask=None, gVisTauMask=
 ######## Define processor class #############
 #############################################
 
-class HNL_Processor(processor.ProcessorABC):
+class HNL_Processor_v2(processor.ProcessorABC):
     '''
     Code to proccess events dask-awkward arrays from output of HNL analyzers. Event info is factored into tau, cscRechitCluster, dtRechitCluster, and general event variables (noise filters, etc)
     '''
@@ -368,6 +371,9 @@ class HNL_Processor(processor.ProcessorABC):
             event_mask = collection_totalMaskFunction_mapping[excluded_mask_collection](**mask_dict_tmp)
             return event_mask
 
+
+        to_fill = {}
+
         for plot in self.eventLevel_hists_dict.keys():
             #print(plot)
             if plot not in hist_list:continue
@@ -380,8 +386,10 @@ class HNL_Processor(processor.ProcessorABC):
             else:
                 event_mask = total_mask_event
             hist_mask = (added_mask) & (event_mask)
-            eventLevelHist.fill(plot=events[eventLevelHist.metadata["branch"]][hist_mask].compute())
-            output[plot] = eventLevelHist
+            #eventLevelHist.fill(plot=events[eventLevelHist.metadata["branch"]][hist_mask])
+            to_fill[plot] = (eventLevelHist, events[eventLevelHist.metadata["branch"]][hist_mask])
+            #output[plot] = eventLevelHist
+
 
         if self.isMC and fillGenHists and self.applyGenInfo:
             print("filling gen-level hists")
@@ -392,8 +400,9 @@ class HNL_Processor(processor.ProcessorABC):
                 if gLLPHist.metadata["mask_collection"]!="event":
                     added_mask = (events[collection_branch_mapping[gLLPHist.metadata["mask_collection"]]]>0) & (combineMasksFlatten(ak.zip({"mask":added_mask})))
                 hist_mask = (added_mask) & (total_mask_gLLP)
-                gLLPHist.fill(plot=ak.flatten(events[gLLPHist.metadata["branch"]][hist_mask].compute()))
-                output[plot] = gLLPHist
+                #gLLPHist.fill(plot=ak.flatten(events[gLLPHist.metadata["branch"]][hist_mask]))
+                to_fill[plot] = (gLLPHist, ak.flatten(events[gLLPHist.metadata["branch"]][hist_mask]))
+                #output[plot] = gLLPHist
             
             for plot in self.gTau_hists_dict.keys():
                 if plot not in hist_list:continue
@@ -402,8 +411,9 @@ class HNL_Processor(processor.ProcessorABC):
                 if gTauHist.metadata["mask_collection"]!="event":
                     (events[collection_branch_mapping[gTauHist.metadata["mask_collection"]]]>0) & (combineMasksFlatten(ak.zip({"mask":added_mask})))
                 hist_mask = (added_mask) & (total_mask_gTau)
-                gTauHist.fill(plot=ak.flatten(events[gTauHist.metadata["branch"]][hist_mask].compute()))
-                output[plot] = gTauHist
+                #gTauHist.fill(plot=ak.flatten(events[gTauHist.metadata["branch"]][hist_mask]))
+                to_fill[plot] = (gTauHist, ak.flatten(events[gTauHist.metadata["branch"]][hist_mask]))
+                #output[plot] = gTauHist
             
             for plot in self.gVisTau_hists_dict.keys():
                 if plot not in hist_list:continue
@@ -415,8 +425,9 @@ class HNL_Processor(processor.ProcessorABC):
                     if gVisTauHist.metadata["mask_collection"]=="tau" and tauID!='': #FOR ID RECO STUDES
                         added_mask = (added_mask) & (combineMasksFlatten(ak.zip({"ID": events['tauIs'+tauID]})))
                 hist_mask = (added_mask) & (total_mask_gVisTau)
-                gVisTauHist.fill(plot=ak.flatten(events[gVisTauHist.metadata["branch"]][hist_mask].compute()))
-                output[plot] = gVisTauHist
+                #gVisTauHist.fill(plot=ak.flatten(events[gVisTauHist.metadata["branch"]][hist_mask]))
+                to_fill[plot] = (gVisTauHist, ak.flatten(events[gVisTauHist.metadata["branch"]][hist_mask]))
+                #output[plot] = gVisTauHist
         
         print("filling reco taus hists")
         for plot in self.tau_hists_dict.keys():
@@ -426,12 +437,13 @@ class HNL_Processor(processor.ProcessorABC):
             if tauHist.metadata["mask_collection"]!="event":
                 added_mask = (events[collection_branch_mapping[tauHist.metadata["mask_collection"]]]>0) & (combineMasksFlatten(ak.zip({"mask":added_mask})))
             hist_mask = (added_mask) & (total_mask_tau)
-            tauHist.fill(plot=ak.flatten(events[tauHist.metadata["branch"]][hist_mask].compute()))
-            output[plot] = tauHist
+            #tauHist.fill(plot=ak.flatten(events[tauHist.metadata["branch"]][hist_mask]))
+            to_fill[plot] = (tauHist, ak.flatten(events[tauHist.metadata["branch"]][hist_mask]))
+            #output[plot] = tauHist
         
         for plot in self.cscCluster_hists_dict.keys():
             if plot not in hist_list:continue
-            print(plot)
+            #print(plot)
             cscClusterHist = self.cscCluster_hists_dict[plot]
             added_mask = (events[cscClusterHist.metadata["mask_branch"]]>=cscClusterHist.metadata["mask_lowVal"]) & (events[cscClusterHist.metadata["mask_branch"]]<=cscClusterHist.metadata["mask_highVal"])
             if cscClusterHist.metadata["mask_collection"]!="event":
@@ -446,42 +458,24 @@ class HNL_Processor(processor.ProcessorABC):
             else:
                 cluster_mask = total_mask_cscCluster
             hist_mask = (added_mask) & (cluster_mask)
-            #hist_mask = (added_mask) & (combineMasks(cscCluster_mask)) & (combineMasks(event_mask)) # need to add back tau mask when I better understand where we're losing events
-            cscClusterHist.fill(plot=ak.flatten(events[cscClusterHist.metadata["branch"]][hist_mask].compute()))
-            output[plot] = cscClusterHist
+            to_fill[plot] = (cscClusterHist, ak.flatten(events[cscClusterHist.metadata["branch"]][hist_mask]))
+            #output[plot] = cscClusterHist
         
-    
-        #filling histograms with delta phi/eta between tau and cscCluster - not obvious to me how to do it via config files
+        client = Client(memory_limit="12GB", n_workers=1, 
+                threads_per_worker=1, local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp")
+        print("about to compute")
         
+        computed_arrays = dask.compute(*[v[1] for v in to_fill.values()])
+
+        for i, plot in enumerate(to_fill):
+            hist_obj, _ = to_fill[plot]
+            hist_obj.fill(plot=computed_arrays[i])
+            output[plot] = hist_obj
+
+        del events, computed_arrays, to_fill
+        gc.collect()
+        client.close()
         
-        if tau_cluster_topo_hists:
-            print("filling topo hists")
-            tau_cluster_dEta_hist = hist.Hist(hist.axis.Regular(30 ,-6,6, 
-                name="plot", label="d$\eta$(tau, cluster)", underflow=False, 
-                overflow=False,
-                ),metadata={"title":"dEta(tau, cluster)", "y_label":"counts"})
-
-            print("about to run cartesian for eta")
-            tau_cscCluster_eta = ak.flatten(ak.flatten(ak.cartesian([events.tauEta[total_mask_tau], events.cscRechitClusterEta[total_mask_cscCluster]], nested=True)))
-            tau_cluster_dEta_hist.fill(plot=(tau_cscCluster_eta["0"]-tau_cscCluster_eta["1"]).compute())
-            output['tau_cluster_dEta'] = tau_cluster_dEta_hist
-
-            print("about to run cartesian for phi")
-            tau_cluster_dPhi_hist = hist.Hist(hist.axis.Regular(30 ,-6,6, 
-                    name="plot", label="d$\phi$(tau, cluster)", underflow=False, 
-                    overflow=False,
-                    ),metadata={"title":"dPhi(tau, cluster)", "y_label":"counts"})
-
-
-
-        
-            tau_cscCluster_phi = ak.flatten(ak.flatten(ak.cartesian([events.tauPhi[total_mask_tau], events.cscRechitClusterPhi[total_mask_cscCluster]], nested=True)))
-            tau_cscCluster_phi_diffs = Processing_Helpers.deltaPhi(tau_cscCluster_phi["0"]-tau_cscCluster_phi["1"])
-            
-            tau_cluster_dEta_hist.fill(plot=(tau_cscCluster_eta["0"]-tau_cscCluster_eta["1"]).compute())
-            tau_cluster_dPhi_hist.fill(plot=tau_cscCluster_phi_diffs.compute())
-            output['tau_cluster_dEta'] = tau_cluster_dEta_hist
-            output['tau_cluster_dPhi'] = tau_cluster_dPhi_hist
         
         return output
 

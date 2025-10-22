@@ -22,11 +22,9 @@ import Processing_Helpers
 
 cfg_file_path = os.environ["CMSSW_BASE"] + "/src/run3_llp_analyzer/python/HNL_Plotting_HelperFunctions/cuts_config/"
 
-signal_xSec = 4.255
+signal_xSec = 1
 processed_lumi = 109080
-generated_signalEvents = 500000
 
-signal_normalization_factor = processed_lumi*signal_xSec/generated_signalEvents
 
 
 collection_masks = {
@@ -67,15 +65,37 @@ def computeEfficiency(cumulative_events, Run, invert=False, **args):
         mask_event = mask
     pass_selection = cumulative_events[mask_event]
     #print("About to return mask.type: ", ak.type(mask))
-    return pass_selection, len(pass_selection.evtNum.compute())/len(cumulative_events.evtNum.compute()), args['collection'], mask
+    #return pass_selection, len(pass_selection.evtNum.compute())/len(cumulative_events.evtNum.compute()), args['collection'], mask
+    return pass_selection, ak.sum(pass_selection.weights.compute())/ak.sum(cumulative_events.weights.compute()), args['collection'], mask
 
 
-def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
+def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau=1000, reweight_ctau = 1000):
     '''
     code for producing cutflow for HNL+Tau analyzer
     takes dask-awkward array as input
     '''
+    generated_signalEvents = len(events.evtNum.compute())
 
+    signal_normalization_factor = processed_lumi*signal_xSec/generated_signalEvents
+    print(len(events.evtNum.compute()))
+
+    if isMC:
+        weights = sample_ctau/reweight_ctau*np.exp(10*events["gLLP_ctau"]*(1/sample_ctau-1/reweight_ctau))
+        print(ak.sum(weights).compute())
+        weights = weights/ak.sum(weights)*len(events["evtNum"].compute())
+        #make L1 weight event level - can't add to generic weight because branch is not filled if there is no cluster
+        L1_weights_eventLevel = 1 - ak.prod(1 - events.cscRechitClusterHMTEfficiency, axis=1)
+        print(L1_weights_eventLevel.compute())
+        
+    else:
+        weights = ak.ones_like(events["runNum"])
+        L1_weights_eventLevel = ak.ones_like(events["runNum"])
+
+    events = ak.with_field(events, L1_weights_eventLevel, "L1_weights_eventLevel")
+    print(weights.compute())
+    print(ak.sum(weights.compute()))
+    events = ak.with_field(events, weights, "weights")
+    
     #apply basic noise filters preselection
 
     if isMC:
@@ -85,6 +105,9 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
 
     if Run==3:
         events = events[(events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)]
+    
+   
+    
     #else:
         #events = events[(events.Flag_all)] #& (events.Flag_ecalBadCalibFilter)]
     #print(len(events.evtNum.compute()))
@@ -103,7 +126,7 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
         
     else:
         accepted_events = events
-        accepted_events_num = len(events.evtNum.compute())
+        #accepted_events_num = len(events.evtNum.compute())
 
     cumulative_events = accepted_events
     current_eff = 1
@@ -143,8 +166,10 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
 
     print(normalization_factor)
     for cut, cut_info in cuts_dict.items():
+        #if isMC and cut=="pass_trigger":continue
+        invert=False
         #print(cut)
-        invert= "InnerRing" in cut
+        #invert= "InnerRing" in cut or "MaxStation" in cut
         # if cut=="pass_trigger" and Run==3:
         #     forward_mask = (cumulative_events.cscRechitClusterNRechitChamberMinus11==0) & (cumulative_events.cscRechitClusterNRechitChamberMinus12==0) & (cumulative_events.cscRechitClusterNRechitChamberPlus11==0) & (cumulative_events.cscRechitClusterNRechitChamberPlus12==0)
         #     forward_mask_total = ak.any((collection_masks['cscCluster']) & (forward_mask), axis=1)
@@ -172,7 +197,7 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
                 collection_masks[key] = collection_masks[key][mask]
 
         current_eff = eff*current_eff
-        cuts_efficiencies.loc[len(cuts_efficiencies)] = [cut_info['name'], len(cumulative_events.evtNum.compute())*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
+        cuts_efficiencies.loc[len(cuts_efficiencies)] = [cut_info['name'], ak.sum(cumulative_events.weights.compute())*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
         
     #topology cuts
     print("computing delta Eta cartesian")
@@ -190,11 +215,15 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
     mask = (single_mask_event) & (existing_mask)
     mask_event = mask
     
-    eff = ak.count_nonzero(mask_event)/len(cumulative_events.evtNum.compute())
+    #eff = ak.count_nonzero(mask_event)/len(cumulative_events.evtNum.compute())
     #mask_dask = dak.from_awkward(mask_event, npartitions=cumulative_events.npartitions)
     evtNums = cumulative_events.evtNum.compute()[mask_event]
+    weights = cumulative_events.weights.compute()[mask_event]
     tauPhi = cumulative_events.tauPhi.compute()[mask_event]
+    L1_weights = cumulative_events.L1_weights_eventLevel.compute()[mask_event]
+    print(L1_weights)
     clusterPhi = cumulative_events.cscRechitClusterPhi.compute()[mask_event]
+    eff = ak.sum(weights)/len(cumulative_events.weights.compute())
     #print("Events len: ", len(cumulative_events.evtNum.compute()))
     current_eff = current_eff*eff
     collection="event"
@@ -204,39 +233,55 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3):
         collection_masks[key] = collection_masks[key][mask_event]
 
     
-    cuts_efficiencies.loc[len(cuts_efficiencies)] = ['|dEta(cluster, tau)<2|', len(evtNums)*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
+    cuts_efficiencies.loc[len(cuts_efficiencies)] = ['|dEta(cluster, tau)|<2', ak.sum(weights)*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
     
 
     #topology cuts
-    print("computing delta Phi cartesian")
-    tau_cscCluster_phi = ak.cartesian([tauPhi[collection_masks['tau']], clusterPhi[collection_masks['cscCluster']]], nested=True)
-    phi_diffs = tau_cscCluster_phi["0"]-tau_cscCluster_phi["1"]
-    phi_diffs = Processing_Helpers.deltaPhiAk(phi_diffs)
-    #flatten properly, due to bug in this version of awkwaard
-    phi_diffs = ak.Array([ak.concatenate([nested for nested in event], axis=0) for event in phi_diffs])
-    single_mask = (phi_diffs>2) | (phi_diffs<-2)
-    #single_mask = dak.from_awkward(single_mask, npartitions=1)
+    # print("computing delta Phi cartesian")
+    # tau_cscCluster_phi = ak.cartesian([tauPhi[collection_masks['tau']], clusterPhi[collection_masks['cscCluster']]], nested=True)
+    # phi_diffs = tau_cscCluster_phi["0"]-tau_cscCluster_phi["1"]
+    # phi_diffs = Processing_Helpers.deltaPhiAk(phi_diffs)
+    # #flatten properly, due to bug in this version of awkwaard
+    # phi_diffs = ak.Array([ak.concatenate([nested for nested in event], axis=0) for event in phi_diffs])
+    # single_mask = (phi_diffs>2) | (phi_diffs<-2)
+    # #single_mask = dak.from_awkward(single_mask, npartitions=1)
     
-    single_mask_event = ak.any(single_mask, axis=1)
+    # single_mask_event = ak.any(single_mask, axis=1)
     
-    existing_mask = collection_masks['event']
+    # existing_mask = collection_masks['event']
     
-    mask = (single_mask_event) & (existing_mask)
-    mask_event = mask
+    # mask = (single_mask_event) & (existing_mask)
+    # mask_event = mask
     
-    eff = ak.count_nonzero(mask_event)/len(evtNums)
-    evtNums = evtNums[mask_event]
-    #mask_dask = dak.from_awkward(mask_event, npartitions=cumulative_events.npartitions)
-    #cumulative_events = cumulative_events[mask_event]
-    current_eff = current_eff*eff
-    collection="event"
-    for key in list(collection_masks.keys()):
-        print(key, collection)
-        #collection_masks[key] = collection_masks[key].compute()
-        collection_masks[key] = collection_masks[key][mask_event]
+    # #eff = ak.count_nonzero(mask_event)/len(evtNums)
+    # evtNums = evtNums[mask_event]
+    # weights_new = weights[mask_event]
+    # L1_weights = L1_weights[mask_event]
+    # print(L1_weights)
+    # eff = ak.sum(weights_new)/ak.sum(weights)
+    # #mask_dask = dak.from_awkward(mask_event, npartitions=cumulative_events.npartitions)
+    # #cumulative_events = cumulative_events[mask_event]
+    # current_eff = current_eff*eff
+    # collection="event"
+    # for key in list(collection_masks.keys()):
+    #     print(key, collection)
+    #     #collection_masks[key] = collection_masks[key].compute()
+    #     collection_masks[key] = collection_masks[key][mask_event]
 
     
-    cuts_efficiencies.loc[len(cuts_efficiencies)] = ['|dPhi(cluster, tau)>2|', len(evtNums)*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
+    # cuts_efficiencies.loc[len(cuts_efficiencies)] = ['|dPhi(cluster, tau)|>2', ak.sum(weights_new)*normalization_factor, f'{eff:.3f}', "%.3f"%current_eff]
 
+    # tau_cluster_dPhi_hist = hist.Hist(hist.axis.Regular(16 ,-4, 4, 
+    #     name="plot", label="d$\phi$(tau, cluster)", underflow=False, 
+    #     overflow=False,
+    #     ),metadata={"title":"dPhi(tau, cluster)", "y_label":"counts"})
 
-    return cuts_efficiencies
+    # tau_cluster_dPhi_hist.fill(plot=ak.flatten(phi_diffs))
+
+    # if isMC and False:
+    #     print(ak.sum(L1_weights))
+    #     #add L1 Efficiency Weights to MC
+    #     cuts_efficiencies.loc[len(cuts_efficiencies)] = ['Apply L1 Efficiency Weights', ak.sum(weights_new*L1_weights)*normalization_factor, f'{ak.sum(L1_weights*weights_new)/ak.sum(weights_new):.3f}', f'{ak.sum(L1_weights*weights_new)/ak.sum(weights_new)*current_eff:.3f}']
+    #     #cuts_efficiencies.loc[len(cuts_efficiencies)] = ['Apply L1 Efficiency Weights', ak.sum(weights_new*L1_weights)*normalization_factor,0,0]
+
+    return cuts_efficiencies, 0, cumulative_events

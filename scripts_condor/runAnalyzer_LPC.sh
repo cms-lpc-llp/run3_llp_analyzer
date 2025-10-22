@@ -170,13 +170,13 @@ then
 		date
 
 		#COMMENTED OUT FOR PROMPT HNL - NO CLUSTERS
-		# if [[ ${analysisType} != *"noClusters"* && ${analysisType} != *"TrigEff"* ]]; then
-		# 	echo "start DNN evaluation"
-		# 	source /cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-el9-gcc11-opt/setup.sh
-		# 	python EvaluateDNN.py --in_file ${outputfile}
-		# fi
-		# sleep 2
-		# echo "I slept for 2 second"
+		if [[ ${analysisType} != *"noClusters"* && ${analysisType} != *"TrigEff"* ]]; then
+			echo "start DNN evaluation"
+			source /cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-el9-gcc11-opt/setup.sh
+			python EvaluateDNN.py --in_file ${outputfile}
+		fi
+		sleep 2
+		echo "I slept for 2 second"
 
 		##job finished, copy file to T2
 		echo "copying output file to ${outputDirectory}"

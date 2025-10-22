@@ -72,6 +72,8 @@ public:
   bool HLT_CscCluster50_Photon30Unseeded;
   bool HLT_CscCluster50_Photon20Unseeded;
   bool HLT_PFMET120_PFMHT120_IDTight;
+  bool L1_SingleMuShower_Nominal;
+  bool L1_SingleMuShower_Tight;
 
   float MetTriggerEff;
   float MetTriggerEffUp;
@@ -283,6 +285,8 @@ public:
   int           cscRechitClusterNRechitChamberMinus32[N_MAX_CSC];
   int           cscRechitClusterNRechitChamberMinus41[N_MAX_CSC];
   int           cscRechitClusterNRechitChamberMinus42[N_MAX_CSC];
+  int           cscRechitClusterNRechitME1112[N_MAX_CSC];
+  int           cscRechitClusterNRechitStation12[N_MAX_CSC];
   float           cscRechitClusterHMTEfficiency[N_MAX_CSC];
 
   // int           cscRechitClusterHMTEffPlus11[N_MAX_CSC];
@@ -309,6 +313,16 @@ public:
   float         cscRechitClusterMetJESDown_dPhi[N_MAX_CSC];
   float         cscRechitClusterMetJESUp_dPhi[N_MAX_CSC]; 
   float         cscRechitClusterPuppiMet_dPhi[N_MAX_CSC];
+  float         cscRechitClusterPromptTauDeltaEta[N_MAX_CSC];
+  float         cscRechitClusterPromptTauDeltaPhi[N_MAX_CSC];
+  float         cscRechitClusterPromptTauDeltaR[N_MAX_CSC];
+  float         cscRechitClusterPromptMuDeltaEta[N_MAX_CSC];
+  float         cscRechitClusterPromptMuDeltaPhi[N_MAX_CSC];
+  float         cscRechitClusterPromptMuDeltaR[N_MAX_CSC];
+  float         cscRechitClusterPromptEleDeltaEta[N_MAX_CSC];
+  float         cscRechitClusterPromptEleDeltaPhi[N_MAX_CSC];
+  float         cscRechitClusterPromptEleDeltaR[N_MAX_CSC];
+
 
 
 
@@ -402,6 +416,9 @@ public:
   float tauFractionOfGenVisEnergy[N_MAX_JETS];
   float tauFractionOfGenVisPt[N_MAX_JETS];
 
+
+  float deltaR_GenLepRecoLep[N_MAX_JETS];
+
   //gen Tau branches for HNL+Tau
   int nGenTaus;
   int nGenVisTau;
@@ -421,6 +438,13 @@ public:
   float gVisTauFractionOfTotalPt[N_MAX_GTAU];
   float gVisTauFractionOfTotalEnergy[N_MAX_GTAU];
 
+  //gen prompt lepton for other HNL channels
+  int nGenLeptons;
+  int gLepPdgId[N_MAX_GTAU];
+  float gLepEta[N_MAX_GTAU];
+  float gLepPhi[N_MAX_GTAU];
+  float gLepPt[N_MAX_GTAU];
+  float gLepE[N_MAX_GTAU];
 
   void InitVariables();
   void InitTree();
