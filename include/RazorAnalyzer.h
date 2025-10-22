@@ -23,58 +23,56 @@
 #include <iostream>
 using namespace std;
 
-class RazorAnalyzer : public llp_event
-{
-public:
-    RazorAnalyzer(TTree *tree = 0);
-    virtual ~RazorAnalyzer();
+class RazorAnalyzer : public llp_event {
+ public:
+  RazorAnalyzer(TTree* tree = 0);
+  virtual ~RazorAnalyzer();
 
-    //------ LIST OF ANALYSES ------//
-    virtual void Analyze(bool isData, int option, string outputFileName, string label);
+  //------ LIST OF ANALYSES ------//
+  virtual void Analyze(bool isData, int option, string outputFileName, string label);
 
-    void EnableEventInfo();
-    void EnablePVAll();
-    void EnableMuons();
-    void EnableElectrons();
-    void EnableTaus();
-    void EnableIsoPFCandidates();
-    void EnablePhotons();
-    void EnableJets();
-    void EnableCaloJets();
-    void EnableFatJets();
-    void EnableMet();
-    void EnablePileup();
-    void EnableMC();
-    void EnableLLP();
-    void EnableGenParticles();
-    void EnableRazor();
-    void EnableCSC();
-    void EnableDT();
-    void EnableEcalRechits();
-    void EnableTracks();
+  void EnableEventInfo();
+  void EnablePVAll();
+  void EnableMuons();
+  void EnableElectrons();
+  void EnableTaus();
+  void EnableIsoPFCandidates();
+  void EnablePhotons();
+  void EnableJets();
+  void EnableCaloJets();
+  void EnableFatJets();
+  void EnableMet();
+  void EnablePileup();
+  void EnableMC();
+  void EnableLLP();
+  void EnableGenParticles();
+  void EnableRazor();
+  void EnableCSC();
+  void EnableDT();
+  void EnableEcalRechits();
+  void EnableTracks();
 
-    void EnableAll();
+  void EnableAll();
 
-    double deltaPhi(double phi1, double phi2);
-    double deltaR(double eta1, double phi1, double eta2, double phi2);
-    TLorentzVector makeTLorentzVector(double pt, double eta, double phi, double energy);
-    TLorentzVector makeTLorentzVectorPtEtaPhiM(double pt, double eta, double phi, double mass);
+  double deltaPhi(double phi1, double phi2);
+  double deltaR(double eta1, double phi1, double eta2, double phi2);
+  TLorentzVector makeTLorentzVector(double pt, double eta, double phi, double energy);
+  TLorentzVector makeTLorentzVectorPtEtaPhiM(double pt, double eta, double phi, double mass);
 };
 
-class RazorAnalyzerMerged : public merged_event
-{
-public:
-    RazorAnalyzerMerged(TTree *tree = 0);
-    virtual ~RazorAnalyzerMerged();
+class RazorAnalyzerMerged : public merged_event {
+ public:
+  RazorAnalyzerMerged(TTree* tree = 0);
+  virtual ~RazorAnalyzerMerged();
 
-    //------ LIST OF ANALYSES ------//
-    virtual void Analyze(bool isData, int option, string outputFileName, string label);
-    void EnableAll();
+  //------ LIST OF ANALYSES ------//
+  virtual void Analyze(bool isData, int option, string outputFileName, string label);
+  void EnableAll();
 
-    double deltaPhi(double phi1, double phi2);
-    double deltaR(double eta1, double phi1, double eta2, double phi2);
-    TLorentzVector makeTLorentzVector(double pt, double eta, double phi, double energy);
-    TLorentzVector makeTLorentzVectorPtEtaPhiM(double pt, double eta, double phi, double mass);
+  double deltaPhi(double phi1, double phi2);
+  double deltaR(double eta1, double phi1, double eta2, double phi2);
+  TLorentzVector makeTLorentzVector(double pt, double eta, double phi, double energy);
+  TLorentzVector makeTLorentzVectorPtEtaPhiM(double pt, double eta, double phi, double mass);
 };
 
 #endif

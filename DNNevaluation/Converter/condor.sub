@@ -1,0 +1,9 @@
+universe    = vanilla
+executable  = reader.sh
+arguments   = $(myargs)
+output      = /dev/null
+error       = /dev/null
+log         = /dev/null
+requirements = (TARGET.OpSysAndVer =?= "CentOS7")
++JobFlavour = "workday"
+queue myargs from file_args.txt
