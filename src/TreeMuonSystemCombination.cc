@@ -71,6 +71,7 @@ void TreeMuonSystemCombination::InitVariables() {
   gHiggsE = 0.;
   //CSC
 
+  nCscRechits = 0;
   nCscRechitClusters = 0;
   nCscRechitClusters_nocut = 0;
   nDtRechitClusters = 0;
@@ -97,6 +98,13 @@ void TreeMuonSystemCombination::InitVariables() {
 
     gParticle_ctau[i] = -999;
     gParticle_beta[i] = -999;
+  }
+
+  for(int i = 0; i < N_MAX_CSCRECHITS; i++)
+  {
+    CscRechitsClusterId[i] = -999;
+    CscRechitsEta[i] = -999;
+    CscRechitsPhi[i] = -999;
   }
 
   for (int i = 0; i < N_MAX_CSC; i++) {
@@ -569,8 +577,16 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("dtRechitClusterKurtY", dtRechitClusterKurtY);
   tree_->SetBranchAddress("dtRechitClusterKurtZ", dtRechitClusterKurtZ);
 
+
+  tree_->SetBranchAddress("nCscRechits",             &nCscRechits);
+
   tree_->SetBranchAddress("nCscRechitClusters", &nCscRechitClusters);
   tree_->SetBranchAddress("nCscRechitClusters_nocut", &nCscRechitClusters_nocut);
+
+  tree_->SetBranchAddress("CscRechitsEta",                   CscRechitsEta);
+  tree_->SetBranchAddress("CscRechitsPhi",                   CscRechitsPhi);
+  tree_->SetBranchAddress("CscRechitsClusterId",             CscRechitsClusterId);
+
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP", &cscRechitCluster_match_gLLP);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_index", &cscRechitCluster_match_gLLP_index);
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP_minDeltaR", &cscRechitCluster_match_gLLP_minDeltaR);
@@ -844,6 +860,11 @@ void TreeMuonSystemCombination::CreateTree() {
 
   tree_->Branch("nCscRechitClusters", &nCscRechitClusters, "nCscRechitClusters/I");
   tree_->Branch("nCscRechitClusters_nocut", &nCscRechitClusters_nocut, "nCscRechitClusters_nocut/I");
+
+  tree_->Branch("nCscRechits",             &nCscRechits, "nCscRechits/I");
+  tree_->Branch("CscRechitsEta",                   CscRechitsEta,       "CscRechitsEta[nCscRechits]/F");
+  tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
+  tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
 
   tree_->Branch("cscRechitCluster_match_gLLP", cscRechitCluster_match_gLLP, "cscRechitCluster_match_gLLP[nCscRechitClusters]/O");
   tree_->Branch("cscRechitCluster_match_gLLP_minDeltaR", cscRechitCluster_match_gLLP_minDeltaR, "cscRechitCluster_match_gLLP_minDeltaR[nCscRechitClusters]/F");

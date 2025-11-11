@@ -211,6 +211,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto nCscSeg = ncscSegments;
     auto nDtSeg = ndtSegments;
     auto nDtRechits = ndtRecHits;
+    auto nCscRechits = ncscRechits;
     auto nRpc = nrpcRecHits;
     auto cscRechitsPhi = cscRechits_Phi;
     auto cscRechitsEta = cscRechits_Eta;
@@ -856,7 +857,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->nDtRings++;
 
     vector<Rechits> points;
-    vector<int> cscRechitsClusterId;
+    vector<int> CscRechitsClusterId;
     points.clear();
     int nCscRechitsChamberPlus11 = 0;
     int nCscRechitsChamberPlus12 = 0;
@@ -878,11 +879,16 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     int nCscRechitsChamberMinus41 = 0;
     int nCscRechitsChamberMinus42 = 0;
 
-    for (int i = 0; i < ncscRechits; i++) {
+    MuonSystem->nCscRechits = nCscRechits;
+    for (int i = 0; i < nCscRechits; i++) {
       // cout<<cscRechitsChamber[i]<<endl;
       //pick out the right bits for chamber
       // int chamber = ((cscRechitsDetId[i] >> 3) & 077); //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonDetId/interface/CSCDetId.h#L147
 
+      MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
+      MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
+
+    
       int layer = 0;
       Rechits p;
       p.phi = cscRechitsPhi[i];
@@ -899,7 +905,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       p.wheel = 0;
       p.clusterID = UNCLASSIFIED;
       points.push_back(p);
-      cscRechitsClusterId.push_back(-1);
+
+      CscRechitsClusterId.push_back(-1);
 
       if (cscRechitsChamber[i] == 11)
         nCscRechitsChamberPlus11++;
@@ -975,13 +982,21 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->nCscRings++;
     if (nCscRechitsChamberMinus42 > 50)
       MuonSystem->nCscRings++;
-    //Do DBSCAN Clustering
+    
+    //Do CA Clustering
 
     int min_point = 50; //minimum number of Rechitss to call it a cluster
     float epsilon = 0.2; //cluster radius parameter
     CACluster ds(min_point, epsilon, points);
     ds.run();
     ds.clusterProperties();
+    
+    int clusterIdx=0;
+    for (auto &tmp : points) {
+      MuonSystem->CscRechitsClusterId[clusterIdx] = tmp.clusterID;
+      clusterIdx++;
+    }
+    
     //ds.merge_clusters();
     //ds.clusterProperties();
     ds.sort_clusters();

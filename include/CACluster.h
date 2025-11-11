@@ -36,10 +36,10 @@ typedef struct Rechits_ {
 
 class CACluster {
  public:
-  CACluster(unsigned int minPts, float eps, vector<Rechits> rechits) {
+  CACluster(unsigned int minPts, float eps, vector<Rechits>& rechits):m_points(rechits){
     m_minPoints = minPts;
     m_epsilon = eps;
-    m_points = rechits;
+    // m_points = rechits;
     m_pointSize = rechits.size();
   }
   ~CACluster() {}
@@ -55,7 +55,7 @@ class CACluster {
   double deltaR(double eta1, double phi1, double eta2, double phi2);
 
  private:
-  vector<Rechits> m_points;
+  vector<Rechits>& m_points;
   unsigned int m_pointSize;
   unsigned int m_minPoints;
   float m_epsilon;
