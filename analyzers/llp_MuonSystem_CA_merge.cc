@@ -216,7 +216,7 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     MuonSystem->InitVariables();
 
     //// USING MDS NANO
-    /*auto nCscSeg = ncscSegments;
+    auto nCscSeg = ncscSegments;
     auto nDtSeg = ndtSegments;
     auto nDtRechits = ndtRecHits;
     auto nRpc = nrpcRecHits;
@@ -250,10 +250,10 @@ void llp_MuonSystem_CA_merge::Analyze(bool isData, int options, string outputfil
     
     auto rpcBx = rpcRecHits_Bx;
     auto rpcRegion = rpcRecHits_Region;
-    auto rpcRing = rpcRecHits_Ring;*/
+    auto rpcRing = rpcRecHits_Ring;
     ////////////////////
 
-    auto ncscRechits = nCscRechits; // ncscRechits //comment out for MDS nano, leave it on for merged
+    // auto ncscRechits = nCscRechits; // ncscRechits //comment out for MDS nano, leave it on for merged
 
     auto eleCharge = Electron_charge; // eleCharge
     auto eleEta = Electron_eta; // eleEta
