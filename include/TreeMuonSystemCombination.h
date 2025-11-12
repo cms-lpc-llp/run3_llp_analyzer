@@ -184,6 +184,9 @@ class TreeMuonSystemCombination {
 
   float CscRechitsEta[N_MAX_CSCRECHITS];
   float CscRechitsPhi[N_MAX_CSCRECHITS];
+  float CscRechitsX[N_MAX_CSCRECHITS];
+  float CscRechitsY[N_MAX_CSCRECHITS];
+  float CscRechitsZ[N_MAX_CSCRECHITS];
   int CscRechitsClusterId[N_MAX_CSCRECHITS];
 
   bool cscRechitCluster_match_gLLP[N_MAX_CSC];

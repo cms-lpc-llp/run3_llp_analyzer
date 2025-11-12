@@ -105,6 +105,9 @@ void TreeMuonSystemCombination::InitVariables() {
     CscRechitsClusterId[i] = -999;
     CscRechitsEta[i] = -999;
     CscRechitsPhi[i] = -999;
+    CscRechitsX[i] = -999;
+    CscRechitsY[i] = -999;
+    CscRechitsZ[i] = -999;
   }
 
   for (int i = 0; i < N_MAX_CSC; i++) {
@@ -585,6 +588,7 @@ void TreeMuonSystemCombination::InitTree() {
 
   tree_->SetBranchAddress("CscRechitsEta",                   CscRechitsEta);
   tree_->SetBranchAddress("CscRechitsPhi",                   CscRechitsPhi);
+  
   tree_->SetBranchAddress("CscRechitsClusterId",             CscRechitsClusterId);
 
   tree_->SetBranchAddress("cscRechitCluster_match_gLLP", &cscRechitCluster_match_gLLP);
@@ -638,6 +642,9 @@ void TreeMuonSystemCombination::InitTree() {
 
   tree_->SetBranchAddress("cscRechitClusterEta", cscRechitClusterEta);
   tree_->SetBranchAddress("cscRechitClusterPhi", cscRechitClusterPhi);
+  tree_->SetBranchAddress("cscRechitClusterX", cscRechitClusterX);
+  tree_->SetBranchAddress("cscRechitClusterY", cscRechitClusterY);
+  tree_->SetBranchAddress("cscRechitClusterZ", cscRechitClusterZ);
 
   tree_->SetBranchAddress("cscRechitClusterJetVetoPt", cscRechitClusterJetVetoPt);
   tree_->SetBranchAddress("cscRechitClusterJetVetoPtJESDown", cscRechitClusterJetVetoPtJESDown);
@@ -864,6 +871,9 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("nCscRechits",             &nCscRechits, "nCscRechits/I");
   tree_->Branch("CscRechitsEta",                   CscRechitsEta,       "CscRechitsEta[nCscRechits]/F");
   tree_->Branch("CscRechitsPhi",                   CscRechitsPhi,       "CscRechitsPhi[nCscRechits]/F");
+  tree_->Branch("CscRechitsX",                   CscRechitsX,       "CscRechitsX[nCscRechits]/F");
+  tree_->Branch("CscRechitsY",                   CscRechitsY,       "CscRechitsY[nCscRechits]/F");
+  tree_->Branch("CscRechitsZ",                   CscRechitsZ,       "CscRechitsZ[nCscRechits]/F");
   tree_->Branch("CscRechitsClusterId",             CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
 
   tree_->Branch("cscRechitCluster_match_gLLP", cscRechitCluster_match_gLLP, "cscRechitCluster_match_gLLP[nCscRechitClusters]/O");

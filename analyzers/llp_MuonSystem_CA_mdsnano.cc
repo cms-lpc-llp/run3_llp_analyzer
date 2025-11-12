@@ -887,8 +887,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
       MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
+      MuonSystem->CscRechitsX[i] = cscRechitsX[i];
+      MuonSystem->CscRechitsY[i] = cscRechitsY[i];
+      MuonSystem->CscRechitsZ[i] = cscRechitsZ[i];
 
-    
       int layer = 0;
       Rechits p;
       p.phi = cscRechitsPhi[i];
@@ -996,7 +998,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->CscRechitsClusterId[clusterIdx] = tmp.clusterID;
       clusterIdx++;
     }
-    
+
     //ds.merge_clusters();
     //ds.clusterProperties();
     ds.sort_clusters();
