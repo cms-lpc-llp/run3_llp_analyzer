@@ -5,9 +5,9 @@ tau_pt:
   xmax: 100
   underflow: false
   overflow: false
-  x_label: p$_{T}$ [GeV]
+  x_label: p_{T} [GeV]
   y_label: Counts
-  title: Tau p$_{T}$ Distribution
+  title: Tau p_{T} Distribution
   MuonSystem_Branch_Expression: tauPt
 
 tau_eta:
@@ -16,9 +16,20 @@ tau_eta:
   xmax: 3
   underflow: false
   overflow: false
-  x_label: $\eta$
+  x_label: "#eta"
   y_label: Counts
-  title: Tau $\eta$ Distribution
+  title: "Tau #eta Distribution"
+  MuonSystem_Branch_Expression: tauEta
+
+tau_eta_ZoomedIn:
+  nbins: 200
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: "#eta"
+  y_label: Counts
+  title: "Tau #eta Distribution - Finer Binning"
   MuonSystem_Branch_Expression: tauEta
 
 tau_phi:
@@ -27,9 +38,9 @@ tau_phi:
   xmax: 4
   underflow: false
   overflow: false
-  x_label: $\phi$
+  x_label: "#phi"
   y_label: Counts
-  title: Tau $\phi$ Distribution
+  title: "Tau #phi Distribution"
   MuonSystem_Branch_Expression: tauPhi
 
 tau_e:

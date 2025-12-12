@@ -17,6 +17,7 @@ outputDirectory=$7
 analyzerTag=$8
 CMSSW_BASE=$9
 homeDir=${10}
+option=${11}
 currentDir=`pwd`
 echo "currentDir: ${currentDir}"
 #user=${homeDir#*/data/}
@@ -148,12 +149,12 @@ then
 
 			if [[ ${isData} == "no" ]]; then #check if it is DY MC, if a signal sample this won't work
 				echo "Running on MC sample"
-				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag}
-				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag}
+				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} -n=${option}
+				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} -n=${option}
 			else
 				echo "Running on data sample"
-				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag}
-				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag}
+				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag} -n=${option}
+				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag} -n=${option}
 			fi
 			# #./Runllp_MuonSystem_CA_TnP inputfilelistForThisJob_${jobnumber}.txt  --isData  -f=${outputfile}
 			# echo ./${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag}

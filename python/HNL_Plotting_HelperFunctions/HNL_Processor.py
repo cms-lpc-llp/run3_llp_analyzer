@@ -288,7 +288,7 @@ class HNL_Processor(processor.ProcessorABC):
         return ak.zip({"eta_cut": abs(gTaus.gTauEta)<2.5})
     
     def gVisSelections(self, gVisTaus):
-        return ak.zip({"eta_cut": abs(gVisTaus.gVisTauEta)<2.5}) #change back to 2.5 after ID reconstruction studies
+        return ak.zip({"eta_cut": abs(gVisTaus.gVisTauEta)<2.3}) #change back to 2.5 after ID reconstruction studies
     
     def gLLPSelections(self, gLLPs):
         return ak.zip({"no_cut": ak.ones_like(gLLPs.gLLP_pt, dtype=bool)})
@@ -302,6 +302,7 @@ class HNL_Processor(processor.ProcessorABC):
     ########################
     def process(self, events, hists_to_process: list=None, fillGenHists = True, tauID: str='', tau_cluster_topo_hists=True, branchNames_for_invertTauID = ["CSC_Cluster_Size"]):
         #tauID argument explicitly for ID reconstruction studies, NOT generic cutflow
+        #events = events[events.HLT_CscCluster100_PNetTauhPFJet10_Loose]
         hist_list = []
         if hists_to_process==None and self.isMC: #this means process all hists, since no specific ones are passed to the processor
             hist_list = [*list(self.eventLevel_hists_dict.keys()), *list(self.cscCluster_hists_dict.keys()), *list(self.gLLP_hists_dict.keys()), *list(self.gTau_hists_dict.keys()), *list(self.gVisTau_hists_dict.keys()), *list(self.tau_hists_dict.keys())]

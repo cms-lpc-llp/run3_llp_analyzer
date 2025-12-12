@@ -1,0 +1,55 @@
+#define histograms for tau properties
+muon_pt:
+  nbins: 15
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: false
+  x_label: p_{T} [GeV]
+  y_label: Counts
+  title: Muon p_{T} Distribution
+  MuonSystem_Branch_Expression: lepPt
+
+muon_eta:
+  nbins: 10
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: "#eta"
+  y_label: Counts
+  title: "Muon #eta Distribution"
+  MuonSystem_Branch_Expression: lepEta
+
+muon_eta_ZoomedIn:
+  nbins: 200
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: "#eta"
+  y_label: Counts
+  title: "Muon #eta Distribution - Finer Binning"
+  MuonSystem_Branch_Expression: lepEta
+
+muon_phi:
+  nbins: 10
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: "#phi"
+  y_label: Counts
+  title: "Muon #phi Distribution"
+  MuonSystem_Branch_Expression: lepPhi
+
+muon_e:
+  nbins: 30
+  xmin: 0
+  xmax: 1000
+  underflow: false
+  overflow: true
+  x_label: E [GeV]
+  y_label: Counts
+  title: Muon Energy Distribution
+  MuonSystem_Branch_Expression: lepE

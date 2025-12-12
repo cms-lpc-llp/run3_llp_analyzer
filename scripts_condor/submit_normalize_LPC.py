@@ -53,7 +53,7 @@ print("Normalizing for dataset: " + sample + "\n")
 
 #year = datasetList[sample][0]
 isData="no"
-if "Muon" in sample or "HNL" in sample:
+if "Muon" in sample or "HNL" in sample or "DY" in sample or "Wto" in sample:
     isData="yes"
 
 

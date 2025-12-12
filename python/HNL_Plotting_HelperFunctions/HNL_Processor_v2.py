@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import os
-
-import coffea
+os.environ["MALLOC_ARENA_MAX"] = "1"
+os.environ["MALLOC_TRIM_THRESHOLD_"] = "131072"
+os.environ["MALLOC_MMAP_THRESHOLD_"] = "131072"
+#import coffea
 import awkward as ak
 from coffea import processor
 
-from coffea.nanoevents.methods import vector
-from coffea.nanoevents import NanoEventsFactory, BaseSchema
-import uproot
+#from coffea.nanoevents.methods import vector
+#from coffea.nanoevents import NanoEventsFactory, BaseSchema
+#import uproot
 import numpy as np
 import hist
 import yaml
@@ -27,7 +29,8 @@ import Processing_Helpers
 collection_branch_mapping = {"tau": "nTaus", "cscRechitClusters": "nCscRechitClusters", "LLP": "nGLLP", "gTau": "nGenTau", "gVisTau":"nGenVisTau"}
 
 
-def produce_hist_dict(cfg_file: str)->dict:
+
+def produce_hist_dict(cfg_file: str, bin_multiplier: int=1)->dict:
     '''
     return a dictionary with hist.Hist objects specfieid in cfg_file
     '''
@@ -38,17 +41,17 @@ def produce_hist_dict(cfg_file: str)->dict:
     for name, plot_info in plot_cfgs.items():
         if "mask_branch" not in list(plot_info.keys()):
             #initialize with dummy mask (should always pass)
-            hist_dict[name] = hist.Hist(hist.axis.Regular(plot_info['nbins'],plot_info['xmin'],plot_info['xmax'], 
+            hist_dict[name] = hist.Hist(hist.axis.Regular(plot_info['nbins']*bin_multiplier,plot_info['xmin'],plot_info['xmax'], 
                 name="plot", label=plot_info['x_label'], underflow=plot_info['underflow'], 
                 overflow=plot_info['overflow'],
-                ),metadata={"title":plot_info["title"], "y_label":plot_info["y_label"],
+                ),metadata={"title":plot_info["title"], "x_label":plot_info["x_label"],"y_label":plot_info["y_label"],
                         "branch":plot_info["MuonSystem_Branch_Expression"],
                         "mask_collection":"event", "mask_branch": "runNum", "mask_lowVal":0., "mask_highVal":np.inf})
         else:
-            hist_dict[name] = hist.Hist(hist.axis.Regular(plot_info['nbins'],plot_info['xmin'],plot_info['xmax'], 
+            hist_dict[name] = hist.Hist(hist.axis.Regular(plot_info['nbins']*bin_multiplier,plot_info['xmin'],plot_info['xmax'], 
                 name="plot", label=plot_info['x_label'], underflow=plot_info['underflow'], 
                 overflow=plot_info['overflow'],
-                ),metadata={"title":plot_info["title"], "y_label":plot_info["y_label"],
+                ),metadata={"title":plot_info["title"], "x_label":plot_info["x_label"],"y_label":plot_info["y_label"],
                         "branch":plot_info["MuonSystem_Branch_Expression"], 
                         "mask_collection": plot_info["mask_collection"], "mask_branch":plot_info["mask_branch"], "mask_lowVal":float(plot_info["mask_lowVal"]), "mask_highVal":float(plot_info["mask_highVal"])})
         
@@ -86,7 +89,7 @@ def combineMasksFlatten(masks):
     flattened_mask = ak.any(mask, axis=1)
     return flattened_mask
 
-def buildEventMask(event_mask, cluster_mask, tau_mask, gTauMask=None, gVisTauMask=None, gLLPMask=NanoEventsFactory, MC=True):
+def buildEventMask(event_mask, cluster_mask, tau_mask, gTauMask=None, gVisTauMask=None, gLLPMask=None, MC=True):
     '''Build mask to apply to event-level quantities'''
     
     total_event_mask = combineMasks(event_mask)
@@ -165,7 +168,8 @@ class HNL_Processor_v2(processor.ProcessorABC):
                           'gVisTau_hists_config': 'genVisTau_hists.yaml',
                           'isMC':False,
                           'applyGenInfo':True,
-                          'make_TauID_hists':False}
+                          'make_TauID_hists':False,
+                          'bin_multiplier':1}
         options = {**defaultOptions, **options}
         
         self.campaign = options["campaign"]
@@ -178,12 +182,12 @@ class HNL_Processor_v2(processor.ProcessorABC):
         self.isMC = options['isMC']
         self.applyGenInfo = options['applyGenInfo']
         self.make_TauID_hists = options['make_TauID_hists']
-        self.tau_hists_dict = produce_hist_dict(self.tau_hist_config)
-        self.cscCluster_hists_dict = produce_hist_dict(self.cscCluster_hist_config)
-        self.eventLevel_hists_dict = produce_hist_dict(self.eventLevel_hists_config)
-        self.gLLP_hists_dict = produce_hist_dict(self.gLLP_hists_config)
-        self.gTau_hists_dict = produce_hist_dict(self.gTau_hists_config)
-        self.gVisTau_hists_dict = produce_hist_dict(self.gVisTau_hists_config)
+        self.tau_hists_dict = produce_hist_dict(self.tau_hist_config, bin_multiplier=options['bin_multiplier'])
+        self.cscCluster_hists_dict = produce_hist_dict(self.cscCluster_hist_config, bin_multiplier=options['bin_multiplier'])
+        self.eventLevel_hists_dict = produce_hist_dict(self.eventLevel_hists_config, bin_multiplier=options['bin_multiplier'])
+        self.gLLP_hists_dict = produce_hist_dict(self.gLLP_hists_config, bin_multiplier=options['bin_multiplier'])
+        self.gTau_hists_dict = produce_hist_dict(self.gTau_hists_config, bin_multiplier=options['bin_multiplier'])
+        self.gVisTau_hists_dict = produce_hist_dict(self.gVisTau_hists_config, bin_multiplier=options['bin_multiplier'])
         
         self._accumulator = {}
 
@@ -244,6 +248,7 @@ class HNL_Processor_v2(processor.ProcessorABC):
     
     def eventSelections(self, events, mask_to_exclude=None):
         noiseFilters = (events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)
+        #noiseFilters = (events.Flag_all) & (events.Flag_ecalBadCalibFilter)
         triggerFilter = events.HLT_CscCluster100_PNetTauhPFJet10_Loose
         #triggerFilter = ak.ones_like(events.HLT_CscCluster100_PNetTauhPFJet10_Loose)
         nTausFilter = events.nTaus==1
@@ -261,7 +266,7 @@ class HNL_Processor_v2(processor.ProcessorABC):
     
     def cscClusterSelections(self, cscClusters, mask_to_exclude=None):
         initial_mask = ak.ones_like(cscClusters.cscRechitClusterSize, dtype=bool)
-        cluster_mask = ak.zip({"initial_mask":initial_mask, "muonVeto": cscClusters.cscRechitClusterMuonVetoPt<30, "jetVeto": cscClusters.cscRechitClusterJetVetoPt<30, "cluster_size": cscClusters.cscRechitClusterSize>=100, "inTime": (cscClusters.cscRechitClusterTimeWeighted>-5) & (cscClusters.cscRechitClusterTimeWeighted<12.5)})
+        cluster_mask = ak.zip({"initial_mask":initial_mask, "muonVeto": cscClusters.cscRechitClusterMuonVetoPt<30, "jetVeto": cscClusters.cscRechitClusterJetVetoPt<10, "cluster_size": cscClusters.cscRechitClusterSize>=100, "inTime": (cscClusters.cscRechitClusterTimeWeighted>-5) & (cscClusters.cscRechitClusterTimeWeighted<12.5)})
         #cluster_mask = ak.zip({"initial_mask":initial_mask})
         if self.isMC and self.applyGenInfo:
             cluster_mask = ak.with_field(cluster_mask, cscClusters.cscRechitCluster_match_gLLP, "match_gLLP")
@@ -270,6 +275,7 @@ class HNL_Processor_v2(processor.ProcessorABC):
         if not mask_to_exclude==None:
             cluster_mask = ak.without_field(cluster_mask, mask_to_exclude)
         
+        #cluster_mask = ak.zip({"initial_mask":initial_mask}) #remember to comment out
         return cluster_mask
 
     def tauSelections(self, taus, mask_to_exclude=None, invertTauId=False):
@@ -461,19 +467,23 @@ class HNL_Processor_v2(processor.ProcessorABC):
             to_fill[plot] = (cscClusterHist, ak.flatten(events[cscClusterHist.metadata["branch"]][hist_mask]))
             #output[plot] = cscClusterHist
         
-        client = Client(memory_limit="12GB", n_workers=1, 
-                threads_per_worker=1, local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp")
+        client = Client(memory_limit="11GB", n_workers=1, 
+                threads_per_worker=1, memory_spill_fraction=0.5, 
+                env={
+                "MALLOC_TRIM_THRESHOLD_": "131072",
+                "MALLOC_ARENA_MAX": "2",
+                },local_directory=
+                "/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/ \
+                    src/run3_llp_analyzer/dask_temp"
+                    )
         print("about to compute")
         
         computed_arrays = dask.compute(*[v[1] for v in to_fill.values()])
-
+        print("computed, now filling hists")
         for i, plot in enumerate(to_fill):
             hist_obj, _ = to_fill[plot]
             hist_obj.fill(plot=computed_arrays[i])
             output[plot] = hist_obj
-
-        del events, computed_arrays, to_fill
-        gc.collect()
         client.close()
         
         

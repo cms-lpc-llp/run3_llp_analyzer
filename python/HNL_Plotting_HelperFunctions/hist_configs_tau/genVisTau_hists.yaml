@@ -1,6 +1,7 @@
 #define histograms for tau properties
 gVisTau_pt:
   nbins: 30
+  #nbins: 10
   xmin: 0
   xmax: 100
   underflow: false
@@ -67,6 +68,7 @@ gVisTauFractionOfTotalEnergy:
 
 gVisTau_pt_matchedReco:
   nbins: 30
+  #nbins: 10
   xmin: 0
   xmax: 100
   underflow: false

@@ -49,9 +49,9 @@ CSC_Cluster_Eta:
   xmax: 3
   underflow: false
   overflow: false
-  x_label: "eta"
+  x_label: "#eta"
   y_label: "Counts"
-  title: "CSC Rechit Cluster eta Distribution"
+  title: "CSC Rechit Cluster #eta Distribution"
   MuonSystem_Branch_Expression: "cscRechitClusterEta"
 
 CSC_Cluster_Phi:
@@ -60,9 +60,9 @@ CSC_Cluster_Phi:
   xmax: 4
   underflow: false
   overflow: false
-  x_label: "phi"
+  x_label: "#phi"
   y_label: "Counts"
-  title: "CSC Rechit Cluster phi Distribution"
+  title: "CSC Rechit Cluster #phi Distribution"
   MuonSystem_Branch_Expression: "cscRechitClusterPhi"
 
 
@@ -72,22 +72,22 @@ CSC_Cluster_MuonVetoPt:
   xmax: 40
   underflow: false
   overflow: false
-  x_label: CSC Rechit Cluster Muon Veto pT
-  y_label: Counts
-  title: CSC Rechit Cluster Muon Veto pT
+  x_label: "CSC Rechit Cluster Muon Veto p_{T}"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster Muon Veto p_{T}"
   MuonSystem_Branch_Expression: cscRechitClusterMuonVetoPt
   # Mask_To_Exclude: muonVeto
   # Mask_To_Exclude_Collection: cscRechitCluster
 
 CSC_Cluster_JetVetoPt:
-  nbins: 20
+  nbins: 15
   xmin: 0
-  xmax: 40
+  xmax: 15
   underflow: false
   overflow: false
-  x_label: CSC Rechit Cluster Jet Veto pT
+  x_label: CSC Rechit Cluster Jet Veto p_{T}
   y_label: Counts
-  title: CSC Rechit Cluster Jet Veto pT
+  title: CSC Rechit Cluster Jet Veto p_{T}
   MuonSystem_Branch_Expression: cscRechitClusterJetVetoPt
   # Mask_To_Exclude: jetVeto
   # Mask_To_Exclude_Collection: cscRechitCluster
@@ -98,9 +98,9 @@ CSC_Cluster_PuppiMetDPhi:
   xmax: 4
   underflow: false
   overflow: false
-  x_label: d$\phi$(PuppiMET, Cluster)
-  y_label: Counts
-  title: d$\phi$(PuppiMET, Cluster)
+  x_label: "#Delta#phi(PuppiMET, Cluster)"
+  y_label: "Counts"
+  title: "#Delta#phi(PuppiMET, Cluster)"
   MuonSystem_Branch_Expression: cscRechitClusterPuppiMet_dPhi
 
 CSC_Cluster_DNNScore:
@@ -114,15 +114,26 @@ CSC_Cluster_DNNScore:
   title: DNN Score Distribution
   MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
 
+CSC_Cluster_DNNScore_TightRange:
+  nbins: 40
+  xmin: 0.96
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: DNN Score
+  y_label: Density
+  title: DNN Score Distribution Tight Range
+  MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
+
 CSC_Cluster_Tau_DeltaEta:
   nbins: 25
   xmin: -5
   xmax: 5
   underflow: false
   overflow: false
-  x_label: d$\eta$(tau, Cluster)
-  y_label: Density
-  title: d$\eta$(tau, Cluster)
+  x_label: "#Delta#eta(tau, Cluster)"
+  y_label: "Density"
+  title: "#Delta#eta(tau, Cluster)"
   MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaEta
 
 CSC_Cluster_Tau_DeltaPhi:
@@ -131,10 +142,32 @@ CSC_Cluster_Tau_DeltaPhi:
   xmax: 4
   underflow: false
   overflow: false
-  x_label: d$\phi$(tau, Cluster)
-  y_label: Density
-  title: d$\phi$(tau, Cluster)
+  x_label: "#Delta#phi(tau, Cluster)"
+  y_label: "Density"
+  title: "#Delta#phi(tau, Cluster)"
   MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaPhi
+
+CSC_Cluster_Tau_DeltaR:
+  nbins: 50
+  xmin: 0
+  xmax: 5
+  underflow: false
+  overflow: false
+  x_label: "#DeltaR(tau, Cluster)"
+  y_label: Density
+  title: "#DeltaR(tau, Cluster)"
+  MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaR
+
+# CSC_Cluster_Tau_DeltaPhi_ZoomedIn:
+#   nbins: 200
+#   xmin: -4
+#   xmax: 4
+#   underflow: false
+#   overflow: false
+#   x_label: "#Delta#phi(tau, Cluster)"
+#   y_label: "Density"
+#   title: "#Delta#phi(tau, Cluster) - Finer Binning"
+#   MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaPhi
 
 
 

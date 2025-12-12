@@ -1,0 +1,177 @@
+#define histograms for CSC Rechit Cluster properties
+CSC_Cluster_Size:
+  nbins: 20
+  xmin: 100
+  xmax: 800
+  underflow: false
+  overflow: false
+  x_label: "N_{hit}"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster Size Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterSize"
+
+CSC_Cluster_Time:
+  nbins: 25
+  xmin: -10
+  xmax: 20
+  underflow: false
+  overflow: false
+  x_label: "Time [ns]"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster Time Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterTimeWeighted"
+
+CSC_Cluster_TimeSpread:
+  nbins: 25
+  xmin: 0
+  xmax: 40
+  underflow: false
+  overflow: false
+  x_label: "Time Spread [ns]"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster Time Spread Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterTimeSpreadWeightedAll"
+
+CSC_Cluster_NStation10:
+  nbins: 6
+  xmin: 0
+  xmax: 6
+  underflow: false
+  overflow: false
+  x_label: "N_{Station10}"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster NStation10 Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterNStation10"
+
+CSC_Cluster_Eta:
+  nbins: 20
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: "#eta"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster #eta Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterEta"
+
+CSC_Cluster_Phi:
+  nbins: 15
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: "#phi"
+  y_label: "Counts"
+  title: "CSC Rechit Cluster #phi Distribution"
+  MuonSystem_Branch_Expression: "cscRechitClusterPhi"
+
+
+CSC_Cluster_MuonVetoPt:
+  nbins: 20
+  xmin: 0
+  xmax: 40
+  underflow: false
+  overflow: false
+  x_label: CSC Rechit Cluster Muon Veto p_{T}
+  y_label: Counts
+  title: CSC Rechit Cluster Muon Veto p_{T}
+  MuonSystem_Branch_Expression: cscRechitClusterMuonVetoPt
+  # Mask_To_Exclude: muonVeto
+  # Mask_To_Exclude_Collection: cscRechitCluster
+
+CSC_Cluster_JetVetoPt:
+  nbins: 15
+  xmin: 0
+  xmax: 15
+  underflow: false
+  overflow: false
+  x_label: CSC Rechit Cluster Jet Veto p_{T}
+  y_label: Counts
+  title: CSC Rechit Cluster Jet Veto p_{T}
+  MuonSystem_Branch_Expression: cscRechitClusterJetVetoPt
+  # Mask_To_Exclude: jetVeto
+  # Mask_To_Exclude_Collection: cscRechitCluster
+
+CSC_Cluster_PuppiMetDPhi:
+  nbins: 20
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: "#Delta#phi(PuppiMET, Cluster)"
+  y_label: Counts
+  title: "#Delta#phi(PuppiMET, Cluster)"
+  MuonSystem_Branch_Expression: cscRechitClusterPuppiMet_dPhi
+
+CSC_Cluster_DNNScore:
+  nbins: 25
+  xmin: 0.5
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: DNN Score
+  y_label: Density
+  title: DNN Score Distribution
+  MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
+
+CSC_Cluster_DNNScore_TightRange:
+  nbins: 40
+  xmin: 0.96
+  xmax: 1
+  underflow: false
+  overflow: false
+  x_label: DNN Score
+  y_label: Density
+  title: DNN Score Distribution Tight Range
+  MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
+
+CSC_Cluster_Muon_DeltaEta:
+  nbins: 15
+  xmin: -5
+  xmax: 5
+  underflow: false
+  overflow: false
+  x_label: "#Delta#eta(mu, Cluster)"
+  y_label: Density
+  title: "#Delta#eta(mu, Cluster)"
+  MuonSystem_Branch_Expression: cscRechitClusterPromptMuDeltaEta
+
+CSC_Cluster_Muon_DeltaPhi:
+  nbins: 15
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: false
+  x_label: "#Delta#phi(mu, Cluster)"
+  y_label: Density
+  title: "#Delta#phi(mu, Cluster)"
+  MuonSystem_Branch_Expression: cscRechitClusterPromptMuDeltaPhi
+
+CSC_Cluster_Muon_DeltaR:
+  nbins: 50
+  xmin: 0
+  xmax: 5
+  underflow: false
+  overflow: false
+  x_label: "#DeltaR(#mu, Cluster)"
+  y_label: Density
+  title: "#DeltaR(#mu, Cluster)"
+  MuonSystem_Branch_Expression: cscRechitClusterPromptMuDeltaR
+
+# CSC_Cluster_Muon_DeltaPhi_ZoomedIn:
+#   nbins: 200
+#   xmin: -4
+#   xmax: 4
+#   underflow: false
+#   overflow: false
+#   x_label: "#Delta#phi(tau, Cluster)"
+#   y_label: Density
+#   title: "#Delta#phi(tau, Cluster) - Finer Binning"
+#   MuonSystem_Branch_Expression: cscRechitClusterPromptMuDeltaPhi
+
+
+
+
+
+
+

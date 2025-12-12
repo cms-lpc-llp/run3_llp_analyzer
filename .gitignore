@@ -1,3 +1,7 @@
+
+./HNL_Plotting_Scripts/preliminary_root_plots*
+
+
 #txt files in main directory
 ./*.txt
 condor_job_output

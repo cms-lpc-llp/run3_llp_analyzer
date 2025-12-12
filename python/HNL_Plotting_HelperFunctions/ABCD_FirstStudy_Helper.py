@@ -192,7 +192,7 @@ def return_clusterSize_dPhiClusterTau_allSelectionsDNN(events, passID = 'tauIsVL
     #     return
     
     #event level cuts
-    noise_filters_cut = (events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)
+    noise_filters_cut = (events.Flag_all) & (events.quot) & (events.Flag_ecalBadCalibFilter)
     trigger_cut = events.HLT_CscCluster100_PNetTauhPFJet10_Loose
     nTaus_cut = events.nTaus==1
     nClusters_cut = events.nCscRechitClusters>0
@@ -220,9 +220,9 @@ def return_clusterSize_dPhiClusterTau_allSelectionsDNN(events, passID = 'tauIsVL
     cluster_cuts = ((events.cscRechitClusterSize>=100) & (events.cscRechitClusterTimeWeighted > -5) & (events.cscRechitClusterTimeWeighted < 12.5) 
     & ((events.cscRechitClusterNRechitChamberMinus11 + events.cscRechitClusterNRechitChamberMinus12 + 
         events.cscRechitClusterNRechitChamberPlus11 + events.cscRechitClusterNRechitChamberPlus12 
-        #  + events.cscRechitClusterNRechitChamberPlus13 + events.cscRechitClusterNRechitChamberMinus13+
-        # events.cscRechitClusterNRechitChamberPlus21 + events.cscRechitClusterNRechitChamberPlus21 +
-        # events.cscRechitClusterNRechitChamberPlus22 + events.cscRechitClusterNRechitChamberMinus22
+        #   + events.cscRechitClusterNRechitChamberPlus13 + events.cscRechitClusterNRechitChamberMinus13+
+        #  events.cscRechitClusterNRechitChamberPlus21 + events.cscRechitClusterNRechitChamberPlus21 +
+        #  events.cscRechitClusterNRechitChamberPlus22 + events.cscRechitClusterNRechitChamberMinus22
          )==0)  &
         (events.cscRechitClusterMuonVetoPt<30) & (events.cscRechitClusterJetVetoPt<30) & 
         #(events.cscRechitClusterNStation10>1) &
@@ -250,14 +250,17 @@ def return_clusterSize_dPhiClusterTau_allSelectionsDNN(events, passID = 'tauIsVL
     
 
     for branch in additional_branches:
-        if "tau" not in branch:
+        if "cscCluster" in branch:
             new_branch = events[branch][cluster_cuts]
             return_tuple = return_tuple + (ak.flatten(new_branch[ak.num(new_branch)>0]).compute(),)
 
-        else:
+        elif "tau" in branch:
             new_branch = events[branch][ak.any(cluster_cuts, axis=1)]
             return_tuple = return_tuple + (ak.flatten(new_branch).compute(),)
 
+        else: #event level
+            new_branch = events[branch][ak.any(cluster_cuts, axis=1)]
+            return_tuple = return_tuple + (new_branch.compute(),)
         
 
     client.close()

@@ -1,0 +1,240 @@
+#cuts to apply to signal for building a cutflow
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_Ele5
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+MET>30GeV:
+  name: "MET>30 GeV"
+  branch: Puppimet
+  minVal: 30
+  maxVal: 10000000
+  collection: event
+  invert: "no"
+
+1_Lepton:
+  name: "nLeptons==1"
+  branch: nLeptons
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+1_Lepton_isElectron:
+  name: "Lepton is Electron"
+  branch: lepPdgId
+  minVal: -11
+  maxVal: 11
+  collection: lepton
+  invert: "no"
+
+
+clusterTime:
+  name: "-5ns<clusterTime<12.5ns"
+  branch: cscRechitClusterTimeWeighted
+  minVal: -5
+  maxVal: 12.5
+  collection: cscCluster
+  invert: "no"
+
+# cscClusterNoHitsPlusME11:
+#   name: "no hits +ME11"
+#   branch: cscRechitClusterNRechitChamberPlus11
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsMinusME11:
+#   name: "no hits -ME11"
+#   branch: cscRechitClusterNRechitChamberMinus11
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsPlusME12:
+#   name: "no hits +ME12"
+#   branch: cscRechitClusterNRechitChamberPlus12
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsMinusME12:
+#   name: "no hits -ME12"
+#   branch: cscRechitClusterNRechitChamberMinus12
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsPlusME13:
+#   name: "no hits +ME13"
+#   branch: cscRechitClusterNRechitChamberPlus13
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsMinusME13:
+#   name: "no hits -ME13"
+#   branch: cscRechitClusterNRechitChamberMinus13
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsPlusME21:
+#   name: "no hits +ME21"
+#   branch: cscRechitClusterNRechitChamberPlus21
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsMinusME21:
+#   name: "no hits -ME21"
+#   branch: cscRechitClusterNRechitChamberMinus21
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsPlusME22:
+#   name: "no hits +ME22"
+#   branch: cscRechitClusterNRechitChamberPlus22
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+# cscClusterNoHitsMinusME22:
+#   name: "no hits -ME22"
+#   branch: cscRechitClusterNRechitChamberMinus22
+#   minVal: 0
+#   maxVal: 0
+#   collection: cscCluster
+#   invert: "no"
+
+cscClusterNoHitsME1112:
+  name: "no hits ME1112"
+  branch: cscRechitClusterNRechitME1112
+  minVal: 0
+  maxVal: 0
+  collection: cscCluster
+  invert: "no"
+
+# NStation10>1:
+#   name: "NStation10>1"
+#   branch: cscRechitClusterNStation10
+#   minVal: 2
+#   maxVal: 5
+#   collection: cscCluster
+#   invert: "no"
+
+
+MuonVetoPt<30:
+  name: "MuonVetoPt<30GeV"
+  branch: cscRechitClusterMuonVetoPt
+  minVal: 0
+  maxVal: 30
+  collection: cscCluster
+  invert: "no"
+
+JetVetoPt<10:
+  name: "JetVetoPt<10 GeV"
+  branch: cscRechitClusterJetVetoPt
+  minVal: 0
+  maxVal: 10
+  collection: cscCluster
+  invert: "no"
+
+
+
+
+dPhi(cluster, MET):
+  name: "|dPhi(cluster, MET)|<1.5"
+  branch: cscRechitClusterPuppiMet_dPhi
+  minVal: -1.5
+  maxVal: 1.5
+  collection: cscCluster
+  invert: "no"
+
+# has_one_reco_tau:
+#   name: "exactly 1 tau"
+#   branch: nTaus
+#   minVal: 1
+#   maxVal: 1
+#   collection: event
+#   invert: "no"
+
+ele_pt>15GeV:
+  name: "elePt>15GeV"
+  branch: lepPt
+  minVal: 15
+  maxVal: 10000000
+  collection: lepton
+  invert: "no"
+
+ele_failTightID:
+  name: "ele fail tightID"
+  branch: lepTightId
+  minVal: 0
+  maxVal: 0
+  collection: lepton
+  invert: "no"
+
+ele_MediumID:
+  name: "ele pass mediumID"
+  branch: lepMediumId
+  minVal: 1
+  maxVal: 1
+  collection: lepton
+  invert: "no"
+
+deltaEta_eleCluster:
+  name: "|DeltaEta(cluster,ele)|<2"
+  branch: cscRechitClusterPromptEleDeltaEta
+  minVal: -2
+  maxVal: 2
+  collection: cscCluster
+  invert: "no"
+
+DNN_Score:
+  name: "DNN>0.99975"
+  branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
+  minVal: 0.99975
+  maxVal: 1
+  collection: cscCluster
+  invert: "no"
+
+# deltaPhi_tauCluster:
+#   name: \|$\Delta$$\phi$(cluster,tau)\|>2
+#   branch: cscRechitClusterPromptTauDeltaPhi
+#   minVal: -2
+#   maxVal: 2
+#   collection: cscCluster
+#   invert: "yes"
+
+# cscClusterSize>160:
+#   name: ">160 rechits in CSC Cluster"
+#   branch: cscRechitClusterSize
+#   minVal: 160
+#   maxVal: 1000000
+#   collection: cscCluster
+#   invert: "no"
+
+
+
+
+
+
+
+
+
+

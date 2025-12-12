@@ -10,8 +10,9 @@ from collections import OrderedDict
 
 sample = sys.argv[1] # e.g. Muon0-Run2024B-PromptReco-v1
 analyzer_str = sys.argv[2] #e.g. TnP_mdsnano
-output_end = sys.argv[3] #e.g. 2024_Data (what to append to HNL_Tau_Search directory path for output)
-log_name = sys.argv[4] # e.g. 2024_Data_Test (name of directory for condor submit and log files)
+option = sys.argv[3] #sys.argv[3] #e.g. Test
+output_end = sys.argv[4] #e.g. 2024_Data (what to append to HNL_Tau_Search directory path for output)
+log_name = sys.argv[5] # e.g. 2024_Data_Test (name of directory for condor submit and log files)
 
 log_dir = "condor_job_output/log_{}".format(log_name)
 submit_dir = "condor_job_output/submit_{}".format(log_name)
@@ -43,7 +44,7 @@ CMSSW_BASE = os.getenv('CMSSW_BASE')
 #Analyzer_DIR = CMSSW_BASE+"/src/run3_llp_analyzer/"
 Analyzer_DIR = ''
 #datasetListDir = Analyzer_DIR + "lists/displacedJetMuonNtuple/{}/".format(ntupler_version)
-if "HNL" in sample:
+if "HNL" in sample or "DY" in sample or "Wto" in sample:
     datasetListDir = Analyzer_DIR + "lists/MDSNano/v2/MC_Summer24/"
 else:
     datasetListDir = Analyzer_DIR + "lists/MDSNano/v2/Data2024/v2/"
@@ -105,7 +106,7 @@ elif "Run2023B" in sample or "Run2023C" in sample or "MC_Summer23" in sample:
     pileupWeights = "PileupReweight_Summer23.root"
     HMT = "L1_efficiencies_2022_2023_032625-Hists-TEff.root"
     MET = "METTriggerEff_Summer23BPix.root"
-elif "Run2024" in sample or "MC_Summer24" in sample or "HNL"in sample:
+elif "Run2024" in sample or "MC_Summer24" in sample or "HNL"in sample or "DY" in sample or "Wto" in sample: #need to change if looking at MC bkgs from other years!
     analyzerTag = "Summer24"
     jetVetoMap = "Winter24Prompt24_2024BCDEFGHI.root"
     pileupWeights = "PileupReweight_Summer24.root"
@@ -118,7 +119,7 @@ else:
 
 #year = datasetList[sample][0]
 #isData = datasetList[sample][1]
-if "MC" in sample or "HNL" in sample:isData="no"
+if ("MC" in sample or "HNL" in sample) and not ("DY" in sample or "Wto" in sample):isData="no"
 else:isData="--isData"
 #####################################
 #Create Condor JDL file
@@ -135,16 +136,17 @@ tmpCondorJDLFile = open(jdl_file,"w")
 
 tmpCondorJDLFile.write("Universe = vanilla \n")
 tmpCondorJDLFile.write("Executable = {} \n".format(executable))
-print("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ \n"\
-                        .format(analyzer, inputfilelist, isData, filesPerJob, maxjob, outputDirectory, analyzerTag, CMSSW_BASE, HOME))
-tmpCondorJDLFile.write("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ \n"\
-                        .format(analyzer, inputfilelist, isData, filesPerJob, maxjob, outputDirectory, analyzerTag, CMSSW_BASE, HOME))
+print("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ {} \n"\
+                        .format(analyzer, inputfilelist, isData, filesPerJob, maxjob, outputDirectory, analyzerTag, CMSSW_BASE, HOME, option))
+tmpCondorJDLFile.write("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ {} \n"\
+                        .format(analyzer, inputfilelist, isData, filesPerJob, maxjob, outputDirectory, analyzerTag, CMSSW_BASE, HOME, option))
 
 tmpCondorJDLFile.write("Log = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).log \n".format(log_dir,analyzer, sample.replace("/","_"), maxjob))
 tmpCondorJDLFile.write("Output = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).out \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
 tmpCondorJDLFile.write("Error = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).err \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
 
 tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
+
 tmpCondorJDLFile.write("RequestMemory = 4096 \n")
 tmpCondorJDLFile.write("RequestCpus = 1 \n")
 tmpCondorJDLFile.write("RequestDisk = 4 \n")

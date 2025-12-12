@@ -20,7 +20,7 @@ import dask.dataframe as dd
 from dask.distributed import Client
 
 
-def get_DNN_array(events, clusterSizeCut=False):
+def get_DNN_array(events, clusterSizeCut=False, type='tau'):
     '''
     Function to return just DNN array from files or list of files in data or MC
     Cuts to apply (after noise filters):
@@ -31,17 +31,28 @@ def get_DNN_array(events, clusterSizeCut=False):
     5. Cluster Passes Muon and Jet Vetos
     5. (Optional) cluster size is larger than 160
     '''
+    if type=='tau':
+        trigger_path = "HLT_CscCluster100_PNetTauhPFJet10_Loose"
+        muonVetoPtThreshold = 30
+    elif type=='e':
+        trigger_path = "HLT_CscCluster100_Ele5"
+        muonVetoPtThreshold = 30
+    elif type=='mu':
+        trigger_path = "HLT_CscCluster100_Mu5"
+        muonVetoPtThreshold = 0.0000001
+    else:
+        raise ValueError("Invalid type specified. Choose from 'tau', 'e', or 'mu'.")
+
 
     noise_filters_cut = (events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)
-    trigger_cut = events.HLT_CscCluster100_PNetTauhPFJet10_Loose
+    trigger_cut = events[trigger_path]
     nClusters_cut = events.nCscRechitClusters>0
 
     events = events[(noise_filters_cut) & (trigger_cut) & (nClusters_cut)]
 
     cluster_cuts = ((events.cscRechitClusterSize>=100) & (events.cscRechitClusterTimeWeighted > -5) & (events.cscRechitClusterTimeWeighted < 12.5) 
-    & ((events.cscRechitClusterNRechitChamberMinus11 + events.cscRechitClusterNRechitChamberMinus12 + 
-        events.cscRechitClusterNRechitChamberPlus11 + events.cscRechitClusterNRechitChamberPlus12)==0)
-        & (events.cscRechitClusterMuonVetoPt<30) & (events.cscRechitClusterJetVetoPt<30))
+    & ((events.cscRechitClusterNRechitME1112)==0)
+        & (events.cscRechitClusterMuonVetoPt<muonVetoPtThreshold) & (events.cscRechitClusterJetVetoPt<10))
 
     if clusterSizeCut:
         cluster_cuts = (cluster_cuts) & (events.cscRechitClusterSize>=160)

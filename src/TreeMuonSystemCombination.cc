@@ -582,6 +582,8 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     lepPhi[i] = -999.;
     lepPdgId[i] = -999;
     lepDZ[i] = -999.;
+    lepLooseId[i] = false;
+    lepMediumId[i] = false;
     lepTightId[i] = false;
     lepPassLooseIso[i] = false;
     lepPassTightIso[i] = false;
@@ -620,6 +622,12 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     tauIsTight[i] = false;
     tauIsVTight[i] = false;
     tauIsVVTight[i] = false;
+    tauPNetVSe[i] = false;
+    tauPNetVSjet[i] = false;
+    tauPNetVSmu[i] = false;
+    tauUParTVSe[i] = false;
+    tauUParTVSjet[i] = false;
+    tauUParTVSmu[i] = false;
     tauGenPartFlav[i] = 0;
     deltaR_GenTauRecoTau[i] = 1000.;
     deltaR_GenLepRecoLep[i] = 1000.;
@@ -1023,6 +1031,8 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("lepPhi", lepPhi);
   tree_->SetBranchAddress("lepPdgId", lepPdgId);
   tree_->SetBranchAddress("lepDZ", lepDZ);
+  tree_->SetBranchAddress("lepLooseId", lepLooseId);
+  tree_->SetBranchAddress("lepMediumId", lepMediumId);
   tree_->SetBranchAddress("lepTightId", lepTightId);
   tree_->SetBranchAddress("lepPassLooseIso", lepPassLooseIso);
   tree_->SetBranchAddress("lepPassTightIso", lepPassTightIso);
@@ -1059,6 +1069,12 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("tauIsTight", tauIsTight);
   tree_->SetBranchAddress("tauIsVTight", tauIsVTight);
   tree_->SetBranchAddress("tauIsVVTight", tauIsVVTight);
+  tree_->SetBranchAddress("tauPNetVSe", tauPNetVSe);
+  tree_->SetBranchAddress("tauPNetVSmu", tauPNetVSmu);
+  tree_->SetBranchAddress("tauPNetVSjet", tauPNetVSjet);
+  tree_->SetBranchAddress("tauUParTVSe", tauUParTVSe);
+  tree_->SetBranchAddress("tauUParTVSmu", tauUParTVSmu);
+  tree_->SetBranchAddress("tauUParTVSjet", tauUParTVSjet);
   tree_->SetBranchAddress("tauDz", tauDz);
   tree_->SetBranchAddress("tauGenPartFlav", tauGenPartFlav);
   tree_->SetBranchAddress("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau);
@@ -1092,6 +1108,7 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("mH", &mH, "mH/I"); // event number
   tree_->Branch("mX", &mX, "mX/I"); // event number
   tree_->Branch("ctau", &ctau, "ctau/I"); // event number
+  tree_->Branch("jetVeto", &jetVeto, "jetVeto/O");
   tree_->Branch("HLT_CSCCSC", &HLT_CSCCSC, "HLT_CSCCSC/O");
   tree_->Branch("HLT_CSCDT", &HLT_CSCDT, "HLT_CSCDT/O");
   tree_->Branch("HLT_CscCluster100_PNetTauhPFJet10_Loose", &HLT_CscCluster100_PNetTauhPFJet10_Loose, "HLT_CscCluster100_PNetTauhPFJet10_Loose/O");
@@ -1102,8 +1119,8 @@ void TreeMuonSystemCombination::CreateTree() {
 
   tree_->Branch("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight, "HLT_PFMET120_PFMHT120_IDTight/O");
 
-  tree_->Branch("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal, "L1_SingleMuShower_Nominal");
-  tree_->Branch("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight, "L1_SingleMuShower_Tight");
+  tree_->Branch("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal, "L1_SingleMuShower_Nominal/O");
+  tree_->Branch("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight, "L1_SingleMuShower_Tight/O");
 
 
   tree_->Branch("npv", &npv, "npv/i"); // number of primary vertices
@@ -1430,6 +1447,8 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("lepPhi", lepPhi, "lepPhi[nLeptons]/F");
   tree_->Branch("lepPdgId", lepPdgId, "lepPdgId[nLeptons]/I");
   tree_->Branch("lepDZ", lepDZ, "lepDZ[nLeptons]/F");
+  tree_->Branch("lepLooseId", lepLooseId, "lepLooseId[nLeptons]/O");
+  tree_->Branch("lepMediumId", lepMediumId, "lepMediumId[nLeptons]/O");
   tree_->Branch("lepTightId", lepTightId, "lepTightId[nLeptons]/O");
 
   tree_->Branch("lepPassLooseIso", lepPassLooseIso, "lepPassLooseIso[nLeptons]/O");
@@ -1465,6 +1484,12 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("tauIsTight", tauIsTight,      "tauIsTight[nTaus]/O");
   tree_->Branch("tauIsVTight", tauIsVTight,    "tauIsVTight[nTaus]/O");
   tree_->Branch("tauIsVVTight", tauIsVVTight,  "tauIsVVTight[nTaus]/O");
+  tree_->Branch("tauPNetVSe", tauPNetVSe,       "tauPNetVSe[nTaus]/F");
+  tree_->Branch("tauPNetVSjet", tauPNetVSjet,       "tauPNetVSjet[nTaus]/F");
+  tree_->Branch("tauPNetVSmu", tauPNetVSmu,       "tauPNetVSmu[nTaus]/F");
+  tree_->Branch("tauUParTVSe", tauUParTVSe,       "tauUParTVSe[nTaus]/F");
+  tree_->Branch("tauUParTVSjet", tauUParTVSjet,       "tauUParTVSjet[nTaus]/F");
+  tree_->Branch("tauUParTVSmu", tauUParTVSmu,       "tauUParTVSmu[nTaus]/F");
   tree_->Branch("tauDz",          tauDz,            "tauDz[nTaus]/F");
   tree_->Branch("tauGenPartFlav", tauGenPartFlav,   "tauGenPartFlav[nTaus]/I");
   tree_->Branch("deltaR_GenTauRecoTau", deltaR_GenTauRecoTau,   "deltaR_GenTauRecoTau[nTaus]/F");
