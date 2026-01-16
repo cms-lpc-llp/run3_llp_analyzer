@@ -58,6 +58,8 @@ class TreeMuonSystemCombination {
       Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;
   int mH, mX, ctau;
   float LHEScaleWeight[9];
+  int nSoftJets2p65to3p139, nSoftJetsLargerThan2p65;
+  float HTSoftJets2p65to3p139, HTSoftJetsLargerThan2p65;
 
   //csc
   int nCscRechits;
@@ -72,6 +74,8 @@ class TreeMuonSystemCombination {
   bool HLT_PFMET120_PFMHT120_IDTight;
   bool L1_SingleMuShower_Nominal;
   bool L1_SingleMuShower_Tight;
+  bool HLT_Ele30_WPTight_Gsf;
+  bool HLT_IsoMu24;
 
   float MetTriggerEff;
   float MetTriggerEffUp;
@@ -248,6 +252,10 @@ class TreeMuonSystemCombination {
   float         cscRechitClusterMuonVetoE[N_MAX_CSC];
   bool          cscRechitClusterMuonVetoLooseId[N_MAX_CSC];
   bool          cscRechitClusterMuonVetoGlobal[N_MAX_CSC];
+  float         cscRechitClusterMuonVetoPt0p8Thresh[N_MAX_CSC];
+  float         cscRechitClusterMuonVetoE0p8Thresh[N_MAX_CSC];
+  bool          cscRechitClusterMuonVetoGlobal0p8Thresh[N_MAX_CSC];
+  bool          cscRechitClusterMuonVetoLooseId0p8Thresh[N_MAX_CSC];
 
   int           cscRechitCluster_match_dtSeg_0p4[N_MAX_CSC];
   int           cscRechitCluster_match_MB1Seg_0p4[N_MAX_CSC];

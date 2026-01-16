@@ -56,6 +56,8 @@ HLT_CscCluster100_Mu5 = false;
 HLT_CscCluster50_Photon30Unseeded = false;
 HLT_CscCluster50_Photon20Unseeded = false;
 HLT_PFMET120_PFMHT120_IDTight = false;
+HLT_Ele30_WPTight_Gsf = false;
+HLT_IsoMu24 = false;
 L1_SingleMuShower_Nominal = false;
 L1_SingleMuShower_Tight = false;
 
@@ -83,6 +85,11 @@ L1_SingleMuShower_Tight = false;
   nGenTaus = 0;
   nGenVisTau=0;
   nGenLeptons=0;
+
+  HTSoftJets2p65to3p139 = 0.;
+  HTSoftJetsLargerThan2p65 = 0.;
+  nSoftJets2p65to3p139 = 0;
+  nSoftJetsLargerThan2p65 = 0;
   
 for(int i = 0;i < 9;i++)
 {
@@ -397,6 +404,10 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     cscRechitClusterMuonVetoE[i] = 0.0;
     cscRechitClusterMuonVetoLooseId[i] = false;
     cscRechitClusterMuonVetoGlobal[i] = false;
+    cscRechitClusterMuonVetoPt0p8Thresh[i] = 0.0;
+    cscRechitClusterMuonVetoE0p8Thresh[i] = 0.0;
+    cscRechitClusterMuonVetoLooseId0p8Thresh[i] = false;
+    cscRechitClusterMuonVetoGlobal0p8Thresh[i] = false;
 
     cscRechitClusterNChamber[i] = -999;
     cscRechitClusterMaxChamberRatio[i] = -999.;
@@ -667,6 +678,8 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("HLT_CscCluster50_Photon20Unseeded",      &HLT_CscCluster50_Photon20Unseeded);
   tree_->SetBranchAddress("HLT_CscCluster100_PNetTauhPFJet10_Loose",      &HLT_CscCluster100_PNetTauhPFJet10_Loose);
   tree_->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight",      &HLT_PFMET120_PFMHT120_IDTight);
+  tree_->SetBranchAddress("HLT_Ele30_WPTight_Gsf", &HLT_Ele30_WPTight_Gsf);
+  tree_->SetBranchAddress("HLT_IsoMu24", &HLT_IsoMu24);
   tree_->SetBranchAddress("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal);
   tree_->SetBranchAddress("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight);
 
@@ -713,6 +726,11 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("gHiggsE",      &gHiggsE);
   tree_->SetBranchAddress("gHiggsEta",      &gHiggsEta);
 
+  //branches added to check soft forward activity
+  tree_->SetBranchAddress("nSoftJets2p65to3p139",      &nSoftJets2p65to3p139);
+  tree_->SetBranchAddress("nSoftJetsLargerThan2p65",      &nSoftJetsLargerThan2p65);
+  tree_->SetBranchAddress("HTSoftJets2p65to3p139",      &HTSoftJets2p65to3p139);
+  tree_->SetBranchAddress("HTSoftJetsLargerThan2p65",      &HTSoftJetsLargerThan2p65);
 
 
   tree_->SetBranchAddress("nCscRings",             &nCscRings);
@@ -923,6 +941,13 @@ void TreeMuonSystemCombination::InitTree() {
     tree_->SetBranchAddress("cscRechitClusterMuonVetoLooseId",             cscRechitClusterMuonVetoLooseId);
     tree_->SetBranchAddress("cscRechitClusterMuonVetoGlobal",             cscRechitClusterMuonVetoGlobal);
 
+    tree_->SetBranchAddress("cscRechitClusterMuonVetoPt0p8Thresh",             cscRechitClusterMuonVetoPt0p8Thresh);
+    tree_->SetBranchAddress("cscRechitClusterMuonVetoE0p8Thresh",             cscRechitClusterMuonVetoE0p8Thresh);
+
+
+    tree_->SetBranchAddress("cscRechitClusterMuonVetoLooseId0p8Thresh",             cscRechitClusterMuonVetoLooseId0p8Thresh);
+    tree_->SetBranchAddress("cscRechitClusterMuonVetoGlobal0p8Thresh",             cscRechitClusterMuonVetoGlobal0p8Thresh);
+
 
 
   tree_->SetBranchAddress("cscRechitClusterSize",             cscRechitClusterSize);
@@ -1119,6 +1144,9 @@ void TreeMuonSystemCombination::CreateTree() {
 
   tree_->Branch("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight, "HLT_PFMET120_PFMHT120_IDTight/O");
 
+  tree_->Branch("HLT_Ele30_WPTight_Gsf", &HLT_Ele30_WPTight_Gsf, "HLT_Ele30_WPTight_Gsf/O");
+  tree_->Branch("HLT_IsoMu24", &HLT_IsoMu24, "HLT_IsoMu24");
+
   tree_->Branch("L1_SingleMuShower_Nominal", &L1_SingleMuShower_Nominal, "L1_SingleMuShower_Nominal/O");
   tree_->Branch("L1_SingleMuShower_Tight", &L1_SingleMuShower_Tight, "L1_SingleMuShower_Tight/O");
 
@@ -1162,6 +1190,11 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("metJESDown", &metJESDown, "metJESDown/F"); // phi(MET)
   tree_->Branch("metPhiJESUp", &metPhiJESUp, "metPhiJESUp/F"); // phi(MET)
   tree_->Branch("metPhiJESDown", &metPhiJESDown, "metPhiJESDown/F"); // phi(MET)
+
+  tree_->Branch("nSoftJets2p65to3p139", &nSoftJets2p65to3p139, "nSoftJets2p65to3p139/I");
+  tree_->Branch("nSoftJetsLargerThan2p65", &nSoftJetsLargerThan2p65, "nSoftJetsLargerThan2p65/I");
+  tree_->Branch("HTSoftJets2p65to3p139", &HTSoftJets2p65to3p139, "HTSoftJets2p65to3p139/F");
+  tree_->Branch("HTSoftJetsLargerThan2p65", &HTSoftJetsLargerThan2p65, "HTSoftJetsLargerThan2p65/F");
 
   tree_->Branch("gHiggsPt", &gHiggsPt, "gHiggsPt/F"); // phi(MET)
   tree_->Branch("gHiggsE", &gHiggsE, "gHiggsE/F"); // phi(MET)
@@ -1226,6 +1259,12 @@ void TreeMuonSystemCombination::CreateTree() {
 
   tree_->Branch("cscRechitClusterMuonVetoLooseId", cscRechitClusterMuonVetoLooseId, "cscRechitClusterMuonVetoLooseId[nCscRechitClusters]/O");
   tree_->Branch("cscRechitClusterMuonVetoGlobal", cscRechitClusterMuonVetoGlobal, "cscRechitClusterMuonVetoGlobal[nCscRechitClusters]/O");
+
+  tree_->Branch("cscRechitClusterMuonVetoPt0p8Thresh", cscRechitClusterMuonVetoPt0p8Thresh, "cscRechitClusterMuonVetoPt0p8Thresh[nCscRechitClusters]/F");
+  tree_->Branch("cscRechitClusterMuonVetoE0p8Thresh", cscRechitClusterMuonVetoE0p8Thresh, "cscRechitClusterMuonVetoE0p8Thresh[nCscRechitClusters]/F");
+
+  tree_->Branch("cscRechitClusterMuonVetoLooseId0p8Thresh", cscRechitClusterMuonVetoLooseId0p8Thresh, "cscRechitClusterMuonVetoLooseId0p8Thresh[nCscRechitClusters]/O");
+  tree_->Branch("cscRechitClusterMuonVetoGlobal0p8Thresh", cscRechitClusterMuonVetoGlobal0p8Thresh, "cscRechitClusterMuonVetoGlobal0p8Thresh[nCscRechitClusters]/O");
 
   tree_->Branch("cscRechitCluster_match_dtSeg_0p4", cscRechitCluster_match_dtSeg_0p4, "cscRechitCluster_match_dtSeg_0p4[nCscRechitClusters]/I");
   tree_->Branch("cscRechitCluster_match_MB1Seg_0p4", cscRechitCluster_match_MB1Seg_0p4, "cscRechitCluster_match_MB1Seg_0p4[nCscRechitClusters]/I");

@@ -203,13 +203,13 @@ deltaEta_muCluster:
   collection: cscCluster
   invert: "no"
 
-# DNN_Score:
-#   name: "DNN>0.99975"
-#   branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
-#   minVal: 0.99975
-#   maxVal: 1
-#   collection: cscCluster
-#   invert: "no"
+DNN_Score:
+  name: "DNN>0.99975"
+  branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
+  minVal: 0.99975
+  maxVal: 1
+  collection: cscCluster
+  invert: "no"
 
 
 # deltaPhi_tauCluster:

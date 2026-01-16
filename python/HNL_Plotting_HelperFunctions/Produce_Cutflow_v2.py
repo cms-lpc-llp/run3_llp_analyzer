@@ -82,10 +82,12 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
     #print(signal_normalization_factor.compute())
     #print(len(events.evtNum.compute()))
 
+
     if isMC:
-        weights = sample_ctau/reweight_ctau*np.exp(10*events["gLLP_ctau"]*(1/sample_ctau-1/reweight_ctau))
+        weights = sample_ctau/reweight_ctau*np.exp(10*events["gLLP_ctau"][:,0]*(1/sample_ctau-1/reweight_ctau))
         #print(ak.sum(weights).compute())
         weights = weights/ak.sum(weights)*ak.count(events.evtNum)
+        weights = weights*events.pileupWeight
         #print("about to com0pute weights")
         #print("weights", ak.sum(weights).compute())
         #make L1 weight event level - can't add to generic weight because branch is not filled if there is no cluster
@@ -95,6 +97,8 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
     else:
         weights = ak.ones_like(events["runNum"])
         L1_weights_eventLevel = ak.ones_like(events["runNum"])
+
+    
 
     events = ak.with_field(events, L1_weights_eventLevel, "L1_weights_eventLevel")
     #print(weights.compute())

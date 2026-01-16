@@ -80,6 +80,7 @@ maxjob=int(nfiles/filesPerJob)+1
 mod=int(nfiles%filesPerJob)
 if mod == 0: maxjob -= 1
 outputDirectory = outputDirectoryBase + sample + "/"
+os.system(f"eosmkdir {outputDirectoryBase}")
 os.system(f"eosmkdir {outputDirectory}")
 print(sample)
 if "Run2022E" in sample or "Run2022F" in sample or "Run2022G" in sample or "MC_Summer22EE" in sample:
@@ -119,7 +120,7 @@ else:
 
 #year = datasetList[sample][0]
 #isData = datasetList[sample][1]
-if ("MC" in sample or "HNL" in sample) and not ("DY" in sample or "Wto" in sample):isData="no"
+if ("MC" in sample or "HNL" in sample or "DY" in sample or "Wto" in sample):isData="no"
 else:isData="--isData"
 #####################################
 #Create Condor JDL file
