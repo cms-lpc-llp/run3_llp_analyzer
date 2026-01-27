@@ -62,7 +62,7 @@ class TreeMuonSystemCombination {
   //csc
   int nCscRechits;
   int nCscRings;
-  int nDTRechits;
+  int nDtRechits;
   int nDtRings;
   bool HLT_CscCluster100_PNetTauhPFJet10_Loose;
   bool HLT_CscCluster100_Ele5;
@@ -77,6 +77,14 @@ class TreeMuonSystemCombination {
 
   int nDtRechitClusters;
   int nDtRechitClusters_nocut;
+
+  float DtRechitsEta[N_MAX_DTRECHITS];
+  float DtRechitsPhi[N_MAX_DTRECHITS];
+  float DtRechitsX[N_MAX_DTRECHITS];
+  float DtRechitsY[N_MAX_DTRECHITS];
+  float DtRechitsZ[N_MAX_DTRECHITS];
+  int DtRechitsClusterId[N_MAX_DTRECHITS];
+
   bool dtRechitClusterOverlap[N_MAX_CSC];
   int dtRechitClusterNSegStation1[N_MAX_CSC];
   int dtRechitClusterNSegStation2[N_MAX_CSC];

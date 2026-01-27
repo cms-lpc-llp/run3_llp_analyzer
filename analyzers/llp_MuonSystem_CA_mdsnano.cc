@@ -223,11 +223,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto cscRechitsChamber = cscRechits_Chamber;
     auto cscRechitsStation = cscRechits_Station;
 
+    auto dtRechitCorrectEta = dtRecHits_Eta;
+    auto dtRechitCorrectPhi = dtRecHits_Phi;
     auto dtRechitCorrectX = dtRecHits_X;
     auto dtRechitCorrectY = dtRecHits_Y;
     auto dtRechitCorrectZ = dtRecHits_Z;
-    auto dtRechitCorrectEta = dtRecHits_Eta;
-    auto dtRechitCorrectPhi = dtRecHits_Phi;
     auto dtRechitStation = dtRecHits_Station;
     auto dtRechitWheel = dtRecHits_Wheel;
     auto dtRechitSuperLayer = dtRecHits_SuperLayer;
@@ -749,111 +749,111 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     if (MetXJESDown < 0.0)
       MuonSystem->PuppimetPhiJESDown = RazorAnalyzerMerged::deltaPhi(TMath::Pi() + MuonSystem->PuppimetPhiJESDown, 0.0);
 
-    MuonSystem->nDTRechits = 0;
+    MuonSystem->nDtRechits = 0;
 
-    int nDTRechitsChamberMinus12 = 0;
-    int nDTRechitsChamberMinus11 = 0;
-    int nDTRechitsChamber10 = 0;
-    int nDTRechitsChamberPlus11 = 0;
-    int nDTRechitsChamberPlus12 = 0;
-    int nDTRechitsChamberMinus22 = 0;
-    int nDTRechitsChamberMinus21 = 0;
-    int nDTRechitsChamber20 = 0;
-    int nDTRechitsChamberPlus21 = 0;
-    int nDTRechitsChamberPlus22 = 0;
-    int nDTRechitsChamberMinus32 = 0;
-    int nDTRechitsChamberMinus31 = 0;
-    int nDTRechitsChamber30 = 0;
-    int nDTRechitsChamberPlus31 = 0;
-    int nDTRechitsChamberPlus32 = 0;
-    int nDTRechitsChamberMinus42 = 0;
-    int nDTRechitsChamberMinus41 = 0;
-    int nDTRechitsChamber40 = 0;
-    int nDTRechitsChamberPlus41 = 0;
-    int nDTRechitsChamberPlus42 = 0;
+    int nDtRechitsChamberMinus12 = 0;
+    int nDtRechitsChamberMinus11 = 0;
+    int nDtRechitsChamber10 = 0;
+    int nDtRechitsChamberPlus11 = 0;
+    int nDtRechitsChamberPlus12 = 0;
+    int nDtRechitsChamberMinus22 = 0;
+    int nDtRechitsChamberMinus21 = 0;
+    int nDtRechitsChamber20 = 0;
+    int nDtRechitsChamberPlus21 = 0;
+    int nDtRechitsChamberPlus22 = 0;
+    int nDtRechitsChamberMinus32 = 0;
+    int nDtRechitsChamberMinus31 = 0;
+    int nDtRechitsChamber30 = 0;
+    int nDtRechitsChamberPlus31 = 0;
+    int nDtRechitsChamberPlus32 = 0;
+    int nDtRechitsChamberMinus42 = 0;
+    int nDtRechitsChamberMinus41 = 0;
+    int nDtRechitsChamber40 = 0;
+    int nDtRechitsChamberPlus41 = 0;
+    int nDtRechitsChamberPlus42 = 0;
 
     for (int i = 0; i < nDtRechits; i++) {
       if (dtRechitStation[i] == 1 && dtRechitWheel[i] == -2)
-        nDTRechitsChamberMinus12++;
+        nDtRechitsChamberMinus12++;
       if (dtRechitStation[i] == 1 && dtRechitWheel[i] == -1)
-        nDTRechitsChamberMinus11++;
+        nDtRechitsChamberMinus11++;
       if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 0)
-        nDTRechitsChamber10++;
+        nDtRechitsChamber10++;
       if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 1)
-        nDTRechitsChamberPlus11++;
+        nDtRechitsChamberPlus11++;
       if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 2)
-        nDTRechitsChamberPlus12++;
+        nDtRechitsChamberPlus12++;
       if (dtRechitStation[i] == 2 && dtRechitWheel[i] == -2)
-        nDTRechitsChamberMinus22++;
+        nDtRechitsChamberMinus22++;
       if (dtRechitStation[i] == 2 && dtRechitWheel[i] == -1)
-        nDTRechitsChamberMinus21++;
+        nDtRechitsChamberMinus21++;
       if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 0)
-        nDTRechitsChamber20++;
+        nDtRechitsChamber20++;
       if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 1)
-        nDTRechitsChamberPlus21++;
+        nDtRechitsChamberPlus21++;
       if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 2)
-        nDTRechitsChamberPlus22++;
+        nDtRechitsChamberPlus22++;
       if (dtRechitStation[i] == 3 && dtRechitWheel[i] == -2)
-        nDTRechitsChamberMinus32++;
+        nDtRechitsChamberMinus32++;
       if (dtRechitStation[i] == 3 && dtRechitWheel[i] == -1)
-        nDTRechitsChamberMinus31++;
+        nDtRechitsChamberMinus31++;
       if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 0)
-        nDTRechitsChamber30++;
+        nDtRechitsChamber30++;
       if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 1)
-        nDTRechitsChamberPlus31++;
+        nDtRechitsChamberPlus31++;
       if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 2)
-        nDTRechitsChamberPlus32++;
+        nDtRechitsChamberPlus32++;
       if (dtRechitStation[i] == 4 && dtRechitWheel[i] == -2)
-        nDTRechitsChamberMinus42++;
+        nDtRechitsChamberMinus42++;
       if (dtRechitStation[i] == 4 && dtRechitWheel[i] == -1)
-        nDTRechitsChamberMinus41++;
+        nDtRechitsChamberMinus41++;
       if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 0)
-        nDTRechitsChamber40++;
+        nDtRechitsChamber40++;
       if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 1)
-        nDTRechitsChamberPlus41++;
+        nDtRechitsChamberPlus41++;
       if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 2)
-        nDTRechitsChamberPlus42++;
+        nDtRechitsChamberPlus42++;
     }
 
-    if (nDTRechitsChamberMinus12 > 50)
+    if (nDtRechitsChamberMinus12 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus11 > 50)
+    if (nDtRechitsChamberMinus11 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamber10 > 50)
+    if (nDtRechitsChamber10 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus11 > 50)
+    if (nDtRechitsChamberPlus11 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus12 > 50)
+    if (nDtRechitsChamberPlus12 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus22 > 50)
+    if (nDtRechitsChamberMinus22 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus21 > 50)
+    if (nDtRechitsChamberMinus21 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamber20 > 50)
+    if (nDtRechitsChamber20 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus21 > 50)
+    if (nDtRechitsChamberPlus21 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus22 > 50)
+    if (nDtRechitsChamberPlus22 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus32 > 50)
+    if (nDtRechitsChamberMinus32 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus31 > 50)
+    if (nDtRechitsChamberMinus31 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamber30 > 50)
+    if (nDtRechitsChamber30 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus31 > 50)
+    if (nDtRechitsChamberPlus31 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus32 > 50)
+    if (nDtRechitsChamberPlus32 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus42 > 50)
+    if (nDtRechitsChamberMinus42 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberMinus41 > 50)
+    if (nDtRechitsChamberMinus41 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamber40 > 50)
+    if (nDtRechitsChamber40 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus41 > 50)
+    if (nDtRechitsChamberPlus41 > 50)
       MuonSystem->nDtRings++;
-    if (nDTRechitsChamberPlus42 > 50)
+    if (nDtRechitsChamberPlus42 > 50)
       MuonSystem->nDtRings++;
 
     vector<Rechits> points;
@@ -1206,9 +1206,17 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     // DT cluster
 
     points.clear();
-    // cout<<"here"<<endl;
 
+    vector<int> DtRechitsClusterId;
+    MuonSystem->nDtRechits = nDtRechits;
     for (int i = 0; i < nDtRechits; i++) {
+
+      MuonSystem->DtRechitsEta[i] = dtRechitCorrectEta[i];
+      MuonSystem->DtRechitsPhi[i] = dtRechitCorrectPhi[i];
+      MuonSystem->DtRechitsX[i] = dtRechitCorrectX[i];
+      MuonSystem->DtRechitsY[i] = dtRechitCorrectY[i];
+      MuonSystem->DtRechitsZ[i] = dtRechitCorrectZ[i];
+      
       Rechits p;
 
       p.phi = dtRechitCorrectPhi[i];
@@ -1224,10 +1232,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       p.wheel = dtRechitWheel[i];
       p.clusterID = UNCLASSIFIED;
       points.push_back(p);
-    }
-    // cout<<"here"<<endl;
 
-    //Do DBSCAN Clustering
+      DtRechitsClusterId.push_back(-1);
+    }
+
+
+    //Do CACluster Clustering
     int min_point_dt = 50; //minimum number of segments to call it a cluster
     float epsilon_dt = 0.2; //cluster radius parameter
     CACluster ds_dtRechit(min_point_dt, epsilon_dt, points);
@@ -1236,10 +1246,17 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     //ds_dtRechit.merge_clusters();
     //ds_dtRechit.clusterProperties();
 
+    clusterIdx = 0;
+    for (auto& tmp : points) {
+      MuonSystem->DtRechitsClusterId[clusterIdx] = tmp.clusterID;
+      clusterIdx++;
+    }
+
     ds_dtRechit.sort_clusters();
 
     MuonSystem->nDtRechitClusters = 0;
     MuonSystem->nDtRechitClusters_nocut = 0;
+
     for (auto& tmp : ds_dtRechit.clusters) {
       //remove overlaps
       bool overlap = false;

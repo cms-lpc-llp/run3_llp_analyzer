@@ -62,7 +62,7 @@ class TreeMuonSystemCombination_TnP {
   //csc
   int nCscRechits;
   int nCscRings;
-  int nDTRechits;
+  int nDtRechits;
   int nDtRings;
 
   int nDtRechitClusters;

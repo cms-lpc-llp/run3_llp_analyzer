@@ -6,12 +6,44 @@ import time
 import subprocess
 import glob
 import sys
+import argparse
 from collections import OrderedDict
 
-sample = sys.argv[1] # e.g. Muon0-Run2024B-PromptReco-v1
-analyzer_str = sys.argv[2] #e.g. TnP_mdsnano
-output_end = sys.argv[3] #e.g. 2024_Data (what to append to HNL_Tau_Search directory path for output)
-log_name = sys.argv[4] # e.g. 2024_Data_Test (name of directory for condor submit and log files)
+parser = argparse.ArgumentParser(
+    description="Create and submit (or dry-run) a Condor workflow for run3_llp_analyzer on LPC."
+)
+parser.add_argument("sample", help="Dataset/sample name (must have a corresponding <sample>.txt in the list directory).")
+parser.add_argument(
+    "analyzer_str",
+    help="Analyzer selector string (e.g. TnP_mdsnano).",
+    choices=[
+        "TnP",
+        "TnP_mdsnano",
+        "TnP_noClusters",
+        "TrigEff",
+        "TrigEff_mdsnano",
+        "TnP_noClusters_VetoEff",
+        "TnP_noClusters_VetoEff_mdsnano",
+        "mdsnano",
+        "mdsnano_hnl",
+    ],
+)
+parser.add_argument(
+    "output_end",
+    help="Suffix appended to /store/group/lpclonglived/amalbert/HNL_Tau_Search/<output_end>/ for output.",
+)
+parser.add_argument("log_name", help="Tag used for local condor submit/log directories.")
+parser.add_argument(
+    "--dryRun",
+    action="store_true",
+    help="Do everything except eosmkdir + condor_submit (still writes the JDL).",
+)
+args = parser.parse_args()
+
+sample = args.sample  # e.g. Muon0-Run2024B-PromptReco-v1-AOD (or a full path to a .txt list)
+analyzer_str = args.analyzer_str  # e.g. TnP_mdsnano
+output_end = args.output_end  # e.g. 2024_Data
+log_name = args.log_name  # e.g. 2024_Data_Test
 
 log_dir = "condor_job_output/log_{}".format(log_name)
 submit_dir = "condor_job_output/submit_{}".format(log_name)
@@ -32,22 +64,65 @@ elif analyzer_str=="TrigEff":analyzer="llp_MuonSystem_CA_TrigEff"
 elif analyzer_str=="TrigEff_mdsnano":analyzer="llp_MuonSystem_CA_TrigEff_mdsnano"
 elif analyzer_str=="TnP_noClusters_VetoEff":analyzer="llp_MuonSystem_CA_TnP_noClusters_VetoEff"
 elif analyzer_str=="TnP_noClusters_VetoEff_mdsnano":analyzer="llp_MuonSystem_CA_TnP_noClusters_VetoEff_mdsnano"
+elif analyzer_str=="mdsnano":analyzer="llp_MuonSystem_CA_mdsnano"
 elif analyzer_str=="mdsnano_hnl":analyzer="llp_MuonSystem_CA_mdsnano_hnl"
 else:print("analyzer string not recognized, exiting ...");exit()
 analyzer_version = 'v11'
 #outputDirectoryBase="/storage/af/group/phys_exotica/delayedjets/displacedJetMuonAnalyzer/Run3/{0}/{1}/".format(ntupler_version, analyzer_version)
 #outputDirectoryBase="/store/group/lpclonglived/amalbert/Data_MC_Comp_TnP/results_from_cache_noSkim/{}/".format(output_end)
-outputDirectoryBase="/store/group/lpclonglived/amalbert/HNL_Tau_Search/{}/".format(output_end)
-HOME = os.getenv('HOME')
-CMSSW_BASE = os.getenv('CMSSW_BASE')
-#Analyzer_DIR = CMSSW_BASE+"/src/run3_llp_analyzer/"
-Analyzer_DIR = ''
-#datasetListDir = Analyzer_DIR + "lists/displacedJetMuonNtuple/{}/".format(ntupler_version)
-if "HNL" in sample:
-    datasetListDir = Analyzer_DIR + "lists/MDSNano/v2/MC_Summer24/"
+EOS_USER = os.getenv("USER") or "tlee"
+outputDirectoryBase="/store/user/{}/HNL_Tau_Search/{}/".format(EOS_USER, output_end)
+HOME = os.getenv("HOME") or ""
+CMSSW_BASE = os.getenv("CMSSW_BASE")
+
+# Prefer CMSSW_BASE if available, otherwise fall back to the repo location.
+if CMSSW_BASE:
+    Analyzer_DIR = os.path.join(CMSSW_BASE, "src", "run3_llp_analyzer")
 else:
-    datasetListDir = Analyzer_DIR + "lists/MDSNano/v2/Data2024/v2/"
-#datasetListDir = Analyzer_DIR + "Merged_Cache_InputLists/" #USED FOR 2022+2023 Data where merging was done via caching strategy
+    Analyzer_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    print(f"[warn] CMSSW_BASE is not set; using Analyzer_DIR={Analyzer_DIR}")
+
+if not Analyzer_DIR.endswith("/"):
+    Analyzer_DIR += "/"
+
+lists_root = os.path.join(Analyzer_DIR, "lists", "MDSNano", "v2")
+
+def resolve_inputfilelist(sample_arg: str) -> str:
+    """
+    Allow either:
+      - full path to a .txt list file
+      - sample basename (without .txt), which will be searched under lists_root
+    """
+    if sample_arg.endswith(".txt"):
+        candidate = sample_arg
+        if not os.path.isabs(candidate):
+            candidate = os.path.abspath(os.path.join(os.getcwd(), candidate))
+        if os.path.exists(candidate):
+            return candidate
+        raise FileNotFoundError(candidate)
+
+    matches = glob.glob(os.path.join(lists_root, "**", sample_arg + ".txt"), recursive=True)
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) == 0:
+        raise FileNotFoundError(f"No list file found for sample '{sample_arg}' under {lists_root}")
+    raise RuntimeError(
+        "Multiple list files matched sample '{0}'. Please pass the full .txt path.\n{1}".format(
+            sample_arg, "\n".join(matches)
+        )
+    )
+
+inputfilelist = resolve_inputfilelist(sample)
+sample_name = os.path.basename(inputfilelist).replace(".txt", "")
+
+try:
+    rel = os.path.relpath(inputfilelist, lists_root)
+    list_top = rel.split(os.sep, 1)[0]
+except Exception:
+    list_top = ""
+
+is_data = list_top.startswith("Data") or "Run" in sample_name
+isData = "--isData" if is_data else "no"
 
 
 '''
@@ -66,21 +141,22 @@ for s in samples:
 
 #for sample in datasetList.keys():
 
-print("Preparing analyzer workflow for dataset: " + sample + "\n")
+print("Preparing analyzer workflow for dataset: " + sample_name + "\n")
 
-#inputfilelist  = datasetListDir + sample +'-AOD.txt' # UNCOMMENT FOR DATA
-inputfilelist  = datasetListDir + sample +'.txt'
 if not os.path.exists(inputfilelist):
-    print("listfile: " + inputfilelist + " does not exist. skipping.")
-    #continue
+    print("listfile: " + inputfilelist + " does not exist. exiting.")
+    sys.exit(2)
 cmd = ["awk", "END{print NR}",inputfilelist]
 nfiles = int(subprocess.check_output(cmd).decode("utf-8"))
 maxjob=int(nfiles/filesPerJob)+1
 mod=int(nfiles%filesPerJob)
 if mod == 0: maxjob -= 1
-outputDirectory = outputDirectoryBase + sample + "/"
-os.system(f"eosmkdir {outputDirectory}")
-print(sample)
+outputDirectory = outputDirectoryBase + sample_name + "/"
+if not args.dryRun:
+    os.system(f"eos root://cmseos.fnal.gov mkdir -p {outputDirectory}")
+else:
+    print(f"[dryRun] Would run: eosmkdir {outputDirectory}")
+print(sample_name)
 if "Run2022E" in sample or "Run2022F" in sample or "Run2022G" in sample or "MC_Summer22EE" in sample:
     analyzerTag = "Summer22EE"
     jetVetoMap = "Summer22EE_23Sep2023_RunEFG_v1.root"
@@ -105,7 +181,7 @@ elif "Run2023B" in sample or "Run2023C" in sample or "MC_Summer23" in sample:
     pileupWeights = "PileupReweight_Summer23.root"
     HMT = "L1_efficiencies_2022_2023_032625-Hists-TEff.root"
     MET = "METTriggerEff_Summer23BPix.root"
-elif "Run2024" in sample or "MC_Summer24" in sample or "HNL"in sample:
+elif "Run2024" in sample_name or "MC_Summer24" in sample_name or "HNL"in sample_name or list_top in ("MC_Summer24", "Data2024"):
     analyzerTag = "Summer24"
     jetVetoMap = "Winter24Prompt24_2024BCDEFGHI.root"
     pileupWeights = "PileupReweight_Summer24.root"
@@ -116,10 +192,6 @@ else:
     exit()
 
 
-#year = datasetList[sample][0]
-#isData = datasetList[sample][1]
-if "MC" in sample or "HNL" in sample:isData="no"
-else:isData="--isData"
 #####################################
 #Create Condor JDL file
 #####################################
@@ -129,7 +201,7 @@ else:isData="--isData"
 #Need to transfer in OPENSSL Libs and Bin for xrdcp to work in condor
 
 
-jdl_file="{}/{}_{}_{}.jdl".format(submit_dir, analyzer, sample.replace("/","_"), maxjob)
+jdl_file="{}/{}_{}_{}.jdl".format(submit_dir, analyzer, sample_name.replace("/","_"), maxjob)
 
 tmpCondorJDLFile = open(jdl_file,"w")
 
@@ -140,9 +212,9 @@ print("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ \n"\
 tmpCondorJDLFile.write("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ \n"\
                         .format(analyzer, inputfilelist, isData, filesPerJob, maxjob, outputDirectory, analyzerTag, CMSSW_BASE, HOME))
 
-tmpCondorJDLFile.write("Log = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).log \n".format(log_dir,analyzer, sample.replace("/","_"), maxjob))
-tmpCondorJDLFile.write("Output = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).out \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
-tmpCondorJDLFile.write("Error = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).err \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
+tmpCondorJDLFile.write("Log = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).log \n".format(log_dir,analyzer, sample_name.replace("/","_"), maxjob))
+tmpCondorJDLFile.write("Output = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).out \n".format(log_dir, analyzer, sample_name.replace("/","_"), maxjob))
+tmpCondorJDLFile.write("Error = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).err \n".format(log_dir, analyzer, sample_name.replace("/","_"), maxjob))
 
 tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
 tmpCondorJDLFile.write("RequestMemory = 4096 \n")
@@ -162,4 +234,8 @@ tmpCondorJDLFile.write("Queue {} \n".format(maxjob))
 #tmpCondorJDLFile.write("Queue {} \n".format(2))
 tmpCondorJDLFile.close()
 
-os.system("condor_submit {} --batch-name {}".format(jdl_file, sample))
+if not args.dryRun:
+    os.system("condor_submit {} --batch-name {}".format(jdl_file, sample_name))
+else:
+    print(f"[dryRun] Wrote JDL: {jdl_file}")
+    print(f"[dryRun] Would run: condor_submit {jdl_file} --batch-name {sample_name}")
