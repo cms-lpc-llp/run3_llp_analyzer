@@ -1226,8 +1226,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       if (overlap)
         continue;
       MuonSystem->nDtRechitClusters_nocut++;
-      if (tmp.nDtRechitsStation1 > 0)
-        continue;
       MuonSystem->dtRechitClusterX[MuonSystem->nDtRechitClusters] = tmp.x;
       MuonSystem->dtRechitClusterY[MuonSystem->nDtRechitClusters] = tmp.y;
       MuonSystem->dtRechitClusterZ[MuonSystem->nDtRechitClusters] = tmp.z;
