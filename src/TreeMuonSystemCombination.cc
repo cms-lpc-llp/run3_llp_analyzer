@@ -50,16 +50,16 @@ void TreeMuonSystemCombination::InitVariables() {
   Flag_ecalBadCalibFilter = false;
   Flag_all = false;
 
-HLT_CscCluster100_PNetTauhPFJet10_Loose = false;
-HLT_CscCluster100_Ele5 = false;
-HLT_CscCluster100_Mu5 = false;
-HLT_CscCluster50_Photon30Unseeded = false;
-HLT_CscCluster50_Photon20Unseeded = false;
-HLT_PFMET120_PFMHT120_IDTight = false;
-HLT_Ele30_WPTight_Gsf = false;
-HLT_IsoMu24 = false;
-L1_SingleMuShower_Nominal = false;
-L1_SingleMuShower_Tight = false;
+  HLT_CscCluster100_PNetTauhPFJet10_Loose = false;
+  HLT_CscCluster100_Ele5 = false;
+  HLT_CscCluster100_Mu5 = false;
+  HLT_CscCluster50_Photon30Unseeded = false;
+  HLT_CscCluster50_Photon20Unseeded = false;
+  HLT_PFMET120_PFMHT120_IDTight = false;
+  HLT_Ele30_WPTight_Gsf = false;
+  HLT_IsoMu24 = false;
+  L1_SingleMuShower_Nominal = false;
+  L1_SingleMuShower_Tight = false;
 
   MetTriggerEff = 0.;
   MetTriggerEffUp = 0.;
@@ -77,6 +77,7 @@ L1_SingleMuShower_Tight = false;
 
   nCscRechits = 0;
   nDTRechits = 0;
+  nRpcRechits = 0;
   nCscRechitClusters = 0;
   nCscRechitClusters_nocut = 0;
   nDtRechitClusters = 0;
@@ -87,248 +88,261 @@ L1_SingleMuShower_Tight = false;
   nGenTaus = 0;
   nGenVisTau=0;
   nGenLeptons=0;
+  nGLLP = 0;
 
   HTSoftJets2p65to3p139 = 0.;
   HTSoftJetsLargerThan2p65 = 0.;
   nSoftJets2p65to3p139 = 0;
   nSoftJetsLargerThan2p65 = 0;
   
-for(int i = 0;i < 9;i++)
-{
-  LHEScaleWeight[i] = -999;
-}
+  for(int i = 0;i < 9;i++) {
+    LHEScaleWeight[i] = -999;
+  }
 
-for(int i = 0;i < N_MAX_GPARTICLES;i++)
-{
-  gParticleEta[i] = -999;
-  gParticlePhi[i] = -999;
-  gParticlePt[i] = -999;
-  gParticleId[i] = -999;
-  gParticle_decay_vertex_r[i] = -999;
-  gParticle_decay_vertex_x[i] = -999;
-  gParticle_decay_vertex_y[i] = -999;
-  gParticle_decay_vertex_z[i] = -999;
+  for(int i = 0;i < N_MAX_GPARTICLES;i++) {
+    gParticleEta[i] = -999;
+    gParticlePhi[i] = -999;
+    gParticlePt[i] = -999;
+    gParticleId[i] = -999;
+    gParticle_decay_vertex_r[i] = -999;
+    gParticle_decay_vertex_x[i] = -999;
+    gParticle_decay_vertex_y[i] = -999;
+    gParticle_decay_vertex_z[i] = -999;
 
-  gParticle_ctau[i] = -999;
-  gParticle_beta[i] = -999;
-
-}
-
+    gParticle_ctau[i] = -999;
+    gParticle_beta[i] = -999;
+  }
   for (int i = 0; i < N_MAX_CSCRECHITS; i++) {
     CscRechitsClusterId[i] = -1;
+    CscRechitsQuality[i] = -999;
+    CscRechitsChamber[i] = -999;
+    CscRechitsIChamber[i] = -999;
+    CscRechitsStation[i] = -999;
+    CscRechitsNStrips[i] = -999;
+    CscRechitsWGroupsBX[i] = -999;
+    CscRechitsHitWire[i] = -999;
+    CscRechitsNWireGroups[i] = -999;
     CscRechitsEta[i] = -999.;
     CscRechitsPhi[i] = -999.;
     CscRechitsX[i] = -999.;
     CscRechitsY[i] = -999.;
     CscRechitsZ[i] = -999.;
+    CscRechitsE[i] = -999.;
+    CscRechitsTpeak[i] = -999.;
+    CscRechitsTwire[i] = -999.;
   }
   for (int i = 0; i < N_MAX_DTRECHITS; i++) {
     DtRechitsClusterId[i] = -1;
+    DtRechitsLayer[i] = -999;
+    DtRechitsSuperLayer[i] = -999;
+    DtRechitsSector[i] = -999;
+    DtRechitsStation[i] = -999;
+    DtRechitsWheel[i] = -999;
     DtRechitsEta[i] = -999.;
     DtRechitsPhi[i] = -999.;
     DtRechitsX[i] = -999.;
     DtRechitsY[i] = -999.;
     DtRechitsZ[i] = -999.;
   }
+  for (int i = 0; i < N_MAX_RPCRECHITS; i++) {
+    RpcRecHitsClusterId[i] = -1;
+    RpcRecHitsBx[i] = -999;
+    RpcRecHitsRegion[i] = -999;
+    RpcRecHitsRing[i] = -999;
+    RpcRecHitsLayer[i] = -999;
+    RpcRecHitsStation[i] = -999;
+    RpcRecHitsSector[i] = -999;
+    RpcRecHitsX[i] = -999.;
+    RpcRecHitsY[i] = -999.;
+    RpcRecHitsZ[i] = -999.;
+    RpcRecHitsPhi[i] = -999.;
+    RpcRecHitsEta[i] = -999.;
+    RpcRecHitsTime[i] = -999.;
+    RpcRecHitsTimeError[i] = -999.;
+  }
 
 
-  for( int i = 0; i < N_MAX_CSC; i++ )
-  {
+  for( int i = 0; i < N_MAX_CSC; i++ ) {
+    cscRechitCluster_match_gLLP[i] = false;
+    cscRechitCluster_match_gLLP_minDeltaR[i] = 999;
+    cscRechitCluster_match_gLLP_index[i] = 999;
+    cscRechitCluster_match_gLLP_eta[i] = 999.;
+    cscRechitCluster_match_gLLP_phi[i] = 999.;
+    cscRechitCluster_match_gLLP_decay_r[i] = 999.;
+    cscRechitCluster_match_gLLP_decay_z[i] = 999.;
+    cscRechitCluster_match_gLLP_csc[i] = false;
+    cscRechitCluster_match_gLLP_dt[i] = false;
+    cscRechitCluster_match_gLLP_e[i] = 999.;
 
-        cscRechitCluster_match_gLLP[i] = false;
-        cscRechitCluster_match_gLLP_minDeltaR[i] = 999;
-        cscRechitCluster_match_gLLP_index[i] = 999;
-        cscRechitCluster_match_gLLP_eta[i] = 999.;
-        cscRechitCluster_match_gLLP_phi[i] = 999.;
-        cscRechitCluster_match_gLLP_decay_r[i] = 999.;
-        cscRechitCluster_match_gLLP_decay_z[i] = 999.;
-        cscRechitCluster_match_gLLP_csc[i] = false;
-        cscRechitCluster_match_gLLP_dt[i] = false;
-        cscRechitCluster_match_gLLP_e[i] = 999.;
+    cscRechitClusterSize[i] = -999;
+    cscRechitClusterX[i] = -999.;
+    cscRechitClusterY[i] = -999.;
+    cscRechitClusterZ[i] = -999.;
+    cscRechitClusterTimeWeighted[i] = -999.;
+    cscRechitCluster_match_dtSeg_0p4[i] = 0;
+    cscRechitCluster_match_MB1Seg_0p4[i] = 0;
+    cscRechitCluster_match_RE12_0p4[i] = 0;
+    cscRechitCluster_match_RB1_0p4[i] = 0;
+    cscRechitClusterTimeSpreadWeightedAll[i] = -999.;
+    cscRechitClusterTime[i] = -999.;
+    cscRechitClusterTimeSpread[i] = -999.;
+    cscRechitClusternXY[i] = -999;
+    cscRechitClusternZ[i] = -999;
+    cscRechitClusterXSpread[i] = -999.;
+    cscRechitClusterYSpread[i] = -999.;
+    cscRechitClusterZSpread[i] = -999.;
+    cscRechitClusterXYSpread[i] = -999.;
+    cscRechitClusterRSpread[i] = -999.;
+    cscRechitClusterEtaPhiSpread[i] = -999.;
+    cscRechitClusterEtaSpread[i] = -999.;
+    cscRechitClusterPhiSpread[i] = -999.;
+    cscRechitClusterDeltaRSpread[i] = -999.;
+    cscRechitClusterMajorAxis[i] = -999.;
+    cscRechitClusterMinorAxis[i] = -999.;
+    cscRechitClusterSkewX[i] = -999.;
+    cscRechitClusterSkewY[i] = -999.;
+    cscRechitClusterSkewZ[i] = -999.;
+    cscRechitClusterKurtX[i] = -999.;
+    cscRechitClusterKurtY[i] = -999.;
+    cscRechitClusterKurtZ[i] = -999.;
+    cscRechitClusterEta[i] = -999.;
+    cscRechitClusterPhi[i] = -999.;
+    cscRechitClusterJetVetoPt[i] = 0.0;
+    cscRechitClusterJetVetoPtJESUp[i] = 0.0;
+    cscRechitClusterJetVetoPtJESDown[i] = 0.0;
+    cscRechitClusterJetVetoLooseId[i] = false;
+    cscRechitClusterJetVetoTightId[i] = false;
+    cscRechitClusterJetVetoE[i] = 0.0;
+    cscRechitClusterMuonVetoPt[i] = 0.0;
+    cscRechitClusterMuonVetoE[i] = 0.0;
+    cscRechitClusterMuonVetoLooseId[i] = false;
+    cscRechitClusterMuonVetoGlobal[i] = false;
 
+    cscRechitClusterNChamber[i] = -999;
+    cscRechitClusterMaxChamberRatio[i] = -999.;
+    cscRechitClusterMaxChamber[i] = -999;
+    cscRechitClusterNStation10[i] = -999;
+    cscRechitClusterAvgStation10[i] = -999.;
+    cscRechitClusterMaxStationRatio[i] = -999.;
+    cscRechitClusterMaxStation[i] = -999;
+    cscRechitClusterNRechitChamberPlus11[i] = -999;
+    cscRechitClusterNRechitChamberPlus12[i] = -999;
+    cscRechitClusterNRechitChamberPlus13[i] = -999;
+    cscRechitClusterNRechitChamberPlus21[i] = -999;
+    cscRechitClusterNRechitChamberPlus22[i] = -999;
+    cscRechitClusterNRechitChamberPlus31[i] = -999;
+    cscRechitClusterNRechitChamberPlus32[i] = -999;
+    cscRechitClusterNRechitChamberPlus41[i] = -999;
+    cscRechitClusterNRechitChamberPlus42[i] = -999;
+    cscRechitClusterNRechitChamberMinus11[i] = -999;
+    cscRechitClusterNRechitChamberMinus12[i] = -999;
+    cscRechitClusterNRechitChamberMinus13[i] = -999;
+    cscRechitClusterNRechitChamberMinus21[i] = -999;
+    cscRechitClusterNRechitChamberMinus22[i] = -999;
+    cscRechitClusterNRechitChamberMinus31[i] = -999;
+    cscRechitClusterNRechitChamberMinus32[i] = -999;
+    cscRechitClusterNRechitChamberMinus41[i] = -999;
+    cscRechitClusterNRechitChamberMinus42[i] = -999;
 
-        cscRechitClusterSize[i] = -999;
-        cscRechitClusterX[i] = -999.;
-        cscRechitClusterY[i] = -999.;
-        cscRechitClusterZ[i] = -999.;
-        cscRechitClusterTimeWeighted[i] = -999.;
-        cscRechitCluster_match_dtSeg_0p4[i] = 0;
-        cscRechitCluster_match_MB1Seg_0p4[i] = 0;
-        cscRechitCluster_match_RE12_0p4[i] = 0;
-        cscRechitCluster_match_RB1_0p4[i] = 0;
-        cscRechitClusterTimeSpreadWeightedAll[i] = -999.;
-        cscRechitClusterTime[i] = -999.;
-        cscRechitClusterTimeSpread[i] = -999.;
-        cscRechitClusternXY[i] = -999;
-        cscRechitClusternZ[i] = -999;
-        cscRechitClusterXSpread[i] = -999.;
-        cscRechitClusterYSpread[i] = -999.;
-        cscRechitClusterZSpread[i] = -999.;
-        cscRechitClusterXYSpread[i] = -999.;
-        cscRechitClusterRSpread[i] = -999.;
-        cscRechitClusterEtaPhiSpread[i] = -999.;
-        cscRechitClusterEtaSpread[i] = -999.;
-        cscRechitClusterPhiSpread[i] = -999.;
-        cscRechitClusterDeltaRSpread[i] = -999.;
-        cscRechitClusterMajorAxis[i] = -999.;
-        cscRechitClusterMinorAxis[i] = -999.;
-        cscRechitClusterSkewX[i] = -999.;
-        cscRechitClusterSkewY[i] = -999.;
-        cscRechitClusterSkewZ[i] = -999.;
-        cscRechitClusterKurtX[i] = -999.;
-        cscRechitClusterKurtY[i] = -999.;
-        cscRechitClusterKurtZ[i] = -999.;
-        cscRechitClusterEta[i] = -999.;
-        cscRechitClusterPhi[i] = -999.;
-        cscRechitClusterJetVetoPt[i] = 0.0;
-        cscRechitClusterJetVetoPtJESUp[i] = 0.0;
-        cscRechitClusterJetVetoPtJESDown[i] = 0.0;
-        cscRechitClusterJetVetoLooseId[i] = false;
-        cscRechitClusterJetVetoTightId[i] = false;
-        cscRechitClusterJetVetoE[i] = 0.0;
-        cscRechitClusterMuonVetoPt[i] = 0.0;
-        cscRechitClusterMuonVetoE[i] = 0.0;
-        cscRechitClusterMuonVetoLooseId[i] = false;
-        cscRechitClusterMuonVetoGlobal[i] = false;
+    cscRechitClusterNRechitME1112[i] = -999;
+    cscRechitClusterNRechitStation12[i]= -999;
 
-        cscRechitClusterNChamber[i] = -999;
-        cscRechitClusterMaxChamberRatio[i] = -999.;
-        cscRechitClusterMaxChamber[i] = -999;
-        cscRechitClusterNStation10[i] = -999;
-        cscRechitClusterAvgStation10[i] = -999.;
-        cscRechitClusterMaxStationRatio[i] = -999.;
-        cscRechitClusterMaxStation[i] = -999;
-        cscRechitClusterNRechitChamberPlus11[i] = -999;
-        cscRechitClusterNRechitChamberPlus12[i] = -999;
-        cscRechitClusterNRechitChamberPlus13[i] = -999;
-        cscRechitClusterNRechitChamberPlus21[i] = -999;
-        cscRechitClusterNRechitChamberPlus22[i] = -999;
-        cscRechitClusterNRechitChamberPlus31[i] = -999;
-        cscRechitClusterNRechitChamberPlus32[i] = -999;
-        cscRechitClusterNRechitChamberPlus41[i] = -999;
-        cscRechitClusterNRechitChamberPlus42[i] = -999;
-        cscRechitClusterNRechitChamberMinus11[i] = -999;
-        cscRechitClusterNRechitChamberMinus12[i] = -999;
-        cscRechitClusterNRechitChamberMinus13[i] = -999;
-        cscRechitClusterNRechitChamberMinus21[i] = -999;
-        cscRechitClusterNRechitChamberMinus22[i] = -999;
-        cscRechitClusterNRechitChamberMinus31[i] = -999;
-        cscRechitClusterNRechitChamberMinus32[i] = -999;
-        cscRechitClusterNRechitChamberMinus41[i] = -999;
-        cscRechitClusterNRechitChamberMinus42[i] = -999;
+    cscRechitClusterHMTEfficiency[i] = -999;
 
-        cscRechitClusterNRechitME1112[i] = -999;
-        cscRechitClusterNRechitStation12[i]= -999;
+    cscRechitClusterMet_dPhi[i] = 999.;
+    cscRechitClusterMetJESUp_dPhi[i] = 999.;
+    cscRechitClusterMetJESDown_dPhi[i] = 999.;  
+    cscRechitClusterPuppiMet_dPhi[i] = 999.;
 
-        cscRechitClusterHMTEfficiency[i] = -999;
+    cscRechitClusterPromptTauDeltaEta[i] = 999.;
+    cscRechitClusterPromptTauDeltaPhi[i] = 999.;
+    cscRechitClusterPromptTauDeltaR[i] = 999.;
+    cscRechitClusterPromptMuDeltaEta[i] = 999.;
+    cscRechitClusterPromptMuDeltaPhi[i] = 999.;
+    cscRechitClusterPromptMuDeltaR[i] = 999.;
+    cscRechitClusterPromptEleDeltaEta[i] = 999.;
+    cscRechitClusterPromptEleDeltaPhi[i] = 999.;
+    cscRechitClusterPromptEleDeltaR[i] = 999.;
 
+    dtRechitClusterNSegStation1[i] = 0;
+    dtRechitClusterNSegStation2[i] = 0;
+    dtRechitClusterNSegStation3[i] = 0;
+    dtRechitClusterNSegStation4[i] = 0;
 
-        cscRechitClusterMet_dPhi[i] = 999.;
-        cscRechitClusterMetJESUp_dPhi[i] = 999.;
-        cscRechitClusterMetJESDown_dPhi[i] = 999.;  
-        cscRechitClusterPuppiMet_dPhi[i] = 999.;
+    dtRechitClusterNOppositeSegStation1[i] = 0;
+    dtRechitClusterNOppositeSegStation2[i] = 0;
+    dtRechitClusterNOppositeSegStation3[i] = 0;
+    dtRechitClusterNOppositeSegStation4[i] = 0;
 
-        cscRechitClusterPromptTauDeltaEta[i] = 999.;
-        cscRechitClusterPromptTauDeltaPhi[i] = 999.;
-        cscRechitClusterPromptTauDeltaR[i] = 999.;
-        cscRechitClusterPromptMuDeltaEta[i] = 999.;
-        cscRechitClusterPromptMuDeltaPhi[i] = 999.;
-        cscRechitClusterPromptMuDeltaR[i] = 999.;
-        cscRechitClusterPromptEleDeltaEta[i] = 999.;
-        cscRechitClusterPromptEleDeltaPhi[i] = 999.;
-        cscRechitClusterPromptEleDeltaR[i] = 999.;
+    dtRechitCluster_match_MB1hits_0p4[i] = 0;
+    dtRechitCluster_match_MB1hits_0p5[i] = 0;
+    dtRechitCluster_match_MB1hits_cosmics_plus[i] = 0;
+    dtRechitCluster_match_MB1hits_cosmics_minus[i] = 0;
+    dtRechitCluster_match_MB1Seg_0p4[i] = 0;
+    dtRechitCluster_match_MB1Seg_0p5[i] = 0;
+    dtRechitCluster_match_RPChits_dPhi0p5[i] = 0;
+    dtRechitCluster_match_RPCBx_dPhi0p5[i] = 0;
+    dtRechitCluster_match_RB1_0p4[i] = 0;
+    dtRechitCluster_match_RB1_dPhi0p5[i] = 0;
 
-        dtRechitClusterNSegStation1[i] = 0;
-        dtRechitClusterNSegStation2[i] = 0;
-        dtRechitClusterNSegStation3[i] = 0;
-        dtRechitClusterNSegStation4[i] = 0;
+    dtRechitCluster_match_gLLP[i] = false;
+    dtRechitCluster_match_gLLP_minDeltaR[i] = 999;
+    dtRechitCluster_match_gLLP_index[i] = 999;
+    dtRechitCluster_match_gLLP_eta[i] = 999.;
+    dtRechitCluster_match_gLLP_phi[i] = 999.;
+    dtRechitCluster_match_gLLP_decay_r[i] = 999.;
+    dtRechitCluster_match_gLLP_decay_z[i] = 999.;
+    dtRechitCluster_match_gLLP_csc[i] = false;
+    dtRechitCluster_match_gLLP_dt[i] = false;
+    dtRechitCluster_match_gLLP_e[i] = 999.;
 
-        dtRechitClusterNOppositeSegStation1[i] = 0;
-        dtRechitClusterNOppositeSegStation2[i] = 0;
-        dtRechitClusterNOppositeSegStation3[i] = 0;
-        dtRechitClusterNOppositeSegStation4[i] = 0;
+    dtRechitClusterSize[i] = -999;
+    dtRechitClusterOverlap[i] = false;
+    dtRechitClusterNoiseHit[i] = 0;
+    dtRechitClusterNoiseHitStation1[i] = 0;
+    dtRechitClusterNoiseHitStation2[i] = 0;
+    dtRechitClusterNoiseHitStation3[i] = 0;
+    dtRechitClusterNoiseHitStation4[i] = 0;
+    dtRechitClusterX[i] = -999.;
+    dtRechitClusterY[i] = -999.;
+    dtRechitClusterZ[i] = -999.;
 
-        dtRechitCluster_match_MB1hits_0p4[i] = 0;
-        dtRechitCluster_match_MB1hits_0p5[i] = 0;
-        dtRechitCluster_match_MB1hits_cosmics_plus[i] = 0;
-        dtRechitCluster_match_MB1hits_cosmics_minus[i] = 0;
-        dtRechitCluster_match_MB1Seg_0p4[i] = 0;
-        dtRechitCluster_match_MB1Seg_0p5[i] = 0;
-        dtRechitCluster_match_RPChits_dPhi0p5[i] = 0;
-        dtRechitCluster_match_RPCBx_dPhi0p5[i] = 0;
-        dtRechitCluster_match_RB1_0p4[i] = 0;
-        dtRechitCluster_match_RB1_dPhi0p5[i] = 0;
+    dtRechitClusterWheel[i] = -999;
 
+    dtRechitClusterEta[i] = -999.;
+    dtRechitClusterPhi[i] = -999.;
+    dtRechitClusterJetVetoPt[i] = 0.0;
+    dtRechitClusterJetVetoPtJESDown[i] = 0.0;
+    dtRechitClusterJetVetoPtJESUp[i] = 0.0;
+    dtRechitClusterJetVetoLooseId[i] = false;
+    dtRechitClusterJetVetoTightId[i] = false;
+    dtRechitClusterJetVetoE[i] = 0.0;
+    dtRechitClusterMuonVetoPt[i] = 0.0;
+    dtRechitClusterMuonVetoE[i] = 0.0;
 
-          dtRechitCluster_match_gLLP[i] = false;
-          dtRechitCluster_match_gLLP_minDeltaR[i] = 999;
-          dtRechitCluster_match_gLLP_index[i] = 999;
-          dtRechitCluster_match_gLLP_eta[i] = 999.;
-          dtRechitCluster_match_gLLP_phi[i] = 999.;
-          dtRechitCluster_match_gLLP_decay_r[i] = 999.;
-          dtRechitCluster_match_gLLP_decay_z[i] = 999.;
-          dtRechitCluster_match_gLLP_csc[i] = false;
-          dtRechitCluster_match_gLLP_dt[i] = false;
+    dtRechitClusterMuonVetoTightId[i] = false;
+    dtRechitClusterMuonVetoLooseId[i] = false;
+    dtRechitClusterMuonVetoGlobal[i] = false;
 
+    dtRechitClusterNChamber[i] = -999;
+    dtRechitClusterMaxChamberRatio[i] = -999.;
+    dtRechitClusterMaxChamber[i] = -999;
+    dtRechitClusterNStation10[i] = -999;
+    dtRechitClusterAvgStation10[i] = -999.;
+    dtRechitClusterMaxStationRatio[i] = -999.;
+    dtRechitClusterMaxStation[i] = -999;
 
-
-          dtRechitCluster_match_gLLP_e[i] = 999.;
-
-
-          dtRechitClusterSize[i] = -999;
-          dtRechitClusterOverlap[i] = false;
-          dtRechitClusterNoiseHit[i] = 0;
-          dtRechitClusterNoiseHitStation1[i] = 0;
-          dtRechitClusterNoiseHitStation2[i] = 0;
-          dtRechitClusterNoiseHitStation3[i] = 0;
-          dtRechitClusterNoiseHitStation4[i] = 0;
-          dtRechitClusterX[i] = -999.;
-          dtRechitClusterY[i] = -999.;
-          dtRechitClusterZ[i] = -999.;
-
-          dtRechitClusterWheel[i] = -999;
-
-
-
-          dtRechitClusterEta[i] = -999.;
-          dtRechitClusterPhi[i] = -999.;
-          dtRechitClusterJetVetoPt[i] = 0.0;
-          dtRechitClusterJetVetoPtJESDown[i] = 0.0;
-          dtRechitClusterJetVetoPtJESUp[i] = 0.0;
-          dtRechitClusterJetVetoLooseId[i] = false;
-          dtRechitClusterJetVetoTightId[i] = false;
-
-
-          dtRechitClusterJetVetoE[i] = 0.0;
-          dtRechitClusterMuonVetoPt[i] = 0.0;
-          dtRechitClusterMuonVetoE[i] = 0.0;
-
-
-          dtRechitClusterMuonVetoTightId[i] = false;
-          dtRechitClusterMuonVetoLooseId[i] = false;
-          dtRechitClusterMuonVetoGlobal[i] = false;
-
-
-
-          dtRechitClusterNChamber[i] = -999;
-          dtRechitClusterMaxChamberRatio[i] = -999.;
-          dtRechitClusterMaxChamber[i] = -999;
-          dtRechitClusterNStation10[i] = -999;
-          dtRechitClusterAvgStation10[i] = -999.;
-          dtRechitClusterMaxStationRatio[i] = -999.;
-          dtRechitClusterMaxStation[i] = -999;
-
-          dtRechitClusterNHitStation1[i] = -999;
-          dtRechitClusterNHitStation2[i] = -999;
-          dtRechitClusterNHitStation3[i] = -999;
-          dtRechitClusterNHitStation4[i] = -999;
-          dtRechitClusterNHitWheel0[i] = -999;
-          dtRechitClusterNHitWheel1[i] = -999;
-          dtRechitClusterNHitWheel2[i] = -999;
-          dtRechitClusterMet_dPhi[i] = 999.;
-          dtRechitClusterMetJESUp_dPhi[i] = 999.;
-          dtRechitClusterMetJESDown_dPhi[i] = 999.;  
-          dtRechitClusterPuppiMet_dPhi[i] = 999.;
+    dtRechitClusterNHitStation1[i] = -999;
+    dtRechitClusterNHitStation2[i] = -999;
+    dtRechitClusterNHitStation3[i] = -999;
+    dtRechitClusterNHitStation4[i] = -999;
+    dtRechitClusterNHitWheel0[i] = -999;
+    dtRechitClusterNHitWheel1[i] = -999;
+    dtRechitClusterNHitWheel2[i] = -999;
+    dtRechitClusterMet_dPhi[i] = 999.;
+    dtRechitClusterMetJESUp_dPhi[i] = 999.;
+    dtRechitClusterMetJESDown_dPhi[i] = 999.;  
+    dtRechitClusterPuppiMet_dPhi[i] = 999.;
 	  dtRechitClusternXY[i] = -999;
 	  dtRechitClusternZ[i] = -999;
 	  dtRechitClusterXSpread[i] = -999.;
@@ -563,7 +577,6 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     dtRechitClusterKurtZ[i] = -999.;
   }
 
-  nGLLP = 0;
   for (int i = 0; i < N_MAX_LLP; i++) {
     gLLP_eta[i] = 0.0;
     gLLP_phi[i] = 0.0;
@@ -1224,18 +1237,49 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("nDtRings", &nDtRings, "nDtRings/I");
   tree_->Branch("nCscRechits", &nCscRechits, "nCscRechits/I");
   tree_->Branch("nDtRechits", &nDTRechits, "nDtRechits/I");
+  tree_->Branch("nRpcRechits", &nRpcRechits, "nRpcRechits/I");
   tree_->Branch("CscRechitsClusterId", CscRechitsClusterId, "CscRechitsClusterId[nCscRechits]/I");
+  tree_->Branch("CscRechitsQuality", CscRechitsQuality, "CscRechitsQuality[nCscRechits]/I");
+  tree_->Branch("CscRechitsChamber", CscRechitsChamber, "CscRechitsChamber[nCscRechits]/I");
+  tree_->Branch("CscRechitsIChamber", CscRechitsIChamber, "CscRechitsIChamber[nCscRechits]/I");
+  tree_->Branch("CscRechitsStation", CscRechitsStation, "CscRechitsStation[nCscRechits]/I");
+  tree_->Branch("CscRechitsNStrips", CscRechitsNStrips, "CscRechitsNStrips[nCscRechits]/I");
+  tree_->Branch("CscRechitsWGroupsBX", CscRechitsWGroupsBX, "CscRechitsWGroupsBX[nCscRechits]/I");
+  tree_->Branch("CscRechitsHitWire", CscRechitsHitWire, "CscRechitsHitWire[nCscRechits]/I");
+  tree_->Branch("CscRechitsNWireGroups", CscRechitsNWireGroups, "CscRechitsNWireGroups[nCscRechits]/I");
   tree_->Branch("CscRechitsEta", CscRechitsEta, "CscRechitsEta[nCscRechits]/F");
   tree_->Branch("CscRechitsPhi", CscRechitsPhi, "CscRechitsPhi[nCscRechits]/F");
   tree_->Branch("CscRechitsX", CscRechitsX, "CscRechitsX[nCscRechits]/F");
   tree_->Branch("CscRechitsY", CscRechitsY, "CscRechitsY[nCscRechits]/F");
   tree_->Branch("CscRechitsZ", CscRechitsZ, "CscRechitsZ[nCscRechits]/F");
+  tree_->Branch("CscRechitsE", CscRechitsE, "CscRechitsE[nCscRechits]/F");
+  tree_->Branch("CscRechitsTpeak", CscRechitsTpeak, "CscRechitsTpeak[nCscRechits]/F");
+  tree_->Branch("CscRechitsTwire", CscRechitsTwire, "CscRechitsTwire[nCscRechits]/F");
   tree_->Branch("DtRechitsClusterId", DtRechitsClusterId, "DtRechitsClusterId[nDtRechits]/I");
+  tree_->Branch("DtRechitsLayer", DtRechitsLayer, "DtRechitsLayer[nDtRechits]/I");
+  tree_->Branch("DtRechitsSuperLayer", DtRechitsSuperLayer, "DtRechitsSuperLayer[nDtRechits]/I");
+  tree_->Branch("DtRechitsSector", DtRechitsSector, "DtRechitsSector[nDtRechits]/I");
+  tree_->Branch("DtRechitsStation", DtRechitsStation, "DtRechitsStation[nDtRechits]/I");
+  tree_->Branch("DtRechitsWheel", DtRechitsWheel, "DtRechitsWheel[nDtRechits]/I");
   tree_->Branch("DtRechitsEta", DtRechitsEta, "DtRechitsEta[nDtRechits]/F");
   tree_->Branch("DtRechitsPhi", DtRechitsPhi, "DtRechitsPhi[nDtRechits]/F");
   tree_->Branch("DtRechitsX", DtRechitsX, "DtRechitsX[nDtRechits]/F");
   tree_->Branch("DtRechitsY", DtRechitsY, "DtRechitsY[nDtRechits]/F");
   tree_->Branch("DtRechitsZ", DtRechitsZ, "DtRechitsZ[nDtRechits]/F");
+  tree_->Branch("RpcRecHitsClusterId", RpcRecHitsClusterId, "RpcRecHitsClusterId[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsBx", RpcRecHitsBx, "RpcRecHitsBx[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsRegion", RpcRecHitsRegion, "RpcRecHitsRegion[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsRing", RpcRecHitsRing, "RpcRecHitsRing[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsLayer", RpcRecHitsLayer, "RpcRecHitsLayer[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsStation", RpcRecHitsStation, "RpcRecHitsStation[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsSector", RpcRecHitsSector, "RpcRecHitsSector[nRpcRechits]/I");
+  tree_->Branch("RpcRecHitsX", RpcRecHitsX, "RpcRecHitsX[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsY", RpcRecHitsY, "RpcRecHitsY[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsZ", RpcRecHitsZ, "RpcRecHitsZ[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsPhi", RpcRecHitsPhi, "RpcRecHitsPhi[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsEta", RpcRecHitsEta, "RpcRecHitsEta[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsTime", RpcRecHitsTime, "RpcRecHitsTime[nRpcRechits]/F");
+  tree_->Branch("RpcRecHitsTimeError", RpcRecHitsTimeError, "RpcRecHitsTimeError[nRpcRechits]/F");
 
   tree_->Branch("nCscRechitClusters", &nCscRechitClusters, "nCscRechitClusters/I");
   tree_->Branch("nCscRechitClusters_nocut", &nCscRechitClusters_nocut, "nCscRechitClusters_nocut/I");

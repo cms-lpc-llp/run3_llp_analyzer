@@ -8,6 +8,7 @@
 #define N_MAX_CSC 200
 #define N_MAX_CSCRECHITS 5000
 #define N_MAX_DTRECHITS 20000
+#define N_MAX_RPCRECHITS 2000
 #define NTriggersMAX 1201 // Number of trigger in the .dat file
 #define N_CSC_CUT 20
 #define JET_PT_CUT 10
@@ -65,19 +66,50 @@ class TreeMuonSystemCombination {
   int nCscRechits;
   int nCscRings;
   int nDTRechits;
+  int nRpcRechits;
   int nDtRings;
   int CscRechitsClusterId[N_MAX_CSCRECHITS];
+  int CscRechitsQuality[N_MAX_CSCRECHITS];
+  int CscRechitsChamber[N_MAX_CSCRECHITS];
+  int CscRechitsIChamber[N_MAX_CSCRECHITS];
+  int CscRechitsStation[N_MAX_CSCRECHITS];
+  int CscRechitsNStrips[N_MAX_CSCRECHITS];
+  int CscRechitsWGroupsBX[N_MAX_CSCRECHITS];
+  int CscRechitsHitWire[N_MAX_CSCRECHITS];
+  int CscRechitsNWireGroups[N_MAX_CSCRECHITS];
   float CscRechitsEta[N_MAX_CSCRECHITS];
   float CscRechitsPhi[N_MAX_CSCRECHITS];
   float CscRechitsX[N_MAX_CSCRECHITS];
   float CscRechitsY[N_MAX_CSCRECHITS];
   float CscRechitsZ[N_MAX_CSCRECHITS];
+  float CscRechitsE[N_MAX_CSCRECHITS];
+  float CscRechitsTpeak[N_MAX_CSCRECHITS];
+  float CscRechitsTwire[N_MAX_CSCRECHITS];
   int DtRechitsClusterId[N_MAX_DTRECHITS];
+  int DtRechitsLayer[N_MAX_DTRECHITS];
+  int DtRechitsSuperLayer[N_MAX_DTRECHITS];
+  int DtRechitsSector[N_MAX_DTRECHITS];
+  int DtRechitsStation[N_MAX_DTRECHITS];
+  int DtRechitsWheel[N_MAX_DTRECHITS];
   float DtRechitsEta[N_MAX_DTRECHITS];
   float DtRechitsPhi[N_MAX_DTRECHITS];
   float DtRechitsX[N_MAX_DTRECHITS];
   float DtRechitsY[N_MAX_DTRECHITS];
   float DtRechitsZ[N_MAX_DTRECHITS];
+  int RpcRecHitsClusterId[N_MAX_RPCRECHITS];
+  int RpcRecHitsBx[N_MAX_RPCRECHITS];
+  int RpcRecHitsRegion[N_MAX_RPCRECHITS];
+  int RpcRecHitsRing[N_MAX_RPCRECHITS];
+  int RpcRecHitsLayer[N_MAX_RPCRECHITS];
+  int RpcRecHitsStation[N_MAX_RPCRECHITS];
+  int RpcRecHitsSector[N_MAX_RPCRECHITS];
+  float RpcRecHitsX[N_MAX_RPCRECHITS];
+  float RpcRecHitsY[N_MAX_RPCRECHITS];
+  float RpcRecHitsZ[N_MAX_RPCRECHITS];
+  float RpcRecHitsPhi[N_MAX_RPCRECHITS];
+  float RpcRecHitsEta[N_MAX_RPCRECHITS];
+  float RpcRecHitsTime[N_MAX_RPCRECHITS];
+  float RpcRecHitsTimeError[N_MAX_RPCRECHITS];
   bool HLT_CscCluster100_PNetTauhPFJet10_Loose;
   bool HLT_CscCluster100_Ele5;
   bool HLT_CscCluster100_Mu5;

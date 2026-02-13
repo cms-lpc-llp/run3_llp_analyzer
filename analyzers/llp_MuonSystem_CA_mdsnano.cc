@@ -188,6 +188,89 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   Long64_t nbytes = 0, nb = 0;
   clock_t start, end;
   start = clock();
+
+  // Some rechit fields are optional and/or renamed across ntuple versions.
+  // They are read into temporary buffers here (instead of relying only on the
+  // auto-generated merged_event bindings) and copied later only if present.
+  Int_t cscRechitsIChamber_opt[20000] = {0};
+  Int_t cscRechitsNStrips_opt[20000] = {0};
+  Int_t cscRechitsWGroupsBX_opt[20000] = {0};
+  Int_t cscRechitsHitWire_opt[20000] = {0};
+  Int_t cscRechitsNWireGroups_opt[20000] = {0};
+  Float_t cscRechitsE_opt[20000] = {0};
+  Int_t dtRechitsSector_opt[20000] = {0};
+  // Presence flags prevent copying garbage when a branch is missing; output
+  // values then remain at the TreeMuonSystemCombination InitTree defaults.
+  bool hasCscRechitsIChamber = false;
+  bool hasCscRechitsNStrips = false;
+  bool hasCscRechitsWGroupsBX = false;
+  bool hasCscRechitsHitWire = false;
+  bool hasCscRechitsNWireGroups = false;
+  bool hasCscRechitsE = false;
+  bool hasDtRechitsSector = false;
+
+  // Accept both snake_case and camelCase branch names for compatibility with
+  // different production eras.
+  if (fChain->GetBranch("cscRechits_IChamber")) {
+    fChain->SetBranchAddress("cscRechits_IChamber", cscRechitsIChamber_opt);
+    hasCscRechitsIChamber = true;
+  } else if (fChain->GetBranch("cscRechitsIChamber")) {
+    fChain->SetBranchAddress("cscRechitsIChamber", cscRechitsIChamber_opt);
+    hasCscRechitsIChamber = true;
+  }
+
+  if (fChain->GetBranch("cscRechits_NStrips")) {
+    fChain->SetBranchAddress("cscRechits_NStrips", cscRechitsNStrips_opt);
+    hasCscRechitsNStrips = true;
+  } else if (fChain->GetBranch("cscRechitsNStrips")) {
+    fChain->SetBranchAddress("cscRechitsNStrips", cscRechitsNStrips_opt);
+    hasCscRechitsNStrips = true;
+  }
+
+  if (fChain->GetBranch("cscRechits_WGroupsBX")) {
+    fChain->SetBranchAddress("cscRechits_WGroupsBX", cscRechitsWGroupsBX_opt);
+    hasCscRechitsWGroupsBX = true;
+  } else if (fChain->GetBranch("cscRechitsWGroupsBX")) {
+    fChain->SetBranchAddress("cscRechitsWGroupsBX", cscRechitsWGroupsBX_opt);
+    hasCscRechitsWGroupsBX = true;
+  }
+
+  if (fChain->GetBranch("cscRechits_HitWire")) {
+    fChain->SetBranchAddress("cscRechits_HitWire", cscRechitsHitWire_opt);
+    hasCscRechitsHitWire = true;
+  } else if (fChain->GetBranch("cscRechitsHitWire")) {
+    fChain->SetBranchAddress("cscRechitsHitWire", cscRechitsHitWire_opt);
+    hasCscRechitsHitWire = true;
+  }
+
+  if (fChain->GetBranch("cscRechits_NWireGroups")) {
+    fChain->SetBranchAddress("cscRechits_NWireGroups", cscRechitsNWireGroups_opt);
+    hasCscRechitsNWireGroups = true;
+  } else if (fChain->GetBranch("cscRechitsNWireGroups")) {
+    fChain->SetBranchAddress("cscRechitsNWireGroups", cscRechitsNWireGroups_opt);
+    hasCscRechitsNWireGroups = true;
+  }
+
+  if (fChain->GetBranch("cscRechits_E")) {
+    fChain->SetBranchAddress("cscRechits_E", cscRechitsE_opt);
+    hasCscRechitsE = true;
+  } else if (fChain->GetBranch("cscRechitsE")) {
+    fChain->SetBranchAddress("cscRechitsE", cscRechitsE_opt);
+    hasCscRechitsE = true;
+  }
+
+  // DT sector was also produced with multiple branch names.
+  if (fChain->GetBranch("dtRecHits_Sector")) {
+    fChain->SetBranchAddress("dtRecHits_Sector", dtRechitsSector_opt);
+    hasDtRechitsSector = true;
+  } else if (fChain->GetBranch("dtRecHitsSector")) {
+    fChain->SetBranchAddress("dtRecHitsSector", dtRechitsSector_opt);
+    hasDtRechitsSector = true;
+  } else if (fChain->GetBranch("dtRechitSector")) {
+    fChain->SetBranchAddress("dtRechitSector", dtRechitsSector_opt);
+    hasDtRechitsSector = true;
+  }
+
   for (Long64_t jentry = 0; jentry < fChain->GetEntries(); jentry++) {
     //begin event
     if (jentry % 1000 == 0) {
@@ -210,6 +293,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto nDtSeg = ndtSegments;
     auto nDtRechits = ndtRecHits;
     auto nRpc = nrpcRecHits;
+    auto cscRechitsQuality = cscRechits_Quality;
     auto cscRechitsPhi = cscRechits_Phi;
     auto cscRechitsEta = cscRechits_Eta;
     auto cscRechitsX = cscRechits_X;
@@ -225,6 +309,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto dtRechitCorrectZ = dtRecHits_Z;
     auto dtRechitCorrectEta = dtRecHits_Eta;
     auto dtRechitCorrectPhi = dtRecHits_Phi;
+    auto dtRechitLayer = dtRecHits_Layer;
     auto dtRechitStation = dtRecHits_Station;
     auto dtRechitWheel = dtRecHits_Wheel;
     auto dtRechitSuperLayer = dtRecHits_SuperLayer;
@@ -241,6 +326,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto rpcBx = rpcRecHits_Bx;
     auto rpcRegion = rpcRecHits_Region;
     auto rpcRing = rpcRecHits_Ring;
+    auto rpcLayer = rpcRecHits_Layer;
+    auto rpcStation = rpcRecHits_Station;
+    auto rpcSector = rpcRecHits_Sector;
+    auto rpcTime = rpcRecHits_Time;
+    auto rpcTimeError = rpcRecHits_TimeError;
 
     auto eleCharge = Electron_charge; // eleCharge
     auto eleEta = Electron_eta; // eleEta
@@ -717,27 +807,70 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->PuppimetPhiJESDown = RazorAnalyzerMerged::deltaPhi(TMath::Pi() + MuonSystem->PuppimetPhiJESDown, 0.0);
 
     MuonSystem->nDTRechits = nDtRechits;
+    MuonSystem->nRpcRechits = nRpc;
     MuonSystem->nCscRechits = ncscRechits;
     if (MuonSystem->nCscRechits > N_MAX_CSCRECHITS)
       MuonSystem->nCscRechits = N_MAX_CSCRECHITS;
     if (MuonSystem->nDTRechits > N_MAX_DTRECHITS)
       MuonSystem->nDTRechits = N_MAX_DTRECHITS;
+    if (MuonSystem->nRpcRechits > N_MAX_RPCRECHITS)
+      MuonSystem->nRpcRechits = N_MAX_RPCRECHITS;
 
     for (int i = 0; i < MuonSystem->nCscRechits; i++) {
       MuonSystem->CscRechitsClusterId[i] = -1;
+      MuonSystem->CscRechitsQuality[i] = cscRechitsQuality[i];
+      MuonSystem->CscRechitsChamber[i] = cscRechitsChamber[i];
+      MuonSystem->CscRechitsStation[i] = cscRechitsStation[i];
       MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
       MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
       MuonSystem->CscRechitsX[i] = cscRechitsX[i];
       MuonSystem->CscRechitsY[i] = cscRechitsY[i];
       MuonSystem->CscRechitsZ[i] = cscRechitsZ[i];
+      MuonSystem->CscRechitsTpeak[i] = cscRechitsTpeak[i];
+      MuonSystem->CscRechitsTwire[i] = cscRechitsTwire[i];
+
+      if (hasCscRechitsIChamber)
+        MuonSystem->CscRechitsIChamber[i] = cscRechitsIChamber_opt[i];
+      if (hasCscRechitsNStrips)
+        MuonSystem->CscRechitsNStrips[i] = cscRechitsNStrips_opt[i];
+      if (hasCscRechitsWGroupsBX)
+        MuonSystem->CscRechitsWGroupsBX[i] = cscRechitsWGroupsBX_opt[i];
+      if (hasCscRechitsHitWire)
+        MuonSystem->CscRechitsHitWire[i] = cscRechitsHitWire_opt[i];
+      if (hasCscRechitsNWireGroups)
+        MuonSystem->CscRechitsNWireGroups[i] = cscRechitsNWireGroups_opt[i];
+      if (hasCscRechitsE)
+        MuonSystem->CscRechitsE[i] = cscRechitsE_opt[i];
     }
     for (int i = 0; i < MuonSystem->nDTRechits; i++) {
       MuonSystem->DtRechitsClusterId[i] = -1;
+      MuonSystem->DtRechitsLayer[i] = dtRechitLayer[i];
+      MuonSystem->DtRechitsSuperLayer[i] = dtRechitSuperLayer[i];
+      MuonSystem->DtRechitsStation[i] = dtRechitStation[i];
+      MuonSystem->DtRechitsWheel[i] = dtRechitWheel[i];
       MuonSystem->DtRechitsEta[i] = dtRechitCorrectEta[i];
       MuonSystem->DtRechitsPhi[i] = dtRechitCorrectPhi[i];
       MuonSystem->DtRechitsX[i] = dtRechitCorrectX[i];
       MuonSystem->DtRechitsY[i] = dtRechitCorrectY[i];
       MuonSystem->DtRechitsZ[i] = dtRechitCorrectZ[i];
+      if (hasDtRechitsSector)
+        MuonSystem->DtRechitsSector[i] = dtRechitsSector_opt[i];
+    }
+    for (int i = 0; i < MuonSystem->nRpcRechits; i++) {
+      MuonSystem->RpcRecHitsClusterId[i] = -1;
+      MuonSystem->RpcRecHitsBx[i] = rpcBx[i];
+      MuonSystem->RpcRecHitsRegion[i] = rpcRegion[i];
+      MuonSystem->RpcRecHitsRing[i] = rpcRing[i];
+      MuonSystem->RpcRecHitsLayer[i] = rpcLayer[i];
+      MuonSystem->RpcRecHitsStation[i] = rpcStation[i];
+      MuonSystem->RpcRecHitsSector[i] = rpcSector[i];
+      MuonSystem->RpcRecHitsX[i] = rpcX[i];
+      MuonSystem->RpcRecHitsY[i] = rpcY[i];
+      MuonSystem->RpcRecHitsZ[i] = rpcZ[i];
+      MuonSystem->RpcRecHitsPhi[i] = rpcPhi[i];
+      MuonSystem->RpcRecHitsEta[i] = rpcEta[i];
+      MuonSystem->RpcRecHitsTime[i] = rpcTime[i];
+      MuonSystem->RpcRecHitsTimeError[i] = rpcTimeError[i];
     }
 
     int nDTRechitsChamberMinus12 = 0;
@@ -1212,6 +1345,40 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       nDtPointsOut = dtPointsClustered.size();
     for (int i = 0; i < nDtPointsOut; i++) {
       MuonSystem->DtRechitsClusterId[i] = dtPointsClustered[i].clusterID;
+    }
+
+    // RPC cluster IDs
+    points.clear();
+    for (int i = 0; i < MuonSystem->nRpcRechits; i++) {
+      Rechits p;
+      p.phi = rpcPhi[i];
+      p.eta = rpcEta[i];
+      p.x = rpcX[i];
+      p.y = rpcY[i];
+      p.z = rpcZ[i];
+      p.t = rpcTime[i];
+      p.twire = rpcTime[i];
+      p.station = rpcStation[i];
+      p.chamber = rpcSector[i];
+      p.layer = rpcLayer[i];
+      p.superlayer = 0;
+      p.wheel = rpcRing[i];
+      p.clusterID = UNCLASSIFIED;
+      points.push_back(p);
+    }
+
+    int min_point_rpc = 5;
+    float epsilon_rpc = 0.2;
+    CACluster ds_rpcRechit(min_point_rpc, epsilon_rpc, points);
+    ds_rpcRechit.run();
+    ds_rpcRechit.clusterProperties();
+    ds_rpcRechit.sort_clusters();
+    const auto& rpcPointsClustered = ds_rpcRechit.points();
+    int nRpcPointsOut = MuonSystem->nRpcRechits;
+    if (nRpcPointsOut > (int)rpcPointsClustered.size())
+      nRpcPointsOut = rpcPointsClustered.size();
+    for (int i = 0; i < nRpcPointsOut; i++) {
+      MuonSystem->RpcRecHitsClusterId[i] = rpcPointsClustered[i].clusterID;
     }
 
     MuonSystem->nDtRechitClusters = 0;
