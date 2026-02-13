@@ -36,6 +36,9 @@ clean:
 copy_runners:
 		@for d in $(subst Run,,$(notdir $(basename $(RUNNERSCC)))); do ( if [ ! -f "src/Run"$$d".cc" ]; then echo $$d" file does not exists, copying"; $(HELPERSCRIPT) $$d; fi ) ; done
 
+$(BINDIR):
+	@mkdir -p $(BINDIR)
+
 
 $(FASTJET):
 	$(ANADIR)/fastjet_install.sh
@@ -64,6 +67,7 @@ $(UTILSOBJ): %.o: %.cc
 $(ANALYZERSOBJ): $(ANADIR)/%.o: $(ANADIR)/%.cc $(ANADIR)/%.h
 	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
+$(RUNNERS): | $(BINDIR)
 $(RUNNERS): $(BINDIR)/Run%: $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
