@@ -50,6 +50,7 @@ class CACluster {
   void clusterProperties();
   void sort_clusters();
   void merge_clusters();
+  const vector<Rechits>& points() const { return m_points; }
 
   double deltaPhi(double phi1, double phi2);
   double deltaR(double eta1, double phi1, double eta2, double phi2);

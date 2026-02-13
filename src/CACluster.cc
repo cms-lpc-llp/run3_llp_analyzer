@@ -388,6 +388,7 @@ void CACluster::clusterProperties() {
     for (auto const& rechit : rechits) {
       chamber_count_map[rechit.chamber]++;
     }
+    tmpCluster.nChamber = chamber_count_map.size();
     //chamber statistics
     counter = 0;
     max_count = -999;

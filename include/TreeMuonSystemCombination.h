@@ -66,6 +66,18 @@ class TreeMuonSystemCombination {
   int nCscRings;
   int nDTRechits;
   int nDtRings;
+  int CscRechitsClusterId[N_MAX_CSCRECHITS];
+  float CscRechitsEta[N_MAX_CSCRECHITS];
+  float CscRechitsPhi[N_MAX_CSCRECHITS];
+  float CscRechitsX[N_MAX_CSCRECHITS];
+  float CscRechitsY[N_MAX_CSCRECHITS];
+  float CscRechitsZ[N_MAX_CSCRECHITS];
+  int DtRechitsClusterId[N_MAX_DTRECHITS];
+  float DtRechitsEta[N_MAX_DTRECHITS];
+  float DtRechitsPhi[N_MAX_DTRECHITS];
+  float DtRechitsX[N_MAX_DTRECHITS];
+  float DtRechitsY[N_MAX_DTRECHITS];
+  float DtRechitsZ[N_MAX_DTRECHITS];
   bool HLT_CscCluster100_PNetTauhPFJet10_Loose;
   bool HLT_CscCluster100_Ele5;
   bool HLT_CscCluster100_Mu5;
