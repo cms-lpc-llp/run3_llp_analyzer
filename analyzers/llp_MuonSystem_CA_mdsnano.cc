@@ -1,3 +1,4 @@
+/* #region: includes and usings */
 #include "llp_MuonSystem_CA_mdsnano.h"
 #include "RazorHelper.h"
 #include "TreeMuonSystemCombination.h"
@@ -7,6 +8,7 @@
 #include "TLorentzVector.h"
 #include "TMath.h"
 #include "Math/Vector3D.h"
+#include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <random>
@@ -20,12 +22,31 @@
 using namespace std::chrono;
 using namespace std;
 using namespace ROOT::Math;
+/* #endregion */
 
-//Defining a helper for making single binned histograms.
+/* #region: Usefull templates/functions/structs  */
+// Defining a helper for making single binned histograms.
 std::unique_ptr<TH1F> makeCounterHist(const std::string& name) {
   auto h = std::make_unique<TH1F>(name.c_str(), name.c_str(), 1, 1, 2);
   h->SetDirectory(nullptr); // important: avoid ROOT owning/deleting it
   return h;
+}
+
+// Some rechit fields are optional and/or renamed across ntuple versions.
+// They are read into temporary buffers here (instead of relying only on the
+// auto-generated merged_event bindings) and copied later only if present.
+// Defining a helper that binds branches not included in merged_event
+// Presence flags prevent copying garbage when a branch is missing; output
+// values then remain at the TreeMuonSystemCombination InitTree defaults.
+template <typename T>
+bool bindOptionalBranch(TTree* chain, T* address, std::initializer_list<const char*> aliases) {
+  for (const char* branchName : aliases) {
+    if (chain->GetBranch(branchName)) {
+      chain->SetBranchAddress(branchName, address);
+      return true;
+    }
+  }
+  return false;
 }
 
 // Defining leptons and jets as structures
@@ -83,6 +104,7 @@ struct largest_pt_jet {
     return p1.jet.Pt() > p2.jet.Pt();
   }
 } my_largest_pt_jet;
+/* #endregion */
 
 void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputfilename, string analysisTag) {
 
@@ -97,17 +119,17 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   cout << "options = " << options << "\n";
   cout << "Total Events: " << nEntries << "\n";
   /* #endregion */
+  
+  /* #region: options format: MH/MX/ctau/condor: 1000/300/0/1 */
+  // mh can be 3-4 digits, mx is always 3 digits, ctau is one digit(number of zeros), last digit is condor option
+  // mh can be 3-4 digits, mx is always 3 digits, ctau is 2 digit(number of zeros), last digit is condor option
 
-  /* options format: MH/MX/ctau/condor: 1000/300/0/1
-  mh can be 3-4 digits, mx is always 3 digits, ctau is one digit(number of zeros), last digit is condor option
-  mh can be 3-4 digits, mx is always 3 digits, ctau is 2 digit(number of zeros), last digit is condor option
+  // int mx = int(options/1000)%1000;
+  // int mh = options/1000000;
+  // int ctau = pow(10, int(options/10)%10) * int(int(options/100)%10);
 
-  int mx = int(options/1000)%1000;
-  int mh = options/1000000;
-  int ctau = pow(10, int(options/10)%10) * int(int(options/100)%10);
-
-  cout<<"mh "<<mh<<", mx "<<mx<<", ctau "<<ctau<<endl;
-  */
+  // cout<<"mh "<<mh<<", mx "<<mx<<", ctau "<<ctau<<endl;
+  /* #endregion */
 
   /* #region: Startup decode/defaults for this analyzer invocation.*/
   const float ELE_MASS = 0.000511;
@@ -119,7 +141,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   /* #endregion */
 
   /* #region: declares lookup tables for signalScan*/
-  map<pair<int, int>, TFile*> Files2D;
+  map<pair<int, int>, std::unique_ptr<TFile>> Files2D;
   map<pair<int, int>, TTree*> Trees2D;
   map<pair<int, int>, TH1F*> NEvents2D;
   map<pair<int, int>, TH1F*> accep2D;
@@ -168,9 +190,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   // initialize helper in memory safe way
   auto helper = std::make_unique<RazorHelper>(analysisTag, isData);
 
-  // Some rechit fields are optional and/or renamed across ntuple versions.
-  // They are read into temporary buffers here (instead of relying only on the
-  // auto-generated merged_event bindings) and copied later only if present.
+  /* #region: optional branches, Accept both snake_case and camelCase branch names for compatibility with  */
   Int_t cscRechitsIChamber_opt[20000] = {0};
   Int_t cscRechitsNStrips_opt[20000] = {0};
   Int_t cscRechitsWGroupsBX_opt[20000] = {0};
@@ -178,89 +198,30 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   Int_t cscRechitsNWireGroups_opt[20000] = {0};
   Float_t cscRechitsE_opt[20000] = {0};
   Int_t dtRechitsSector_opt[20000] = {0};
-  // Presence flags prevent copying garbage when a branch is missing; output
-  // values then remain at the TreeMuonSystemCombination InitTree defaults.
-  bool hasCscRechitsIChamber = false;
-  bool hasCscRechitsNStrips = false;
-  bool hasCscRechitsWGroupsBX = false;
-  bool hasCscRechitsHitWire = false;
-  bool hasCscRechitsNWireGroups = false;
-  bool hasCscRechitsE = false;
-  bool hasDtRechitsSector = false;
-
-  // Accept both snake_case and camelCase branch names for compatibility with
-  // different production eras.
-  if (fChain->GetBranch("cscRechits_IChamber")) {
-    fChain->SetBranchAddress("cscRechits_IChamber", cscRechitsIChamber_opt);
-    hasCscRechitsIChamber = true;
-  } else if (fChain->GetBranch("cscRechitsIChamber")) {
-    fChain->SetBranchAddress("cscRechitsIChamber", cscRechitsIChamber_opt);
-    hasCscRechitsIChamber = true;
-  }
-
-  if (fChain->GetBranch("cscRechits_NStrips")) {
-    fChain->SetBranchAddress("cscRechits_NStrips", cscRechitsNStrips_opt);
-    hasCscRechitsNStrips = true;
-  } else if (fChain->GetBranch("cscRechitsNStrips")) {
-    fChain->SetBranchAddress("cscRechitsNStrips", cscRechitsNStrips_opt);
-    hasCscRechitsNStrips = true;
-  }
-
-  if (fChain->GetBranch("cscRechits_WGroupsBX")) {
-    fChain->SetBranchAddress("cscRechits_WGroupsBX", cscRechitsWGroupsBX_opt);
-    hasCscRechitsWGroupsBX = true;
-  } else if (fChain->GetBranch("cscRechitsWGroupsBX")) {
-    fChain->SetBranchAddress("cscRechitsWGroupsBX", cscRechitsWGroupsBX_opt);
-    hasCscRechitsWGroupsBX = true;
-  }
-
-  if (fChain->GetBranch("cscRechits_HitWire")) {
-    fChain->SetBranchAddress("cscRechits_HitWire", cscRechitsHitWire_opt);
-    hasCscRechitsHitWire = true;
-  } else if (fChain->GetBranch("cscRechitsHitWire")) {
-    fChain->SetBranchAddress("cscRechitsHitWire", cscRechitsHitWire_opt);
-    hasCscRechitsHitWire = true;
-  }
-
-  if (fChain->GetBranch("cscRechits_NWireGroups")) {
-    fChain->SetBranchAddress("cscRechits_NWireGroups", cscRechitsNWireGroups_opt);
-    hasCscRechitsNWireGroups = true;
-  } else if (fChain->GetBranch("cscRechitsNWireGroups")) {
-    fChain->SetBranchAddress("cscRechitsNWireGroups", cscRechitsNWireGroups_opt);
-    hasCscRechitsNWireGroups = true;
-  }
-
-  if (fChain->GetBranch("cscRechits_E")) {
-    fChain->SetBranchAddress("cscRechits_E", cscRechitsE_opt);
-    hasCscRechitsE = true;
-  } else if (fChain->GetBranch("cscRechitsE")) {
-    fChain->SetBranchAddress("cscRechitsE", cscRechitsE_opt);
-    hasCscRechitsE = true;
-  }
-
-  // DT sector was also produced with multiple branch names.
-  if (fChain->GetBranch("dtRecHits_Sector")) {
-    fChain->SetBranchAddress("dtRecHits_Sector", dtRechitsSector_opt);
-    hasDtRechitsSector = true;
-  } else if (fChain->GetBranch("dtRecHitsSector")) {
-    fChain->SetBranchAddress("dtRecHitsSector", dtRechitsSector_opt);
-    hasDtRechitsSector = true;
-  } else if (fChain->GetBranch("dtRechitSector")) {
-    fChain->SetBranchAddress("dtRechitSector", dtRechitsSector_opt);
-    hasDtRechitsSector = true;
-  }
+  const auto hasCscRechitsIChamber = bindOptionalBranch(fChain, cscRechitsIChamber_opt, {"cscRechits_IChamber", "cscRechitsIChamber"});
+  const auto hasCscRechitsNStrips = bindOptionalBranch(fChain, cscRechitsNStrips_opt, {"cscRechits_NStrips", "cscRechitsNStrips"});
+  const auto hasCscRechitsWGroupsBX = bindOptionalBranch(fChain, cscRechitsWGroupsBX_opt, {"cscRechits_WGroupsBX", "cscRechitsWGroupsBX"});
+  const auto hasCscRechitsHitWire = bindOptionalBranch(fChain, cscRechitsHitWire_opt, {"cscRechits_HitWire", "cscRechitsHitWire"});
+  const auto hasCscRechitsNWireGroups = bindOptionalBranch(fChain, cscRechitsNWireGroups_opt, {"cscRechits_NWireGroups", "cscRechitsNWireGroups"});
+  const auto hasCscRechitsE = bindOptionalBranch(fChain, cscRechitsE_opt, {"cscRechits_E", "cscRechitsE"});
+  const auto hasDtRechitsSector = bindOptionalBranch(fChain, dtRechitsSector_opt, {"dtRecHits_Sector", "dtRecHitsSector", "dtRechitSector"});
+  /* #endregion */
   
-  clock_t start, end;
-  start = clock();
+  // [1] Event loop
+  /* #region */
+  auto lastReport = steady_clock::now(); // mr. timer
   for (Long64_t jentry = 0; jentry < nEntries; jentry++) {
-    //begin event
+
+    // progress logging
     if (jentry % 1000 == 0) {
-      end = clock();
-      double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-      cout << "Processing entry " << jentry << endl;
-      cout << "Time taken by program is: " << time_taken << endl;
-      start = clock();
+      const auto now = steady_clock::now();
+      const double dt = duration<double>(now - lastReport).count();
+      cout << "Processing entry " << jentry << " | dt=" << dt << " s\n";
+      lastReport = now;
     }
+
+    // [2] Read event entry and reset output event variables
+    /* #region */
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0)
       break;
@@ -268,7 +229,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     //fill normalization histogram
     MuonSystem->InitVariables();
+    /* #endregion */
 
+    // [3] Build local aliases and per-event helper inputs
+    /* #region */
     auto nCscSeg = ncscSegments;
     auto nDtSeg = ndtSegments;
     auto nDtRechits = ndtRecHits;
@@ -317,6 +281,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     auto elePhi = Electron_phi; // elePhi
     auto elePt = Electron_pt; // elePt
     auto ele_dZ = Electron_dz; // ele_dZ
+
+    
     bool ele_passCutBasedIDTight[10] = {0}; // ele_passCutBasedIDTight
     bool ele_passCutBasedIDVeto[10] = {0}; // ele_passCutBasedIDVeto
 
@@ -378,7 +344,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     auto* lheComments = (string*)"123";
     auto genWeight = Generator_weight; // genWeight
+    /* #endregion */
 
+    // [4] Signal-scan routing (split output by model point)
+    /* #region */
     if (!isData && signalScan) {
       string mh_substring = lheComments->substr(lheComments->find("MH-") + 3);
       int mh = stoi(mh_substring.substr(0, mh_substring.find('_')));
@@ -390,9 +359,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->mX = mx;
       MuonSystem->ctau = ctau;
 
-      // if (mh2 != mh || mx2!=mx || ctau2!=ctau) continue;
-      // cout<<*lheComments<<endl;
-
       pair<int, int> signalPair = make_pair(mx, ctau);
 
       if (Files2D.count(signalPair) == 0) { //create file and tree
@@ -401,7 +367,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         thisFileName.erase(thisFileName.end() - 5, thisFileName.end());
         thisFileName += "_" + to_string(mx) + "_" + to_string(ctau) + ".root";
 
-        Files2D[signalPair] = new TFile(thisFileName.c_str(), "recreate");
+        Files2D[signalPair] = std::make_unique<TFile>(thisFileName.c_str(), "recreate");
+        Files2D[signalPair]->cd();
         Trees2D[signalPair] = MuonSystem->tree_->CloneTree(0);
         NEvents2D[signalPair] = new TH1F(Form("NEvents%d%d", mx, ctau), "NEvents", 1, 0.5, 1.5);
         Total2D[signalPair] = new TH1F(Form("Total%d%d", mx, ctau), "Total", 1, 0.5, 1.5);
@@ -413,20 +380,27 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       //Fill NEvents hist
       NEvents2D[signalPair]->Fill(1.0, genWeight);
     }
+    /* #endregion */
+
+    // [5] Event metadata and per-event nominal weight
+    /* #region */
     //event info
-    if (isData) {
+    if (isData) { //? can this be better organized?
       NEvents->Fill(1);
       MuonSystem->weight = 1;
     } else {
       MuonSystem->weight = genWeight;
       NEvents->Fill(1, genWeight);
     }
-    MuonSystem->runNum = runNum;
+    MuonSystem->runNum = runNum; //? is there any particular reason these need to be here?
     MuonSystem->lumiSec = lumiNum;
     MuonSystem->evtNum = eventNum;
 
-    if (isData && runNum < 360019)
-      continue;
+    if (isData && runNum < 360019) continue; //? should this be moved somewhere higher to save compute?
+    /* #endregion */
+
+    // [6] MC-only truth matching inputs and MC weights
+    /* #region */
     if (!isData) {
       //for DS model
       MuonSystem->nGenParticles = 0;
@@ -526,7 +500,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       }
 
     } //end of isData
+    /* #endregion */
 
+    // [7] Event-level observables and acceptance bookkeeping
+    /* #region */
     //get NPU
     MuonSystem->npv = nPV;
     MuonSystem->rho = fixedGridRhoFastjetAll;
@@ -546,9 +523,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       if ((MuonSystem->gLLP_dt[0] && MuonSystem->gLLP_csc[1]) || (MuonSystem->gLLP_dt[1] && MuonSystem->gLLP_csc[0]))
         accep_cscdt->Fill(1.0, genWeight * MuonSystem->pileupWeight);
     }
+    /* #endregion */
 
+    // [8] Event filters, trigger bits, and jet veto maps
+    /* #region */
     // noise filters
-
     MuonSystem->Flag_goodVertices = Flag_goodVertices;
     MuonSystem->Flag_globalSuperTightHalo2016Filter = Flag_globalSuperTightHalo2016Filter;
     MuonSystem->Flag_EcalDeadCellTriggerPrimitiveFilter = Flag_EcalDeadCellTriggerPrimitiveFilter;
@@ -610,7 +589,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     MuonSystem->HLT_CSCCSC = HLT_CscCluster_Loose;
     MuonSystem->HLT_CSCDT = HLT_L1CSCShower_DTCluster50;
+    /* #endregion */
 
+    // [9] Lepton object selection and lepton branch fill
+    /* #region */
     //*************************************************************************
     //Start Object Selection
     //*************************************************************************
@@ -693,7 +675,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->lepPassVVTightIso[MuonSystem->nLeptons] = tmp.passVVTightIso;
       MuonSystem->nLeptons++;
     }
+    /* #endregion */
 
+    // [10] Jet selection, JES propagation, and jet branch fill
+    /* #region */
     //-----------------------------------------------
     //Select Jets
     //-----------------------------------------------
@@ -785,7 +770,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     MuonSystem->PuppimetPhiJESDown = atan(MetYJESDown / MetXJESDown);
     if (MetXJESDown < 0.0)
       MuonSystem->PuppimetPhiJESDown = RazorAnalyzerMerged::deltaPhi(TMath::Pi() + MuonSystem->PuppimetPhiJESDown, 0.0);
+    /* #endregion */
 
+    // [11] Rechit-level pass-through fill (CSC/DT/RPC + optional aliases)
+    /* #region */
     MuonSystem->nDTRechits = nDtRechits;
     MuonSystem->nRpcRechits = nRpc;
     MuonSystem->nCscRechits = ncscRechits;
@@ -852,7 +840,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->RpcRecHitsTime[i] = rpcTime[i];
       MuonSystem->RpcRecHitsTimeError[i] = rpcTimeError[i];
     }
+    /* #endregion */
 
+    // [12] Ring occupancy summaries from raw rechits
+    /* #region */
     int nDTRechitsChamberMinus12 = 0;
     int nDTRechitsChamberMinus11 = 0;
     int nDTRechitsChamber10 = 0;
@@ -957,7 +948,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->nDtRings++;
     if (nDTRechitsChamberPlus42 > 50)
       MuonSystem->nDtRings++;
+    /* #endregion */
 
+    // [13] CSC rechit clustering, feature fill, and matching/veto variables
+    /* #region */
     vector<Rechits> points;
     vector<int> cscRechitsClusterId;
     points.clear();
@@ -1289,7 +1283,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       MuonSystem->nCscRechitClusters++;
     }
+    /* #endregion */
 
+    // [14] DT/RPC clustering, DT feature fill, and matching/veto variables
+    /* #region */
     // DT cluster
 
     points.clear();
@@ -1596,14 +1593,22 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       MuonSystem->nDtRechitClusters++;
     }
+    /* #endregion */
 
+    // [15] Final per-event tree fill
+    /* #region */
     if (!isData && signalScan) {
       pair<int, int> smsPair = make_pair(MuonSystem->mX, MuonSystem->ctau);
       Trees2D[smsPair]->Fill();
     } else {
       MuonSystem->tree_->Fill();
     }
+    /* #endregion */
   }
+  /* #endregion */
+
+  // [16] End-of-job writeout for trees and histograms
+  /* #region */
   if (!isData && signalScan) {
     for (auto& filePtr : Files2D) {
       cout << "Writing output tree (" << filePtr.second->GetName() << ")" << endl;
@@ -1642,4 +1647,5 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     // outFile->Write();
     outFile->Close();
   }
+  /* #endregion */
 }
