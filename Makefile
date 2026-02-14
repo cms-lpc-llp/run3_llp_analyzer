@@ -14,11 +14,16 @@ ANALYZERSOBJ = $(ANALYZERS:cc=o)
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
 TOOLS = $(addprefix $(BINDIR)/,MergeNtuples NormalizeNtuple SkimNtuple)
+MDSNANO_RUNNER = $(BINDIR)/Runllp_MuonSystem_CA_mdsnano
+RUNNERS_GENERIC = $(filter-out $(MDSNANO_RUNNER),$(RUNNERS))
 UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc   $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
 		$(SRCDIR)/JetCorrectionUncertainty.cc \
 	       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 
 UTILSOBJ = $(UTILS:cc=o)
+MDSNANO_UTILSOBJ = $(SRCDIR)/RazorHelper.o $(SRCDIR)/JetCorrectorParameters.o \
+		$(SRCDIR)/SimpleJetCorrectionUncertainty.o $(SRCDIR)/JetCorrectionUncertainty.o \
+		$(SRCDIR)/CACluster.o $(SRCDIR)/TreeMuonSystemCombination.o
 EXECUTABLES = $(TOOLS) $(RUNNERS)
 #EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
@@ -69,7 +74,10 @@ $(ANALYZERSOBJ): $(ANADIR)/%.o: $(ANADIR)/%.cc $(ANADIR)/%.h
 	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
 $(RUNNERS): | $(BINDIR)
-$(RUNNERS): $(BINDIR)/Run%: $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
+$(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
+	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+
+$(MDSNANO_RUNNER): $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(ANADIR)/llp_MuonSystem_CA_mdsnano.o $(SRCDIR)/Runllp_MuonSystem_CA_mdsnano.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
 $(TOOLS): | $(BINDIR)
