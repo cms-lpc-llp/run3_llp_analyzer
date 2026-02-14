@@ -8,6 +8,7 @@
 #include "TMath.h"
 #include "Math/Vector3D.h"
 #include <iostream>
+#include <memory>
 #include <random>
 
 //C++ includes
@@ -19,6 +20,13 @@
 using namespace std::chrono;
 using namespace std;
 using namespace ROOT::Math;
+
+//Defining a helper for making single binned histograms.
+std::unique_ptr<TH1F> makeCounterHist(const std::string& name) {
+  auto h = std::make_unique<TH1F>(name.c_str(), name.c_str(), 1, 1, 2);
+  h->SetDirectory(nullptr); // important: avoid ROOT owning/deleting it
+  return h;
+}
 
 // Defining leptons and jets as structures
 struct leptons {
@@ -110,6 +118,15 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   if (analysisTag.empty()) analysisTag = "Razor2016_80X";
   /* #endregion */
 
+  /* #region: declares lookup tables for signalScan*/
+  map<pair<int, int>, TFile*> Files2D;
+  map<pair<int, int>, TTree*> Trees2D;
+  map<pair<int, int>, TH1F*> NEvents2D;
+  map<pair<int, int>, TH1F*> accep2D;
+  map<pair<int, int>, TH1F*> accep_met2D;
+  map<pair<int, int>, TH1F*> Total2D;
+  /* #endregion */
+
   /* #region: run-mode logging*/
   std::cout << "[INFO]: running on " << (isData ? "data" : "MC")
             << " with option: " << option << '\n';
@@ -121,49 +138,35 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
   /* #region: setting up output file */
   string outfilename = outputfilename;
-  if (outfilename == "")
-    outfilename = "MuonSystem_Tree.root";
+  if (outfilename == "") outfilename = "MuonSystem_Tree.root";
+  
   TFile* outFile;
-  if (isData || !signalScan)
-    outFile = new TFile(outfilename.c_str(), "RECREATE");
-
+  if (isData || !signalScan) outFile = new TFile(outfilename.c_str(), "RECREATE");
+  
   TreeMuonSystemCombination* MuonSystem = new TreeMuonSystemCombination;
   MuonSystem->CreateTree();
   MuonSystem->tree_->SetAutoFlush(0);
   MuonSystem->InitTree();
   /* #endregion */
 
-  /* #region: declares lookup tables for signalScan*/
-  map<pair<int, int>, TFile*> Files2D;
-  map<pair<int, int>, TTree*> Trees2D;
-  map<pair<int, int>, TH1F*> NEvents2D;
-  map<pair<int, int>, TH1F*> accep2D;
-  map<pair<int, int>, TH1F*> accep_met2D;
-  map<pair<int, int>, TH1F*> Total2D;
-  /* #endregion */
-
   /* #region: histogram containing total number of processed events (for normalization)*/
-  TH1F* NEvents = new TH1F("NEvents", "NEvents", 1, 1, 2);
-  TH1F* Total = new TH1F("Total", "Total", 1, 1, 2);
+  auto NEvents = makeCounterHist("NEvents");
+  auto Total = makeCounterHist("Total");
 
-  TH1F* accep = new TH1F("accep", "acceptance", 1, 1, 2);
-  TH1F* accep_csccsc = new TH1F("accep_csccsc", "accep_csccsc", 1, 1, 2);
-  TH1F* accep_cscdt = new TH1F("accep_cscdt", "accep_cscdt", 1, 1, 2);
-  TH1F* accep_met = new TH1F("accep_met", "acceptance_met", 1, 1, 2);
+  auto accep = makeCounterHist("accep");
+  auto accep_csccsc = makeCounterHist("accep_csccsc");
+  auto accep_cscdt = makeCounterHist("accep_cscdt");
+  auto accep_met = makeCounterHist("accep_met");
 
-  TH1F* Nmet200 = new TH1F("Nmet200", "Nmet200", 1, 1, 2);
-  TH1F* NmetFilter = new TH1F("NmetFilter", "NmetFilter", 1, 1, 2);
-  TH1F* Nlep0 = new TH1F("Nlep0", "Nlep0", 1, 1, 2);
-  TH1F* Njet1 = new TH1F("Njet1", "Njet1", 1, 1, 2);
-  TH1F* NcosmicVeto = new TH1F("NcosmicVeto", "NcosmicVeto", 1, 1, 2);
+  auto Nmet200 = makeCounterHist("Nmet200");
+  auto NmetFilter = makeCounterHist("NmetFilter");
+  auto Nlep0 = makeCounterHist("Nlep0");
+  auto Njet1 = makeCounterHist("Njet1");
+  auto NcosmicVeto = makeCounterHist("NcosmicVeto");
   /* #endregion */
 
-  /* #region: for initializing helper  */
-  RazorHelper* helper = 0;
-  helper = new RazorHelper(analysisTag, isData);
-  /* #endregion */
-
-
+  // initialize helper in memory safe way
+  auto helper = std::make_unique<RazorHelper>(analysisTag, isData);
 
   // Some rechit fields are optional and/or renamed across ntuple versions.
   // They are read into temporary buffers here (instead of relying only on the
