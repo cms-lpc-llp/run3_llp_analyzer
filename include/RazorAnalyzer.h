@@ -9,18 +9,11 @@
 #include "merged_event.h"
 
 // ROOT includes
-#include <TROOT.h>
-#include <TChain.h>
 #include <TTree.h>
-#include <TFile.h>
 #include "TLorentzVector.h"
-#include "TRandom3.h"
 
 // C++ includes
-#include <map>
 #include <string>
-#include <vector>
-#include <iostream>
 using namespace std;
 
 class RazorAnalyzer : public llp_event {
