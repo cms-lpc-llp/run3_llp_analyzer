@@ -77,6 +77,10 @@ class RazorHelper {
   void loadTrigger_Razor2018_17SeptEarlyReReco();
   void loadJECs_Razor2018_17SeptEarlyReReco();
 
+  std::string getDataDir(const std::string& subdir) const;
+  std::string getDataPath(const std::string& subdir, const std::string& filename) const;
+  TFile* openDataFile(const std::string& subdir, const std::string& filename) const;
+
   // member data
   std::string tag;
   bool isData;

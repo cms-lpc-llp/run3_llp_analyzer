@@ -1,8 +1,29 @@
 #include "RazorHelper.h"
 
+namespace {
+bool fileExists(const std::string& path) {
+  struct stat fileStat;
+  return stat(path.c_str(), &fileStat) == 0;
+}
+}
+
 // Constructor
 RazorHelper::RazorHelper(std::string tag_, bool isData_)
-    : tag(tag_), isData(isData_) {
+    : tag(tag_),
+      isData(isData_),
+      cmsswPath(""),
+      pileupWeightFile(0),
+      pileupWeightHist(0),
+      pileupWeightSysUpHist(0),
+      pileupWeightSysDownHist(0),
+      JetVetoFile(0),
+      JetVetoHist(0),
+      JetVetoFpixHist(0),
+      MetTriggerFile(0),
+      MetTriggerHist(0),
+      MetTriggerSysUpHist(0),
+      MetTriggerSysDownHist(0),
+      HMTEffFile(0) {
   std::cout << "RazorHelper initializing with tag " << tag << std::endl;
 
   // check that CMSSW is set up
@@ -45,8 +66,46 @@ void RazorHelper::loadCMSSWPath() {
   if (cmsswPathChar == NULL) {
     std::cout << "Warning in RazorHelper::loadCMSSWPath : CMSSW_BASE not detected." << std::endl;
     cmsswPath = "";
+    return;
   }
   cmsswPath = std::string(cmsswPathChar);
+}
+
+std::string RazorHelper::getDataDir(const std::string& subdir) const {
+  if (cmsswPath == "")
+    return subdir;
+  return cmsswPath + "/src/run3_llp_analyzer/data/" + subdir;
+}
+
+std::string RazorHelper::getDataPath(const std::string& subdir, const std::string& filename) const {
+  return getDataDir(subdir) + "/" + filename;
+}
+
+TFile* RazorHelper::openDataFile(const std::string& subdir, const std::string& filename) const {
+  const std::string fullPath = getDataPath(subdir, filename);
+  TFile* file = TFile::Open(fullPath.c_str());
+  if (file && !file->IsZombie())
+    return file;
+  if (file) {
+    file->Close();
+    delete file;
+    file = 0;
+  }
+
+  // Backward-compatible fallback for jobs that stage these files in CWD.
+  file = TFile::Open(filename.c_str());
+  if (file && !file->IsZombie()) {
+    std::cout << "RazorHelper warning: using local fallback for " << filename << std::endl;
+    return file;
+  }
+  if (file) {
+    file->Close();
+    delete file;
+    file = 0;
+  }
+
+  std::cout << "RazorHelper error: unable to open " << fullPath << std::endl;
+  return 0;
 }
 
 void RazorHelper::loadTag_Null() {
@@ -57,12 +116,33 @@ void RazorHelper::loadTag_Null() {
   pileupWeightHist = 0;
   pileupWeightSysUpHist = 0;
   pileupWeightSysDownHist = 0;
+  JetVetoFile = 0;
+  JetVetoHist = 0;
+  JetVetoFpixHist = 0;
+  MetTriggerFile = 0;
+  MetTriggerHist = 0;
+  MetTriggerSysUpHist = 0;
+  MetTriggerSysDownHist = 0;
+  HMTEffFile = 0;
+  HMTEffHist.clear();
 }
 
 void RazorHelper::loadHMTEfficiency2223() {
   // pileup weights
   std::cout << "RazorHelper: loading HMT L1 efficiency histograms" << std::endl;
-  HMTEffFile = TFile::Open("L1_efficiencies_2022_2023_032625-Hists-TEff.root");
+  HMTEffFile = openDataFile("trigger", "L1_efficiencies_2022_2023_032625-Hists-TEff.root");
+  if (!HMTEffFile) {
+    HMTEffHist[11] = 0;
+    HMTEffHist[12] = 0;
+    HMTEffHist[13] = 0;
+    HMTEffHist[21] = 0;
+    HMTEffHist[22] = 0;
+    HMTEffHist[31] = 0;
+    HMTEffHist[32] = 0;
+    HMTEffHist[41] = 0;
+    HMTEffHist[42] = 0;
+    return;
+  }
 
   HMTEffHist[11] = (TEfficiency*)HMTEffFile->Get("ME11");
   HMTEffHist[12] = (TEfficiency*)HMTEffFile->Get("ME12");
@@ -77,7 +157,19 @@ void RazorHelper::loadHMTEfficiency2223() {
 void RazorHelper::loadHMTEfficiency24() {
   // pileup weights
   std::cout << "RazorHelper: loading HMT L1 efficiency histograms" << std::endl;
-  HMTEffFile = TFile::Open("HMT_Efficiencies_2024.root");
+  HMTEffFile = openDataFile("trigger", "HMT_Efficiencies_2024.root");
+  if (!HMTEffFile) {
+    HMTEffHist[11] = 0;
+    HMTEffHist[12] = 0;
+    HMTEffHist[13] = 0;
+    HMTEffHist[21] = 0;
+    HMTEffHist[22] = 0;
+    HMTEffHist[31] = 0;
+    HMTEffHist[32] = 0;
+    HMTEffHist[41] = 0;
+    HMTEffHist[42] = 0;
+    return;
+  }
 
   HMTEffHist[11] = (TEfficiency*)HMTEffFile->Get("ME11");
   HMTEffHist[12] = (TEfficiency*)HMTEffFile->Get("ME12");
@@ -103,7 +195,13 @@ void RazorHelper::loadTag_Summer22() {
 
 void RazorHelper::loadMetTrigger_Summer22() {
   std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
-  MetTriggerFile = TFile::Open("METTriggerEff_Summer22.root");
+  MetTriggerFile = openDataFile("trigger", "METTriggerEff_Summer22.root");
+  if (!MetTriggerFile) {
+    MetTriggerHist = 0;
+    MetTriggerSysUpHist = 0;
+    MetTriggerSysDownHist = 0;
+    return;
+  }
   MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
   MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
   MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
@@ -112,7 +210,13 @@ void RazorHelper::loadMetTrigger_Summer22() {
 void RazorHelper::loadPileup_Summer22() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  pileupWeightFile = TFile::Open("PileupReweight_Summer22.root");
+  pileupWeightFile = openDataFile("PileupWeights", "PileupReweight_Summer22.root");
+  if (!pileupWeightFile) {
+    pileupWeightHist = 0;
+    pileupWeightSysUpHist = 0;
+    pileupWeightSysDownHist = 0;
+    return;
+  }
   pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
   pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
   pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -121,9 +225,12 @@ void RazorHelper::loadPileup_Summer22() {
 void RazorHelper::loadJetVeto_Summer22() {
   // pileup weights
   std::cout << "RazorHelper: loading jet veto map histograms" << std::endl;
-  JetVetoFile = TFile::Open("Summer22_23Sep2023_RunCD_v1.root");
-  if (!JetVetoFile)
+  JetVetoFile = openDataFile("JetVetoMap", "Summer22_23Sep2023_RunCD_v1.root");
+  if (!JetVetoFile) {
     cout << "Jet Veto File Not Found" << endl;
+    JetVetoHist = 0;
+    return;
+  }
   JetVetoHist = (TH2D*)JetVetoFile->Get("jetvetomap");
 }
 ////////////////////////////////////////////////
@@ -139,7 +246,13 @@ void RazorHelper::loadTag_Summer22EE() {
 
 void RazorHelper::loadMetTrigger_Summer22EE() {
   std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
-  MetTriggerFile = TFile::Open("METTriggerEff_Summer22EE.root");
+  MetTriggerFile = openDataFile("trigger", "METTriggerEff_Summer22EE.root");
+  if (!MetTriggerFile) {
+    MetTriggerHist = 0;
+    MetTriggerSysUpHist = 0;
+    MetTriggerSysDownHist = 0;
+    return;
+  }
   MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
   MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
   MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
@@ -147,7 +260,13 @@ void RazorHelper::loadMetTrigger_Summer22EE() {
 void RazorHelper::loadPileup_Summer22EE() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  pileupWeightFile = TFile::Open("PileupReweight_Summer22EE.root");
+  pileupWeightFile = openDataFile("PileupWeights", "PileupReweight_Summer22EE.root");
+  if (!pileupWeightFile) {
+    pileupWeightHist = 0;
+    pileupWeightSysUpHist = 0;
+    pileupWeightSysDownHist = 0;
+    return;
+  }
   pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
   pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
   pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -156,7 +275,11 @@ void RazorHelper::loadPileup_Summer22EE() {
 void RazorHelper::loadJetVeto_Summer22EE() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  JetVetoFile = TFile::Open("Summer22EE_23Sep2023_RunEFG_v1.root");
+  JetVetoFile = openDataFile("JetVetoMap", "Summer22EE_23Sep2023_RunEFG_v1.root");
+  if (!JetVetoFile) {
+    JetVetoHist = 0;
+    return;
+  }
   JetVetoHist = (TH2D*)JetVetoFile->Get("jetvetomap");
 }
 ////////////////////////////////////////////////
@@ -172,7 +295,13 @@ void RazorHelper::loadTag_Summer23() {
 
 void RazorHelper::loadMetTrigger_Summer23() {
   std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
-  MetTriggerFile = TFile::Open("METTriggerEff_Summer23.root");
+  MetTriggerFile = openDataFile("trigger", "METTriggerEff_Summer23.root");
+  if (!MetTriggerFile) {
+    MetTriggerHist = 0;
+    MetTriggerSysUpHist = 0;
+    MetTriggerSysDownHist = 0;
+    return;
+  }
   MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
   MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
   MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
@@ -180,7 +309,13 @@ void RazorHelper::loadMetTrigger_Summer23() {
 void RazorHelper::loadPileup_Summer23() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  pileupWeightFile = TFile::Open("PileupReweight_Summer23.root");
+  pileupWeightFile = openDataFile("PileupWeights", "PileupReweight_Summer23.root");
+  if (!pileupWeightFile) {
+    pileupWeightHist = 0;
+    pileupWeightSysUpHist = 0;
+    pileupWeightSysDownHist = 0;
+    return;
+  }
   pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
   pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
   pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -188,7 +323,11 @@ void RazorHelper::loadPileup_Summer23() {
 void RazorHelper::loadJetVeto_Summer23() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  JetVetoFile = TFile::Open("Summer23Prompt23_RunC_v1.root");
+  JetVetoFile = openDataFile("JetVetoMap", "Summer23Prompt23_RunC_v1.root");
+  if (!JetVetoFile) {
+    JetVetoHist = 0;
+    return;
+  }
   JetVetoHist = (TH2D*)JetVetoFile->Get("jetvetomap");
 }
 ////////////////////////////////////////////////
@@ -204,7 +343,13 @@ void RazorHelper::loadTag_Summer23BPix() {
 
 void RazorHelper::loadMetTrigger_Summer23BPix() {
   std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
-  MetTriggerFile = TFile::Open("METTriggerEff_Summer23BPix.root");
+  MetTriggerFile = openDataFile("trigger", "METTriggerEff_Summer23BPix.root");
+  if (!MetTriggerFile) {
+    MetTriggerHist = 0;
+    MetTriggerSysUpHist = 0;
+    MetTriggerSysDownHist = 0;
+    return;
+  }
   MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
   MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
   MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
@@ -212,7 +357,13 @@ void RazorHelper::loadMetTrigger_Summer23BPix() {
 void RazorHelper::loadPileup_Summer23BPix() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  pileupWeightFile = TFile::Open("PileupReweight_Summer23BPix.root");
+  pileupWeightFile = openDataFile("PileupWeights", "PileupReweight_Summer23BPix.root");
+  if (!pileupWeightFile) {
+    pileupWeightHist = 0;
+    pileupWeightSysUpHist = 0;
+    pileupWeightSysDownHist = 0;
+    return;
+  }
   pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
   pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
   pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -220,7 +371,11 @@ void RazorHelper::loadPileup_Summer23BPix() {
 void RazorHelper::loadJetVeto_Summer23BPix() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  JetVetoFile = TFile::Open("Summer23BPixPrompt23_RunD_v1.root");
+  JetVetoFile = openDataFile("JetVetoMap", "Summer23BPixPrompt23_RunD_v1.root");
+  if (!JetVetoFile) {
+    JetVetoHist = 0;
+    return;
+  }
   JetVetoHist = (TH2D*)JetVetoFile->Get("jetvetomap");
 }
 ////////////////////////////////////////////////
@@ -236,7 +391,13 @@ void RazorHelper::loadTag_Summer24() {
 
 void RazorHelper::loadMetTrigger_Summer24() {
   std::cout << "RazorHelper: loading met trigger histograms" << std::endl;
-  MetTriggerFile = TFile::Open("METTriggerEff_Summer24.root");
+  MetTriggerFile = openDataFile("trigger", "METTriggerEff_Summer24.root");
+  if (!MetTriggerFile) {
+    MetTriggerHist = 0;
+    MetTriggerSysUpHist = 0;
+    MetTriggerSysDownHist = 0;
+    return;
+  }
   MetTriggerHist = (TH1F*)MetTriggerFile->Get("eff_exp");
   MetTriggerSysUpHist = (TH1F*)MetTriggerFile->Get("eff_high");
   MetTriggerSysDownHist = (TH1F*)MetTriggerFile->Get("eff_low");
@@ -244,7 +405,13 @@ void RazorHelper::loadMetTrigger_Summer24() {
 void RazorHelper::loadPileup_Summer24() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  pileupWeightFile = TFile::Open("PileupReweight_Summer24.root");
+  pileupWeightFile = openDataFile("PileupWeights", "PileupReweight_Summer24.root");
+  if (!pileupWeightFile) {
+    pileupWeightHist = 0;
+    pileupWeightSysUpHist = 0;
+    pileupWeightSysDownHist = 0;
+    return;
+  }
   pileupWeightHist = (TH1F*)pileupWeightFile->Get("npu_nominal");
   pileupWeightSysUpHist = (TH1F*)pileupWeightFile->Get("npu_up");
   pileupWeightSysDownHist = (TH1F*)pileupWeightFile->Get("npu_down");
@@ -253,9 +420,13 @@ void RazorHelper::loadPileup_Summer24() {
 void RazorHelper::loadJetVeto_Summer24() {
   // pileup weights
   std::cout << "RazorHelper: loading pileup weight histograms" << std::endl;
-  JetVetoFile = TFile::Open("Winter24Prompt24_2024BCDEFGHI.root");
-  if (!JetVetoFile)
+  JetVetoFile = openDataFile("JetVetoMap", "Winter24Prompt24_2024BCDEFGHI.root");
+  if (!JetVetoFile) {
     cout << "Jet Veto File Not Found" << endl;
+    JetVetoHist = 0;
+    JetVetoFpixHist = 0;
+    return;
+  }
   JetVetoHist = (TH2D*)JetVetoFile->Get("jetvetomap");
   JetVetoFpixHist = (TH2D*)JetVetoFile->Get("jetvetomap_fpix");
 }
@@ -293,6 +464,11 @@ double RazorHelper::getMetTriggerEffDown(float met) {
 
 //// GET JET UNC for 22-24
 double RazorHelper::getJecUnc(float pt, float eta, int run) {
+  if (jecUnc.empty()) {
+    std::cout << "RazorHelper error: JEC uncertainties are not initialized. Returning 0." << std::endl;
+    return 0;
+  }
+
   int foundIndex = -1;
   for (uint i = 0; i < JetCorrectionsIOV.size(); i++) {
     if (run >= JetCorrectionsIOV[i].first && run <= JetCorrectionsIOV[i].second) {
@@ -303,6 +479,10 @@ double RazorHelper::getJecUnc(float pt, float eta, int run) {
     std::cout << "Warning: run = " << run << " was not found in any valid IOV range. use default index = 0 for Jet energy corrections. \n";
     foundIndex = 0;
   }
+  if (foundIndex < 0 || foundIndex >= static_cast<int>(jecUnc.size()) || !jecUnc[foundIndex]) {
+    std::cout << "RazorHelper error: invalid JEC index " << foundIndex << ". Returning 0." << std::endl;
+    return 0;
+  }
 
   jecUnc[foundIndex]->setJetPt(pt);
   jecUnc[foundIndex]->setJetEta(eta);
@@ -311,19 +491,34 @@ double RazorHelper::getJecUnc(float pt, float eta, int run) {
 
 void RazorHelper::loadJECs() {
   std::cout << "RazorHelper: loading jet energy correction constants, using 2018_17SeptEarlyReReco" << std::endl;
-  // initialize
-  std::string jecPathname = "JEC/";
+  std::string jecPathname = getDataDir("JEC");
+  std::string jecFilename = "Summer22_22Sep2023_V2_MC_Uncertainty_AK4PFPuppi.txt";
+  std::string jecPath = jecPathname + "/" + jecFilename;
+  if (!fileExists(jecPath)) {
+    std::string localJecPathname = "JEC";
+    std::string localJecPath = localJecPathname + "/" + jecFilename;
+    if (fileExists(localJecPath)) {
+      std::cout << "RazorHelper warning: using local fallback JEC directory: " << localJecPathname << std::endl;
+      jecPathname = localJecPathname;
+      jecPath = localJecPath;
+    } else {
+      std::cout << "RazorHelper error: could not find JEC file at " << jecPath << " or " << localJecPath << std::endl;
+      jecUnc.clear();
+      JetCorrectionsIOV.clear();
+      return;
+    }
+  }
 
   jecUnc = std::vector<JetCorrectionUncertainty*>();
   JetCorrectionsIOV = std::vector<std::pair<int, int>>();
   if (isData) {
-    std::string jecUncPathA = jecPathname + "/Summer22_22Sep2023_V2_MC_Uncertainty_AK4PFPuppi"; //place holder for now, since we dont evaluate on data
+    std::string jecUncPathA = jecPath;
     JetCorrectionUncertainty* jecUncA = new JetCorrectionUncertainty(jecUncPathA);
     jecUnc.push_back(jecUncA);
     JetCorrectionsIOV.push_back(std::pair<int, int>(352319, 387121));
   } else {
     std::cout << "Loading Jet Energy Corrections: 22-24 \n";
-    std::string jecUncPath = jecPathname + "/Summer22_22Sep2023_V2_MC_Uncertainty_AK4PFPuppi.txt"; //same file works for 22-24 2025/04/25
+    std::string jecUncPath = jecPath; //same file works for 22-24 2025/04/25
     JetCorrectionUncertainty* jecUncMC = new JetCorrectionUncertainty(jecUncPath);
     jecUnc.push_back(jecUncMC);
     JetCorrectionsIOV.push_back(std::pair<int, int>(-1, 99999999));

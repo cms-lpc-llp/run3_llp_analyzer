@@ -1,25 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 if [ "$1" == "" ] || [ "$2" == "" ]; then
     echo "RazorRun <list of input files> <analyzer name> <options>"
 else
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/bin/Run$2 .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer22.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer22EE.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23BPix.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer24.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/L1_efficiencies_2022_2023_032625-Hists-TEff.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/METTriggerEff_Summer24.root .
-   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/HMT_Efficiencies_2024.root .
-  
+   runner="${CMSSW_BASE}/src/run3_llp_analyzer/bin/Run$2"
+   if [ ! -x "${runner}" ]; then
+      echo "Missing analyzer runner: ${runner}"
+      exit 1
+   fi
 
-    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer22EE_23Sep2023_RunEFG_v1.root .
-    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer23BPixPrompt23_RunD_v1.root  .
-    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Winter24Prompt24_2024BCDEFGHI.root .
-    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer22_23Sep2023_RunCD_v1.root .
-    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/JetVetoMap/Summer23Prompt23_RunC_v1.root .
-    cp -r ${CMSSW_BASE}/src/run3_llp_analyzer/data/JEC .
    echo $1 $2
-    ./Run$2 $1 ${@:3}
-    rm -rf Run$2
+    "${runner}" "$1" "${@:3}"
 fi

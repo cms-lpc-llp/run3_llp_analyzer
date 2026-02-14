@@ -13,12 +13,13 @@ ANALYZERSH = $(ANALYZERS:cc=h)
 ANALYZERSOBJ = $(ANALYZERS:cc=o)
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
+TOOLS = $(addprefix $(BINDIR)/,MergeNtuples NormalizeNtuple SkimNtuple)
 UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc   $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
 		$(SRCDIR)/JetCorrectionUncertainty.cc \
 	       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 
 UTILSOBJ = $(UTILS:cc=o)
-EXECUTABLES = MergeNtuples NormalizeNtuple SkimNtuple $(RUNNERS)
+EXECUTABLES = $(TOOLS) $(RUNNERS)
 #EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
 
@@ -30,7 +31,7 @@ all: $(FASTJET) copy_runners $(EXECUTABLES)
 lxplus: all
 
 clean:
-	@-rm $(EXECUTABLES)
+	@-rm $(EXECUTABLES) MergeNtuples NormalizeNtuple SkimNtuple
 	@rm -f $(SRCDIR)/*.o $(ANADIR)/*.o
 
 copy_runners:
@@ -71,9 +72,11 @@ $(RUNNERS): | $(BINDIR)
 $(RUNNERS): $(BINDIR)/Run%: $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
-NormalizeNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/NormalizeNtuple.cc $(INCLUDEDIR)/rootdict.o
+$(TOOLS): | $(BINDIR)
+
+$(BINDIR)/NormalizeNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/NormalizeNtuple.cc $(INCLUDEDIR)/rootdict.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-SkimNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/SkimNtuple.cc $(INCLUDEDIR)/rootdict.o
+$(BINDIR)/SkimNtuple: $(SRCDIR)/SimpleTable.o $(SRCDIR)/SkimNtuple.cc $(INCLUDEDIR)/rootdict.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-MergeNtuples: $(SRCDIR)/SimpleTable.o $(SRCDIR)/MergeNtuples.cc $(INCLUDEDIR)/rootdict.o $(SRCDIR)/llp_event.o $(SRCDIR)/nano_events.o
+$(BINDIR)/MergeNtuples: $(SRCDIR)/SimpleTable.o $(SRCDIR)/MergeNtuples.cc $(INCLUDEDIR)/rootdict.o $(SRCDIR)/llp_event.o $(SRCDIR)/nano_events.o
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
