@@ -100,8 +100,23 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   //
   // cout<<"mh "<<mh<<", mx "<<mx<<", ctau "<<ctau<<endl;
 
+  // Startup decode/defaults for this analyzer invocation.
+  const float ELE_MASS = 0.000511;
+  const float MU_MASS = 0.105658;
+  const float Z_MASS = 91.2;
   bool signalScan = int(options / 10) == 1;
   int option = options % 10;
+  if (analysisTag.empty()) {
+    analysisTag = "Razor2016_80X";
+  }
+
+  // Legacy path setup retained to preserve behavior exactly.
+  char* cmsswPath = getenv("CMSSW_BASE");
+  string pathname;
+  if (cmsswPath != NULL)
+    pathname = string(cmsswPath) + "/src/llp_analyzer/data/JEC/";
+  if (cmsswPath != NULL and option == 1)
+    pathname = "JEC/"; //run on condor if option == 1
 
   if (isData) {
     std::cout << "[INFO]: running on data with option: " << option << std::endl;
@@ -112,14 +127,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     std::cout << "[INFO]: running with Signal scan" << std::endl;
   } else {
     std::cout << "[INFO]: running without Signal scan " << option << std::endl;
-  }
-
-  const float ELE_MASS = 0.000511;
-  const float MU_MASS = 0.105658;
-  const float Z_MASS = 91.2;
-
-  if (analysisTag == "") {
-    analysisTag = "Razor2016_80X";
   }
 
   //-----------------------------------------------
@@ -164,14 +171,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   //fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
 
   //vector<fastjet::PseudoJet> input_particles;
-
-  char* cmsswPath;
-  cmsswPath = getenv("CMSSW_BASE");
-  string pathname;
-  if (cmsswPath != NULL)
-    pathname = string(cmsswPath) + "/src/llp_analyzer/data/JEC/";
-  if (cmsswPath != NULL and option == 1)
-    pathname = "JEC/"; //run on condor if option == 1
 
   //--------------------------------
   //Initialize helper
