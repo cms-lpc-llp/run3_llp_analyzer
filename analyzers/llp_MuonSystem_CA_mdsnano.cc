@@ -20,12 +20,7 @@ using namespace std::chrono;
 using namespace std;
 using namespace ROOT::Math;
 
-struct greater_than_pt {
-  inline bool operator()(const TLorentzVector& p1, const TLorentzVector& p2) {
-    return p1.Pt() > p2.Pt();
-  }
-};
-
+// Defining leptons and jets as structures
 struct leptons {
   TLorentzVector lepton;
   int pdgId;
@@ -39,7 +34,6 @@ struct leptons {
   bool passVTightIso;
   bool passVVTightIso;
 };
-
 struct jets {
   TLorentzVector jet;
   float time;
@@ -83,55 +77,49 @@ struct largest_pt_jet {
 } my_largest_pt_jet;
 
 void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputfilename, string analysisTag) {
-  //initialization: create one TTree for each analysis box
+
+  /* #region: fChain check and nEntries declaration.*/
+  if (fChain == nullptr) {
+    cout << "fChain is a null pointer." << endl;
+    return;
+  };
+  const Long64_t nEntries = fChain->GetEntries();
   cout << "Initializing..." << endl;
   cout << "IsData = " << isData << "\n";
   cout << "options = " << options << "\n";
+  cout << "Total Events: " << nEntries << "\n";
+  /* #endregion */
 
-  //---------------------------
-  //options format: MH/MX/ctau/condor: 1000/300/0/1
-  // mh can be 3-4 digits, mx is always 3 digits, ctau is one digit(number of zeros), last digit is condor option
-  // mh can be 3-4 digits, mx is always 3 digits, ctau is 2 digit(number of zeros), last digit is condor option
-  //
-  //
-  // int mx = int(options/1000)%1000;
-  // int mh = options/1000000;
-  // int ctau = pow(10, int(options/10)%10) * int(int(options/100)%10);
-  //
-  // cout<<"mh "<<mh<<", mx "<<mx<<", ctau "<<ctau<<endl;
+  /* options format: MH/MX/ctau/condor: 1000/300/0/1
+  mh can be 3-4 digits, mx is always 3 digits, ctau is one digit(number of zeros), last digit is condor option
+  mh can be 3-4 digits, mx is always 3 digits, ctau is 2 digit(number of zeros), last digit is condor option
 
-  // Startup decode/defaults for this analyzer invocation.
+  int mx = int(options/1000)%1000;
+  int mh = options/1000000;
+  int ctau = pow(10, int(options/10)%10) * int(int(options/100)%10);
+
+  cout<<"mh "<<mh<<", mx "<<mx<<", ctau "<<ctau<<endl;
+  */
+
+  /* #region: Startup decode/defaults for this analyzer invocation.*/
   const float ELE_MASS = 0.000511;
   const float MU_MASS = 0.105658;
   const float Z_MASS = 91.2;
   bool signalScan = int(options / 10) == 1;
   int option = options % 10;
-  if (analysisTag.empty()) {
-    analysisTag = "Razor2016_80X";
-  }
+  if (analysisTag.empty()) analysisTag = "Razor2016_80X";
+  /* #endregion */
 
-  // Legacy path setup retained to preserve behavior exactly.
-  char* cmsswPath = getenv("CMSSW_BASE");
-  string pathname;
-  if (cmsswPath != NULL)
-    pathname = string(cmsswPath) + "/src/llp_analyzer/data/JEC/";
-  if (cmsswPath != NULL and option == 1)
-    pathname = "JEC/"; //run on condor if option == 1
+  /* #region: run-mode logging*/
+  std::cout << "[INFO]: running on " << (isData ? "data" : "MC")
+            << " with option: " << option << '\n';
+  std::cout << "[INFO]: running "
+            << (signalScan ? "with Signal scan" : "without Signal scan ")
+            << (signalScan ? "" : std::to_string(option))
+            << '\n';
+  /* #endregion */
 
-  if (isData) {
-    std::cout << "[INFO]: running on data with option: " << option << std::endl;
-  } else {
-    std::cout << "[INFO]: running on MC with option: " << option << std::endl;
-  }
-  if (signalScan) {
-    std::cout << "[INFO]: running with Signal scan" << std::endl;
-  } else {
-    std::cout << "[INFO]: running without Signal scan " << option << std::endl;
-  }
-
-  //-----------------------------------------------
-  //Set up Output File
-  //-----------------------------------------------
+  /* #region: setting up output file */
   string outfilename = outputfilename;
   if (outfilename == "")
     outfilename = "MuonSystem_Tree.root";
@@ -143,16 +131,18 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   MuonSystem->CreateTree();
   MuonSystem->tree_->SetAutoFlush(0);
   MuonSystem->InitTree();
+  /* #endregion */
 
-  // for signals, need one output file for each signal point
+  /* #region: declares lookup tables for signalScan*/
   map<pair<int, int>, TFile*> Files2D;
   map<pair<int, int>, TTree*> Trees2D;
   map<pair<int, int>, TH1F*> NEvents2D;
   map<pair<int, int>, TH1F*> accep2D;
   map<pair<int, int>, TH1F*> accep_met2D;
   map<pair<int, int>, TH1F*> Total2D;
+  /* #endregion */
 
-  //histogram containing total number of processed events (for normalization)
+  /* #region: histogram containing total number of processed events (for normalization)*/
   TH1F* NEvents = new TH1F("NEvents", "NEvents", 1, 1, 2);
   TH1F* Total = new TH1F("Total", "Total", 1, 1, 2);
 
@@ -166,27 +156,14 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   TH1F* Nlep0 = new TH1F("Nlep0", "Nlep0", 1, 1, 2);
   TH1F* Njet1 = new TH1F("Njet1", "Njet1", 1, 1, 2);
   TH1F* NcosmicVeto = new TH1F("NcosmicVeto", "NcosmicVeto", 1, 1, 2);
+  /* #endregion */
 
-  //JetDefinition jet_def( antikt_algorithm, .4 );
-  //fastjet::JetDefinition jet_def(fastjet::cambridge_algorithm, 0.4);
-
-  //vector<fastjet::PseudoJet> input_particles;
-
-  //--------------------------------
-  //Initialize helper
-  //--------------------------------
+  /* #region: for initializing helper  */
   RazorHelper* helper = 0;
   helper = new RazorHelper(analysisTag, isData);
+  /* #endregion */
 
-  //*************************************************************************
-  //Look over Input File Events
-  //*************************************************************************
-  if (fChain == 0)
-    return;
-  cout << "Total Events: " << fChain->GetEntries() << "\n";
-  Long64_t nbytes = 0, nb = 0;
-  clock_t start, end;
-  start = clock();
+
 
   // Some rechit fields are optional and/or renamed across ntuple versions.
   // They are read into temporary buffers here (instead of relying only on the
@@ -269,21 +246,22 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     fChain->SetBranchAddress("dtRechitSector", dtRechitsSector_opt);
     hasDtRechitsSector = true;
   }
-
-  for (Long64_t jentry = 0; jentry < fChain->GetEntries(); jentry++) {
+  
+  clock_t start, end;
+  start = clock();
+  for (Long64_t jentry = 0; jentry < nEntries; jentry++) {
     //begin event
     if (jentry % 1000 == 0) {
       end = clock();
       double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
       cout << "Processing entry " << jentry << endl;
-      cout << "Time taken by program is : " << time_taken << endl;
+      cout << "Time taken by program is: " << time_taken << endl;
       start = clock();
     }
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0)
       break;
-    nb = fChain->GetEntry(jentry);
-    nbytes += nb;
+    fChain->GetEntry(jentry);
 
     //fill normalization histogram
     MuonSystem->InitVariables();
