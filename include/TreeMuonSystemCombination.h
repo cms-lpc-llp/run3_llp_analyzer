@@ -17,8 +17,20 @@
 #define N_MAX_LLP 200
 #define N_MAX_GTAU 100
 
+#include <iostream>
+#include <string>
+#include <sys/stat.h>
+#include "assert.h"
 #include "TFile.h"
+#include "TH1F.h"
+#include "TH2D.h"
+#include "TRandom.h"
 #include "TTree.h"
+#include "DBSCAN.h"
+
+#include "RazorAnalyzer.h"
+
+#include "RazorHelper.h"
 
 class TreeMuonSystemCombination {
  public:

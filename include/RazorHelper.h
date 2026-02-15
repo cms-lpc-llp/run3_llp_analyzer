@@ -3,17 +3,19 @@
 #ifndef RazorHelper_H
 #define RazorHelper_H
 
-#include <map>
+#include <iostream>
 #include <string>
-#include <utility>
-#include <vector>
+#include <sys/stat.h>
 
 #include "TFile.h"
 #include "TH1F.h"
 #include "TEfficiency.h"
 #include "TH2D.h"
+#include "TRandom.h"
 
 #include "JetCorrectionUncertainty.h"
+
+#include "RazorAnalyzer.h"
 
 class RazorHelper {
  public:
@@ -104,7 +106,7 @@ class RazorHelper {
 
   TFile* HMTEffFile;
 
-  std::map<int, TEfficiency*> HMTEffHist;
+  map<int, TEfficiency*> HMTEffHist;
 };
 
 #endif

@@ -7,17 +7,21 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 #include "TMath.h"
+#include "Math/Vector3D.h"
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <random>
 
+//C++ includes
+#include "assert.h"
 //ROOT includes
 #include "TH1F.h"
 
 //using namespace fastjet;
 using namespace std::chrono;
 using namespace std;
+using namespace ROOT::Math;
 /* #endregion */
 
 /* #region: Usefull templates/functions/structs  */

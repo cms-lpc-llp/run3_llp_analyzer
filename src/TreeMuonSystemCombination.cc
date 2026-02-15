@@ -1,5 +1,8 @@
+#include "RazorHelper.h"
 #include "TreeMuonSystemCombination.h"
-#include <cassert>
+#include "assert.h"
+#include "TTree.h"
+#include "DBSCAN.h"
 
 // Constructor
 TreeMuonSystemCombination::TreeMuonSystemCombination() {
