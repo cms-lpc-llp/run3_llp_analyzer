@@ -24,7 +24,6 @@
 #include "TH2D.h"
 #include "TRandom.h"
 #include "TTree.h"
-#include "DBSCAN.h"
 
 #include "RazorAnalyzer.h"
 

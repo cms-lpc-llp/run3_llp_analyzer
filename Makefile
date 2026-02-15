@@ -16,7 +16,7 @@ RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
 TOOLS = $(addprefix $(BINDIR)/,MergeNtuples NormalizeNtuple SkimNtuple)
 MDSNANO_RUNNER = $(BINDIR)/Runllp_MuonSystem_CA_mdsnano
 RUNNERS_GENERIC = $(filter-out $(MDSNANO_RUNNER),$(RUNNERS))
-UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc   $(SRCDIR)/JetCorrectorParameters.cc \
+UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
 		$(SRCDIR)/JetCorrectionUncertainty.cc \
 	       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 

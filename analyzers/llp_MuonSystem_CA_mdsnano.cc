@@ -106,6 +106,8 @@ struct largest_pt_jet {
 } my_largest_pt_jet;
 /* #endregion */
 
+constexpr int kUnclassifiedClusterId = -1;
+
 void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputfilename, string analysisTag) {
 
   /* #region: fChain check and nEntries declaration.*/
@@ -207,6 +209,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   const auto hasDtRechitsSector = bindOptionalBranch(fChain, dtRechitsSector_opt, {"dtRecHits_Sector", "dtRecHitsSector", "dtRechitSector"});
   /* #endregion */
   
+
+
   // [1] Event loop
   /* #region */
   auto lastReport = steady_clock::now(); // mr. timer
@@ -991,7 +995,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       p.layer = layer;
       p.superlayer = 0;
       p.wheel = 0;
-      p.clusterID = UNCLASSIFIED;
+      p.clusterID = kUnclassifiedClusterId;
       points.push_back(p);
       cscRechitsClusterId.push_back(-1);
 
@@ -1305,7 +1309,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       p.chamber = dtRechitWheel[i];
       p.superlayer = dtRechitSuperLayer[i];
       p.wheel = dtRechitWheel[i];
-      p.clusterID = UNCLASSIFIED;
+      p.clusterID = kUnclassifiedClusterId;
       points.push_back(p);
     }
 
@@ -1340,7 +1344,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       p.layer = rpcLayer[i];
       p.superlayer = 0;
       p.wheel = rpcRing[i];
-      p.clusterID = UNCLASSIFIED;
+      p.clusterID = kUnclassifiedClusterId;
       points.push_back(p);
     }
 

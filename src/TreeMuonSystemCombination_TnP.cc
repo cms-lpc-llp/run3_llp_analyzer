@@ -2,7 +2,6 @@
 #include "TreeMuonSystemCombination_TnP.h"
 #include "assert.h"
 #include "TTree.h"
-#include "DBSCAN.h"
 
 // Constructor
 TreeMuonSystemCombination_TnP::TreeMuonSystemCombination_TnP() {
