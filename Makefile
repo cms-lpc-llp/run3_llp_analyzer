@@ -64,5 +64,3 @@ $(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event
 
 $(MDSNANO_RUNNER): $(SRCDIR)/merged_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(ANADIR)/llp_MuonSystem_CA_mdsnano.o $(SRCDIR)/Runllp_MuonSystem_CA_mdsnano.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-
-$(TOOLS): | $(BINDIR)
