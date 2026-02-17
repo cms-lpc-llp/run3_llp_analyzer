@@ -6,7 +6,7 @@
 #define RazorAnalyzer_h
 
 #include "llp_event.h" //This is a MakeClass of the llp tree in the ntuple to be analyzed
-#include "merged_event.h"
+#include "mdsnano_event.h"
 
 // ROOT includes
 #include <TROOT.h>
@@ -60,7 +60,7 @@ class RazorAnalyzer : public llp_event {
   TLorentzVector makeTLorentzVectorPtEtaPhiM(double pt, double eta, double phi, double mass);
 };
 
-class RazorAnalyzerMerged : public merged_event {
+class RazorAnalyzerMerged : public mdsnano_event {
  public:
   RazorAnalyzerMerged(TTree* tree = 0);
   virtual ~RazorAnalyzerMerged();

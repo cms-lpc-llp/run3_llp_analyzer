@@ -9,7 +9,7 @@ using namespace std;
 // ======================================================================================================
 
 RazorAnalyzerMerged::RazorAnalyzerMerged(TTree* tree)
-    : merged_event(tree) {
+    : mdsnano_event(tree) {
   // turn off all branches
   //  fChain->SetBranchStatus("*", 1);
   fChain->SetBranchStatus("*", 0);

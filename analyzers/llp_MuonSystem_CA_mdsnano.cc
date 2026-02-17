@@ -8,7 +8,6 @@
 #include "TLorentzVector.h"
 #include "TMath.h"
 #include "Math/Vector3D.h"
-#include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <random>
@@ -24,29 +23,15 @@ using namespace std;
 using namespace ROOT::Math;
 /* #endregion */
 
+const float ELE_MASS = 0.000511;
+const float MU_MASS = 0.105658;
+
 /* #region: Usefull templates/functions/structs  */
 // Defining a helper for making single binned histograms.
 std::unique_ptr<TH1F> makeCounterHist(const std::string& name) {
   auto h = std::make_unique<TH1F>(name.c_str(), name.c_str(), 1, 1, 2);
   h->SetDirectory(nullptr); // important: avoid ROOT owning/deleting it
   return h;
-}
-
-// Some rechit fields are optional and/or renamed across ntuple versions.
-// They are read into temporary buffers here (instead of relying only on the
-// auto-generated merged_event bindings) and copied later only if present.
-// Defining a helper that binds branches not included in merged_event
-// Presence flags prevent copying garbage when a branch is missing; output
-// values then remain at the TreeMuonSystemCombination InitTree defaults.
-template <typename T>
-bool bindOptionalBranch(TTree* chain, T* address, std::initializer_list<const char*> aliases) {
-  for (const char* branchName : aliases) {
-    if (chain->GetBranch(branchName)) {
-      chain->SetBranchAddress(branchName, address);
-      return true;
-    }
-  }
-  return false;
 }
 
 // Defining leptons and jets as structures
@@ -134,9 +119,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   /* #endregion */
 
   /* #region: Startup decode/defaults for this analyzer invocation.*/
-  const float ELE_MASS = 0.000511;
-  const float MU_MASS = 0.105658;
-  const float Z_MASS = 91.2;
+
   bool signalScan = int(options / 10) == 1;
   int option = options % 10;
   if (analysisTag.empty()) analysisTag = "Razor2016_80X";
@@ -192,25 +175,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   // initialize helper in memory safe way
   auto helper = std::make_unique<RazorHelper>(analysisTag, isData);
 
-  /* #region: optional branches, Accept both snake_case and camelCase branch names for compatibility with  */
-  Int_t cscRechitsIChamber_opt[20000] = {0};
-  Int_t cscRechitsNStrips_opt[20000] = {0};
-  Int_t cscRechitsWGroupsBX_opt[20000] = {0};
-  Int_t cscRechitsHitWire_opt[20000] = {0};
-  Int_t cscRechitsNWireGroups_opt[20000] = {0};
-  Float_t cscRechitsE_opt[20000] = {0};
-  Int_t dtRechitsSector_opt[20000] = {0};
-  const auto hasCscRechitsIChamber = bindOptionalBranch(fChain, cscRechitsIChamber_opt, {"cscRechits_IChamber", "cscRechitsIChamber"});
-  const auto hasCscRechitsNStrips = bindOptionalBranch(fChain, cscRechitsNStrips_opt, {"cscRechits_NStrips", "cscRechitsNStrips"});
-  const auto hasCscRechitsWGroupsBX = bindOptionalBranch(fChain, cscRechitsWGroupsBX_opt, {"cscRechits_WGroupsBX", "cscRechitsWGroupsBX"});
-  const auto hasCscRechitsHitWire = bindOptionalBranch(fChain, cscRechitsHitWire_opt, {"cscRechits_HitWire", "cscRechitsHitWire"});
-  const auto hasCscRechitsNWireGroups = bindOptionalBranch(fChain, cscRechitsNWireGroups_opt, {"cscRechits_NWireGroups", "cscRechitsNWireGroups"});
-  const auto hasCscRechitsE = bindOptionalBranch(fChain, cscRechitsE_opt, {"cscRechits_E", "cscRechitsE"});
-  const auto hasDtRechitsSector = bindOptionalBranch(fChain, dtRechitsSector_opt, {"dtRecHits_Sector", "dtRecHitsSector", "dtRechitSector"});
-  /* #endregion */
-  
-
-
   // [1] Event loop
   /* #region */
   auto lastReport = steady_clock::now(); // mr. timer
@@ -237,56 +201,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     // [3] Build local aliases and per-event helper inputs
     /* #region */
-    auto nCscSeg = ncscSegments;
-    auto nDtSeg = ndtSegments;
-    auto nDtRechits = ndtRecHits;
-    auto nRpc = nrpcRecHits;
-    auto cscRechitsQuality = cscRechits_Quality;
-    auto cscRechitsPhi = cscRechits_Phi;
-    auto cscRechitsEta = cscRechits_Eta;
-    auto cscRechitsX = cscRechits_X;
-    auto cscRechitsY = cscRechits_Y;
-    auto cscRechitsZ = cscRechits_Z;
-    auto cscRechitsTpeak = cscRechits_Tpeak;
-    auto cscRechitsTwire = cscRechits_Twire;
-    auto cscRechitsChamber = cscRechits_Chamber;
-    auto cscRechitsStation = cscRechits_Station;
-
-    auto dtRechitCorrectX = dtRecHits_X;
-    auto dtRechitCorrectY = dtRecHits_Y;
-    auto dtRechitCorrectZ = dtRecHits_Z;
-    auto dtRechitCorrectEta = dtRecHits_Eta;
-    auto dtRechitCorrectPhi = dtRecHits_Phi;
-    auto dtRechitLayer = dtRecHits_Layer;
-    auto dtRechitStation = dtRecHits_Station;
-    auto dtRechitWheel = dtRecHits_Wheel;
-    auto dtRechitSuperLayer = dtRecHits_SuperLayer;
-
-    auto dtSegStation = dtSegments_Station;
-    auto dtSegPhi = dtSegments_Phi;
-    auto dtSegEta = dtSegments_Eta;
-    auto rpcPhi = rpcRecHits_Phi;
-    auto rpcEta = rpcRecHits_Eta;
-    auto rpcX = rpcRecHits_X;
-    auto rpcY = rpcRecHits_Y;
-    auto rpcZ = rpcRecHits_Z;
-
-    auto rpcBx = rpcRecHits_Bx;
-    auto rpcRegion = rpcRecHits_Region;
-    auto rpcRing = rpcRecHits_Ring;
-    auto rpcLayer = rpcRecHits_Layer;
-    auto rpcStation = rpcRecHits_Station;
-    auto rpcSector = rpcRecHits_Sector;
-    auto rpcTime = rpcRecHits_Time;
-    auto rpcTimeError = rpcRecHits_TimeError;
-
-    auto eleCharge = Electron_charge; // eleCharge
-    auto eleEta = Electron_eta; // eleEta
-    auto elePhi = Electron_phi; // elePhi
-    auto elePt = Electron_pt; // elePt
-    auto ele_dZ = Electron_dz; // ele_dZ
-
-    
     bool ele_passCutBasedIDTight[10] = {0}; // ele_passCutBasedIDTight
     bool ele_passCutBasedIDVeto[10] = {0}; // ele_passCutBasedIDVeto
 
@@ -294,8 +208,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       ele_passCutBasedIDTight[i] = Electron_cutBased[i] >= 4;
       ele_passCutBasedIDVeto[i] = Electron_cutBased[i] >= 1;
     }
-    auto eventNum = event; // eventNum
-    auto fixedGridRhoFastjetAll = Rho_fixedGridRhoFastjetAll; // fixedGridRhoFastjetAll
 
     Float_t jetE[150] = {0}; // jetE
     for (int i = 0; i < nJet; ++i) {
@@ -305,7 +217,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       auto mass = Jet_mass[i];
       jetE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
-    auto jetEta = Jet_eta; // jetEta
     bool jetPassIDTightLepVeto[150] = {0}; // jetPassIDLoose
     bool jetPassIDTight[150] = {0}; // jetPassIDTight
     for (int i = 0; i < nJet; ++i) {
@@ -313,17 +224,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       jetPassIDTightLepVeto[i] = helper->jetTightLepVeto(analysisTag, true, Jet_neHEF[i], Jet_neEmEF[i], Jet_chEmEF[i], Jet_muEF[i], Jet_chHEF[i], Jet_chMultiplicity[i], Jet_neMultiplicity[i], Jet_eta[i], Jet_jetId[i]);
       // cout<<jetPassIDTight[i]<<","<<jetPassIDTightLepVeto[i]<<", "<< Jet_neHEF[i]<<", "<<Jet_neEmEF[i]<<", "<<Jet_chEmEF[i]<<", "<<Jet_muEF[i]<<", "<<Jet_chHEF[i]<<", "<<Jet_chMultiplicity[i]<<", "<<Jet_neMultiplicity[i]<<", "<< Jet_eta[i]<<", "<< Jet_jetId[i]<<endl;
     }
-    auto jetPhi = Jet_phi; // jetPhi
-    auto jetPt = Jet_pt; // jetPt
-    auto lumiNum = luminosityBlock; // lumiNum
-    auto metType1Phi = MET_phi; // metType1Phi
-    auto metType1Pt = MET_pt; // metType1Pt
-    if (analysisTag == "Summer24") {
-      metType1Phi = PFMET_phi; // metType1Phi
-      metType1Pt = PFMET_pt; // metType1Pt
-    }
-
-    auto muonCharge = Muon_charge; // muonCharge
     Float_t muonE[50] = {0}; // muonE
     for (int i = 0; i < nMuon; ++i) {
       auto eta = Muon_eta[i];
@@ -332,22 +232,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       auto mass = MU_MASS;
       muonE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
-    auto muonEta = Muon_eta; // muonEta
-    auto muonIsLoose = Muon_looseId; // muonIsLoose
-    auto muonIsTight = Muon_tightId; // muonIsTight
-    auto muonPhi = Muon_phi; // muonPhi
-    auto muonPt = Muon_pt; // muonPt
-    auto muon_pfRelIso04_all = Muon_pfRelIso04_all; // muon_chargedIso
-    auto muon_dZ = Muon_dz; // muon_dZ
-    auto muon_isGlobal = Muon_isGlobal; // muon_isGlobal
-    auto nElectrons = nElectron; // nElectrons
-    auto nJets = nJet; // nJets
-    auto nMuons = nMuon; // nMuons
-    int nPV = PV_npvs; // nPV
-    auto runNum = run; // runNum
 
     auto* lheComments = (string*)"123";
-    auto genWeight = Generator_weight; // genWeight
     /* #endregion */
 
     // [4] Signal-scan routing (split output by model point)
@@ -382,7 +268,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         cout << "Created new output file " << thisFileName << endl;
       }
       //Fill NEvents hist
-      NEvents2D[signalPair]->Fill(1.0, genWeight);
+      NEvents2D[signalPair]->Fill(1.0, Generator_weight);
     }
     /* #endregion */
 
@@ -393,14 +279,14 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       NEvents->Fill(1);
       MuonSystem->weight = 1;
     } else {
-      MuonSystem->weight = genWeight;
-      NEvents->Fill(1, genWeight);
+      MuonSystem->weight = Generator_weight;
+      NEvents->Fill(1, Generator_weight);
     }
-    MuonSystem->runNum = runNum; //? is there any particular reason these need to be here?
-    MuonSystem->lumiSec = lumiNum;
-    MuonSystem->evtNum = eventNum;
+    MuonSystem->runNum = run; //? is there any particular reason these need to be here?
+    MuonSystem->lumiSec = luminosityBlock;
+    MuonSystem->evtNum = event;
 
-    if (isData && runNum < 360019) continue; //? should this be moved somewhere higher to save compute?
+    if (isData && run < 360019) continue; //? should this be moved somewhere higher to save compute?
     /* #endregion */
 
     // [6] MC-only truth matching inputs and MC weights
@@ -410,7 +296,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->nGenParticles = 0;
       for (int i = 0; i < nGenPart; i++) {
         if (abs(GenPart_pdgId[i]) >= 999999) {
-          // cout<<eventNum<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
+          // cout<<event<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
           MuonSystem->gParticleEta[MuonSystem->nGenParticles] = GenPart_eta[i];
           MuonSystem->gParticlePhi[MuonSystem->nGenParticles] = GenPart_phi[i];
           MuonSystem->gParticlePt[MuonSystem->nGenParticles] = GenPart_pt[i];
@@ -429,7 +315,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
             }
           }
           if (!foundDaughter)
-            cout << "didn't find HV LLP daughter " << eventNum << endl;
+            cout << "didn't find HV LLP daughter " << event << endl;
           MuonSystem->gParticle_decay_vertex_r[MuonSystem->nGenParticles] = sqrt(decay_x * decay_x + decay_y * decay_y);
           MuonSystem->gParticle_decay_vertex_x[MuonSystem->nGenParticles] = decay_x;
           MuonSystem->gParticle_decay_vertex_y[MuonSystem->nGenParticles] = decay_y;
@@ -455,7 +341,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->nGLLP = 0;
       for (int i = 0; i < nGenPart; i++) {
         if (abs(GenPart_pdgId[i]) == 9000006) {
-          // cout<<eventNum<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
+          // cout<<event<<","<<gParticleId[i]<<","<<MuonSystem->nGLLP<<endl;
           MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[i];
           MuonSystem->gLLP_phi[MuonSystem->nGLLP] = GenPart_phi[i];
           MuonSystem->gLLP_pt[MuonSystem->nGLLP] = GenPart_pt[i];
@@ -473,7 +359,7 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
             }
           }
           if (!foundDaughter)
-            cout << "didn't find LLP daughter " << eventNum << endl;
+            cout << "didn't find LLP daughter " << event << endl;
           MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] = sqrt(decay_x * decay_x + decay_y * decay_y);
           MuonSystem->gLLP_decay_vertex_x[MuonSystem->nGLLP] = decay_x;
           MuonSystem->gLLP_decay_vertex_y[MuonSystem->nGLLP] = decay_y;
@@ -509,23 +395,23 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     // [7] Event-level observables and acceptance bookkeeping
     /* #region */
     //get NPU
-    MuonSystem->npv = nPV;
-    MuonSystem->rho = fixedGridRhoFastjetAll;
-    MuonSystem->met = metType1Pt;
-    MuonSystem->metPhi = metType1Phi;
+    MuonSystem->npv = PV_npvs;
+    MuonSystem->rho = Rho_fixedGridRhoFastjetAll;
+    MuonSystem->met = PFMET_pt;
+    MuonSystem->metPhi = PFMET_phi;
 
     MuonSystem->Puppimet = PuppiMET_pt;
     MuonSystem->PuppimetPhi = PuppiMET_phi;
 
     if (signalScan && !isData)
-      Total2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, genWeight * MuonSystem->pileupWeight);
+      Total2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
     if (signalScan && !isData) {
-      accep2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, genWeight * MuonSystem->pileupWeight);
+      accep2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
     } else if (!isData) {
       if (MuonSystem->gLLP_csc[0] && MuonSystem->gLLP_csc[1])
-        accep_csccsc->Fill(1.0, genWeight * MuonSystem->pileupWeight);
+        accep_csccsc->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
       if ((MuonSystem->gLLP_dt[0] && MuonSystem->gLLP_csc[1]) || (MuonSystem->gLLP_dt[1] && MuonSystem->gLLP_csc[0]))
-        accep_cscdt->Fill(1.0, genWeight * MuonSystem->pileupWeight);
+        accep_cscdt->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
     }
     /* #endregion */
 
@@ -548,16 +434,16 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->Flag_ecalBadCalibFilter = Flag_ecalBadCalibFilter;
     else {
       MuonSystem->Flag_ecalBadCalibFilter = true;
-      if (isData && runNum >= 362433 && runNum <= 367144) {
+      if (isData && run >= 362433 && run <= 367144) {
         if (PuppiMET_pt > 100) {
-          for (int i = 0; i < nJets; i++) {
-            if (jetPt[i] < 50)
+          for (int i = 0; i < nJet; i++) {
+            if (Jet_pt[i] < 50)
               continue;
-            if (!(jetEta[i] <= -0.1 && jetEta[i] >= -0.5 && jetPhi[i] < -1.8 && jetPhi[i] > -2.1))
+            if (!(Jet_eta[i] <= -0.1 && Jet_eta[i] >= -0.5 && Jet_phi[i] < -1.8 && Jet_phi[i] > -2.1))
               continue;
             if (!(Jet_neEmEF[i] > 0.9 || Jet_chEmEF[i] > 0.9))
               continue;
-            if (deltaPhi(PuppiMET_phi, jetPhi[i]) < 2.9)
+            if (deltaPhi(PuppiMET_phi, Jet_phi[i]) < 2.9)
               continue;
             Flag_ecalBadCalibFilter = false;
           }
@@ -567,8 +453,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     // jet veto map, following selections here: https://cms-jerc.web.cern.ch/Recommendations/#jet-veto-maps
     MuonSystem->jetVeto = true;
-    for (int i = 0; i < nJets; i++) {
-      if (jetPt[i] <= 15)
+    for (int i = 0; i < nJet; i++) {
+      if (Jet_pt[i] <= 15)
         continue;
       if (Jet_neEmEF[i] + Jet_chEmEF[i] >= 0.9)
         continue;
@@ -576,18 +462,18 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         continue;
       //remove overlaps
       bool overlap = false;
-      for (int j = 0; j < nMuons; j++) {
+      for (int j = 0; j < nMuon; j++) {
         if (!Muon_isPFcand[j])
           continue;
-        if (RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], muonEta[j], muonPhi[j]) < 0.2)
+        if (RazorAnalyzerMerged::deltaR(Jet_eta[i], Jet_phi[i], Muon_eta[j], Muon_phi[j]) < 0.2)
           overlap = true;
       }
       if (overlap)
         continue;
       helper->getJetVetoMap(0, 1);
-      if (helper->getJetVetoMap(jetEta[i], jetPhi[i]) > 0.0)
+      if (helper->getJetVetoMap(Jet_eta[i], Jet_phi[i]) > 0.0)
         MuonSystem->jetVeto = false;
-      if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(jetEta[i], jetPhi[i]) > 0.0)
+      if (analysisTag == "Summer24" && helper->getJetVetoFpixMap(Jet_eta[i], Jet_phi[i]) > 0.0)
         MuonSystem->jetVeto = false;
     }
 
@@ -604,33 +490,33 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     //-------------------------------
     //Muons
     //-------------------------------
-    for (int i = 0; i < nMuons; i++) {
-      if (!muonIsLoose[i])
+    for (int i = 0; i < nMuon; i++) {
+      if (!Muon_looseId[i])
         continue;
-      if (muonPt[i] < 25)
+      if (Muon_pt[i] < 25)
         continue;
-      if (fabs(muonEta[i]) > 2.4)
+      if (fabs(Muon_eta[i]) > 2.4)
         continue;
 
       //remove overlaps
       bool overlap = false;
       for (auto& lep : Leptons) {
-        if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], lep.lepton.Eta(), lep.lepton.Phi()) < 0.3)
+        if (RazorAnalyzerMerged::deltaR(Muon_eta[i], Muon_phi[i], lep.lepton.Eta(), lep.lepton.Phi()) < 0.3)
           overlap = true;
       }
       if (overlap)
         continue;
 
       leptons tmpMuon;
-      tmpMuon.lepton.SetPtEtaPhiM(muonPt[i], muonEta[i], muonPhi[i], MU_MASS);
-      tmpMuon.pdgId = 13 * -1 * muonCharge[i];
-      tmpMuon.dZ = muon_dZ[i];
-      tmpMuon.passId = muonIsTight[i];
+      tmpMuon.lepton.SetPtEtaPhiM(Muon_pt[i], Muon_eta[i], Muon_phi[i], MU_MASS);
+      tmpMuon.pdgId = 13 * -1 * Muon_charge[i];
+      tmpMuon.dZ = Muon_dz[i];
+      tmpMuon.passId = Muon_tightId[i];
 
-      tmpMuon.passLooseIso = muon_pfRelIso04_all[i] < 0.25;
-      tmpMuon.passTightIso = muon_pfRelIso04_all[i] < 0.15;
-      tmpMuon.passVTightIso = muon_pfRelIso04_all[i] < 0.10;
-      tmpMuon.passVVTightIso = muon_pfRelIso04_all[i] < 0.05;
+      tmpMuon.passLooseIso = Muon_pfRelIso04_all[i] < 0.25;
+      tmpMuon.passTightIso = Muon_pfRelIso04_all[i] < 0.15;
+      tmpMuon.passVTightIso = Muon_pfRelIso04_all[i] < 0.10;
+      tmpMuon.passVVTightIso = Muon_pfRelIso04_all[i] < 0.05;
 
       tmpMuon.passVetoId = false;
       Leptons.push_back(tmpMuon);
@@ -639,26 +525,26 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     //-------------------------------
     //Electrons
     //-------------------------------
-    for (int i = 0; i < nElectrons; i++) {
+    for (int i = 0; i < nElectron; i++) {
       if (!ele_passCutBasedIDVeto[i])
         continue;
-      if (elePt[i] < 35)
+      if (Electron_pt[i] < 35)
         continue;
-      if (fabs(eleEta[i]) > 2.5)
+      if (fabs(Electron_eta[i]) > 2.5)
         continue;
 
       //remove overlaps
       bool overlap = false;
       for (auto& lep : Leptons) {
-        if (RazorAnalyzerMerged::deltaR(eleEta[i], elePhi[i], lep.lepton.Eta(), lep.lepton.Phi()) < 0.3)
+        if (RazorAnalyzerMerged::deltaR(Electron_eta[i], Electron_phi[i], lep.lepton.Eta(), lep.lepton.Phi()) < 0.3)
           overlap = true;
       }
       if (overlap)
         continue;
       leptons tmpElectron;
-      tmpElectron.lepton.SetPtEtaPhiM(elePt[i], eleEta[i], elePhi[i], ELE_MASS);
-      tmpElectron.pdgId = 11 * -1 * eleCharge[i];
-      tmpElectron.dZ = ele_dZ[i];
+      tmpElectron.lepton.SetPtEtaPhiM(Electron_pt[i], Electron_eta[i], Electron_phi[i], ELE_MASS);
+      tmpElectron.pdgId = 11 * -1 * Electron_charge[i];
+      tmpElectron.dZ = Electron_dz[i];
       tmpElectron.passId = ele_passCutBasedIDTight[i];
       Leptons.push_back(tmpElectron);
     }
@@ -694,10 +580,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     float MetX_JESUp = 0;
     float MetY_JESUp = 0;
 
-    for (int i = 0; i < nJets; i++) {
-      if (fabs(jetEta[i]) >= 3.0)
+    for (int i = 0; i < nJet; i++) {
+      if (fabs(Jet_eta[i]) >= 3.0)
         continue;
-      if (jetPt[i] < 20)
+      if (Jet_pt[i] < 20)
         continue;
       if (!jetPassIDTight[i] && !jetPassIDTightLepVeto[i])
         continue;
@@ -706,29 +592,29 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       //------------------------------------------------------------
       double deltaR = -1;
       for (auto& lep : Leptons) {
-        double thisDR = RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], lep.lepton.Eta(), lep.lepton.Phi());
+        double thisDR = RazorAnalyzerMerged::deltaR(Jet_eta[i], Jet_phi[i], lep.lepton.Eta(), lep.lepton.Phi());
         if (deltaR < 0 || thisDR < deltaR)
           deltaR = thisDR;
       }
       if (deltaR > 0 && deltaR < 0.4)
         continue; //jet matches a selected lepton
 
-      TLorentzVector thisJet = makeTLorentzVector(jetPt[i], jetEta[i], jetPhi[i], jetE[i]);
+      TLorentzVector thisJet = makeTLorentzVector(Jet_pt[i], Jet_eta[i], Jet_phi[i], jetE[i]);
 
       jets tmpJet;
       tmpJet.jet = thisJet;
       tmpJet.passId = jetPassIDTightLepVeto[i];
 
       // calculate jet energy scale uncertainty
-      double unc = helper->getJecUnc(jetPt[i], jetEta[i], runNum); //use run=999 as default
-      tmpJet.jetPtJESUp = jetPt[i] * (1 + unc);
-      tmpJet.jetPtJESDown = jetPt[i] * (1 - unc);
+      double unc = helper->getJecUnc(Jet_pt[i], Jet_eta[i], run); //use run=999 as default
+      tmpJet.jetPtJESUp = Jet_pt[i] * (1 + unc);
+      tmpJet.jetPtJESDown = Jet_pt[i] * (1 - unc);
       tmpJet.jetEJESUp = jetE[i] * (1 + unc);
       tmpJet.jetEJESDown = jetE[i] * (1 - unc);
-      // cout<<jetPt[i]<<","<<jetEta[i]<<","<<unc<<endl;
+      // cout<<Jet_pt[i]<<","<<Jet_eta[i]<<","<<unc<<endl;
       tmpJet.JecUnc = unc;
-      TLorentzVector thisJetJESUp = makeTLorentzVector(tmpJet.jetPtJESUp, jetEta[i], jetPhi[i], tmpJet.jetEJESUp);
-      TLorentzVector thisJetJESDown = makeTLorentzVector(tmpJet.jetPtJESDown, jetEta[i], jetPhi[i], tmpJet.jetEJESDown);
+      TLorentzVector thisJetJESUp = makeTLorentzVector(tmpJet.jetPtJESUp, Jet_eta[i], Jet_phi[i], tmpJet.jetEJESUp);
+      TLorentzVector thisJetJESDown = makeTLorentzVector(tmpJet.jetPtJESDown, Jet_eta[i], Jet_phi[i], tmpJet.jetEJESDown);
 
       MetX_JESUp += -1 * (thisJetJESUp.Px() - thisJet.Px());
       MetY_JESUp += -1 * (thisJetJESUp.Py() - thisJet.Py());
@@ -778,8 +664,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     // [11] Rechit-level pass-through fill (CSC/DT/RPC + optional aliases)
     /* #region */
-    MuonSystem->nDTRechits = nDtRechits;
-    MuonSystem->nRpcRechits = nRpc;
+    MuonSystem->nDTRechits = ndtRecHits;
+    MuonSystem->nRpcRechits = nrpcRecHits;
     MuonSystem->nCscRechits = ncscRechits;
     if (MuonSystem->nCscRechits > N_MAX_CSCRECHITS)
       MuonSystem->nCscRechits = N_MAX_CSCRECHITS;
@@ -790,59 +676,52 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     for (int i = 0; i < MuonSystem->nCscRechits; i++) {
       MuonSystem->CscRechitsClusterId[i] = -1;
-      MuonSystem->CscRechitsQuality[i] = cscRechitsQuality[i];
-      MuonSystem->CscRechitsChamber[i] = cscRechitsChamber[i];
-      MuonSystem->CscRechitsStation[i] = cscRechitsStation[i];
-      MuonSystem->CscRechitsEta[i] = cscRechitsEta[i];
-      MuonSystem->CscRechitsPhi[i] = cscRechitsPhi[i];
-      MuonSystem->CscRechitsX[i] = cscRechitsX[i];
-      MuonSystem->CscRechitsY[i] = cscRechitsY[i];
-      MuonSystem->CscRechitsZ[i] = cscRechitsZ[i];
-      MuonSystem->CscRechitsTpeak[i] = cscRechitsTpeak[i];
-      MuonSystem->CscRechitsTwire[i] = cscRechitsTwire[i];
+      MuonSystem->CscRechitsQuality[i] = cscRechits_Quality[i];
+      MuonSystem->CscRechitsChamber[i] = cscRechits_Chamber[i];
+      MuonSystem->CscRechitsStation[i] = cscRechits_Station[i];
+      MuonSystem->CscRechitsEta[i] = cscRechits_Eta[i];
+      MuonSystem->CscRechitsPhi[i] = cscRechits_Phi[i];
+      MuonSystem->CscRechitsX[i] = cscRechits_X[i];
+      MuonSystem->CscRechitsY[i] = cscRechits_Y[i];
+      MuonSystem->CscRechitsZ[i] = cscRechits_Z[i];
+      MuonSystem->CscRechitsTpeak[i] = cscRechits_Tpeak[i];
+      MuonSystem->CscRechitsTwire[i] = cscRechits_Twire[i];
 
-      if (hasCscRechitsIChamber)
-        MuonSystem->CscRechitsIChamber[i] = cscRechitsIChamber_opt[i];
-      if (hasCscRechitsNStrips)
-        MuonSystem->CscRechitsNStrips[i] = cscRechitsNStrips_opt[i];
-      if (hasCscRechitsWGroupsBX)
-        MuonSystem->CscRechitsWGroupsBX[i] = cscRechitsWGroupsBX_opt[i];
-      if (hasCscRechitsHitWire)
-        MuonSystem->CscRechitsHitWire[i] = cscRechitsHitWire_opt[i];
-      if (hasCscRechitsNWireGroups)
-        MuonSystem->CscRechitsNWireGroups[i] = cscRechitsNWireGroups_opt[i];
-      if (hasCscRechitsE)
-        MuonSystem->CscRechitsE[i] = cscRechitsE_opt[i];
+      MuonSystem->CscRechitsIChamber[i] = cscRechits_IChamber[i];
+      MuonSystem->CscRechitsNStrips[i] = cscRechits_NStrips[i];
+      MuonSystem->CscRechitsWGroupsBX[i] = cscRechits_WGroupsBX[i];
+      MuonSystem->CscRechitsHitWire[i] = cscRechits_HitWire[i];
+      MuonSystem->CscRechitsNWireGroups[i] = cscRechits_NWireGroups[i];
+      MuonSystem->CscRechitsE[i] = cscRechits_E[i];
     }
     for (int i = 0; i < MuonSystem->nDTRechits; i++) {
       MuonSystem->DtRechitsClusterId[i] = -1;
-      MuonSystem->DtRechitsLayer[i] = dtRechitLayer[i];
-      MuonSystem->DtRechitsSuperLayer[i] = dtRechitSuperLayer[i];
-      MuonSystem->DtRechitsStation[i] = dtRechitStation[i];
-      MuonSystem->DtRechitsWheel[i] = dtRechitWheel[i];
-      MuonSystem->DtRechitsEta[i] = dtRechitCorrectEta[i];
-      MuonSystem->DtRechitsPhi[i] = dtRechitCorrectPhi[i];
-      MuonSystem->DtRechitsX[i] = dtRechitCorrectX[i];
-      MuonSystem->DtRechitsY[i] = dtRechitCorrectY[i];
-      MuonSystem->DtRechitsZ[i] = dtRechitCorrectZ[i];
-      if (hasDtRechitsSector)
-        MuonSystem->DtRechitsSector[i] = dtRechitsSector_opt[i];
+      MuonSystem->DtRechitsLayer[i] = dtRecHits_Layer[i];
+      MuonSystem->DtRechitsSuperLayer[i] = dtRecHits_SuperLayer[i];
+      MuonSystem->DtRechitsStation[i] = dtRecHits_Station[i];
+      MuonSystem->DtRechitsWheel[i] = dtRecHits_Wheel[i];
+      MuonSystem->DtRechitsEta[i] = dtRecHits_Eta[i];
+      MuonSystem->DtRechitsPhi[i] = dtRecHits_Phi[i];
+      MuonSystem->DtRechitsX[i] = dtRecHits_X[i];
+      MuonSystem->DtRechitsY[i] = dtRecHits_Y[i];
+      MuonSystem->DtRechitsZ[i] = dtRecHits_Z[i];
+      MuonSystem->DtRechitsSector[i] = dtRecHits_Sector[i];
     }
     for (int i = 0; i < MuonSystem->nRpcRechits; i++) {
       MuonSystem->RpcRecHitsClusterId[i] = -1;
-      MuonSystem->RpcRecHitsBx[i] = rpcBx[i];
-      MuonSystem->RpcRecHitsRegion[i] = rpcRegion[i];
-      MuonSystem->RpcRecHitsRing[i] = rpcRing[i];
-      MuonSystem->RpcRecHitsLayer[i] = rpcLayer[i];
-      MuonSystem->RpcRecHitsStation[i] = rpcStation[i];
-      MuonSystem->RpcRecHitsSector[i] = rpcSector[i];
-      MuonSystem->RpcRecHitsX[i] = rpcX[i];
-      MuonSystem->RpcRecHitsY[i] = rpcY[i];
-      MuonSystem->RpcRecHitsZ[i] = rpcZ[i];
-      MuonSystem->RpcRecHitsPhi[i] = rpcPhi[i];
-      MuonSystem->RpcRecHitsEta[i] = rpcEta[i];
-      MuonSystem->RpcRecHitsTime[i] = rpcTime[i];
-      MuonSystem->RpcRecHitsTimeError[i] = rpcTimeError[i];
+      MuonSystem->RpcRecHitsBx[i] = rpcRecHits_Bx[i];
+      MuonSystem->RpcRecHitsRegion[i] = rpcRecHits_Region[i];
+      MuonSystem->RpcRecHitsRing[i] = rpcRecHits_Ring[i];
+      MuonSystem->RpcRecHitsLayer[i] = rpcRecHits_Layer[i];
+      MuonSystem->RpcRecHitsStation[i] = rpcRecHits_Station[i];
+      MuonSystem->RpcRecHitsSector[i] = rpcRecHits_Sector[i];
+      MuonSystem->RpcRecHitsX[i] = rpcRecHits_X[i];
+      MuonSystem->RpcRecHitsY[i] = rpcRecHits_Y[i];
+      MuonSystem->RpcRecHitsZ[i] = rpcRecHits_Z[i];
+      MuonSystem->RpcRecHitsPhi[i] = rpcRecHits_Phi[i];
+      MuonSystem->RpcRecHitsEta[i] = rpcRecHits_Eta[i];
+      MuonSystem->RpcRecHitsTime[i] = rpcRecHits_Time[i];
+      MuonSystem->RpcRecHitsTimeError[i] = rpcRecHits_TimeError[i];
     }
     /* #endregion */
 
@@ -869,46 +748,46 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     int nDTRechitsChamberPlus41 = 0;
     int nDTRechitsChamberPlus42 = 0;
 
-    for (int i = 0; i < nDtRechits; i++) {
-      if (dtRechitStation[i] == 1 && dtRechitWheel[i] == -2)
+    for (int i = 0; i < ndtRecHits; i++) {
+      if (dtRecHits_Station[i] == 1 && dtRecHits_Wheel[i] == -2)
         nDTRechitsChamberMinus12++;
-      if (dtRechitStation[i] == 1 && dtRechitWheel[i] == -1)
+      if (dtRecHits_Station[i] == 1 && dtRecHits_Wheel[i] == -1)
         nDTRechitsChamberMinus11++;
-      if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 0)
+      if (dtRecHits_Station[i] == 1 && dtRecHits_Wheel[i] == 0)
         nDTRechitsChamber10++;
-      if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 1)
+      if (dtRecHits_Station[i] == 1 && dtRecHits_Wheel[i] == 1)
         nDTRechitsChamberPlus11++;
-      if (dtRechitStation[i] == 1 && dtRechitWheel[i] == 2)
+      if (dtRecHits_Station[i] == 1 && dtRecHits_Wheel[i] == 2)
         nDTRechitsChamberPlus12++;
-      if (dtRechitStation[i] == 2 && dtRechitWheel[i] == -2)
+      if (dtRecHits_Station[i] == 2 && dtRecHits_Wheel[i] == -2)
         nDTRechitsChamberMinus22++;
-      if (dtRechitStation[i] == 2 && dtRechitWheel[i] == -1)
+      if (dtRecHits_Station[i] == 2 && dtRecHits_Wheel[i] == -1)
         nDTRechitsChamberMinus21++;
-      if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 0)
+      if (dtRecHits_Station[i] == 2 && dtRecHits_Wheel[i] == 0)
         nDTRechitsChamber20++;
-      if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 1)
+      if (dtRecHits_Station[i] == 2 && dtRecHits_Wheel[i] == 1)
         nDTRechitsChamberPlus21++;
-      if (dtRechitStation[i] == 2 && dtRechitWheel[i] == 2)
+      if (dtRecHits_Station[i] == 2 && dtRecHits_Wheel[i] == 2)
         nDTRechitsChamberPlus22++;
-      if (dtRechitStation[i] == 3 && dtRechitWheel[i] == -2)
+      if (dtRecHits_Station[i] == 3 && dtRecHits_Wheel[i] == -2)
         nDTRechitsChamberMinus32++;
-      if (dtRechitStation[i] == 3 && dtRechitWheel[i] == -1)
+      if (dtRecHits_Station[i] == 3 && dtRecHits_Wheel[i] == -1)
         nDTRechitsChamberMinus31++;
-      if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 0)
+      if (dtRecHits_Station[i] == 3 && dtRecHits_Wheel[i] == 0)
         nDTRechitsChamber30++;
-      if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 1)
+      if (dtRecHits_Station[i] == 3 && dtRecHits_Wheel[i] == 1)
         nDTRechitsChamberPlus31++;
-      if (dtRechitStation[i] == 3 && dtRechitWheel[i] == 2)
+      if (dtRecHits_Station[i] == 3 && dtRecHits_Wheel[i] == 2)
         nDTRechitsChamberPlus32++;
-      if (dtRechitStation[i] == 4 && dtRechitWheel[i] == -2)
+      if (dtRecHits_Station[i] == 4 && dtRecHits_Wheel[i] == -2)
         nDTRechitsChamberMinus42++;
-      if (dtRechitStation[i] == 4 && dtRechitWheel[i] == -1)
+      if (dtRecHits_Station[i] == 4 && dtRecHits_Wheel[i] == -1)
         nDTRechitsChamberMinus41++;
-      if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 0)
+      if (dtRecHits_Station[i] == 4 && dtRecHits_Wheel[i] == 0)
         nDTRechitsChamber40++;
-      if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 1)
+      if (dtRecHits_Station[i] == 4 && dtRecHits_Wheel[i] == 1)
         nDTRechitsChamberPlus41++;
-      if (dtRechitStation[i] == 4 && dtRechitWheel[i] == 2)
+      if (dtRecHits_Station[i] == 4 && dtRecHits_Wheel[i] == 2)
         nDTRechitsChamberPlus42++;
     }
 
@@ -983,15 +862,15 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
       int layer = 0;
       Rechits p;
-      p.phi = cscRechitsPhi[i];
-      p.eta = cscRechitsEta[i];
-      p.x = cscRechitsX[i];
-      p.y = cscRechitsY[i];
-      p.z = cscRechitsZ[i];
-      p.t = cscRechitsTpeak[i];
-      p.twire = cscRechitsTwire[i];
-      p.station = cscRechitsStation[i];
-      p.chamber = cscRechitsChamber[i];
+      p.phi = cscRechits_Phi[i];
+      p.eta = cscRechits_Eta[i];
+      p.x = cscRechits_X[i];
+      p.y = cscRechits_Y[i];
+      p.z = cscRechits_Z[i];
+      p.t = cscRechits_Tpeak[i];
+      p.twire = cscRechits_Twire[i];
+      p.station = cscRechits_Station[i];
+      p.chamber = cscRechits_Chamber[i];
       p.layer = layer;
       p.superlayer = 0;
       p.wheel = 0;
@@ -999,41 +878,41 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       points.push_back(p);
       cscRechitsClusterId.push_back(-1);
 
-      if (cscRechitsChamber[i] == 11)
+      if (cscRechits_Chamber[i] == 11)
         nCscRechitsChamberPlus11++;
-      if (cscRechitsChamber[i] == 12)
+      if (cscRechits_Chamber[i] == 12)
         nCscRechitsChamberPlus12++;
-      if (cscRechitsChamber[i] == 13)
+      if (cscRechits_Chamber[i] == 13)
         nCscRechitsChamberPlus13++;
-      if (cscRechitsChamber[i] == 21)
+      if (cscRechits_Chamber[i] == 21)
         nCscRechitsChamberPlus21++;
-      if (cscRechitsChamber[i] == 22)
+      if (cscRechits_Chamber[i] == 22)
         nCscRechitsChamberPlus22++;
-      if (cscRechitsChamber[i] == 31)
+      if (cscRechits_Chamber[i] == 31)
         nCscRechitsChamberPlus31++;
-      if (cscRechitsChamber[i] == 32)
+      if (cscRechits_Chamber[i] == 32)
         nCscRechitsChamberPlus32++;
-      if (cscRechitsChamber[i] == 41)
+      if (cscRechits_Chamber[i] == 41)
         nCscRechitsChamberPlus41++;
-      if (cscRechitsChamber[i] == 42)
+      if (cscRechits_Chamber[i] == 42)
         nCscRechitsChamberPlus42++;
-      if (cscRechitsChamber[i] == -11)
+      if (cscRechits_Chamber[i] == -11)
         nCscRechitsChamberMinus11++;
-      if (cscRechitsChamber[i] == -12)
+      if (cscRechits_Chamber[i] == -12)
         nCscRechitsChamberMinus12++;
-      if (cscRechitsChamber[i] == -13)
+      if (cscRechits_Chamber[i] == -13)
         nCscRechitsChamberMinus13++;
-      if (cscRechitsChamber[i] == -21)
+      if (cscRechits_Chamber[i] == -21)
         nCscRechitsChamberMinus21++;
-      if (cscRechitsChamber[i] == -22)
+      if (cscRechits_Chamber[i] == -22)
         nCscRechitsChamberMinus22++;
-      if (cscRechitsChamber[i] == -31)
+      if (cscRechits_Chamber[i] == -31)
         nCscRechitsChamberMinus31++;
-      if (cscRechitsChamber[i] == -32)
+      if (cscRechits_Chamber[i] == -32)
         nCscRechitsChamberMinus32++;
-      if (cscRechitsChamber[i] == -41)
+      if (cscRechits_Chamber[i] == -41)
         nCscRechitsChamberMinus41++;
-      if (cscRechitsChamber[i] == -42)
+      if (cscRechits_Chamber[i] == -42)
         nCscRechitsChamberMinus42++;
     }
     MuonSystem->nCscRings = 0;
@@ -1186,36 +1065,36 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->cscRechitClusterMuonVetoE[MuonSystem->nCscRechitClusters] = 0.0;
 
       // jet veto
-      for (int i = 0; i < nJets; i++) {
-        if (fabs(jetEta[i]) > 3.0)
+      for (int i = 0; i < nJet; i++) {
+        if (fabs(Jet_eta[i]) > 3.0)
           continue;
-        if (RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4 && jetPt[i] > MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters]) {
-          MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters] = jetPt[i];
+        if (RazorAnalyzerMerged::deltaR(Jet_eta[i], Jet_phi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4 && Jet_pt[i] > MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters]) {
+          MuonSystem->cscRechitClusterJetVetoPt[MuonSystem->nCscRechitClusters] = Jet_pt[i];
           MuonSystem->cscRechitClusterJetVetoE[MuonSystem->nCscRechitClusters] = jetE[i];
           MuonSystem->cscRechitClusterJetVetoTightId[MuonSystem->nCscRechitClusters] = jetPassIDTight[i];
 
-          double unc = helper->getJecUnc(jetPt[i], jetEta[i], runNum); //use run=999 as default
-          MuonSystem->cscRechitClusterJetVetoPtJESUp[MuonSystem->nCscRechitClusters] = jetPt[i] * (1 + unc);
-          MuonSystem->cscRechitClusterJetVetoPtJESDown[MuonSystem->nCscRechitClusters] = jetPt[i] * (1 - unc);
+          double unc = helper->getJecUnc(Jet_pt[i], Jet_eta[i], run); //use run=999 as default
+          MuonSystem->cscRechitClusterJetVetoPtJESUp[MuonSystem->nCscRechitClusters] = Jet_pt[i] * (1 + unc);
+          MuonSystem->cscRechitClusterJetVetoPtJESDown[MuonSystem->nCscRechitClusters] = Jet_pt[i] * (1 - unc);
         }
       }
       float min_deltaR = 15.;
       int index = 999;
 
-      for (int i = 0; i < nMuons; i++) {
-        if (fabs(muonEta[i]) > 3.0)
+      for (int i = 0; i < nMuon; i++) {
+        if (fabs(Muon_eta[i]) > 3.0)
           continue;
-        if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4 && muonPt[i] > MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters]) {
-          MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters] = muonPt[i];
+        if (RazorAnalyzerMerged::deltaR(Muon_eta[i], Muon_phi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4 && Muon_pt[i] > MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters]) {
+          MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters] = Muon_pt[i];
           MuonSystem->cscRechitClusterMuonVetoE[MuonSystem->nCscRechitClusters] = muonE[i];
-          MuonSystem->cscRechitClusterMuonVetoGlobal[MuonSystem->nCscRechitClusters] = muon_isGlobal[i];
-          MuonSystem->cscRechitClusterMuonVetoLooseId[MuonSystem->nCscRechitClusters] = muonIsLoose[i];
+          MuonSystem->cscRechitClusterMuonVetoGlobal[MuonSystem->nCscRechitClusters] = Muon_isGlobal[i];
+          MuonSystem->cscRechitClusterMuonVetoLooseId[MuonSystem->nCscRechitClusters] = Muon_looseId[i];
         }
-        if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.8 && muonPt[i] > MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters]) {
-          MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters] = muonPt[i];
+        if (RazorAnalyzerMerged::deltaR(Muon_eta[i], Muon_phi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.8 && Muon_pt[i] > MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters]) {
+          MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters] = Muon_pt[i];
           MuonSystem->cscRechitClusterMuonVetoE0p8Thresh[MuonSystem->nCscRechitClusters] = muonE[i];
-          MuonSystem->cscRechitClusterMuonVetoGlobal0p8Thresh[MuonSystem->nCscRechitClusters] = muon_isGlobal[i];
-          MuonSystem->cscRechitClusterMuonVetoLooseId0p8Thresh[MuonSystem->nCscRechitClusters] = muonIsLoose[i];
+          MuonSystem->cscRechitClusterMuonVetoGlobal0p8Thresh[MuonSystem->nCscRechitClusters] = Muon_isGlobal[i];
+          MuonSystem->cscRechitClusterMuonVetoLooseId0p8Thresh[MuonSystem->nCscRechitClusters] = Muon_looseId[i];
         }
       }
       if (!isData) {
@@ -1246,21 +1125,21 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       }
 
       //match to MB1 DT segments
-      for (int i = 0; i < nDtSeg; i++) {
-        if (RazorAnalyzerMerged::deltaR(dtSegEta[i], dtSegPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4) {
+      for (int i = 0; i < ndtSegments; i++) {
+        if (RazorAnalyzerMerged::deltaR(dtSegments_Eta[i], dtSegments_Phi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4) {
           MuonSystem->cscRechitCluster_match_dtSeg_0p4[MuonSystem->nCscRechitClusters]++;
-          if (dtSegStation[i] == 1)
+          if (dtSegments_Station[i] == 1)
             MuonSystem->cscRechitCluster_match_MB1Seg_0p4[MuonSystem->nCscRechitClusters]++;
         }
       }
 
       //match to RPC hits in RE1/2
-      for (int i = 0; i < nRpc; i++) {
-        float rpcR = sqrt(rpcX[i] * rpcX[i] + rpcY[i] * rpcY[i]);
-        if (RazorAnalyzerMerged::deltaR(rpcEta[i], rpcPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4) {
-          if (rpcR < 461.0 && rpcR > 275 && abs(rpcZ[i]) > 663 && abs(rpcZ[i]) < 730)
+      for (int i = 0; i < nrpcRecHits; i++) {
+        float rpcR = sqrt(rpcRecHits_X[i] * rpcRecHits_X[i] + rpcRecHits_Y[i] * rpcRecHits_Y[i]);
+        if (RazorAnalyzerMerged::deltaR(rpcRecHits_Eta[i], rpcRecHits_Phi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.4) {
+          if (rpcR < 461.0 && rpcR > 275 && abs(rpcRecHits_Z[i]) > 663 && abs(rpcRecHits_Z[i]) < 730)
             MuonSystem->cscRechitCluster_match_RE12_0p4[MuonSystem->nCscRechitClusters]++;
-          if (rpcR < 470 && rpcR > 380 && abs(rpcZ[i]) < 661)
+          if (rpcR < 470 && rpcR > 380 && abs(rpcRecHits_Z[i]) < 661)
             MuonSystem->cscRechitCluster_match_RB1_0p4[MuonSystem->nCscRechitClusters]++;
         }
       }
@@ -1295,20 +1174,20 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
 
     points.clear();
 
-    for (int i = 0; i < nDtRechits; i++) {
+    for (int i = 0; i < ndtRecHits; i++) {
       Rechits p;
 
-      p.phi = dtRechitCorrectPhi[i];
-      p.eta = dtRechitCorrectEta[i];
-      p.x = dtRechitCorrectX[i];
-      p.y = dtRechitCorrectY[i];
-      p.z = dtRechitCorrectZ[i];
+      p.phi = dtRecHits_Phi[i];
+      p.eta = dtRecHits_Eta[i];
+      p.x = dtRecHits_X[i];
+      p.y = dtRecHits_Y[i];
+      p.z = dtRecHits_Z[i];
       p.t = -999.;
       p.twire = -999.;
-      p.station = dtRechitStation[i];
-      p.chamber = dtRechitWheel[i];
-      p.superlayer = dtRechitSuperLayer[i];
-      p.wheel = dtRechitWheel[i];
+      p.station = dtRecHits_Station[i];
+      p.chamber = dtRecHits_Wheel[i];
+      p.superlayer = dtRecHits_SuperLayer[i];
+      p.wheel = dtRecHits_Wheel[i];
       p.clusterID = kUnclassifiedClusterId;
       points.push_back(p);
     }
@@ -1332,18 +1211,18 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     points.clear();
     for (int i = 0; i < MuonSystem->nRpcRechits; i++) {
       Rechits p;
-      p.phi = rpcPhi[i];
-      p.eta = rpcEta[i];
-      p.x = rpcX[i];
-      p.y = rpcY[i];
-      p.z = rpcZ[i];
-      p.t = rpcTime[i];
-      p.twire = rpcTime[i];
-      p.station = rpcStation[i];
-      p.chamber = rpcSector[i];
-      p.layer = rpcLayer[i];
+      p.phi = rpcRecHits_Phi[i];
+      p.eta = rpcRecHits_Eta[i];
+      p.x = rpcRecHits_X[i];
+      p.y = rpcRecHits_Y[i];
+      p.z = rpcRecHits_Z[i];
+      p.t = rpcRecHits_Time[i];
+      p.twire = rpcRecHits_Time[i];
+      p.station = rpcRecHits_Station[i];
+      p.chamber = rpcRecHits_Sector[i];
+      p.layer = rpcRecHits_Layer[i];
       p.superlayer = 0;
-      p.wheel = rpcRing[i];
+      p.wheel = rpcRecHits_Ring[i];
       p.clusterID = kUnclassifiedClusterId;
       points.push_back(p);
     }
@@ -1462,50 +1341,50 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       MuonSystem->dtRechitClusterMuonVetoE[MuonSystem->nDtRechitClusters] = 0.0;
 
       // jet veto
-      for (int i = 0; i < nJets; i++) {
-        if (fabs(jetEta[i]) > 3.0)
+      for (int i = 0; i < nJet; i++) {
+        if (fabs(Jet_eta[i]) > 3.0)
           continue;
-        if (RazorAnalyzerMerged::deltaR(jetEta[i], jetPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && jetPt[i] > MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters]) {
-          MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] = jetPt[i];
+        if (RazorAnalyzerMerged::deltaR(Jet_eta[i], Jet_phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && Jet_pt[i] > MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters]) {
+          MuonSystem->dtRechitClusterJetVetoPt[MuonSystem->nDtRechitClusters] = Jet_pt[i];
           MuonSystem->dtRechitClusterJetVetoE[MuonSystem->nDtRechitClusters] = jetE[i];
           MuonSystem->dtRechitClusterJetVetoTightId[MuonSystem->nDtRechitClusters] = jetPassIDTight[i];
 
-          double unc = helper->getJecUnc(jetPt[i], jetEta[i], runNum); //use run=999 as default
-          MuonSystem->dtRechitClusterJetVetoPtJESUp[MuonSystem->nDtRechitClusters] = jetPt[i] * (1 + unc);
-          MuonSystem->dtRechitClusterJetVetoPtJESDown[MuonSystem->nDtRechitClusters] = jetPt[i] * (1 - unc);
+          double unc = helper->getJecUnc(Jet_pt[i], Jet_eta[i], run); //use run=999 as default
+          MuonSystem->dtRechitClusterJetVetoPtJESUp[MuonSystem->nDtRechitClusters] = Jet_pt[i] * (1 + unc);
+          MuonSystem->dtRechitClusterJetVetoPtJESDown[MuonSystem->nDtRechitClusters] = Jet_pt[i] * (1 - unc);
         }
       }
 
-      for (int i = 0; i < nMuons; i++) {
-        if (fabs(muonEta[i]) > 3.0)
+      for (int i = 0; i < nMuon; i++) {
+        if (fabs(Muon_eta[i]) > 3.0)
           continue;
-        if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && muonPt[i] > MuonSystem->dtRechitClusterMuonVetoPt[MuonSystem->nDtRechitClusters]) {
-          MuonSystem->dtRechitClusterMuonVetoPt[MuonSystem->nDtRechitClusters] = muonPt[i];
+        if (RazorAnalyzerMerged::deltaR(Muon_eta[i], Muon_phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4 && Muon_pt[i] > MuonSystem->dtRechitClusterMuonVetoPt[MuonSystem->nDtRechitClusters]) {
+          MuonSystem->dtRechitClusterMuonVetoPt[MuonSystem->nDtRechitClusters] = Muon_pt[i];
           MuonSystem->dtRechitClusterMuonVetoE[MuonSystem->nDtRechitClusters] = muonE[i];
-          MuonSystem->dtRechitClusterMuonVetoGlobal[MuonSystem->nDtRechitClusters] = muon_isGlobal[i];
-          MuonSystem->dtRechitClusterMuonVetoLooseId[MuonSystem->nDtRechitClusters] = muonIsLoose[i];
+          MuonSystem->dtRechitClusterMuonVetoGlobal[MuonSystem->nDtRechitClusters] = Muon_isGlobal[i];
+          MuonSystem->dtRechitClusterMuonVetoLooseId[MuonSystem->nDtRechitClusters] = Muon_looseId[i];
         }
       }
 
-      for (int i = 0; i < nDtSeg; i++) {
-        if (RazorAnalyzerMerged::deltaR(dtSegEta[i], dtSegPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
-          if (dtSegStation[i] == 1)
+      for (int i = 0; i < ndtSegments; i++) {
+        if (RazorAnalyzerMerged::deltaR(dtSegments_Eta[i], dtSegments_Phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
+          if (dtSegments_Station[i] == 1)
             MuonSystem->dtRechitClusterNSegStation1[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 2)
+          if (dtSegments_Station[i] == 2)
             MuonSystem->dtRechitClusterNSegStation2[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 3)
+          if (dtSegments_Station[i] == 3)
             MuonSystem->dtRechitClusterNSegStation3[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 4)
+          if (dtSegments_Station[i] == 4)
             MuonSystem->dtRechitClusterNSegStation4[MuonSystem->nDtRechitClusters] += 1;
         }
-        if (abs(RazorAnalyzerMerged::deltaPhi(dtSegPhi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) > 2) {
-          if (dtSegStation[i] == 1)
+        if (abs(RazorAnalyzerMerged::deltaPhi(dtSegments_Phi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) > 2) {
+          if (dtSegments_Station[i] == 1)
             MuonSystem->dtRechitClusterNOppositeSegStation1[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 2)
+          if (dtSegments_Station[i] == 2)
             MuonSystem->dtRechitClusterNOppositeSegStation2[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 3)
+          if (dtSegments_Station[i] == 3)
             MuonSystem->dtRechitClusterNOppositeSegStation3[MuonSystem->nDtRechitClusters] += 1;
-          if (dtSegStation[i] == 4)
+          if (dtSegments_Station[i] == 4)
             MuonSystem->dtRechitClusterNOppositeSegStation4[MuonSystem->nDtRechitClusters] += 1;
         }
       }
@@ -1538,18 +1417,18 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       }
 
       //match to MB1 DT segments
-      for (int i = 0; i < nDtRechits; i++) {
-        if (RazorAnalyzerMerged::deltaR(dtRechitCorrectEta[i], dtRechitCorrectPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.5) {
-          if (dtRechitStation[i] == 1)
+      for (int i = 0; i < ndtRecHits; i++) {
+        if (RazorAnalyzerMerged::deltaR(dtRecHits_Eta[i], dtRecHits_Phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.5) {
+          if (dtRecHits_Station[i] == 1)
             MuonSystem->dtRechitCluster_match_MB1hits_0p5[MuonSystem->nDtRechitClusters]++;
         }
-        if (RazorAnalyzerMerged::deltaR(dtRechitCorrectEta[i], dtRechitCorrectPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
-          if (dtRechitStation[i] == 1)
+        if (RazorAnalyzerMerged::deltaR(dtRecHits_Eta[i], dtRecHits_Phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
+          if (dtRecHits_Station[i] == 1)
             MuonSystem->dtRechitCluster_match_MB1hits_0p4[MuonSystem->nDtRechitClusters]++;
         }
-        if (abs(dtRechitWheel[i] - MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters]) == 1 && dtRechitStation[i] == 1) {
-          if (abs(RazorAnalyzerMerged::deltaPhi(dtRechitCorrectPhi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) < TMath::Pi() / 4.0) {
-            if (dtRechitWheel[i] - MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters] == 1)
+        if (abs(dtRecHits_Wheel[i] - MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters]) == 1 && dtRecHits_Station[i] == 1) {
+          if (abs(RazorAnalyzerMerged::deltaPhi(dtRecHits_Phi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) < TMath::Pi() / 4.0) {
+            if (dtRecHits_Wheel[i] - MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters] == 1)
               MuonSystem->dtRechitCluster_match_MB1hits_cosmics_plus[MuonSystem->nDtRechitClusters]++;
             else
               MuonSystem->dtRechitCluster_match_MB1hits_cosmics_minus[MuonSystem->nDtRechitClusters]++;
@@ -1560,20 +1439,20 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       std::vector<int> dtRechitCluster_match_rpcBx;
 
       //match to RPC hits with dPhi<0.5 and same wheel in DT
-      for (int i = 0; i < nRpc; i++) {
-        float rpcR = sqrt(rpcX[i] * rpcX[i] + rpcY[i] * rpcY[i]);
-        if (rpcRegion[i] != 0)
+      for (int i = 0; i < nrpcRecHits; i++) {
+        float rpcR = sqrt(rpcRecHits_X[i] * rpcRecHits_X[i] + rpcRecHits_Y[i] * rpcRecHits_Y[i]);
+        if (rpcRecHits_Region[i] != 0)
           continue;
-        if (abs(RazorAnalyzerMerged::deltaPhi(rpcPhi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) < 0.5) {
-          if (rpcRing[i] == MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters]) {
-            dtRechitCluster_match_rpcBx.push_back(rpcBx[i]);
+        if (abs(RazorAnalyzerMerged::deltaPhi(rpcRecHits_Phi[i], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters])) < 0.5) {
+          if (rpcRecHits_Ring[i] == MuonSystem->dtRechitClusterWheel[MuonSystem->nDtRechitClusters]) {
+            dtRechitCluster_match_rpcBx.push_back(rpcRecHits_Bx[i]);
             MuonSystem->dtRechitCluster_match_RPChits_dPhi0p5[MuonSystem->nDtRechitClusters]++;
-            if (rpcR < 470 && rpcR > 380 && abs(rpcZ[i]) < 661)
+            if (rpcR < 470 && rpcR > 380 && abs(rpcRecHits_Z[i]) < 661)
               MuonSystem->dtRechitCluster_match_RB1_dPhi0p5[MuonSystem->nDtRechitClusters]++;
           }
         }
-        if (RazorAnalyzerMerged::deltaR(rpcEta[i], rpcPhi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
-          if (rpcR < 470 && rpcR > 380 && abs(rpcZ[i]) < 661)
+        if (RazorAnalyzerMerged::deltaR(rpcRecHits_Eta[i], rpcRecHits_Phi[i], MuonSystem->dtRechitClusterEta[MuonSystem->nDtRechitClusters], MuonSystem->dtRechitClusterPhi[MuonSystem->nDtRechitClusters]) < 0.4) {
+          if (rpcR < 470 && rpcR > 380 && abs(rpcRecHits_Z[i]) < 661)
             MuonSystem->dtRechitCluster_match_RB1_0p4[MuonSystem->nDtRechitClusters]++;
         }
       }
