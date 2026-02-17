@@ -43,13 +43,10 @@ $(BINDIR):
 $(FASTJET):
 	$(ANADIR)/fastjet_install.sh
 
-$(SRCDIR)/llp_event.o: $(SRCDIR)/llp_event.C $(INCLUDEDIR)/llp_event.h
-	$(CXX) $(SRCDIR)/llp_event.C $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-
 $(SRCDIR)/mdsnano_event.o: $(SRCDIR)/mdsnano_event.cc $(INCLUDEDIR)/mdsnano_event.h
 	$(CXX) $(SRCDIR)/mdsnano_event.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 	
-$(SRCDIR)/RazorAnalyzer.o: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.cc
+$(SRCDIR)/RazorAnalyzer.o: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.cc
 	$(CXX) $(SRCDIR)/RazorAnalyzer.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
 $(UTILSOBJ): %.o: %.cc
@@ -59,8 +56,8 @@ $(ANALYZERSOBJ): $(ANADIR)/%.o: $(ANADIR)/%.cc $(ANADIR)/%.h
 	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
 $(RUNNERS): | $(BINDIR)
-$(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
+$(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
-$(MDSNANO_RUNNER): $(SRCDIR)/mdsnano_event.o $(SRCDIR)/llp_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(ANADIR)/llp_MuonSystem_CA_mdsnano.o $(SRCDIR)/Runllp_MuonSystem_CA_mdsnano.cc
+$(MDSNANO_RUNNER): $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(ANADIR)/llp_MuonSystem_CA_mdsnano.o $(SRCDIR)/Runllp_MuonSystem_CA_mdsnano.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
