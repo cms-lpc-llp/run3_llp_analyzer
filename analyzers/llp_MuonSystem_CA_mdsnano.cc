@@ -8,7 +8,10 @@
 #include "TLorentzVector.h"
 #include "TMath.h"
 #include "Math/Vector3D.h"
+#include <algorithm>
+#include <cctype>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <random>
 
@@ -93,6 +96,86 @@ struct largest_pt_jet {
 /* #endregion */
 
 constexpr int kUnclassifiedClusterId = -1;
+using SignalPointKey = std::pair<int, std::string>;
+
+bool parseSignalPointFromInputPath(const std::string& inputPath, int& mh, int& mx, float& ctau, std::string& ctauTokenTag) {
+  auto extractTokenAfterKey = [&inputPath](const std::string& key, const std::string& allowedChars, std::string& token) -> bool {
+    const size_t keyPos = inputPath.find(key);
+    if (keyPos == std::string::npos)
+      return false;
+    const size_t valueStart = keyPos + key.size();
+    if (valueStart >= inputPath.size())
+      return false;
+    size_t valueEnd = valueStart;
+    while (valueEnd < inputPath.size() && allowedChars.find(inputPath[valueEnd]) != std::string::npos) {
+      ++valueEnd;
+    }
+    if (valueEnd == valueStart)
+      return false;
+    token = inputPath.substr(valueStart, valueEnd - valueStart);
+    return true;
+  };
+
+  auto parseNonNegativeIntToken = [](const std::string& token, int& out) -> bool {
+    if (token.empty())
+      return false;
+    for (const char c : token) {
+      if (!std::isdigit(static_cast<unsigned char>(c)))
+        return false;
+    }
+    try {
+      const long long parsed = std::stoll(token);
+      if (parsed < 0 || parsed > std::numeric_limits<int>::max())
+        return false;
+      out = static_cast<int>(parsed);
+    } catch (...) {
+      return false;
+    }
+    return true;
+  };
+
+  auto parseCtauTokenToFloat = [](const std::string& token, float& out) -> bool {
+    if (token.empty())
+      return false;
+    std::string normalized = token;
+    std::replace(normalized.begin(), normalized.end(), 'p', '.');
+    std::replace(normalized.begin(), normalized.end(), 'P', '.');
+    try {
+      size_t parsedChars = 0;
+      const float parsedValue = std::stof(normalized, &parsedChars);
+      if (parsedChars != normalized.size() || parsedValue < 0.0f ||
+          parsedValue > std::numeric_limits<float>::max()) {
+        return false;
+      }
+      out = parsedValue;
+    } catch (...) {
+      return false;
+    }
+    return true;
+  };
+
+  std::string mhToken;
+  std::string mxToken;
+  std::string ctauToken;
+  if (!extractTokenAfterKey("MH-", "0123456789", mhToken))
+    return false;
+  if (!extractTokenAfterKey("MS-", "0123456789", mxToken))
+    return false;
+  if (!extractTokenAfterKey("ctauS-", "0123456789pP.", ctauToken))
+    return false;
+
+  if (!parseNonNegativeIntToken(mhToken, mh))
+    return false;
+  if (!parseNonNegativeIntToken(mxToken, mx))
+    return false;
+
+  ctauTokenTag = ctauToken;
+  std::replace(ctauTokenTag.begin(), ctauTokenTag.end(), 'P', 'p');
+  std::replace(ctauTokenTag.begin(), ctauTokenTag.end(), '.', 'p');
+  if (!parseCtauTokenToFloat(ctauToken, ctau))
+    return false;
+  return true;
+}
 
 void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputfilename, string analysisTag) {
 
@@ -122,16 +205,19 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   /* #region: Startup decode/defaults for this analyzer invocation.*/
   bool signalScan = int(options / 10) == 1;
   int option = options % 10;
-  if (analysisTag.empty()) analysisTag = "Razor2016_80X";
+  if (analysisTag.empty()) {
+    analysisTag = "Summer24";
+    std::cout << "[WARNING]: empty analysisTag received, defaulting to " << analysisTag << '\n';
+  }
   /* #endregion */
 
   /* #region: declares lookup tables for signalScan*/
-  map<pair<int, int>, std::unique_ptr<TFile>> Files2D;
-  map<pair<int, int>, TTree*> Trees2D;
-  map<pair<int, int>, TH1F*> NEvents2D;
-  map<pair<int, int>, TH1F*> accep2D;
-  map<pair<int, int>, TH1F*> accep_met2D;
-  map<pair<int, int>, TH1F*> Total2D;
+  map<SignalPointKey, std::unique_ptr<TFile>> Files2D;
+  map<SignalPointKey, TTree*> Trees2D;
+  map<SignalPointKey, TH1F*> NEvents2D;
+  map<SignalPointKey, TH1F*> accep2D;
+  map<SignalPointKey, TH1F*> accep_met2D;
+  map<SignalPointKey, TH1F*> Total2D;
   /* #endregion */
 
   /* #region: run-mode logging*/
@@ -184,6 +270,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   /* #region */
   cout << "[INFO]: Loop Starting" << endl;
   auto lastReport = steady_clock::now(); // mr. timer
+  std::string cachedSignalSourcePath;
+  int cachedSignalMh = 0;
+  int cachedSignalMx = 0;
+  float cachedSignalCtau = 0.0f;
+  std::string cachedSignalCtauTag;
+  bool hasCachedSignalPoint = false;
   for (Long64_t jentry = 0; jentry < nEntries; jentry++) {
 
     // progress logging
@@ -243,42 +335,57 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       muonE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
     }
 
-    auto* lheComments = (string*)"123";
     /* #endregion */
 
     // [4] Signal-scan routing (split output by model point)
     /* #region */
+    SignalPointKey eventSignalKey = SignalPointKey(0, std::string());
+    bool hasEventSignalKey = false;
     if (!isData && signalScan) {
-      string mh_substring = lheComments->substr(lheComments->find("MH-") + 3);
-      int mh = stoi(mh_substring.substr(0, mh_substring.find('_')));
-      string mx_substring = lheComments->substr(lheComments->find("MS-") + 3);
-      int mx = stoi(mx_substring.substr(0, mx_substring.find('_')));
-      string ctau_substring = lheComments->substr(lheComments->find("ctauS-") + 6);
-      int ctau = stoi(ctau_substring.substr(0, ctau_substring.find('_')));
-      MuonSystem->mH = mh;
-      MuonSystem->mX = mx;
-      MuonSystem->ctau = ctau;
+      std::string inputPath;
+      if (fChain != nullptr && fChain->GetCurrentFile() != nullptr) {
+        inputPath = fChain->GetCurrentFile()->GetName();
+      }
+      if (!hasCachedSignalPoint || inputPath != cachedSignalSourcePath) {
+        std::string ctauTokenTag;
+        if (!parseSignalPointFromInputPath(inputPath, cachedSignalMh, cachedSignalMx, cachedSignalCtau,
+                                           ctauTokenTag)) {
+          std::cerr << "[ERROR]: signalScan requested but failed to parse MH/MS/ctauS from input path: '"
+                    << inputPath << "'. Exiting to avoid mislabeled output." << std::endl;
+          return;
+        }
+        cachedSignalCtauTag = ctauTokenTag;
+        cachedSignalSourcePath = inputPath;
+        hasCachedSignalPoint = true;
+      }
+      MuonSystem->mH = cachedSignalMh;
+      MuonSystem->mX = cachedSignalMx;
+      MuonSystem->ctau = cachedSignalCtau;
 
-      pair<int, int> signalPair = make_pair(mx, ctau);
+      eventSignalKey = make_pair(cachedSignalMx, cachedSignalCtauTag);
+      hasEventSignalKey = true;
 
-      if (Files2D.count(signalPair) == 0) { //create file and tree
+      if (Files2D.count(eventSignalKey) == 0) { //create file and tree
         //format file name
         string thisFileName = outputfilename.empty() ? "MuonSystem_Tree.root" : outputfilename;
         thisFileName.erase(thisFileName.end() - 5, thisFileName.end());
-        thisFileName += "_" + to_string(mx) + "_" + to_string(ctau) + ".root";
+        thisFileName += "_MH-" + to_string(cachedSignalMh)
+                     + "_MS-" + to_string(cachedSignalMx)
+                     + "_ctauS-" + cachedSignalCtauTag + ".root";
 
-        Files2D[signalPair] = std::make_unique<TFile>(thisFileName.c_str(), "recreate");
-        Files2D[signalPair]->cd();
-        Trees2D[signalPair] = MuonSystem->tree_->CloneTree(0);
-        NEvents2D[signalPair] = new TH1F(Form("NEvents%d%d", mx, ctau), "NEvents", 1, 0.5, 1.5);
-        Total2D[signalPair] = new TH1F(Form("Total%d%d", mx, ctau), "Total", 1, 0.5, 1.5);
-        accep2D[signalPair] = new TH1F(Form("accep2D%d%d", mx, ctau), "accep", 1, 0.5, 1.5);
-        accep_met2D[signalPair] = new TH1F(Form("accep_met2D%d%d", mx, ctau), "accep_met", 1, 0.5, 1.5);
+        Files2D[eventSignalKey] = std::make_unique<TFile>(thisFileName.c_str(), "recreate");
+        Files2D[eventSignalKey]->cd();
+        Trees2D[eventSignalKey] = MuonSystem->tree_->CloneTree(0);
+        const std::string signalSuffix = std::to_string(cachedSignalMx) + "_" + cachedSignalCtauTag;
+        NEvents2D[eventSignalKey] = new TH1F(("NEvents_" + signalSuffix).c_str(), "NEvents", 1, 0.5, 1.5);
+        Total2D[eventSignalKey] = new TH1F(("Total_" + signalSuffix).c_str(), "Total", 1, 0.5, 1.5);
+        accep2D[eventSignalKey] = new TH1F(("accep2D_" + signalSuffix).c_str(), "accep", 1, 0.5, 1.5);
+        accep_met2D[eventSignalKey] = new TH1F(("accep_met2D_" + signalSuffix).c_str(), "accep_met", 1, 0.5, 1.5);
 
         cout << "Created new output file " << thisFileName << endl;
       }
       //Fill NEvents hist
-      NEvents2D[signalPair]->Fill(1.0, Generator_weight);
+      NEvents2D[eventSignalKey]->Fill(1.0, Generator_weight);
     }
     /* #endregion */
 
@@ -418,10 +525,10 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     MuonSystem->PuppiMET_pt = PuppiMET_pt;
     MuonSystem->PuppiMET_phi = PuppiMET_phi;
 
-    if (signalScan && !isData)
-      Total2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
-    if (signalScan && !isData) {
-      accep2D[make_pair(MuonSystem->mX, MuonSystem->ctau)]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
+    if (signalScan && !isData && hasEventSignalKey)
+      Total2D[eventSignalKey]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
+    if (signalScan && !isData && hasEventSignalKey) {
+      accep2D[eventSignalKey]->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
     } else if (!isData) {
       if (MuonSystem->gLLP_csc[0] && MuonSystem->gLLP_csc[1])
         accep_csccsc->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
@@ -1501,8 +1608,11 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     // [15] Final per-event tree fill
     /* #region */
     if (!isData && signalScan) {
-      pair<int, int> smsPair = make_pair(MuonSystem->mX, MuonSystem->ctau);
-      Trees2D[smsPair]->Fill();
+      if (!hasEventSignalKey) {
+        std::cerr << "[ERROR]: signalScan event is missing a parsed signal-point key. Exiting." << std::endl;
+        return;
+      }
+      Trees2D[eventSignalKey]->Fill();
     } else {
       MuonSystem->tree_->Fill();
     }
