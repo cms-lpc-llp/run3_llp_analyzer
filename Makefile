@@ -52,6 +52,10 @@ $(BINDIR):
 $(FASTJET):
 	$(ANADIR)/fastjet_install.sh
 
+# Ensure FastJet is fully installed before any compilation/linking that
+# expands fastjet-config flags.
+$(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANALYZERSOBJ): | $(FASTJET)
+
 $(SRCDIR)/mdsnano_event.o: $(SRCDIR)/mdsnano_event.cc $(INCLUDEDIR)/mdsnano_event.h
 	$(CXX) $(SRCDIR)/mdsnano_event.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 	
@@ -64,7 +68,7 @@ $(UTILSOBJ): %.o: %.cc
 $(ANALYZERSOBJ): $(ANADIR)/%.o: $(ANADIR)/%.cc $(ANADIR)/%.h
 	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
-$(RUNNERS): | $(BINDIR)
+$(RUNNERS): | $(BINDIR) $(FASTJET)
 $(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 

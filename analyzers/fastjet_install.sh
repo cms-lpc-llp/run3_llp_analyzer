@@ -6,9 +6,15 @@ tar -xzf fastjet-3.4.2.tar.gz;
 
 echo "Installing FastJet";
 cd fastjet-3.4.2;
+if command -v nproc >/dev/null 2>&1; then
+  default_jobs="$(nproc)"
+else
+  default_jobs=8
+fi
+jobs="${FASTJET_MAKE_JOBS:-${default_jobs}}"
 ./configure --prefix=$curr_dir/fastjet-install;
-make;
-make check;
+make -j"${jobs}";
+make -j"${jobs}" check;
 make install;
 
 cd ..;
