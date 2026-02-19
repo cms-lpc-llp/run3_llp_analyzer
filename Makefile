@@ -10,32 +10,41 @@ FASTJET = fastjet-install/bin/fastjet-config
 ANALYZERS = $(wildcard $(ANADIR)/*.cc)
 ANALYZERSH = $(ANALYZERS:cc=h)
 ANALYZERSOBJ = $(ANALYZERS:cc=o)
+ANALYZER_NAMES = $(notdir $(basename $(ANALYZERS)))
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
-RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
+RUNNER_SRCS = $(addprefix $(SRCDIR)/Run,$(addsuffix .cc,$(ANALYZER_NAMES)))
 MDSNANO_RUNNER = $(BINDIR)/Runllp_MuonSystem_CA_mdsnano
 RUNNERS_GENERIC = $(filter-out $(MDSNANO_RUNNER),$(RUNNERS))
 UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
-		$(SRCDIR)/JetCorrectionUncertainty.cc \
-	       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc
+			$(SRCDIR)/JetCorrectionUncertainty.cc \
+		       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc
 UTILSOBJ = $(UTILS:cc=o)
 MDSNANO_UTILSOBJ = $(SRCDIR)/RazorHelper.o $(SRCDIR)/JetCorrectorParameters.o \
-		$(SRCDIR)/SimpleJetCorrectionUncertainty.o $(SRCDIR)/JetCorrectionUncertainty.o \
-		$(SRCDIR)/CACluster.o $(SRCDIR)/TreeMuonSystemCombination.o
+			$(SRCDIR)/SimpleJetCorrectionUncertainty.o $(SRCDIR)/JetCorrectionUncertainty.o \
+			$(SRCDIR)/CACluster.o $(SRCDIR)/TreeMuonSystemCombination.o
 EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
+RUNNER_TEMPLATES = $(INCLUDEDIR)/AnalyzerTemplate.txt \
+		   $(INCLUDEDIR)/AnalyzerTemplate_mdsnano.txt \
+		   $(SRCDIR)/RunAnalyzerTemplate.txt
 
 
 .PHONY: clean all lxplus copy_runners
 
-all: $(FASTJET) copy_runners $(EXECUTABLES)
+all: $(FASTJET) $(RUNNER_SRCS) $(EXECUTABLES)
 
 lxplus: all
 
 clean:
 	@rm -f $(SRCDIR)/*.o $(ANADIR)/*.o $(RUNNERS) $(SRCDIR)/Run*.cc
-copy_runners:
-		@for d in $(subst Run,,$(notdir $(basename $(RUNNERSCC)))); do ( if [ ! -f "src/Run"$$d".cc" ]; then echo $$d" file does not exists, copying"; $(HELPERSCRIPT) $$d; fi ) ; done
+copy_runners: $(RUNNER_SRCS)
+
+$(RUNNER_SRCS): $(SRCDIR)/Run%.cc: $(ANADIR)/%.cc $(HELPERSCRIPT) $(RUNNER_TEMPLATES)
+	@if [ ! -f "$@" ]; then \
+		echo "$* file does not exists, copying"; \
+		$(HELPERSCRIPT) $*; \
+	fi
 
 $(BINDIR):
 	@mkdir -p $(BINDIR)

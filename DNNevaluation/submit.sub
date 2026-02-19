@@ -1,9 +1,0 @@
-universe    = vanilla
-executable  = evaluate.sh
-arguments   = $(myargs)
-output      = /dev/null
-error       = /dev/null
-log         = /dev/null
-+JobFlavour = "tomorrow"
-MY.WantOS = "el7"
-queue myargs from file_args.txt
