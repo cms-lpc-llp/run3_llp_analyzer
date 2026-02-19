@@ -9,7 +9,7 @@ fileList_normalization
 dask_temp
 
 *tar.gz
-src/Run*
+src/Run*.cc
 analyzers/.llp_MuonSys*
 *swp
 fastjet*/
