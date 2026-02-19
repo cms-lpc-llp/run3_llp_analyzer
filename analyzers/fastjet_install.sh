@@ -1,7 +1,7 @@
 curr_dir=$(pwd);
 
 echo "Downloading FastJet";
-wget wget https://fastjet.fr/repo/fastjet-3.4.2.tar.gz;
+wget https://fastjet.fr/repo/fastjet-3.4.2.tar.gz;
 tar -xzf fastjet-3.4.2.tar.gz;
 
 echo "Installing FastJet";
