@@ -19,6 +19,12 @@ CMSSW_BASE=$9
 homeDir=${10}
 currentDir=`pwd`
 RUN_DIAG=${RUN_DIAG:-0}
+local_cmssw_base="$(readlink -f "${CMSSW_BASE}")"
+if [ ! -d "${local_cmssw_base}/src" ]; then
+	echo "Invalid CMSSW_BASE (missing src): ${local_cmssw_base}" >&2
+	exit 2
+fi
+export CMSSW_BASE="${local_cmssw_base}"
 
 homeDirNoSlash=${homeDir%/}
 user=`basename "${homeDirNoSlash}"`
@@ -37,11 +43,16 @@ then
 	ulimit -c 0
 	source /cvmfs/cms.cern.ch/cmsset_default.sh
 	# TODO(uaf): confirm SCRAM_ARCH for UAF (el8/el9) if needed.
-	export SCRAM_ARCH=el8_amd64_gcc12
-	if ! eval `scramv1 runtime -sh`; then
-		echo "scram runtime failed" >&2
-		exit 2
-	fi
+		export SCRAM_ARCH=el8_amd64_gcc12
+		if ! eval `scramv1 runtime -sh`; then
+			echo "scram runtime failed" >&2
+			exit 2
+		fi
+		# Keep the extracted CMSSW tree from untar.sh as the source of binaries/data.
+		if [ "${CMSSW_BASE}" != "${local_cmssw_base}" ]; then
+			echo "CMSSW_BASE reset by scram runtime: ${CMSSW_BASE} -> ${local_cmssw_base}"
+			export CMSSW_BASE="${local_cmssw_base}"
+		fi
 
 	# Debug: environment snapshot (stdout + stderr)
 	echo "=== system ==="
@@ -256,11 +267,13 @@ if (t) {
 
 
 	else
-		echo echo "WWWWYYYY ============= failed to access file RazorRun_T2, job anandoned"
+		echo "WWWWYYYY ============= failed to access file RazorRun_T2, job abandoned" >&2
+		exit 3
 	fi
 
 else
-	echo "VVVVYYYY ============= failed to access file /cvmfs/cms.cern.ch/cmsset_default.sh, job abandoned"
+	echo "VVVVYYYY ============= failed to access file /cvmfs/cms.cern.ch/cmsset_default.sh, job abandoned" >&2
+	exit 2
 fi
 
 cd ${currentDir}
