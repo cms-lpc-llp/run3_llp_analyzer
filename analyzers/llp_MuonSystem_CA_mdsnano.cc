@@ -95,8 +95,53 @@ struct largest_pt_jet {
 } my_largest_pt_jet;
 /* #endregion */
 
-constexpr int kUnclassifiedClusterId = -1;
+constexpr int kUnclassifiedClusterId = -1; //? is this redundant with ntuple_branches.def?
 using SignalPointKey = std::pair<int, std::string>;
+
+namespace {
+
+  void fillMatchedGLLPFields(
+      TreeMuonSystemCombination* muonSystem,
+      int clusterIndex,
+      int gllpIndex,
+      float* outEta,
+      float* outPhi,
+      float* outDecayR,
+      float* outDecayZ,
+      bool* outCsc,
+      bool* outDt,
+      float* outE) {
+    outEta[clusterIndex] = muonSystem->gLLP_eta[gllpIndex];
+    outPhi[clusterIndex] = muonSystem->gLLP_phi[gllpIndex];
+    outDecayR[clusterIndex] = muonSystem->gLLP_decay_vertex_r[gllpIndex];
+    outDecayZ[clusterIndex] = muonSystem->gLLP_decay_vertex_z[gllpIndex];
+    outCsc[clusterIndex] = muonSystem->gLLP_csc[gllpIndex];
+    outDt[clusterIndex] = muonSystem->gLLP_dt[gllpIndex];
+    outE[clusterIndex] = muonSystem->gLLP_e[gllpIndex];
+  }
+
+  void findNearestGLLPMatch(
+      RazorAnalyzerMerged& analyzer,
+      float clusterEta,
+      float clusterPhi,
+      int nGLLP,
+      const float* gLLPEta,
+      const float* gLLPPhi,
+      float& minDeltaR,
+      int& index) {
+    minDeltaR = 15.0f;
+    index = INDEX_DEFAULT;
+    for (int j = 0; j < nGLLP; ++j) {
+      const float currentDeltaR =
+          static_cast<float>(analyzer.deltaR(clusterEta, clusterPhi, gLLPEta[j], gLLPPhi[j]));
+      if (currentDeltaR < minDeltaR) {
+        minDeltaR = currentDeltaR;
+        index = j;
+      }
+    }
+  }
+
+} // namespace
 
 bool parseSignalPointFromInputPath(const std::string& inputPath, int& mh, int& mx, float& ctau, std::string& ctauTokenTag) {
   auto extractTokenAfterKey = [&inputPath](const std::string& key, const std::string& allowedChars, std::string& token) -> bool {
@@ -1201,9 +1246,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
           MuonSystem->cscRechitClusterJetVetoPtJESDown[MuonSystem->nCscRechitClusters] = Jet_pt[i] * (1 - unc);
         }
       }
-      float min_deltaR = 15.;
-      int index = INDEX_DEFAULT;
-
       for (int i = 0; i < nMuon; i++) {
         if (fabs(Muon_eta[i]) > 3.0)
           continue;
@@ -1222,30 +1264,33 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       }
       if (!isData) {
         // match to gen level LLP
-        min_deltaR = 15.;
-        index = INDEX_DEFAULT;
-        for (int j = 0; j < MuonSystem->nGLLP; j++) {
-          double current_delta_r = RazorAnalyzerMerged::deltaR(MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters], MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters], MuonSystem->gLLP_eta[j], MuonSystem->gLLP_phi[j]);
-          if (current_delta_r < min_deltaR) {
-            min_deltaR = current_delta_r;
-            index = j;
-          }
-        }
-        if (min_deltaR < 0.4)
-          MuonSystem->cscRechitCluster_match_gLLP[MuonSystem->nCscRechitClusters] = true;
-        else
-          MuonSystem->cscRechitCluster_match_gLLP[MuonSystem->nCscRechitClusters] = false;
+        float minDeltaR = 15.0f;
+        int index = INDEX_DEFAULT;
+        findNearestGLLPMatch(
+            *this,
+            MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters],
+            MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters],
+            MuonSystem->nGLLP,
+            MuonSystem->gLLP_eta,
+            MuonSystem->gLLP_phi,
+            minDeltaR,
+            index);
 
-        MuonSystem->cscRechitCluster_match_gLLP_minDeltaR[MuonSystem->nCscRechitClusters] = min_deltaR;
+        MuonSystem->cscRechitCluster_match_gLLP[MuonSystem->nCscRechitClusters] = (minDeltaR < 0.4f);
+        MuonSystem->cscRechitCluster_match_gLLP_minDeltaR[MuonSystem->nCscRechitClusters] = minDeltaR;
         MuonSystem->cscRechitCluster_match_gLLP_index[MuonSystem->nCscRechitClusters] = index;
         if (index >= 0 && index < MuonSystem->nGLLP) {
-          MuonSystem->cscRechitCluster_match_gLLP_eta[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_eta[index];
-          MuonSystem->cscRechitCluster_match_gLLP_phi[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_phi[index];
-          MuonSystem->cscRechitCluster_match_gLLP_decay_r[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_decay_vertex_r[index];
-          MuonSystem->cscRechitCluster_match_gLLP_decay_z[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_decay_vertex_z[index];
-          MuonSystem->cscRechitCluster_match_gLLP_csc[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_csc[index];
-          MuonSystem->cscRechitCluster_match_gLLP_dt[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_dt[index];
-          MuonSystem->cscRechitCluster_match_gLLP_e[MuonSystem->nCscRechitClusters] = MuonSystem->gLLP_e[index];
+          fillMatchedGLLPFields(
+              MuonSystem,
+              MuonSystem->nCscRechitClusters,
+              index,
+              MuonSystem->cscRechitCluster_match_gLLP_eta,
+              MuonSystem->cscRechitCluster_match_gLLP_phi,
+              MuonSystem->cscRechitCluster_match_gLLP_decay_r,
+              MuonSystem->cscRechitCluster_match_gLLP_decay_z,
+              MuonSystem->cscRechitCluster_match_gLLP_csc,
+              MuonSystem->cscRechitCluster_match_gLLP_dt,
+              MuonSystem->cscRechitCluster_match_gLLP_e);
         }
       }
 
@@ -1515,31 +1560,34 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
       }
 
       // match to gen-level LLP
-      float min_deltaR = 15.;
-      int index = INDEX_DEFAULT;
       if (!isData) {
-        for (int j = 0; j < MuonSystem->nGLLP; j++) {
-          double current_delta_r = RazorAnalyzerMerged::deltaR(tmp.eta, tmp.phi, MuonSystem->gLLP_eta[j], MuonSystem->gLLP_phi[j]);
-          if (current_delta_r < min_deltaR) {
-            min_deltaR = current_delta_r;
-            index = j;
-          }
-        }
-        if (min_deltaR < 0.4)
-          MuonSystem->dtRechitCluster_match_gLLP[MuonSystem->nDtRechitClusters] = true;
-        else
-          MuonSystem->dtRechitCluster_match_gLLP[MuonSystem->nDtRechitClusters] = false;
+        float minDeltaR = 15.0f;
+        int index = INDEX_DEFAULT;
+        findNearestGLLPMatch(
+            *this,
+            tmp.eta,
+            tmp.phi,
+            MuonSystem->nGLLP,
+            MuonSystem->gLLP_eta,
+            MuonSystem->gLLP_phi,
+            minDeltaR,
+            index);
 
-        MuonSystem->dtRechitCluster_match_gLLP_minDeltaR[MuonSystem->nDtRechitClusters] = min_deltaR;
+        MuonSystem->dtRechitCluster_match_gLLP[MuonSystem->nDtRechitClusters] = (minDeltaR < 0.4f);
+        MuonSystem->dtRechitCluster_match_gLLP_minDeltaR[MuonSystem->nDtRechitClusters] = minDeltaR;
         MuonSystem->dtRechitCluster_match_gLLP_index[MuonSystem->nDtRechitClusters] = index;
         if (index >= 0 && index < MuonSystem->nGLLP) {
-          MuonSystem->dtRechitCluster_match_gLLP_eta[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_eta[index];
-          MuonSystem->dtRechitCluster_match_gLLP_phi[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_phi[index];
-          MuonSystem->dtRechitCluster_match_gLLP_decay_r[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_decay_vertex_r[index];
-          MuonSystem->dtRechitCluster_match_gLLP_decay_z[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_decay_vertex_z[index];
-          MuonSystem->dtRechitCluster_match_gLLP_csc[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_csc[index];
-          MuonSystem->dtRechitCluster_match_gLLP_dt[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_dt[index];
-          MuonSystem->dtRechitCluster_match_gLLP_e[MuonSystem->nDtRechitClusters] = MuonSystem->gLLP_e[index];
+          fillMatchedGLLPFields(
+              MuonSystem,
+              MuonSystem->nDtRechitClusters,
+              index,
+              MuonSystem->dtRechitCluster_match_gLLP_eta,
+              MuonSystem->dtRechitCluster_match_gLLP_phi,
+              MuonSystem->dtRechitCluster_match_gLLP_decay_r,
+              MuonSystem->dtRechitCluster_match_gLLP_decay_z,
+              MuonSystem->dtRechitCluster_match_gLLP_csc,
+              MuonSystem->dtRechitCluster_match_gLLP_dt,
+              MuonSystem->dtRechitCluster_match_gLLP_e);
         }
       }
 
