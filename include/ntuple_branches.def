@@ -387,6 +387,19 @@ NTUPLE_BRANCH_ARRAY(float, gLepPhi, N_MAX_GTAU, nGenLeptons, F, 0.0)
 NTUPLE_BRANCH_ARRAY(float, gLepE, N_MAX_GTAU, nGenLeptons, F, 0.0)
 NTUPLE_BRANCH_ARRAY(int, gLepPdgId, N_MAX_GTAU, nGenLeptons, I, 0)
 
+// Canonical reco-lepton field table:
+//   X(type, ntuple_branch_name, transient_struct_field_name, leaf_type, default_value)
+#ifndef NTUPLE_RECO_LEPTON_FIELD_TABLE
+#define NTUPLE_RECO_LEPTON_FIELD_TABLE(X) \
+  X(float, lepDZ, dZ, F, DEFAULT_FLOAT) \
+  X(bool, lepPassLooseIso, passLooseIso, O, false) \
+  X(bool, lepPassTightIso, passTightIso, O, false) \
+  X(bool, lepPassVTightIso, passVTightIso, O, false) \
+  X(bool, lepPassVVTightIso, passVVTightIso, O, false) \
+  X(int, lepPdgId, pdgId, I, DEFAULT_INT) \
+  X(bool, lepTightId, passId, O, false)
+#endif
+
 // Reco leptons
 NTUPLE_BRANCH_SCALAR(int, nLeptons, I, COUNTER_DEFAULT)
 NTUPLE_BRANCH_ARRAY(float, deltaR_GenLepRecoLep, N_MAX_JETS, nLeptons, F, -DEFAULT_FLOAT)
@@ -394,15 +407,12 @@ NTUPLE_BRANCH_ARRAY(float, lepPt, N_MAX_LEPTONS, nLeptons, F, DEFAULT_FLOAT)
 NTUPLE_BRANCH_ARRAY(float, lepEta, N_MAX_LEPTONS, nLeptons, F, DEFAULT_FLOAT)
 NTUPLE_BRANCH_ARRAY(float, lepPhi, N_MAX_LEPTONS, nLeptons, F, DEFAULT_FLOAT)
 NTUPLE_BRANCH_ARRAY(float, lepE, N_MAX_LEPTONS, nLeptons, F, DEFAULT_FLOAT)
-NTUPLE_BRANCH_ARRAY(float, lepDZ, N_MAX_LEPTONS, nLeptons, F, DEFAULT_FLOAT)
 NTUPLE_BRANCH_ARRAY(bool, lepLooseId, N_MAX_LEPTONS, nLeptons, O, false)
 NTUPLE_BRANCH_ARRAY(bool, lepMediumId, N_MAX_LEPTONS, nLeptons, O, false)
-NTUPLE_BRANCH_ARRAY(bool, lepPassLooseIso, N_MAX_LEPTONS, nLeptons, O, false)
-NTUPLE_BRANCH_ARRAY(bool, lepPassTightIso, N_MAX_LEPTONS, nLeptons, O, false)
-NTUPLE_BRANCH_ARRAY(bool, lepPassVTightIso, N_MAX_LEPTONS, nLeptons, O, false)
-NTUPLE_BRANCH_ARRAY(bool, lepPassVVTightIso, N_MAX_LEPTONS, nLeptons, O, false)
-NTUPLE_BRANCH_ARRAY(int, lepPdgId, N_MAX_LEPTONS, nLeptons, I, DEFAULT_INT)
-NTUPLE_BRANCH_ARRAY(bool, lepTightId, N_MAX_LEPTONS, nLeptons, O, false)
+#define NTUPLE_RECO_LEPTON_TO_BRANCH(TYPE, BRANCH, STRUCT_FIELD, LEAF, DEFAULT) \
+  NTUPLE_BRANCH_ARRAY(TYPE, BRANCH, N_MAX_LEPTONS, nLeptons, LEAF, DEFAULT)
+NTUPLE_RECO_LEPTON_FIELD_TABLE(NTUPLE_RECO_LEPTON_TO_BRANCH)
+#undef NTUPLE_RECO_LEPTON_TO_BRANCH
 
 // Reco jets
 NTUPLE_BRANCH_SCALAR(int, nJets, I, COUNTER_DEFAULT)
