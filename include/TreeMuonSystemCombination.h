@@ -49,7 +49,7 @@ class TreeMuonSystemCombination {
   // Ntuple payload and output branch schema (single source of truth).
   #define NTUPLE_BRANCH_SCALAR(TYPE, NAME, LEAF, DEFAULT) TYPE NAME;
   #define NTUPLE_BRANCH_ARRAY(TYPE, NAME, CAPACITY, SIZE_EXPR, LEAF, DEFAULT) TYPE NAME[CAPACITY];
-  #include "ntuple_branches.def"
+  #include "llp_MuonSystem_CA_mdsnano/ntuple_branches.def"
   #undef NTUPLE_BRANCH_ARRAY
   #undef NTUPLE_BRANCH_SCALAR
 

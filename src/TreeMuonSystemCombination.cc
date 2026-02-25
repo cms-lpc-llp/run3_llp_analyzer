@@ -23,7 +23,7 @@ void TreeMuonSystemCombination::InitVariables() {
     NAME = static_cast<TYPE>(DEFAULT);
   #define NTUPLE_BRANCH_ARRAY(TYPE, NAME, CAPACITY, SIZE_EXPR, LEAF, DEFAULT) \
     for (int i = 0; i < (CAPACITY); ++i) NAME[i] = static_cast<TYPE>(DEFAULT);
-  #include "ntuple_branches.def"
+  #include "llp_MuonSystem_CA_mdsnano/ntuple_branches.def"
   #undef NTUPLE_BRANCH_ARRAY
   #undef NTUPLE_BRANCH_SCALAR
 };
@@ -34,7 +34,7 @@ void TreeMuonSystemCombination::InitTree() {
 
   #define NTUPLE_BRANCH_SCALAR(TYPE, NAME, LEAF, DEFAULT) tree_->SetBranchAddress(#NAME, &NAME);
   #define NTUPLE_BRANCH_ARRAY(TYPE, NAME, CAPACITY, SIZE_EXPR, LEAF, DEFAULT) tree_->SetBranchAddress(#NAME, NAME);
-  #include "ntuple_branches.def"
+  #include "llp_MuonSystem_CA_mdsnano/ntuple_branches.def"
   #undef NTUPLE_BRANCH_ARRAY
   #undef NTUPLE_BRANCH_SCALAR
 
@@ -54,7 +54,7 @@ void TreeMuonSystemCombination::CreateTree() {
 
   #define NTUPLE_BRANCH_SCALAR(TYPE, NAME, LEAF, DEFAULT) tree_->Branch(#NAME, &NAME, #NAME "/" #LEAF);
   #define NTUPLE_BRANCH_ARRAY(TYPE, NAME, CAPACITY, SIZE_EXPR, LEAF, DEFAULT) tree_->Branch(#NAME, NAME, #NAME "[" #SIZE_EXPR "]/" #LEAF);
-  #include "ntuple_branches.def"
+  #include "llp_MuonSystem_CA_mdsnano/ntuple_branches.def"
   #undef NTUPLE_BRANCH_ARRAY
   #undef NTUPLE_BRANCH_SCALAR
 

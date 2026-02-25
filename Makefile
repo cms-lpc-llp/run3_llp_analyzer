@@ -13,16 +13,32 @@ ANALYZERSOBJ = $(ANALYZERS:cc=o)
 ANALYZER_NAMES = $(notdir $(basename $(ANALYZERS)))
 RUNNERS = $(addprefix $(BINDIR)/Run,$(notdir $(basename $(ANALYZERS))))
 RUNNER_SRCS = $(addprefix $(SRCDIR)/Run,$(addsuffix .cc,$(ANALYZER_NAMES)))
-MDSNANO_RUNNER = $(BINDIR)/Runllp_MuonSystem_CA_mdsnano
+
+MDSNANO_ANALYZER_NAME = llp_MuonSystem_CA_mdsnano
+MDSNANO_ANALYZER_DIR = $(ANADIR)/$(MDSNANO_ANALYZER_NAME)
+MDSNANO_ANALYZER_INCLUDEDIR = $(MDSNANO_ANALYZER_DIR)/include
+MDSNANO_ANALYZER_SRCDIR = $(MDSNANO_ANALYZER_DIR)/src
+MDSNANO_ANALYZER_SRC = $(MDSNANO_ANALYZER_DIR)/main.cc
+MDSNANO_ANALYZER_HDR = $(MDSNANO_ANALYZER_DIR)/main.h
+MDSNANO_ANALYZER_OBJ = $(MDSNANO_ANALYZER_DIR)/main.o
+MDSNANO_PHASE_SRCS = $(MDSNANO_ANALYZER_SRCDIR)/MuonSystemSynthesisPhase.cc \
+					 $(MDSNANO_ANALYZER_SRCDIR)/MuonSystemCuttingPhase.cc \
+					 $(MDSNANO_ANALYZER_SRCDIR)/MuonSystemFillingPhase.cc \
+					 $(MDSNANO_ANALYZER_SRCDIR)/MuonSystemSignalScanManager.cc
+MDSNANO_PHASE_OBJS = $(MDSNANO_PHASE_SRCS:.cc=.o)
+MDSNANO_RUNNER = $(BINDIR)/Run$(MDSNANO_ANALYZER_NAME)
+MDSNANO_RUNNER_SRC = $(SRCDIR)/Run$(MDSNANO_ANALYZER_NAME).cc
+
+RUNNERS += $(MDSNANO_RUNNER)
 RUNNERS_GENERIC = $(filter-out $(MDSNANO_RUNNER),$(RUNNERS))
 UTILS =$(SRCDIR)/RazorHelper.cc $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
-			$(SRCDIR)/JetCorrectionUncertainty.cc \
+					$(SRCDIR)/JetCorrectionUncertainty.cc \
 		       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc
 UTILSOBJ = $(UTILS:cc=o)
 MDSNANO_UTILSOBJ = $(SRCDIR)/RazorHelper.o $(SRCDIR)/JetCorrectorParameters.o \
-			$(SRCDIR)/SimpleJetCorrectionUncertainty.o $(SRCDIR)/JetCorrectionUncertainty.o \
-			$(SRCDIR)/CACluster.o $(SRCDIR)/TreeMuonSystemCombination.o
+					$(SRCDIR)/SimpleJetCorrectionUncertainty.o $(SRCDIR)/JetCorrectionUncertainty.o \
+					$(SRCDIR)/CACluster.o $(SRCDIR)/TreeMuonSystemCombination.o $(MDSNANO_PHASE_OBJS)
 EXECUTABLES = $(RUNNERS)
 HELPERSCRIPT = python/MakeAnalyzerCode.py
 RUNNER_TEMPLATES = $(INCLUDEDIR)/AnalyzerTemplate.txt \
@@ -32,18 +48,24 @@ RUNNER_TEMPLATES = $(INCLUDEDIR)/AnalyzerTemplate.txt \
 
 .PHONY: clean all lxplus copy_runners
 
-all: $(FASTJET) $(RUNNER_SRCS) $(EXECUTABLES)
+all: $(FASTJET) $(RUNNER_SRCS) $(MDSNANO_RUNNER_SRC) $(EXECUTABLES)
 
 lxplus: all
 
 clean:
-	@rm -f $(SRCDIR)/*.o $(ANADIR)/*.o $(RUNNERS) $(SRCDIR)/Run*.cc
+	@rm -f $(SRCDIR)/*.o $(ANADIR)/*.o $(ANADIR)/*/*.o $(ANADIR)/*/*/*.o $(RUNNERS) $(filter-out $(MDSNANO_RUNNER_SRC),$(wildcard $(SRCDIR)/Run*.cc))
 copy_runners: $(RUNNER_SRCS)
 
 $(RUNNER_SRCS): $(SRCDIR)/Run%.cc: $(ANADIR)/%.cc $(HELPERSCRIPT) $(RUNNER_TEMPLATES)
 	@if [ ! -f "$@" ]; then \
 		echo "$* file does not exists, copying"; \
 		$(HELPERSCRIPT) $*; \
+	fi
+
+$(MDSNANO_RUNNER_SRC):
+	@if [ ! -f "$@" ]; then \
+		echo "[ERROR]: missing $@; restore it from git" ; \
+		exit 1; \
 	fi
 
 $(BINDIR):
@@ -54,23 +76,29 @@ $(FASTJET):
 
 # Ensure FastJet is fully installed before any compilation/linking that
 # expands fastjet-config flags.
-$(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANALYZERSOBJ): | $(FASTJET)
+$(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANALYZERSOBJ) $(MDSNANO_ANALYZER_OBJ) $(MDSNANO_PHASE_OBJS): | $(FASTJET)
 
 $(SRCDIR)/mdsnano_event.o: $(SRCDIR)/mdsnano_event.cc $(INCLUDEDIR)/mdsnano_event.h
-	$(CXX) $(SRCDIR)/mdsnano_event.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
-	
+	$(CXX) $(SRCDIR)/mdsnano_event.cc $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+		
 $(SRCDIR)/RazorAnalyzer.o: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.cc
-	$(CXX) $(SRCDIR)/RazorAnalyzer.cc $(CXXFLAGS) -I$(INCLUDEDIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
+	$(CXX) $(SRCDIR)/RazorAnalyzer.cc $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) -c $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
 $(UTILSOBJ): %.o: %.cc
-	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
+	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
 $(ANALYZERSOBJ): $(ANADIR)/%.o: $(ANADIR)/%.cc $(ANADIR)/%.h
 	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
+
+$(MDSNANO_ANALYZER_OBJ): $(MDSNANO_ANALYZER_SRC) $(MDSNANO_ANALYZER_HDR)
+	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) -I$(MDSNANO_ANALYZER_INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
+
+$(MDSNANO_PHASE_OBJS): %.o: %.cc
+	$(CXX) -c $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) -I$(MDSNANO_ANALYZER_INCLUDEDIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS) $<
 
 $(RUNNERS): | $(BINDIR) $(FASTJET)
 $(RUNNERS_GENERIC): $(BINDIR)/Run%: $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(UTILSOBJ) $(ANADIR)/%.o $(SRCDIR)/Run%.cc
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
 
-$(MDSNANO_RUNNER): $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(ANADIR)/llp_MuonSystem_CA_mdsnano.o $(SRCDIR)/Runllp_MuonSystem_CA_mdsnano.cc
+$(MDSNANO_RUNNER): $(SRCDIR)/mdsnano_event.o $(SRCDIR)/RazorAnalyzer.o $(MDSNANO_UTILSOBJ) $(MDSNANO_ANALYZER_OBJ) $(MDSNANO_RUNNER_SRC)
 	$(CXX) $^ $(CXXFLAGS) -I$(INCLUDEDIR) -I$(ANADIR) $(LDFLAGS) $(LIBS) -o $@ $(CXX14FLAGS)
