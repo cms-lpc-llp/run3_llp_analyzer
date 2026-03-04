@@ -9,9 +9,7 @@
 #include "RazorHelper.h"
 #include "TreeMuonSystemCombination.h"
 
-#include "TLorentzVector.h"
 #include <chrono>
-#include <cmath>
 #include <iostream>
 #include <memory>
 
@@ -108,7 +106,8 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
   /* #region: [1] event loop */
   cout << "[INFO]: Loop Starting" << endl;
   auto lastReport = steady_clock::now(); // mr. timer
-  for (Long64_t jentry = 0; jentry < nEntries; jentry++) {
+  // for (Long64_t jentry = 0; jentry < nEntries; jentry++) {
+  for (Long64_t jentry = 0; jentry < 1000; jentry++) {
 
     // progress logging
     if (jentry % 1000 == 0) {
@@ -131,29 +130,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     /* #region: [3] build local aliases and per-event helper inputs */
     EventTransientState eventState;
     eventState.synth = buildEventSynthesis(
+        *this,
         helper.get(),
-        analysisTag,
-        nElectron,
-        Electron_cutBased,
-        nJet,
-        Jet_eta,
-        Jet_pt,
-        Jet_mass,
-        Jet_neHEF,
-        Jet_neEmEF,
-        Jet_chEmEF,
-        Jet_muEF,
-        Jet_chHEF,
-        Jet_chMultiplicity,
-        Jet_neMultiplicity,
-        Jet_jetId,
-        nMuon,
-        Muon_eta,
-        Muon_pt);
+        analysisTag);
 
     /* #endregion */
 
-    // [4] Signal-scan routing (split output by model point)
     /* #region: [4] signal-scan routing (split output by model point) */
     SignalEventState signalState;
     if (!isData && signalScan) {
@@ -165,155 +147,44 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     }
     /* #endregion */
 
-    // [5] Event metadata and per-event nominal weight
-    /* #region: [5] event metadata and per-event nominal weight */
-    //event info
-    if (isData) { //? can this be better organized?
-      NEvents->Fill(1);
-      MuonSystem->weight = 1;
-    } else {
-      MuonSystem->weight = Generator_weight;
-      NEvents->Fill(1, Generator_weight);
-    }
-    MuonSystem->run = run; //? is there any particular reason these need to be here?
-    MuonSystem->luminosityBlock = luminosityBlock;
-    MuonSystem->event = event;
-
-    if (isData && run < 360019) continue; //? should this be moved somewhere higher to save compute?
+    /* #region: [5] event identity and nominal event weight */
+    fillEventIdentityAndNominalWeight(
+        MuonSystem,
+        NEvents.get(),
+        isData,
+        Generator_weight,
+        run,
+        luminosityBlock,
+        event);
+    if (shouldSkipDataRun(isData, run))
+      continue;
     /* #endregion */
 
-    // [6] MC-only truth matching inputs and MC weights
-    /* #region: [6] MC-only truth matching inputs and MC weights */
-    if (!isData) {
-      //for DS model
-      /* #region: [6a] DS model truth fill */
-      MuonSystem->nGenParticles = 0;
-      for (int i = 0; i < nGenPart; i++) {
-        if (abs(GenPart_pdgId[i]) >= 999999) {
-          MuonSystem->gParticleEta[MuonSystem->nGenParticles] = GenPart_eta[i];
-          MuonSystem->gParticlePhi[MuonSystem->nGenParticles] = GenPart_phi[i];
-          MuonSystem->gParticlePt[MuonSystem->nGenParticles] = GenPart_pt[i];
-          MuonSystem->gParticleId[MuonSystem->nGenParticles] = GenPart_pdgId[i];
-          float decay_x;
-          float decay_y;
-          float decay_z;
-          bool foundDaughter = false;
-          for (int j = 0; j < nGenPart; j++) {
-            if (GenPart_genPartIdxMother[j] == i) {
-              decay_x = GenPart_vx[j];
-              decay_y = GenPart_vy[j];
-              decay_z = GenPart_vz[j];
-              foundDaughter = true;
-              break;
-            }
-          }
-          if(foundDaughter){
-            MuonSystem->gParticle_decay_vertex_r[MuonSystem->nGenParticles] = sqrt(decay_x * decay_x + decay_y * decay_y);
-            MuonSystem->gParticle_decay_vertex_x[MuonSystem->nGenParticles] = decay_x;
-            MuonSystem->gParticle_decay_vertex_y[MuonSystem->nGenParticles] = decay_y;
-            MuonSystem->gParticle_decay_vertex_z[MuonSystem->nGenParticles] = decay_z;
-          } else {
-            cout << "didn't find HV LLP daughter " << event << endl;
-          }
-
-          TLorentzVector particle = makeTLorentzVectorPtEtaPhiM(GenPart_pt[i], GenPart_eta[i], GenPart_phi[i], GenPart_mass[i]);
-
-          float gParticle_decay_vertex = sqrt(pow(MuonSystem->gParticle_decay_vertex_r[MuonSystem->nGenParticles], 2) + pow(MuonSystem->gParticle_decay_vertex_z[MuonSystem->nGenParticles], 2));
-
-          MuonSystem->gParticle_ctau[MuonSystem->nGenParticles] = gParticle_decay_vertex / (particle.Beta() * particle.Gamma());
-          MuonSystem->gParticle_beta[MuonSystem->nGenParticles] = particle.Beta();
-          MuonSystem->nGenParticles++;
-        }
-      }
-      /* #endregion */
-
-      //for Twin higgs model
-      /* #region: [6b] Twin Higgs truth fill */
-      MuonSystem->nGLLP = 0;
-      for (int i = 0; i < nGenPart; i++) {
-        if (abs(GenPart_pdgId[i]) == 9000006) {
-          MuonSystem->gLLP_eta[MuonSystem->nGLLP] = GenPart_eta[i];
-          MuonSystem->gLLP_phi[MuonSystem->nGLLP] = GenPart_phi[i];
-          MuonSystem->gLLP_pt[MuonSystem->nGLLP] = GenPart_pt[i];
-          float decay_x;
-          float decay_y;
-          float decay_z;
-          bool foundDaughter = false;
-          for (int j = 0; j < nGenPart; j++) {
-            if (GenPart_genPartIdxMother[j] == i) {
-              decay_x = GenPart_vx[j];
-              decay_y = GenPart_vy[j];
-              decay_z = GenPart_vz[j];
-              foundDaughter = true;
-              break;
-            }
-          }
-          if (foundDaughter){
-            MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] = sqrt(decay_x * decay_x + decay_y * decay_y);
-            MuonSystem->gLLP_decay_vertex_x[MuonSystem->nGLLP] = decay_x;
-            MuonSystem->gLLP_decay_vertex_y[MuonSystem->nGLLP] = decay_y;
-            MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP] = decay_z;
-          } else {
-            cout << "didn't find LLP daughter " << event << endl;
-          }
-
-          TLorentzVector LLP = makeTLorentzVectorPtEtaPhiM(GenPart_pt[i], GenPart_eta[i], GenPart_phi[i], GenPart_mass[i]);
-          MuonSystem->gLLP_e[MuonSystem->nGLLP] = LLP.E();
-
-          float gLLP_decay_vertex = sqrt(pow(MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP], 2) + pow(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP], 2));
-
-          MuonSystem->gLLP_ctau[MuonSystem->nGLLP] = gLLP_decay_vertex / (LLP.Beta() * LLP.Gamma());
-          MuonSystem->gLLP_beta[MuonSystem->nGLLP] = LLP.Beta();
-          MuonSystem->gLLP_csc[MuonSystem->nGLLP] =
-              abs(MuonSystem->gLLP_eta[MuonSystem->nGLLP]) < 2.4 &&
-              abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP]) < 1100 &&
-              abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP]) > 400 &&
-              MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 695.5;
-          MuonSystem->gLLP_dt[MuonSystem->nGLLP] =
-              abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP]) < 661.0 &&
-              MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 800 &&
-              MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] > 200.0;
-          MuonSystem->nGLLP++;
-        }
-      }
-      /* #endregion */
-
-      MuonSystem->Pileup_nTrueInt = Pileup_nTrueInt;
-      MuonSystem->pileupWeight = helper->getPileupWeight(Pileup_nTrueInt);
-      MuonSystem->pileupWeightUp = helper->getPileupWeightUp(Pileup_nTrueInt) / MuonSystem->pileupWeight;
-      MuonSystem->pileupWeightDown = helper->getPileupWeightDown(Pileup_nTrueInt) / MuonSystem->pileupWeight;
-
-      for (unsigned int i = 0; i < 9; i++) {
-        MuonSystem->LHEScaleWeight[i] = LHEScaleWeight[i];
-      }
-
-    }
+    /* #region: [6] MC-only truth and per-event MC weights */
+    if (!isData)
+      fillMcTruthAndPileupWeights(*this, helper.get(), MuonSystem);
     /* #endregion */
 
-    // [7] Event-level observables and acceptance bookkeeping
-    /* #region: [7] event-level observables and acceptance bookkeeping */
-    //get NPU
-    MuonSystem->PV_npvs = PV_npvs;
-    MuonSystem->Rho_fixedGridRhoFastjetAll = Rho_fixedGridRhoFastjetAll;
-    MuonSystem->PFMET_pt = PFMET_pt;
-    MuonSystem->PFMET_phi = PFMET_phi;
-
-    MuonSystem->PuppiMET_pt = PuppiMET_pt;
-    MuonSystem->PuppiMET_phi = PuppiMET_phi;
-
-    if (signalScan && !isData && signalState.hasKey)
-      signalScanManager.fillTotal(signalState, Generator_weight * MuonSystem->pileupWeight);
-    if (signalScan && !isData && signalState.hasKey) {
-      signalScanManager.fillAccep(signalState, Generator_weight * MuonSystem->pileupWeight);
-    } else if (!isData) {
-      if (MuonSystem->gLLP_csc[0] && MuonSystem->gLLP_csc[1])
-        accep_csccsc->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
-      if ((MuonSystem->gLLP_dt[0] && MuonSystem->gLLP_csc[1]) || (MuonSystem->gLLP_dt[1] && MuonSystem->gLLP_csc[0]))
-        accep_cscdt->Fill(1.0, Generator_weight * MuonSystem->pileupWeight);
-    }
+    /* #region: [7] event observables and acceptance counters */
+    fillEventObservables(
+        MuonSystem,
+        PV_npvs,
+        Rho_fixedGridRhoFastjetAll,
+        PFMET_pt,
+        PFMET_phi,
+        PuppiMET_pt,
+        PuppiMET_phi);
+    fillAcceptanceCounters(
+        isData,
+        signalScan,
+        signalState,
+        signalScanManager,
+        MuonSystem,
+        accep_csccsc.get(),
+        accep_cscdt.get(),
+        Generator_weight);
     /* #endregion */
 
-    // [8] Event filters, trigger bits, and jet veto maps
     /* #region: [8] event filters, trigger bits, and jet veto maps */
     const EventCutState cuts = buildEventCutState(
         *this,
@@ -321,68 +192,22 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         analysisTag,
         isData,
         run,
-        PuppiMET_pt,
-        PuppiMET_phi,
-        nJet,
-        Jet_pt,
-        Jet_eta,
-        Jet_phi,
-        Jet_neEmEF,
-        Jet_chEmEF,
-        nMuon,
-        Muon_isPFcand,
-        Muon_eta,
-        Muon_phi,
-        eventState.synth,
-        Flag_goodVertices,
-        Flag_globalSuperTightHalo2016Filter,
-        Flag_EcalDeadCellTriggerPrimitiveFilter,
-        Flag_BadPFMuonFilter,
-        Flag_BadPFMuonDzFilter,
-        Flag_hfNoisyHitsFilter,
-        Flag_eeBadScFilter,
-        Flag_ecalBadCalibFilter,
-        HLT_CscCluster_Loose,
-        HLT_L1CSCShower_DTCluster50);
+        eventState.synth);
     writeEventCutState(MuonSystem, cuts);
     /* #endregion */
 
-    // [9] Lepton object selection and lepton branch fill
     /* #region: [9] lepton object selection and lepton branch fill */
-    //*************************************************************************
-    //Start Object Selection
-    //*************************************************************************
     eventState.leptons = buildSelectedLeptons(
         *this,
-        eventState.synth,
-        nMuon,
-        Muon_looseId,
-        Muon_pt,
-        Muon_eta,
-        Muon_phi,
-        Muon_charge,
-        Muon_dz,
-        Muon_tightId,
-        Muon_pfRelIso04_all,
-        nElectron,
-        Electron_pt,
-        Electron_eta,
-        Electron_phi,
-        Electron_charge,
-        Electron_dz);
+        eventState.synth);
     fillLeptonBranches(MuonSystem, eventState.leptons);
     /* #endregion */
 
-    // [10] Jet selection, JES propagation, and jet branch fill
     /* #region: [10] jet selection, JES propagation, and jet branch fill */
     eventState.jetStage = buildJetStageResult(
         *this,
         helper.get(),
         run,
-        nJet,
-        Jet_eta,
-        Jet_phi,
-        Jet_pt,
         eventState.synth,
         eventState.leptons);
 
@@ -390,55 +215,12 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
     fillPuppiMetJesFromShift(*this, MuonSystem, eventState.jetStage);
     /* #endregion */
 
-    // [11] Rechit-level pass-through fill (CSC/DT/RPC + optional aliases)
     /* #region: [11] rechit-level pass-through fill (CSC/DT/RPC + optional aliases) */
     fillRawRechits(
         MuonSystem,
-        ncscRechits,
-        ndtRecHits,
-        nrpcRecHits,
-        cscRechits_Quality,
-        cscRechits_Chamber,
-        cscRechits_Station,
-        cscRechits_Eta,
-        cscRechits_Phi,
-        cscRechits_X,
-        cscRechits_Y,
-        cscRechits_Z,
-        cscRechits_Tpeak,
-        cscRechits_Twire,
-        cscRechits_IChamber,
-        cscRechits_NStrips,
-        cscRechits_WGroupsBX,
-        cscRechits_HitWire,
-        cscRechits_NWireGroups,
-        cscRechits_E,
-        dtRecHits_Layer,
-        dtRecHits_SuperLayer,
-        dtRecHits_Station,
-        dtRecHits_Wheel,
-        dtRecHits_Eta,
-        dtRecHits_Phi,
-        dtRecHits_X,
-        dtRecHits_Y,
-        dtRecHits_Z,
-        dtRecHits_Sector,
-        rpcRecHits_Bx,
-        rpcRecHits_Region,
-        rpcRecHits_Ring,
-        rpcRecHits_Layer,
-        rpcRecHits_Station,
-        rpcRecHits_Sector,
-        rpcRecHits_X,
-        rpcRecHits_Y,
-        rpcRecHits_Z,
-        rpcRecHits_Phi,
-        rpcRecHits_Eta,
-        rpcRecHits_Time,
-        rpcRecHits_TimeError);
+        *this);
     /* #endregion */
 
-    // [12] Ring occupancy summaries from raw rechits
     /* #region: [12] ring occupancy summaries from raw rechits */
     MuonSystem->nDtRings = countDtRingsFromRecHits(
         ndtRecHits,
@@ -446,7 +228,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         dtRecHits_Wheel);
     /* #endregion */
 
-    // [13] CSC rechit clustering, feature fill, and matching/veto variables
     /* #region: [13] CSC rechit clustering, feature fill, and matching/veto variables */
     processCscClusterStage(
         *this,
@@ -457,7 +238,6 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         run);
     /* #endregion */
 
-    // [14] DT/RPC clustering, DT feature fill, and matching/veto variables
     /* #region: [14] DT/RPC clustering, DT feature fill, and matching/veto variables */
     processDtRpcClusterStage(
         *this,
@@ -468,18 +248,17 @@ void llp_MuonSystem_CA_mdsnano::Analyze(bool isData, int options, string outputf
         run);
     /* #endregion */
 
-    // [15] Final per-event tree fill
-    /* #region: [15] final per-event tree fill */
-    if (!isData && signalScan) {
-      signalScanManager.fillEventTree(signalState);
-    } else {
-      MuonSystem->tree_->Fill();
-    }
+    /* #region: [15] final per-event tree write */
+    fillEventTreeForCurrentMode(
+        isData,
+        signalScan,
+        MuonSystem,
+        signalScanManager,
+        signalState);
     /* #endregion */
   }
   /* #endregion */
 
-  // [16] End-of-job writeout for trees and histograms
   /* #region: [16] end-of-job writeout for trees and histograms */
   if (!isData && signalScan) {
     signalScanManager.finalize();

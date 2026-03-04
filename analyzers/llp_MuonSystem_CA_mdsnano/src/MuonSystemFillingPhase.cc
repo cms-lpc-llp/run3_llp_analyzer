@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <memory>
 #include <random>
 #include <vector>
@@ -78,6 +79,189 @@ void fillPuppiMetJesFromShift(
   if (metXJesDown < 0.0f)
     muonSystem->PuppimetPhiJESDown =
         analyzer.deltaPhi(TMath::Pi() + muonSystem->PuppimetPhiJESDown, 0.0);
+}
+
+void fillEventIdentityAndNominalWeight(
+    TreeMuonSystemCombination* muonSystem,
+    TH1F* nEvents,
+    bool isData,
+    float generatorWeight,
+    unsigned int runNumber,
+    unsigned int luminosityBlock,
+    unsigned long long eventNumber) {
+  if (isData) {
+    nEvents->Fill(1);
+    muonSystem->weight = 1;
+  } else {
+    muonSystem->weight = generatorWeight;
+    nEvents->Fill(1, generatorWeight);
+  }
+  muonSystem->run = runNumber;
+  muonSystem->luminosityBlock = luminosityBlock;
+  muonSystem->event = eventNumber;
+}
+
+bool shouldSkipDataRun(
+    bool isData,
+    unsigned int runNumber) {
+  return isData && runNumber < 360019;
+}
+
+void fillMcTruthAndPileupWeights(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    TreeMuonSystemCombination* muonSystem) {
+  muonSystem->nGenParticles = 0;
+  for (int i = 0; i < analyzer.nGenPart; i++) {
+    if (abs(analyzer.GenPart_pdgId[i]) >= 999999) {
+      muonSystem->gParticleEta[muonSystem->nGenParticles] = analyzer.GenPart_eta[i];
+      muonSystem->gParticlePhi[muonSystem->nGenParticles] = analyzer.GenPart_phi[i];
+      muonSystem->gParticlePt[muonSystem->nGenParticles] = analyzer.GenPart_pt[i];
+      muonSystem->gParticleId[muonSystem->nGenParticles] = analyzer.GenPart_pdgId[i];
+      float decay_x;
+      float decay_y;
+      float decay_z;
+      bool foundDaughter = false;
+      for (int j = 0; j < analyzer.nGenPart; j++) {
+        if (analyzer.GenPart_genPartIdxMother[j] == i) {
+          decay_x = analyzer.GenPart_vx[j];
+          decay_y = analyzer.GenPart_vy[j];
+          decay_z = analyzer.GenPart_vz[j];
+          foundDaughter = true;
+          break;
+        }
+      }
+      if (foundDaughter) {
+        muonSystem->gParticle_decay_vertex_r[muonSystem->nGenParticles] = sqrt(decay_x * decay_x + decay_y * decay_y);
+        muonSystem->gParticle_decay_vertex_x[muonSystem->nGenParticles] = decay_x;
+        muonSystem->gParticle_decay_vertex_y[muonSystem->nGenParticles] = decay_y;
+        muonSystem->gParticle_decay_vertex_z[muonSystem->nGenParticles] = decay_z;
+      } else {
+        std::cout << "didn't find HV LLP daughter " << analyzer.event << std::endl;
+      }
+
+      TLorentzVector particle = analyzer.makeTLorentzVectorPtEtaPhiM(
+          analyzer.GenPart_pt[i], analyzer.GenPart_eta[i], analyzer.GenPart_phi[i], analyzer.GenPart_mass[i]);
+
+      float gParticle_decay_vertex = sqrt(
+          pow(muonSystem->gParticle_decay_vertex_r[muonSystem->nGenParticles], 2) +
+          pow(muonSystem->gParticle_decay_vertex_z[muonSystem->nGenParticles], 2));
+
+      muonSystem->gParticle_ctau[muonSystem->nGenParticles] = gParticle_decay_vertex / (particle.Beta() * particle.Gamma());
+      muonSystem->gParticle_beta[muonSystem->nGenParticles] = particle.Beta();
+      muonSystem->nGenParticles++;
+    }
+  }
+
+  muonSystem->nGLLP = 0;
+  for (int i = 0; i < analyzer.nGenPart; i++) {
+    if (abs(analyzer.GenPart_pdgId[i]) == 9000006) {
+      muonSystem->gLLP_eta[muonSystem->nGLLP] = analyzer.GenPart_eta[i];
+      muonSystem->gLLP_phi[muonSystem->nGLLP] = analyzer.GenPart_phi[i];
+      muonSystem->gLLP_pt[muonSystem->nGLLP] = analyzer.GenPart_pt[i];
+      float decay_x;
+      float decay_y;
+      float decay_z;
+      bool foundDaughter = false;
+      for (int j = 0; j < analyzer.nGenPart; j++) {
+        if (analyzer.GenPart_genPartIdxMother[j] == i) {
+          decay_x = analyzer.GenPart_vx[j];
+          decay_y = analyzer.GenPart_vy[j];
+          decay_z = analyzer.GenPart_vz[j];
+          foundDaughter = true;
+          break;
+        }
+      }
+      if (foundDaughter) {
+        muonSystem->gLLP_decay_vertex_r[muonSystem->nGLLP] = sqrt(decay_x * decay_x + decay_y * decay_y);
+        muonSystem->gLLP_decay_vertex_x[muonSystem->nGLLP] = decay_x;
+        muonSystem->gLLP_decay_vertex_y[muonSystem->nGLLP] = decay_y;
+        muonSystem->gLLP_decay_vertex_z[muonSystem->nGLLP] = decay_z;
+      } else {
+        std::cout << "didn't find LLP daughter " << analyzer.event << std::endl;
+      }
+
+      TLorentzVector LLP = analyzer.makeTLorentzVectorPtEtaPhiM(
+          analyzer.GenPart_pt[i], analyzer.GenPart_eta[i], analyzer.GenPart_phi[i], analyzer.GenPart_mass[i]);
+      muonSystem->gLLP_e[muonSystem->nGLLP] = LLP.E();
+
+      float gLLP_decay_vertex = sqrt(
+          pow(muonSystem->gLLP_decay_vertex_r[muonSystem->nGLLP], 2) +
+          pow(muonSystem->gLLP_decay_vertex_z[muonSystem->nGLLP], 2));
+
+      muonSystem->gLLP_ctau[muonSystem->nGLLP] = gLLP_decay_vertex / (LLP.Beta() * LLP.Gamma());
+      muonSystem->gLLP_beta[muonSystem->nGLLP] = LLP.Beta();
+      muonSystem->gLLP_csc[muonSystem->nGLLP] =
+          abs(muonSystem->gLLP_eta[muonSystem->nGLLP]) < 2.4 &&
+          abs(muonSystem->gLLP_decay_vertex_z[muonSystem->nGLLP]) < 1100 &&
+          abs(muonSystem->gLLP_decay_vertex_z[muonSystem->nGLLP]) > 400 &&
+          muonSystem->gLLP_decay_vertex_r[muonSystem->nGLLP] < 695.5;
+      muonSystem->gLLP_dt[muonSystem->nGLLP] =
+          abs(muonSystem->gLLP_decay_vertex_z[muonSystem->nGLLP]) < 661.0 &&
+          muonSystem->gLLP_decay_vertex_r[muonSystem->nGLLP] < 800 &&
+          muonSystem->gLLP_decay_vertex_r[muonSystem->nGLLP] > 200.0;
+      muonSystem->nGLLP++;
+    }
+  }
+
+  muonSystem->Pileup_nTrueInt = analyzer.Pileup_nTrueInt;
+  muonSystem->pileupWeight = helper->getPileupWeight(analyzer.Pileup_nTrueInt);
+  muonSystem->pileupWeightUp = helper->getPileupWeightUp(analyzer.Pileup_nTrueInt) / muonSystem->pileupWeight;
+  muonSystem->pileupWeightDown = helper->getPileupWeightDown(analyzer.Pileup_nTrueInt) / muonSystem->pileupWeight;
+
+  for (unsigned int i = 0; i < 9; i++) {
+    muonSystem->LHEScaleWeight[i] = analyzer.LHEScaleWeight[i];
+  }
+}
+
+void fillEventObservables(
+    TreeMuonSystemCombination* muonSystem,
+    int pvNpvs,
+    float rhoFixedGrid,
+    float pfMetPt,
+    float pfMetPhi,
+    float puppiMetPt,
+    float puppiMetPhi) {
+  muonSystem->PV_npvs = pvNpvs;
+  muonSystem->Rho_fixedGridRhoFastjetAll = rhoFixedGrid;
+  muonSystem->PFMET_pt = pfMetPt;
+  muonSystem->PFMET_phi = pfMetPhi;
+  muonSystem->PuppiMET_pt = puppiMetPt;
+  muonSystem->PuppiMET_phi = puppiMetPhi;
+}
+
+void fillAcceptanceCounters(
+    bool isData,
+    bool signalScan,
+    const SignalEventState& signalState,
+    MuonSystemSignalScanManager& signalScanManager,
+    TreeMuonSystemCombination* muonSystem,
+    TH1F* accepCsccsc,
+    TH1F* accepCscdt,
+    float generatorWeight) {
+  if (signalScan && !isData && signalState.hasKey)
+    signalScanManager.fillTotal(signalState, generatorWeight * muonSystem->pileupWeight);
+  if (signalScan && !isData && signalState.hasKey) {
+    signalScanManager.fillAccep(signalState, generatorWeight * muonSystem->pileupWeight);
+  } else if (!isData) {
+    if (muonSystem->gLLP_csc[0] && muonSystem->gLLP_csc[1])
+      accepCsccsc->Fill(1.0, generatorWeight * muonSystem->pileupWeight);
+    if ((muonSystem->gLLP_dt[0] && muonSystem->gLLP_csc[1]) || (muonSystem->gLLP_dt[1] && muonSystem->gLLP_csc[0]))
+      accepCscdt->Fill(1.0, generatorWeight * muonSystem->pileupWeight);
+  }
+}
+
+void fillEventTreeForCurrentMode(
+    bool isData,
+    bool signalScan,
+    TreeMuonSystemCombination* muonSystem,
+    MuonSystemSignalScanManager& signalScanManager,
+    const SignalEventState& signalState) {
+  if (!isData && signalScan) {
+    signalScanManager.fillEventTree(signalState);
+  } else {
+    muonSystem->tree_->Fill();
+  }
 }
 
 void runCAClustering(CACluster& clusterer) {

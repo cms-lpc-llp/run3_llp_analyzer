@@ -29,6 +29,32 @@ struct largest_pt_jet {
 
 /* #region: event-object synthesis */
 EventSynthesis buildEventSynthesis(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    const std::string& analysisTag) {
+  return buildEventSynthesis(
+      helper,
+      analysisTag,
+      analyzer.nElectron,
+      analyzer.Electron_cutBased,
+      analyzer.nJet,
+      analyzer.Jet_eta,
+      analyzer.Jet_pt,
+      analyzer.Jet_mass,
+      analyzer.Jet_neHEF,
+      analyzer.Jet_neEmEF,
+      analyzer.Jet_chEmEF,
+      analyzer.Jet_muEF,
+      analyzer.Jet_chHEF,
+      analyzer.Jet_chMultiplicity,
+      analyzer.Jet_neMultiplicity,
+      analyzer.Jet_jetId,
+      analyzer.nMuon,
+      analyzer.Muon_eta,
+      analyzer.Muon_pt);
+}
+
+EventSynthesis buildEventSynthesis(
     RazorHelper* helper,
     const std::string& analysisTag,
     int nElectron,
@@ -76,6 +102,29 @@ EventSynthesis buildEventSynthesis(
     synth.muonE[i] = TMath::Sqrt(mass * mass + pt * pt + pz * pz);
   }
   return synth;
+}
+
+std::vector<LeptonCandidate> buildSelectedLeptons(
+    RazorAnalyzerMerged& analyzer,
+    const EventSynthesis& synth) {
+  return buildSelectedLeptons(
+      analyzer,
+      synth,
+      analyzer.nMuon,
+      analyzer.Muon_looseId,
+      analyzer.Muon_pt,
+      analyzer.Muon_eta,
+      analyzer.Muon_phi,
+      analyzer.Muon_charge,
+      analyzer.Muon_dz,
+      analyzer.Muon_tightId,
+      analyzer.Muon_pfRelIso04_all,
+      analyzer.nElectron,
+      analyzer.Electron_pt,
+      analyzer.Electron_eta,
+      analyzer.Electron_phi,
+      analyzer.Electron_charge,
+      analyzer.Electron_dz);
 }
 
 std::vector<LeptonCandidate> buildSelectedLeptons(
@@ -169,6 +218,24 @@ JetStageResult buildJetStageResult(
     RazorAnalyzerMerged& analyzer,
     RazorHelper* helper,
     int runNumber,
+    const EventSynthesis& synth,
+    const std::vector<LeptonCandidate>& leptons) {
+  return buildJetStageResult(
+      analyzer,
+      helper,
+      runNumber,
+      analyzer.nJet,
+      analyzer.Jet_eta,
+      analyzer.Jet_phi,
+      analyzer.Jet_pt,
+      synth,
+      leptons);
+}
+
+JetStageResult buildJetStageResult(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    int runNumber,
     int nJet,
     const float* jetEta,
     const float* jetPhi,
@@ -229,6 +296,55 @@ JetStageResult buildJetStageResult(
 /* #endregion */
 
 /* #region: raw rechit copy and ring summaries */
+void fillRawRechits(
+    TreeMuonSystemCombination* muonSystem,
+    RazorAnalyzerMerged& analyzer) {
+  fillRawRechits(
+      muonSystem,
+      analyzer.ncscRechits,
+      analyzer.ndtRecHits,
+      analyzer.nrpcRecHits,
+      analyzer.cscRechits_Quality,
+      analyzer.cscRechits_Chamber,
+      analyzer.cscRechits_Station,
+      analyzer.cscRechits_Eta,
+      analyzer.cscRechits_Phi,
+      analyzer.cscRechits_X,
+      analyzer.cscRechits_Y,
+      analyzer.cscRechits_Z,
+      analyzer.cscRechits_Tpeak,
+      analyzer.cscRechits_Twire,
+      analyzer.cscRechits_IChamber,
+      analyzer.cscRechits_NStrips,
+      analyzer.cscRechits_WGroupsBX,
+      analyzer.cscRechits_HitWire,
+      analyzer.cscRechits_NWireGroups,
+      analyzer.cscRechits_E,
+      analyzer.dtRecHits_Layer,
+      analyzer.dtRecHits_SuperLayer,
+      analyzer.dtRecHits_Station,
+      analyzer.dtRecHits_Wheel,
+      analyzer.dtRecHits_Eta,
+      analyzer.dtRecHits_Phi,
+      analyzer.dtRecHits_X,
+      analyzer.dtRecHits_Y,
+      analyzer.dtRecHits_Z,
+      analyzer.dtRecHits_Sector,
+      analyzer.rpcRecHits_Bx,
+      analyzer.rpcRecHits_Region,
+      analyzer.rpcRecHits_Ring,
+      analyzer.rpcRecHits_Layer,
+      analyzer.rpcRecHits_Station,
+      analyzer.rpcRecHits_Sector,
+      analyzer.rpcRecHits_X,
+      analyzer.rpcRecHits_Y,
+      analyzer.rpcRecHits_Z,
+      analyzer.rpcRecHits_Phi,
+      analyzer.rpcRecHits_Eta,
+      analyzer.rpcRecHits_Time,
+      analyzer.rpcRecHits_TimeError);
+}
+
 void fillRawRechits(
     TreeMuonSystemCombination* muonSystem,
     int ncscRechits,

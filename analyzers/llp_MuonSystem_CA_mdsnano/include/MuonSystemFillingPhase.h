@@ -6,6 +6,7 @@
 
 #include "CACluster.h"
 #include "MuonSystemPhaseTypes.h"
+#include "MuonSystemSignalScanManager.h"
 #include "RazorAnalyzer.h"
 #include "RazorHelper.h"
 /* #endregion */
@@ -23,6 +24,50 @@ void fillPuppiMetJesFromShift(
     RazorAnalyzerMerged& analyzer,
     TreeMuonSystemCombination* muonSystem,
     const JetStageResult& jetStage);
+
+void fillEventIdentityAndNominalWeight(
+    TreeMuonSystemCombination* muonSystem,
+    TH1F* nEvents,
+    bool isData,
+    float generatorWeight,
+    unsigned int runNumber,
+    unsigned int luminosityBlock,
+    unsigned long long eventNumber);
+
+bool shouldSkipDataRun(
+    bool isData,
+    unsigned int runNumber);
+
+void fillMcTruthAndPileupWeights(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    TreeMuonSystemCombination* muonSystem);
+
+void fillEventObservables(
+    TreeMuonSystemCombination* muonSystem,
+    int pvNpvs,
+    float rhoFixedGrid,
+    float pfMetPt,
+    float pfMetPhi,
+    float puppiMetPt,
+    float puppiMetPhi);
+
+void fillAcceptanceCounters(
+    bool isData,
+    bool signalScan,
+    const SignalEventState& signalState,
+    MuonSystemSignalScanManager& signalScanManager,
+    TreeMuonSystemCombination* muonSystem,
+    TH1F* accepCsccsc,
+    TH1F* accepCscdt,
+    float generatorWeight);
+
+void fillEventTreeForCurrentMode(
+    bool isData,
+    bool signalScan,
+    TreeMuonSystemCombination* muonSystem,
+    MuonSystemSignalScanManager& signalScanManager,
+    const SignalEventState& signalState);
 
 void runCAClustering(CACluster& clusterer);
 

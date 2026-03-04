@@ -14,6 +14,14 @@ EventCutState buildEventCutState(
     const std::string& analysisTag,
     bool isData,
     int runNumber,
+    const EventSynthesis& synth);
+
+EventCutState buildEventCutState(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    const std::string& analysisTag,
+    bool isData,
+    int runNumber,
     float puppiMetPt,
     float puppiMetPhi,
     int nJet,

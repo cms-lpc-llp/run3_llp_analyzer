@@ -13,6 +13,11 @@
 
 /* #region: synthesis-phase API declarations */
 EventSynthesis buildEventSynthesis(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    const std::string& analysisTag);
+
+EventSynthesis buildEventSynthesis(
     RazorHelper* helper,
     const std::string& analysisTag,
     int nElectron,
@@ -32,6 +37,10 @@ EventSynthesis buildEventSynthesis(
     int nMuon,
     const float* muonEta,
     const float* muonPt);
+
+std::vector<LeptonCandidate> buildSelectedLeptons(
+    RazorAnalyzerMerged& analyzer,
+    const EventSynthesis& synth);
 
 std::vector<LeptonCandidate> buildSelectedLeptons(
     RazorAnalyzerMerged& analyzer,
@@ -56,12 +65,23 @@ JetStageResult buildJetStageResult(
     RazorAnalyzerMerged& analyzer,
     RazorHelper* helper,
     int runNumber,
+    const EventSynthesis& synth,
+    const std::vector<LeptonCandidate>& leptons);
+
+JetStageResult buildJetStageResult(
+    RazorAnalyzerMerged& analyzer,
+    RazorHelper* helper,
+    int runNumber,
     int nJet,
     const float* jetEta,
     const float* jetPhi,
     const float* jetPt,
     const EventSynthesis& synth,
     const std::vector<LeptonCandidate>& leptons);
+
+void fillRawRechits(
+    TreeMuonSystemCombination* muonSystem,
+    RazorAnalyzerMerged& analyzer);
 
 void fillRawRechits(
     TreeMuonSystemCombination* muonSystem,
