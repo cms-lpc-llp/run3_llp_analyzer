@@ -1,0 +1,11 @@
+samples:
+  Data:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/2024_Data_tauh_analyzer_update_012026/"
+    flavor: tau
+    trigger: tau
+    isMC: false
+    isBkg: false
+    signal_xsec: 1
+    gen_events: 1
+
+  

@@ -1,6 +1,18 @@
 
 ./HNL_Plotting_Scripts/preliminary_root_plots*
-
+*.png
+*abcd.txt
+*abcd.csv
+*cutflow.txt
+*cutflow.csv
+*plot_debug_summary*
+*iso_event_counts*
+*scan_clustersize*
+*scan_dphi*
+model_weights_old
+mds-ml-minmal
+inference_old
+inference
 
 #txt files in main directory
 ./*.txt

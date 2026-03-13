@@ -1,0 +1,11 @@
+# samples
+  bkg_WENu:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/WtoENu-4Jets_TuneCP5_13p6TeV_madgraphMLM-pythia8/normalized/WtoENu-4Jets_TuneCP5_13p6TeV_madgraphMLM-pythia8_109080pb_weighted.root"
+    flavor: E
+    trigger: E
+    isMC: true
+    isBkg: true
+    signal_xsec: 1
+    gen_events: 1
+
+  

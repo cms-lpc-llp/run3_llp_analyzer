@@ -128,7 +128,7 @@ then
 		#done
 		echo "now sending ls output to new file"
 		#ls *NANO*.root
-		ls ./*NANO*.root ./*Job*.root ./*EXO*.root > inputfilelistForThisJob_${jobnumber}.txt
+		ls ./*NANO*.root ./*Nano*.root ./*Job*.root ./*EXO*.root > inputfilelistForThisJob_${jobnumber}.txt
 		
 		
 		

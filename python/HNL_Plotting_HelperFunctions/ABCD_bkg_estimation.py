@@ -25,6 +25,17 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, dPhiCut, normalization_
     Code to return dataframe with event in each bin and expected number of events in signal bin
     '''
 
+    # Ensure each event contributes at most one cluster: pick max-size cluster per event
+    sizes = events.cscRechitClusterSize
+    dphi = abs(events[f'cscRechitClusterPrompt{flavor}DeltaPhi'])
+    sizes_masked = ak.where(cluster_mask, sizes, -1)
+    has_cluster = ak.any(cluster_mask, axis=1)
+    idx = ak.argmax(sizes_masked, axis=1, keepdims=True)
+    size_sel = ak.firsts(sizes[idx])
+    dphi_sel = ak.firsts(dphi[idx])
+    size_sel = ak.fill_none(size_sel, -1)
+    dphi_sel = ak.fill_none(dphi_sel, 0)
+
     event_counts = [] #list to store dask objects (number of events in each bin) that need to be stored
     event_counts_unc = []
     if blind:
@@ -33,21 +44,21 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, dPhiCut, normalization_
         bin_names = ["bin A (low NHits, low dPhi)", "bin B (low NHits, high dPhi)", "bin C (high NHits, low dPhi)", "bin D (high NHits, high dPhi)"]
     
     #bin A
-    bin_A = ak.sum(events.weights[ak.any((events.cscRechitClusterSize<sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaPhi'])<dPhiCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (dphi_sel<dPhiCut)])*normalization_factor
     #print(bin_A)
     event_counts.append(bin_A)
     bin_A_unc = bin_A**0.5
     event_counts_unc.append(bin_A_unc)
 
     #bin B
-    bin_B = ak.sum(events.weights[ak.any((events.cscRechitClusterSize<sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaPhi'])>=dPhiCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (dphi_sel>=dPhiCut)])*normalization_factor
     print()
     event_counts.append(bin_B)
     bin_B_unc = bin_B**0.5
     event_counts_unc.append(bin_B_unc)
 
     #bin C
-    bin_C = ak.sum(events.weights[ak.any((events.cscRechitClusterSize>=sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaPhi'])<dPhiCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (dphi_sel<dPhiCut)])*normalization_factor
     event_counts.append(bin_C)
     bin_C_unc = bin_C**0.5
     event_counts_unc.append(bin_C_unc)
@@ -59,7 +70,7 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, dPhiCut, normalization_
         event_counts.append(bin_D_exp)
         event_counts_unc.append(bin_D_exp_unc)
     else:
-        bin_D = ak.sum(events.weights[ak.any((events.cscRechitClusterSize>=sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaPhi'])>=dPhiCut) & (cluster_mask), axis=1)])*normalization_factor
+        bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (dphi_sel>=dPhiCut)])*normalization_factor
         bin_D_unc = bin_D**0.5
         
         event_counts.append(bin_D)
@@ -84,6 +95,17 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
     Code to return dataframe with event in each bin and expected number of events in signal bin
     '''
 
+    # Ensure each event contributes at most one cluster: pick max-size cluster per event
+    sizes = events.cscRechitClusterSize
+    deta = abs(events[f'cscRechitClusterPrompt{flavor}DeltaEta'])
+    sizes_masked = ak.where(cluster_mask, sizes, -1)
+    has_cluster = ak.any(cluster_mask, axis=1)
+    idx = ak.argmax(sizes_masked, axis=1, keepdims=True)
+    size_sel = ak.firsts(sizes[idx])
+    deta_sel = ak.firsts(deta[idx])
+    size_sel = ak.fill_none(size_sel, -1)
+    deta_sel = ak.fill_none(deta_sel, 0)
+
     event_counts = [] #list to store dask objects (number of events in each bin) that need to be stored
     event_counts_unc = []
     if blind:
@@ -92,21 +114,21 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
         bin_names = ["bin A (low NHits, low dEta)", "bin B (low NHits, high dEta)", "bin C (high NHits, low dEta)", "bin D (high NHits, high dEta)"]
 
     #bin A
-    bin_A = ak.sum(events.weights[ak.any((events.cscRechitClusterSize<sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaEta'])<dEtaCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (deta_sel<dEtaCut)])*normalization_factor
     #print(bin_A)
     event_counts.append(bin_A)
     bin_A_unc = bin_A**0.5
     event_counts_unc.append(bin_A_unc)
 
     #bin B
-    bin_B = ak.sum(events.weights[ak.any((events.cscRechitClusterSize<sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaEta'])>=dEtaCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (deta_sel>=dEtaCut)])*normalization_factor
     print()
     event_counts.append(bin_B)
     bin_B_unc = bin_B**0.5
     event_counts_unc.append(bin_B_unc)
 
     #bin D
-    bin_D = ak.sum(events.weights[ak.any((events.cscRechitClusterSize>=sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaEta'])>=dEtaCut) & (cluster_mask), axis=1)])*normalization_factor
+    bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (deta_sel>=dEtaCut)])*normalization_factor
     event_counts.append(bin_D)
     bin_D_unc = bin_D**0.5
     event_counts_unc.append(bin_D_unc)
@@ -118,7 +140,7 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
         event_counts.append(bin_C_exp)
         event_counts_unc.append(bin_C_exp_unc)
     else:
-        bin_C = ak.sum(events.weights[ak.any((events.cscRechitClusterSize>=sizeCut) & (abs(events[f'cscRechitClusterPrompt{flavor}DeltaEta'])<dEtaCut) & (cluster_mask), axis=1)])*normalization_factor
+        bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (deta_sel<dEtaCut)])*normalization_factor
         bin_C_unc = bin_C**0.5
         
         event_counts.append(bin_C)
@@ -137,4 +159,3 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
 
     client.close()
     return pd.DataFrame({"Bin":bin_names, "Counts":bin_counts_strs})
-

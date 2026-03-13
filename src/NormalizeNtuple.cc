@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 
       //store the weights
       for (int n = 0; n < inputTree->GetEntries(); n++) {
-        if (n % 1 == 0)
+        if (n % 1000 == 0)
           cout << "Processed Event " << n << "\n";
         inputTree->GetEntry(n);
 
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
 
         if (!doUnweight) {
           normalizedTree->Fill();
-          cout << "here" << endl;
+          //cout << "here" << endl;
         } else {
           double randomNum = random.Rndm();
           //cout << "random: " << randomNum << "\n";

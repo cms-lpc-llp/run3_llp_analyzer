@@ -171,7 +171,7 @@ def return_clusterSize_dPhiClusterE_allSelections(events, passID = 'lepLooseId',
 
 
 
-def return_clusterSize_dPhiClusterE_allSelectionsDNN(events, passID = 'lepLooseId', failID = None, DNN_cut=0.99975, blind=True, hotspotCheck=False, additional_branches = []):
+def return_clusterSize_dPhiClusterE_allSelectionsDNN(events, passID = None, failID = None, DNN_cut=0.99975, blind=True, hotspotCheck=False, additional_branches = []):
     '''
     Helper function for returning (computed) cluster size branch and dPhi(cluster, tau) branches with necessary preselections
     Cannot run unblinded without inverted TauID

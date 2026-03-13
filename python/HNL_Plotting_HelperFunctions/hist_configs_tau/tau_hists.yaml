@@ -54,6 +54,28 @@ tau_e:
   title: Tau Energy Distribution
   MuonSystem_Branch_Expression: tauE
 
+tau_dz:
+  nbins: 20
+  xmin: -0.2
+  xmax: 0.2
+  underflow: false
+  overflow: false
+  x_label: dZ
+  y_label: Counts
+  title: Tau dZ Distribution
+  MuonSystem_Branch_Expression: tauDz
+
+tau_decayMode:
+  nbins: 15
+  xmin: 0
+  xmax: 15
+  underflow: false
+  overflow: false
+  x_label: decay mode
+  y_label: Counts
+  title: Tau Decay Mode Distribution
+  MuonSystem_Branch_Expression: tauDecayMode
+
 tauFractionOfGenVisPt:
   nbins: 50
   xmin: 0

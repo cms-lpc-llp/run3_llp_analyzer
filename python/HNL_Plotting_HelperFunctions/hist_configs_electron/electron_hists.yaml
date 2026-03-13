@@ -22,17 +22,6 @@ electron_eta:
   title: "Electron #eta Distribution"
   MuonSystem_Branch_Expression: lepEta
 
-# electron_eta_ZoomedIn:
-#   nbins: 200
-#   xmin: -3
-#   xmax: 3
-#   underflow: false
-#   overflow: false
-#   x_label: "#eta"
-#   y_label: Counts
-#   title: "Electron #eta Distribution - Finer Binning"
-#   MuonSystem_Branch_Expression: lepEta
-
 electron_phi:
   nbins: 10
   xmin: -4
@@ -54,3 +43,25 @@ electron_e:
   y_label: Counts
   title: Electron Energy Distribution
   MuonSystem_Branch_Expression: lepE
+
+electron_dz:
+  nbins: 50
+  xmin: -4
+  xmax: 4
+  underflow: false
+  overflow: true
+  x_label: dZ
+  y_label: Counts
+  title: Electron dZ Distribution
+  MuonSystem_Branch_Expression: lepDZ
+
+electron_MT:
+  nbins: 25
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: true
+  x_label: mT [GeV]
+  y_label: Counts
+  title: Electron MT Distribution
+  MuonSystem_Branch_Expression: lepMt

@@ -13,6 +13,8 @@ analyzer_str = sys.argv[2] #e.g. TnP_mdsnano
 option = sys.argv[3] #sys.argv[3] #e.g. Test
 output_end = sys.argv[4] #e.g. 2024_Data (what to append to HNL_Tau_Search directory path for output)
 log_name = sys.argv[5] # e.g. 2024_Data_Test (name of directory for condor submit and log files)
+filesPerJob = sys.argv[6]
+memoryPerJob = sys.argv[7]
 
 log_dir = "condor_job_output/log_{}".format(log_name)
 submit_dir = "condor_job_output/submit_{}".format(log_name)
@@ -20,7 +22,6 @@ os.system("mkdir -p {}".format(log_dir))
 os.system("mkdir -p {}".format(submit_dir))
 executable = "scripts_condor/runAnalyzer_LPC.sh"
 #analyzer = 'llp_MuonSystem_CA_TnP'
-filesPerJob = 10
 ntupler_version = 'V1p19/Data2023/'
 
 #ntupler_version = "V1p19/MC_Summer22EE/v1/sixie/"
@@ -76,8 +77,8 @@ if not os.path.exists(inputfilelist):
     #continue
 cmd = ["awk", "END{print NR}",inputfilelist]
 nfiles = int(subprocess.check_output(cmd).decode("utf-8"))
-maxjob=int(nfiles/filesPerJob)+1
-mod=int(nfiles%filesPerJob)
+maxjob=int(nfiles/int(filesPerJob))+1
+mod=int(nfiles%int(filesPerJob))
 if mod == 0: maxjob -= 1
 outputDirectory = outputDirectoryBase + sample + "/"
 os.system(f"eosmkdir {outputDirectoryBase}")
@@ -145,10 +146,11 @@ tmpCondorJDLFile.write("Arguments = {} {} {} {} $(ProcId) {} {} {} {} {}/ {} \n"
 tmpCondorJDLFile.write("Log = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).log \n".format(log_dir,analyzer, sample.replace("/","_"), maxjob))
 tmpCondorJDLFile.write("Output = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).out \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
 tmpCondorJDLFile.write("Error = {}/{}_{}_Job$(ProcId)_Of_{}_$(Cluster).$(Process).err \n".format(log_dir, analyzer, sample.replace("/","_"), maxjob))
-
+tmpCondorJDLFile.write("stream_output = False \n")
+tmpCondorJDLFile.write("stream_error = False \n")
 tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
 
-tmpCondorJDLFile.write("RequestMemory = 4096 \n")
+tmpCondorJDLFile.write(f"RequestMemory = {memoryPerJob} \n")
 tmpCondorJDLFile.write("RequestCpus = 1 \n")
 tmpCondorJDLFile.write("RequestDisk = 4 \n")
 

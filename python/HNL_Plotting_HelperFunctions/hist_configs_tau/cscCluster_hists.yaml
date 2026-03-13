@@ -1,8 +1,8 @@
 #define histograms for CSC Rechit Cluster properties
 CSC_Cluster_Size:
-  nbins: 20
-  xmin: 0
-  xmax: 500
+  nbins: 25
+  xmin: 100
+  xmax: 800
   underflow: false
   overflow: false
   x_label: "N_{hit}"
@@ -115,7 +115,7 @@ CSC_Cluster_DNNScore:
   MuonSystem_Branch_Expression: cscRechitClusterDNN_bkgMC_plusBeamHalo
 
 CSC_Cluster_DNNScore_TightRange:
-  nbins: 40
+  nbins: 20
   xmin: 0.96
   xmax: 1
   underflow: false
@@ -148,7 +148,7 @@ CSC_Cluster_Tau_DeltaPhi:
   MuonSystem_Branch_Expression: cscRechitClusterPromptTauDeltaPhi
 
 CSC_Cluster_Tau_DeltaR:
-  nbins: 50
+  nbins: 25
   xmin: 0
   xmax: 5
   underflow: false

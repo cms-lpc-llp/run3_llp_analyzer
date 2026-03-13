@@ -1,0 +1,123 @@
+#cuts to apply to signal for building a cutflow
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_Ele5
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+MET>30GeV:
+  name: "MET>30 GeV"
+  branch: Puppimet
+  minVal: 30
+  maxVal: 10000000
+  collection: event
+  invert: "no"
+
+1_Lepton:
+  name: "nLeptons==1"
+  branch: nLeptons
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+1_Lepton_isElectron:
+  name: "Lepton is Electron"
+  branch: lepPdgId
+  minVal: -11
+  maxVal: 11
+  collection: lepton
+  invert: "no"
+
+
+clusterTime:
+  name: "-5ns<clusterTime<12.5ns"
+  branch: cscRechitClusterTimeWeighted
+  minVal: -5
+  maxVal: 12.5
+  collection: cscCluster
+  invert: "no"
+
+cscClusterNoHitsME1112:
+  name: "no hits ME1112"
+  branch: cscRechitClusterNRechitME1112
+  minVal: 0
+  maxVal: 0
+  collection: cscCluster
+  invert: "no"
+
+MuonVetoPt<30:
+  name: "MuonVetoPt<30GeV"
+  branch: cscRechitClusterMuonVetoPt
+  minVal: 0
+  maxVal: 30
+  collection: cscCluster
+  invert: "no"
+
+JetVetoPt<10:
+  name: "JetVetoPt<10 GeV"
+  branch: cscRechitClusterJetVetoPt
+  minVal: 0
+  maxVal: 10
+  collection: cscCluster
+  invert: "no"
+
+
+dPhi(cluster, MET):
+  name: "|dPhi(cluster, MET)|<1.5"
+  branch: cscRechitClusterPuppiMet_dPhi
+  minVal: -1.5
+  maxVal: 1.5
+  collection: cscCluster
+  invert: "no"
+
+ele_pt>15GeV:
+  name: "elePt>15GeV"
+  branch: lepPt
+  minVal: 15
+  maxVal: 10000000
+  collection: lepton
+  invert: "no"
+
+ele_MVAISO80:
+  name: ele fail MVAISO80
+  branch: lepPassMVAISOWP80
+  minVal: 1
+  maxVal: 1
+  collection: lepton
+  invert: "yes"
+
+ele_MVAISO90:
+  name: ele pass MVAISO90
+  branch: lepPassMVAISOWP90
+  minVal: 1
+  maxVal: 1
+  collection: lepton
+  invert: "no"
+
+deltaEta_eleCluster:
+  name: "|DeltaEta(cluster,ele)|<2"
+  branch: cscRechitClusterPromptEleDeltaEta
+  minVal: -2
+  maxVal: 2
+  collection: cscCluster
+  invert: "no"
+
+DNN_Score:
+  name: "DNN>0.99975"
+  branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
+  minVal: 0.99975
+  maxVal: 1
+  collection: cscCluster
+  invert: "no"
+
+HT_Cut:
+  name: "HTSoftJetsEtaLargerThan3.139<20"
+  branch: HTSoftJetsLargerThan3p139
+  minVal: 0
+  maxVal: 0
+  collection: event
+  invert: "no"

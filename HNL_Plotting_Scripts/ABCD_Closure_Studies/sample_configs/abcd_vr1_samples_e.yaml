@@ -1,0 +1,30 @@
+samples:
+  signal_e:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_012026/HNL_e_mN_2_ctau_1000/normalized/HNL_e_mN_2_ctau_1000_109080pb_weighted.root"
+    flavor: Ele
+    trigger: electron
+    isMC: true
+    signal_xsec: 1
+    gen_events: 1
+
+  signal_tau:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_012026/HNL_tau_mN_2_ctau_1000/normalized/HNL_tau_mN_2_ctau_1000_109080pb_weighted.root"
+    flavor: Ele
+    trigger: e
+    isMC: true
+    signal_xsec: 1
+    gen_events: 1
+
+  signal_tau_100mm:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_012026/HNL_tau_mN_2_ctau_100/normalized/HNL_tau_mN_2_ctau_100_109080pb_weighted.root"
+    flavor: Ele
+    trigger: electron
+    isMC: true
+    signal_xsec: 1
+    gen_events: 1
+
+  data:
+    data_path_base: root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/2024_Data_e_analyzer_update_012026/
+    flavor: Ele
+    trigger: e
+    isMC: false

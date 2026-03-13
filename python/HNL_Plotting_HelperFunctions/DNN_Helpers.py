@@ -20,7 +20,7 @@ import dask.dataframe as dd
 from dask.distributed import Client
 
 
-def get_DNN_array(events, clusterSizeCut=False, type='tau'):
+def get_DNN_array(events, clusterSizeCut=False, type='tau', isData=True):
     '''
     Function to return just DNN array from files or list of files in data or MC
     Cuts to apply (after noise filters):
@@ -31,6 +31,8 @@ def get_DNN_array(events, clusterSizeCut=False, type='tau'):
     5. Cluster Passes Muon and Jet Vetos
     5. (Optional) cluster size is larger than 160
     '''
+    if isData:
+        events = abs(events.cscRechitClusterPromptTauDeltaEta)>2
     if type=='tau':
         trigger_path = "HLT_CscCluster100_PNetTauhPFJet10_Loose"
         muonVetoPtThreshold = 30

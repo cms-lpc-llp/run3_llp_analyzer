@@ -1,0 +1,56 @@
+samples:
+  # signal_tau_2GeV_1000mm:
+  #   files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_012026/HNL_tau_mN_2_ctau_1000/normalized/HNL_tau_mN_2_ctau_1000_109080pb_weighted.root"
+  #   flavor: Tau
+  #   trigger: Tau
+  #   isMC: true
+  #   isBkg: false
+  #   signal_xsec: 1
+  #   gen_events: 1
+
+  signal_tau_2GeV_100mm:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/HNL_tau_mN_2_ctau_100/normalized/HNL_tau_mN_2_ctau_100_109080pb_weighted.root"
+    flavor: Tau
+    trigger: Tau
+    isMC: true
+    isBkg: false
+    signal_xsec: 1
+    gen_events: 1
+
+  # signal_tau_3GeV_100mm:
+  #   files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/HNL_tau_mN_3_ctau_100/normalized/HNL_tau_mN_3_ctau_100_109080pb_weighted.root"
+  #   flavor: Tau
+  #   trigger: Tau
+  #   isMC: true
+  #   isBkg: false
+  #   signal_xsec: 1
+  #   gen_events: 1
+
+  # signal_tau_1GeV_100mm:
+  #   files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/HNL_tau_mN_1_ctau_100/normalized/HNL_tau_mN_1_ctau_100_109080pb_weighted.root"
+  #   flavor: Tau
+  #   trigger: Tau
+  #   isMC: true
+  #   isBkg: false
+  #   signal_xsec: 1
+  #   gen_events: 1
+    
+  # signal_B_tau_3GeV_1000mm:
+  #   files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/HNL_B_tau_mN_3_ctau_1000/normalized/HNL_B_tau_mN_3_ctau_1000_109080pb_weighted.root"
+  #   flavor: Tau
+  #   trigger: Tau
+  #   isMC: true
+  #   isBkg: false
+  #   signal_xsec: 1
+  #   gen_events: 1
+
+  # signal_B_tau_3GeV_10000mm:
+  #   files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/HNL_B_tau_mN_3_ctau_10000/normalized/HNL_B_tau_mN_3_ctau_10000_109080pb_weighted.root"
+  #   flavor: Tau
+  #   trigger: Tau
+  #   isMC: true
+  #   isBkg: false
+  #   signal_xsec: 1
+  #   gen_events: 1
+
+  

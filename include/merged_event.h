@@ -227,6 +227,7 @@ class merged_event {
   Float_t Electron_mvaNoIso[10]; //[nElectron]
   Float_t Electron_pfRelIso03_all[10]; //[nElectron]
   Float_t Electron_pfRelIso03_chg[10]; //[nElectron]
+  Float_t Electron_pfRelIso04_all[10]; //[nElectron]
   Float_t Electron_phi[10]; //[nElectron]
   Float_t Electron_pt[10]; //[nElectron]
   Float_t Electron_r9[10]; //[nElectron]
@@ -2060,6 +2061,7 @@ class merged_event {
   TBranch* b_Electron_mvaNoIso; //!
   TBranch* b_Electron_pfRelIso03_all; //!
   TBranch* b_Electron_pfRelIso03_chg; //!
+  TBranch* b_Electron_pfRelIso04_all; //!
   TBranch* b_Electron_phi; //!
   TBranch* b_Electron_pt; //!
   TBranch* b_Electron_r9; //!
@@ -3958,6 +3960,7 @@ void merged_event::Init(TTree* tree) {
   fChain->SetBranchAddress("Electron_mvaNoIso", Electron_mvaNoIso, &b_Electron_mvaNoIso);
   fChain->SetBranchAddress("Electron_pfRelIso03_all", Electron_pfRelIso03_all, &b_Electron_pfRelIso03_all);
   fChain->SetBranchAddress("Electron_pfRelIso03_chg", Electron_pfRelIso03_chg, &b_Electron_pfRelIso03_chg);
+  fChain->SetBranchAddress("Electron_pfRelIso04_all", Electron_pfRelIso04_all, &b_Electron_pfRelIso04_all);
   fChain->SetBranchAddress("Electron_phi", Electron_phi, &b_Electron_phi);
   fChain->SetBranchAddress("Electron_pt", Electron_pt, &b_Electron_pt);
   fChain->SetBranchAddress("Electron_r9", Electron_r9, &b_Electron_r9);

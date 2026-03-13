@@ -11,7 +11,7 @@ from collections import OrderedDict
 sample = sys.argv[1] # e.g. Muon0-Run2024B-PromptReco-v1
 input_end = sys.argv[2] #e.g. 2024_Data (what to append to HNL_Tau_Search directory path for output)
 log_name = sys.argv[3] # e.g. 2024_Data_Test (name of directory for condor submit and log files)
-
+lumi = sys.argv[4]
 
 
 #os.system("mkdir -p submit")
@@ -53,7 +53,7 @@ print("Normalizing for dataset: " + sample + "\n")
 
 #year = datasetList[sample][0]
 isData="no"
-if "Muon" in sample or "HNL" in sample or "DY" in sample or "Wto" in sample:
+if "Muon" in sample:
     isData="yes"
 
 
@@ -70,7 +70,7 @@ tmpCondorJDLFile = open(jdl_file,"w")
 
 tmpCondorJDLFile.write("Universe = vanilla \n")
 tmpCondorJDLFile.write("Executable = {} \n".format(executable))
-tmpCondorJDLFile.write("Arguments = {} {} {} {} {} {} {} \n".format(isData, sample, inputDir, outputDir, CMSSW_BASE, HOME, 1))
+tmpCondorJDLFile.write("Arguments = {} {} {} {} {} {} {} \n".format(isData, sample, inputDir, outputDir, CMSSW_BASE, HOME, lumi))
 
 tmpCondorJDLFile.write("Log = {}/normalize_{}_$(Cluster).$(Process).log \n".format(log_dir,sample))
 tmpCondorJDLFile.write("Output = {}/normalize_{}_$(Cluster).$(Process).out \n".format(log_dir,sample))
@@ -78,7 +78,7 @@ tmpCondorJDLFile.write("Error = {}/normalize_{}_$(Cluster).$(Process).err \n".fo
 
 
 tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
-tmpCondorJDLFile.write("RequestMemory = 4000 \n")
+tmpCondorJDLFile.write("RequestMemory = 8000 \n")
 tmpCondorJDLFile.write("RequestCpus = 1 \n")
 tmpCondorJDLFile.write("RequestDisk = 4 \n")
 

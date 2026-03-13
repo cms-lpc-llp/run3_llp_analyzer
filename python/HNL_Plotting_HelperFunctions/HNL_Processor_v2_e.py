@@ -1,14 +1,28 @@
 #!/usr/bin/env python3
 
 import os
+import warnings
 
-import coffea
+warnings.filterwarnings(
+    "ignore",
+    message=".*coffea\\.nanoevents\\.methods\\.vector will be removed.*",
+    category=FutureWarning,
+    module="coffea\\.nanoevents\\.schemas\\.fcc",
+)
+warnings.filterwarnings(
+    "ignore",
+    message="Please ensure that dask\\.awkward<.* is partitionwise-compatible.*",
+    category=UserWarning,
+    module="dask_awkward\\.lib\\.structure",
+)
+
+#import coffea
 import awkward as ak
 from coffea import processor
 
 #from coffea.nanoevents.methods import vector
-from coffea.nanoevents import NanoEventsFactory, BaseSchema
-import uproot
+#from coffea.nanoevents import NanoEventsFactory, BaseSchema
+#import uproot
 import numpy as np
 import hist
 import yaml
@@ -16,7 +30,6 @@ import sys
 import copy
 import dask
 from dask.distributed import Client
-import gc
 
 sys.path.append('.')
 import Processing_Helpers
@@ -45,7 +58,7 @@ def produce_hist_dict(cfg_file: str, bin_multiplier: int=1)->dict:
             hist_dict[name] = hist.Hist(hist.axis.Regular(int(plot_info['nbins'])*bin_multiplier,plot_info['xmin'],plot_info['xmax'], 
                 name="plot", label=plot_info['x_label'], underflow=plot_info['underflow'], 
                 overflow=plot_info['overflow'],
-                ),metadata={"title":plot_info["title"], "x_label":plot_info["x_label"], "y_label":plot_info["y_label"],
+                ), storage=hist.storage.Weight(), metadata={"title":plot_info["title"], "x_label":plot_info["x_label"], "y_label":plot_info["y_label"],
                         "branch":plot_info["MuonSystem_Branch_Expression"],
                         "mask_collection":"event", "mask_branch": "runNum", "mask_lowVal":0., "mask_highVal":np.inf})
             #print(hist_dict[name].axes[0].size)
@@ -54,7 +67,7 @@ def produce_hist_dict(cfg_file: str, bin_multiplier: int=1)->dict:
             hist_dict[name] = hist.Hist(hist.axis.Regular(int(plot_info['nbins'])*bin_multiplier,plot_info['xmin'],plot_info['xmax'], 
                 name="plot", label=plot_info['x_label'], underflow=plot_info['underflow'], 
                 overflow=plot_info['overflow'],
-                ),metadata={"title":plot_info["title"], "x_label":plot_info["x_label"], "y_label":plot_info["y_label"],
+                ), storage=hist.storage.Weight(), metadata={"title":plot_info["title"], "x_label":plot_info["x_label"], "y_label":plot_info["y_label"],
                         "branch":plot_info["MuonSystem_Branch_Expression"], 
                         "mask_collection": plot_info["mask_collection"], "mask_branch": plot_info["mask_branch"], "mask_lowVal":float(plot_info["mask_lowVal"]), "mask_highVal":float(plot_info["mask_highVal"])})
         
@@ -206,19 +219,7 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
         Build reco electrons from MuonSystem Output
         '''
         electronBranches = [branch for branch in events.fields if "lep" in branch and "ctau" not in branch]
-        #print(electronBranches)
-        #print(ak.count_nonzero(abs(events.lepPdgId)==electron_pdgId).compute())
         electrons = ak.zip({electronBranch:events[electronBranch][abs(events.lepPdgId)==electron_pdgId] for electronBranch in electronBranches})
-
-        # tauID_WPs = ['VVVLoose', 'VVLoose', 'VLoose', 'Loose', 'Medium', 'Tight', 'VTight', 'VVTight']
-        # if tauID == None:
-        #     initial_mask = ak.ones_like(taus.deltaR_GenTauRecoTau, dtype=bool)
-        # elif tauID!=None and tauID not in tauID_WPs:
-        #     raise ValueError("Specified Tau ID Working Point Not Recognized")
-        # else:
-        #     print("applying ID")
-        #     initial_mask = taus['tauIs'+tauID]
-        #     print(ak.count_nonzero(initial_mask).compute())
         return electrons
 
     def buildGLLP(self, events):
@@ -240,9 +241,9 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
     
     def eventSelections(self, events, fromTau = False, mask_to_exclude=None):
         noiseFilters = (events.Flag_all) & (events.jetVeto) & (events.Flag_ecalBadCalibFilter)
-        #noiseFilters = (events.Flag_all) & (events.Flag_ecalBadCalibFilter)
         triggerFilter = events[electron_triggerPath]
-        #triggerFilter = ak.ones_like(events.HLT_CscCluster100_PNetTauhPFJet10_Loose)
+        METFilter = events.Puppimet>30
+        #METFilter = ak.ones_like(events.Puppimet, dtype=bool)
         nElectronsFilter = (ak.count_nonzero(abs(events.lepPdgId)==electron_pdgId, axis=1)==1) & (events.nLeptons==1)
         cscClusterFilter = events.nCscRechitClusters==1
         if fromTau:
@@ -251,7 +252,7 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
             fromTauFilter = ak.ones_like(events.runNum, dtype=bool)
         event_mask = ak.zip({"noiseFilters":noiseFilters, "triggerFilter":triggerFilter, 
                              "nElectronsFilter":nElectronsFilter, "cscClusterFilter":cscClusterFilter, 
-                             "fromTauFilter":fromTauFilter})
+                             "fromTauFilter":fromTauFilter, "METFilter":METFilter})
         if not mask_to_exclude==None:
             event_mask = ak.without_field(event_mask, mask_to_exclude)
 
@@ -259,7 +260,7 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
     
     def cscClusterSelections(self, cscClusters, mask_to_exclude=None):
         initial_mask = ak.ones_like(cscClusters.cscRechitClusterSize, dtype=bool)
-        cluster_mask = ak.zip({"initial_mask":initial_mask, "muonVeto": cscClusters.cscRechitClusterMuonVetoPt<30, "jetVeto": cscClusters.cscRechitClusterJetVetoPt<10, "cluster_size": cscClusters.cscRechitClusterSize>=100, "inTime": (cscClusters.cscRechitClusterTimeWeighted>-5) & (cscClusters.cscRechitClusterTimeWeighted<12.5) & (cscClusters.cscRechitClusterNRechitME1112==0)})
+        cluster_mask = ak.zip({"initial_mask":initial_mask, "muonVeto": cscClusters.cscRechitClusterMuonVetoPt<30, "jetVeto": cscClusters.cscRechitClusterJetVetoPt<10, "cluster_size": cscClusters.cscRechitClusterSize>=160, "inTime": (cscClusters.cscRechitClusterTimeWeighted>-5) & (cscClusters.cscRechitClusterTimeWeighted<12.5) & (cscClusters.cscRechitClusterNRechitME1112==0)})
         #cluster_mask = ak.zip({"initial_mask":initial_mask})
         if self.isMC and self.applyGenInfo:
             cluster_mask = ak.with_field(cluster_mask, cscClusters.cscRechitCluster_match_gLLP, "match_gLLP")
@@ -270,13 +271,33 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
         
         return cluster_mask
 
-    def electronSelections(self, electrons, mask_to_exclude=None, invertElectronId=False):
+    def electronSelections(self, electrons, mask_to_exclude=None, invertElectronId=False, cut_based_ID=True, iso='tight'):
+        if cut_based_ID:
+            electron_ID_mask = electrons.lepTightId
+            if iso=='loose':
+                isoBranchName='lepPassLooseIso'
+            elif iso=='tight':
+                isoBranchName='lepPassTightIso'
+            elif iso=='vtight':
+                isoBranchName='lepPassVTightIso'
+            elif iso=='vvtight':
+                isoBranchName='lepPassVVTightIso'
+            electron_ISO_mask = electrons[isoBranchName]
+        else:
+            electron_ID_mask = electrons.lepPassMVAISOWP80
+            electron_ISO_mask = ak.ones_like(electrons.lepPassMVAISOWP80)
+        if invertElectronId:
+            electron_ID_mask = ~(electron_ID_mask) #change back when not looking at the cluster size!
         
-        electron_ID_mask = electrons.lepTightId==(not invertElectronId) #change back when not looking at the cluster size!
-        electron_ISO_mask = electrons.lepPassTightIso
-        electron_pT_mask = electrons.lepPt>5
-        electron_mask = ak.zip({"electron_ID_mask":electron_ID_mask, "electron_pT_mask":electron_pT_mask, "electron_ISO_mask":electron_ISO_mask})
-        
+        #electron_pT_mask = electrons.lepPt>5
+        electron_pT_mask = electrons.lepPt>15
+        if not self.isMC:
+            electron_dz_mask = electrons.lepPassDZ
+            electron_dxy_mask = electrons.lepPassDXY
+            electron_mask = ak.zip({"electron_ID_mask":electron_ID_mask, "electron_pT_mask":electron_pT_mask, "electron_ISO_mask":electron_ISO_mask,
+                                    "electron_dz_mask":electron_dz_mask, "electron_dxy_mask":electron_dxy_mask})
+        else:
+            electron_mask = ak.zip({"electron_ID_mask":electron_ID_mask, "electron_pT_mask":electron_pT_mask, "electron_ISO_mask":electron_ISO_mask})
         if not mask_to_exclude==None:
             electron_mask = ak.without_field(electron_mask, mask_to_exclude)
 
@@ -286,7 +307,7 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
         return ak.zip({"no_cut": ak.ones_like(gLeptons.gLepPt, dtype=bool)})
     
     def gLLPSelections(self, gLLPs):
-        return ak.zip({"no_cut": ak.ones_like(gLLPs.gLLP_pt, dtype=bool)})
+        return ak.zip({"pTCut": gLLPs.gLLP_pt>0})
 
     
     
@@ -295,9 +316,10 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
     
     ###     PROCESSOR   ####
     ########################
-    def process(self, events, hists_to_process: list=None, fillGenHists = True, fromTau = False, electronID: str='', branchNames_for_invertElectronID = ["CSC_Cluster_Size"]):
+    def process(self, events, hists_to_process: list=None, fillGenHists = True, fromTau = False, branchNames_for_invertElectronID = ["CSC_Cluster_Size"], cut_based_ID=True, iso='tight'):
         
         hist_list = []
+        
         if hists_to_process==None and self.isMC: #this means process all hists, since no specific ones are passed to the processor
             hist_list = [*list(self.eventLevel_hists_dict.keys()), *list(self.cscCluster_hists_dict.keys()), *list(self.gLLP_hists_dict.keys()), *list(self.gLepton_hists_dict.keys()), *list(self.electron_hists_dict.keys())]
         elif hists_to_process==None:
@@ -309,14 +331,19 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
         #print(hist_list)
         output = self.accumulator.copy()
         
+        print("hists generating:", hist_list)
         #generate analysis objects
         electrons = self.buildRecoElectrons(events)
         cscClusters = self.buildCscRechitClusters(events)
         
         #apply cuts to analysis objects and do event-level selections
         cscCluster_mask = self.cscClusterSelections(cscClusters)
-        electron_mask = self.electronSelections(electrons)
-        electron_mask_invertId = self.electronSelections(electrons, invertElectronId=True)
+        electron_mask = self.electronSelections(electrons, cut_based_ID=cut_based_ID, iso=iso)
+        electron_mask_invertId = self.electronSelections(
+            electrons,
+            invertElectronId=True,
+            cut_based_ID=cut_based_ID,
+        )
         event_mask = self.eventSelections(events, fromTau=fromTau)
 
         #print(electrons['lepPt'].compute())
@@ -363,7 +390,16 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
 
 
         to_fill = {}
+        to_fill_weights = {}
 
+        def build_mc_weights(mask, branch_array):
+            base_weights = events.pileupWeight * events.weight
+            if not isinstance(ak.type(branch_array), ak.types.ListType):
+                return base_weights[mask]
+            broadcasted, _ = ak.broadcast_arrays(base_weights, branch_array)
+            return ak.flatten(broadcasted[mask])
+
+        print("filling event-level hists")
         for plot in self.eventLevel_hists_dict.keys():
             #print(plot)
             if plot not in hist_list:continue
@@ -376,13 +412,17 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
             else:
                 event_mask = total_mask_event
             hist_mask = (added_mask) & (event_mask)
-            #eventLevelHist.fill(plot=events[eventLevelHist.metadata["branch"]][hist_mask])
             to_fill[plot] = (eventLevelHist, events[eventLevelHist.metadata["branch"]][hist_mask])
-            #output[plot] = eventLevelHist
+            if self.isMC:
+                to_fill_weights[plot] = build_mc_weights(
+                    hist_mask,
+                    events[eventLevelHist.metadata["branch"]],
+                )
 
 
+        #print("filling gen hists")
         if self.isMC and fillGenHists and self.applyGenInfo:
-            #("filling gen-level hists")
+            print("filling gen-level hists")
             for plot in self.gLLP_hists_dict.keys():
                 if plot not in hist_list:continue
                 gLLPHist = self.gLLP_hists_dict[plot]
@@ -392,7 +432,11 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
                 hist_mask = (added_mask) & (total_mask_gLLP)
                 #gLLPHist.fill(plot=ak.flatten(events[gLLPHist.metadata["branch"]][hist_mask]))
                 to_fill[plot] = (gLLPHist, ak.flatten(events[gLLPHist.metadata["branch"]][hist_mask]))
-                #output[plot] = gLLPHist
+                if self.isMC:
+                    to_fill_weights[plot] = build_mc_weights(
+                        hist_mask,
+                        events[gLLPHist.metadata["branch"]],
+                    )
             
             for plot in self.gLepton_hists_dict.keys():
                 if plot not in hist_list:continue
@@ -403,10 +447,15 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
                 hist_mask = (added_mask) & (total_mask_gLepton)
                 #gTauHist.fill(plot=ak.flatten(events[gTauHist.metadata["branch"]][hist_mask]))
                 to_fill[plot] = (gLepHist, ak.flatten(events[gLepHist.metadata["branch"]][hist_mask]))
+                if self.isMC:
+                    to_fill_weights[plot] = build_mc_weights(
+                        hist_mask,
+                        events[gLepHist.metadata["branch"]],
+                    )
                 #output[plot] = gTauHist
             
         
-        #print("filling reco electron hists")
+        print("filling reco electron hists")
         for plot in self.electron_hists_dict.keys():
             if plot not in hist_list:continue
             electronHist = self.electron_hists_dict[plot]
@@ -416,11 +465,17 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
             hist_mask = (added_mask) & (total_mask_electron)
             #tauHist.fill(plot=ak.flatten(events[tauHist.metadata["branch"]][hist_mask]))
             to_fill[plot] = (electronHist, ak.flatten(events[electronHist.metadata["branch"]][hist_mask]))
+            if self.isMC:
+                to_fill_weights[plot] = build_mc_weights(
+                    hist_mask,
+                    events[electronHist.metadata["branch"]],
+                )
             #output[plot] = tauHist
         
+        print("filling cluster-level hists")
         for plot in self.cscCluster_hists_dict.keys():
             if plot not in hist_list:continue
-            #print(plot)
+            
             cscClusterHist = self.cscCluster_hists_dict[plot]
             added_mask = (events[cscClusterHist.metadata["mask_branch"]]>=cscClusterHist.metadata["mask_lowVal"]) & (events[cscClusterHist.metadata["mask_branch"]]<=cscClusterHist.metadata["mask_highVal"])
             if cscClusterHist.metadata["mask_collection"]!="event":
@@ -436,23 +491,39 @@ class HNL_Processor_v2_e(processor.ProcessorABC):
                 cluster_mask = total_mask_cscCluster
             hist_mask = (added_mask) & (cluster_mask)
             to_fill[plot] = (cscClusterHist, ak.flatten(events[cscClusterHist.metadata["branch"]][hist_mask]))
-            #output[plot] = cscClusterHist
+            if self.isMC:
+                to_fill_weights[plot] = build_mc_weights(
+                    hist_mask,
+                    events[cscClusterHist.metadata["branch"]],
+                )
+            
         
-        client = Client(memory_limit="12GB", n_workers=1, 
-                threads_per_worker=1, local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp")
-        #print("about to compute")
-        
-        computed_arrays = dask.compute(*[v[1] for v in to_fill.values()])
+        client = Client(
+            memory_limit="12GB",
+            n_workers=1,
+            threads_per_worker=1,
+            local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp",
+            dashboard_address=":0",
+        )
+        debug_preview = ", ".join(list(to_fill.keys())[:10])
+        debug_more = f" (+{len(to_fill) - 10} more)" if len(to_fill) > 10 else ""
+        print(f"[plot-debug] to_fill: {len(to_fill)} hists -> {debug_preview}{debug_more}", flush=True)
 
-        for i, plot in enumerate(to_fill):
-            hist_obj, _ = to_fill[plot]
-            hist_obj.fill(plot=computed_arrays[i])
-            output[plot] = hist_obj
+        try:
+            computed_arrays = dask.compute(*[v[1] for v in to_fill.values()])
+            if self.isMC:
+                weights = dask.compute(*[value for value in to_fill_weights.values()])
 
-        
-        client.close()
-        
-        
+            for i, plot in enumerate(to_fill):
+                hist_obj, _ = to_fill[plot]
+                if self.isMC:
+                    hist_obj.fill(plot=computed_arrays[i], weight = weights[i])
+                else:
+                    hist_obj.fill(plot=computed_arrays[i])
+                output[plot] = hist_obj
+        finally:
+            client.close()
+
         return output
 
 

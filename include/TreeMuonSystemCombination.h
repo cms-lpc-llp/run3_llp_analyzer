@@ -58,8 +58,8 @@ class TreeMuonSystemCombination {
       Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;
   int mH, mX, ctau;
   float LHEScaleWeight[9];
-  int nSoftJets2p65to3p139, nSoftJetsLargerThan2p65;
-  float HTSoftJets2p65to3p139, HTSoftJetsLargerThan2p65;
+  int nSoftJets2p65to3p139, nSoftJetsLargerThan2p65, nSoftJetsLargerThan3p139;
+  float HTSoftJets2p65to3p139, HTSoftJetsLargerThan2p65, HTSoftJetsLargerThan3p139;
 
   //csc
   int nCscRechits;
@@ -365,6 +365,11 @@ class TreeMuonSystemCombination {
   float lepPhi[N_MAX_LEPTONS];
   int lepPdgId[N_MAX_LEPTONS];
   float lepDZ[N_MAX_LEPTONS];
+  float lepDZErr[N_MAX_LEPTONS];
+  float lepDXY[N_MAX_LEPTONS];
+  float lepDXYErr[N_MAX_LEPTONS];
+  bool lepPassDXY[N_MAX_LEPTONS];
+  bool lepPassDZ[N_MAX_LEPTONS];
 
   bool lepLooseId[N_MAX_LEPTONS];
   bool lepMediumId[N_MAX_LEPTONS];
@@ -373,6 +378,13 @@ class TreeMuonSystemCombination {
   bool lepPassTightIso[N_MAX_LEPTONS];
   bool lepPassVTightIso[N_MAX_LEPTONS];
   bool lepPassVVTightIso[N_MAX_LEPTONS];
+
+  float lepMt[N_MAX_LEPTONS];
+
+  //MVA related things only relevant for electrons
+  float lepMVAISOScore[N_MAX_LEPTONS];
+  bool  lepPassMVAISOWP80[N_MAX_LEPTONS];
+  bool  lepPassMVAISOWP90[N_MAX_LEPTONS];
 
   //jets
   int nJets;
@@ -392,9 +404,11 @@ class TreeMuonSystemCombination {
   float tauEta[N_MAX_JETS];
   float tauPhi[N_MAX_JETS];
   float tauE[N_MAX_JETS];
+  float tauMt[N_MAX_LEPTONS];
   float tauDeltaR[N_MAX_JETS];
   int tauDecayMode[N_MAX_JETS];
   float tauDz[N_MAX_JETS];
+  float tauDxy[N_MAX_JETS];
   bool tauIsVVVLoose[N_MAX_JETS];
   bool tauIsVVLoose[N_MAX_JETS];
   bool tauIsVLoose[N_MAX_JETS];
@@ -446,6 +460,12 @@ class TreeMuonSystemCombination {
   float gLepPhi[N_MAX_GTAU];
   float gLepPt[N_MAX_GTAU];
   float gLepE[N_MAX_GTAU];
+
+  //W or B related kinematics
+  int W_B_pdgId;
+  float W_B_genPt;
+  float W_B_genEta;
+  float W_B_genPhi;
 
   void InitVariables();
   void InitTree();

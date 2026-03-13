@@ -32,14 +32,23 @@ struct leptons {
   TLorentzVector lepton;
   int pdgId;
   float dZ;
+  float dXY;
+  float dZErr;
+  float dXYErr;
+  bool passDZ;
+  bool passDXY;
   bool passLooseId;
   bool passMediumId;
   bool passTightId;
+  float MVAISOScore;
+  bool passMVAISOWP80;
+  bool passMVAISOWP90;
   bool passVetoId;
   bool passLooseIso;
   bool passTightIso;
   bool passVTightIso;
   bool passVVTightIso;
+  float mT;
 };
 
 struct jets {
@@ -113,6 +122,9 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
   //7 = ZtoEE MC Bkg
   //8 = ZtoMuMu MC Bkg
   //9 = ZtoTauTau MC Bkg
+  //11 = ELECTRON TYPE HNL FROM B
+  //12 = MUON TYPE HNL FROM B
+  //13 = TAU TYPE HNL FROM B
 
   //bool signalScan = int(options / 10) == 1;
   
@@ -356,50 +368,67 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     int promptLep_idx = -1;
     int HNLs_found = 0;
     int promptLeps_found = 0;
+    int W_B_idx = 0;
 
+    int HNL_pdg=0;
+    if (option<4){
+      HNL_pdg=9900012;
+    }
+    if (option>10){
+      HNL_pdg=9900015;
+    }
     
-    if (!isData && option<4)
+    if (!isData && (option<4 || option>10))
     {
       //use first event to determine the channel of the HNL sample
-      if (jentry==0){
+      //if (jentry==0){
         for (int i = 0; i < nGenPart; i++){
-          if (abs(GenPart_pdgId[i])<11 || abs(GenPart_pdgId[i])>16 && abs(GenPart_pdgId[i]) % 2 == 0) continue;
+          if (abs(GenPart_pdgId[i])<11 || abs(GenPart_pdgId[i])>16 || abs(GenPart_pdgId[i]) % 2 == 0) continue;
           for (int j = 0; j < nGenPart; j++)
           {
-            if (GenPart_genPartIdxMother[j] == GenPart_genPartIdxMother[i] && GenPart_pdgId[j] == 9900012)
+            if (GenPart_genPartIdxMother[j] == GenPart_genPartIdxMother[i] && GenPart_pdgId[j] == HNL_pdg)
             {
+              //cout<<"found lep and HNL from same mother"<<endl;
               lepton_pdgID = abs(GenPart_pdgId[i]);
               neutrino_pdgID = abs(GenPart_pdgId[i]) + 1;
+              W_B_idx = GenPart_genPartIdxMother[i];
             }
           }
 
-        }
-        cout<<"Prompt Lepton PDG ID: "<< lepton_pdgID<<endl;
-        cout<<"Neutrino PDG ID: "<< neutrino_pdgID<<endl;
+        //}
+        MuonSystem->W_B_pdgId = GenPart_pdgId[W_B_idx];
+        MuonSystem->W_B_genPt = GenPart_pt[W_B_idx];
+        MuonSystem->W_B_genEta = GenPart_eta[W_B_idx];
+        MuonSystem->W_B_genPhi = GenPart_phi[W_B_idx];
+        //cout<<"Prompt Lepton PDG ID: "<< lepton_pdgID<<endl;
+        //cout<<"Neutrino PDG ID: "<< neutrino_pdgID<<endl;
       }
       for (int i = 0; i < nGenPart; i++)
       {
         // check if particle is tau or tau neutrino and mother is HNL, if so save mothder Idx
-        if ((abs(GenPart_pdgId[i]) == lepton_pdgID || abs(GenPart_pdgId[i]) == neutrino_pdgID) && GenPart_pdgId[GenPart_genPartIdxMother[i]]==9900012) 
+        if ((abs(GenPart_pdgId[i]) == lepton_pdgID || abs(GenPart_pdgId[i]) == neutrino_pdgID) && GenPart_pdgId[GenPart_genPartIdxMother[i]]==HNL_pdg) 
         {
           if (GenPart_genPartIdxMother[i]!=HNL_idx){
               HNL_idx = GenPart_genPartIdxMother[i];
               HNLs_found++;
           }
         }
-        //second loop to find HNL (though maybe not the "right" one needed for the previous if statement), then we check if it and the tau have the same W mother
+        //second loop to find HNL (though maybe not the "right" one needed for the previous if statement), then we check if it and the tau have the same W or B mother
       
-        if (abs(GenPart_pdgId[i]) != lepton_pdgID || abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=24) continue;
+        //for W-HNL
+        if ((option<4) && (abs(GenPart_pdgId[i]) != lepton_pdgID || abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=24)) continue;
+        //for B-HNL
+        if ((option>10) && (abs(GenPart_pdgId[i]) != lepton_pdgID || (abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=511 &&  abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=521 && abs(GenPart_pdgId[GenPart_genPartIdxMother[i]])!=531))) continue;
         for (int j = 0; j < nGenPart; j++)
         {
-          if (GenPart_genPartIdxMother[j] == GenPart_genPartIdxMother[i] && GenPart_pdgId[j] == 9900012)
+          if (GenPart_genPartIdxMother[j] == GenPart_genPartIdxMother[i] && GenPart_pdgId[j] == HNL_pdg)
           {
             promptLep_idx = i;
             promptLeps_found++;
           }
         }
       }
-
+      //cout<<"HNLs found"<<HNLs_found<<endl;
       //now, find updated pythia tau if applicable - if there is no tau whose mother is the tagged prompt tau, or if theres a daugter tau that has tau neutrino as a daugter, it is the "final" tau
       bool found_final_lep = false;
       for (int i = 0; i < nGenPart; i++)
@@ -420,7 +449,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         if (found_final_lep) break;
       } 
     
-      if (HNLs_found != 1 || promptLeps_found != 1)
+      if ((HNLs_found != 1 || promptLeps_found != 1) && option<4)
         {
           cout << "Warning: found " << HNLs_found << " HNLs and " << promptLeps_found << " prompt leptons in event " << eventNum << endl;
           cout << "Skipping this event, something is wrong!" << endl;
@@ -430,6 +459,9 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
    
       //for HNL
       MuonSystem->nGLLP = 0;
+      if (HNLs_found==0) {
+        cout<<"no hnl found"<<endl;
+      }
       /*
       for(int i = 0;i < nGenPart; i++)
       {
@@ -471,17 +503,8 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->gLLP_csc[MuonSystem->nGLLP] = true;
       if (abs(MuonSystem->gLLP_decay_vertex_z[MuonSystem->nGLLP]) < 661.0 && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 800 && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] > 200.0)
         MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
-      MuonSystem->nGLLP++;
 
-      //now gen taus
-      MuonSystem->nGenTaus = 0;
-      TLorentzVector gTau = makeTLorentzVectorPtEtaPhiM(GenPart_pt[promptLep_idx], GenPart_eta[promptLep_idx], GenPart_phi[promptLep_idx], GenPart_mass[promptLep_idx]);
-      MuonSystem->gTauEta[MuonSystem->nGenTaus] = GenPart_eta[promptLep_idx];
-      MuonSystem->gTauPhi[MuonSystem->nGenTaus] = GenPart_phi[promptLep_idx];
-      MuonSystem->gTauPt[MuonSystem->nGenTaus] = GenPart_pt[promptLep_idx];
-      MuonSystem->gTauE[MuonSystem->nGenTaus] = gTau.E();
-      //MuonSystem->gTauE[MuonSystem->nGenTaus] = GenPart_pt[promptLep_idx];
-      MuonSystem->gTauPdgId[MuonSystem->nGenTaus] = GenPart_pdgId[promptLep_idx];
+      
 
           
           MuonSystem->gLLP_ctau[MuonSystem->nGLLP] = gLLP_decay_vertex/(LLP.Beta()*LLP.Gamma());
@@ -493,10 +516,21 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
               && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] < 800
                && MuonSystem->gLLP_decay_vertex_r[MuonSystem->nGLLP] > 200.0) MuonSystem->gLLP_dt[MuonSystem->nGLLP] = true;
             MuonSystem->nGLLP++;
-          
+    
           
           
           //now gen taus
+          //now gen taus
+          /*
+          MuonSystem->nGenTaus = 0;
+          TLorentzVector gTau = makeTLorentzVectorPtEtaPhiM(GenPart_pt[promptLep_idx], GenPart_eta[promptLep_idx], GenPart_phi[promptLep_idx], GenPart_mass[promptLep_idx]);
+          MuonSystem->gTauEta[MuonSystem->nGenTaus] = GenPart_eta[promptLep_idx];
+          MuonSystem->gTauPhi[MuonSystem->nGenTaus] = GenPart_phi[promptLep_idx];
+          MuonSystem->gTauPt[MuonSystem->nGenTaus] = GenPart_pt[promptLep_idx];
+          MuonSystem->gTauE[MuonSystem->nGenTaus] = gTau.E();
+          //MuonSystem->gTauE[MuonSystem->nGenTaus] = GenPart_pt[promptLep_idx];
+          MuonSystem->gTauPdgId[MuonSystem->nGenTaus] = GenPart_pdgId[promptLep_idx];
+          */
 
           if (lepton_pdgID==15){
 
@@ -574,7 +608,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         }
       
     }
-    if (!isData && option>=4){
+    if (!isData && option>=4 && option<11){
       MuonSystem->nGenLeptons = 0;
       MuonSystem->nGenTaus = 0;
       MuonSystem->nGenVisTau = 0;
@@ -794,6 +828,11 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         tmpMuon.lepton.SetPtEtaPhiM(muonPt[i],muonEta[i], muonPhi[i], MU_MASS);
         tmpMuon.pdgId = 13 * -1 * muonCharge[i];
         tmpMuon.dZ = muon_dZ[i];
+        tmpMuon.dZErr = Muon_dzErr[i];
+        tmpMuon.dXY = Muon_dxy[i];
+        tmpMuon.dXYErr = Muon_dxyErr[i];
+        tmpMuon.passDZ = abs(muon_dZ[i])<0.2;
+        tmpMuon.passDXY = abs(Muon_dxy[i])<0.5;
         tmpMuon.passTightId = muonIsTight[i];
         tmpMuon.passMediumId = muonIsMedium[i];
         tmpMuon.passLooseId = muonIsLoose[i];
@@ -802,6 +841,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         tmpMuon.passTightIso = muon_pfRelIso04_all[i]<0.15;
         tmpMuon.passVTightIso = muon_pfRelIso04_all[i]<0.10;
         tmpMuon.passVVTightIso = muon_pfRelIso04_all[i]<0.05;
+        tmpMuon.mT = sqrt(2*muonPt[i]*PuppiMET_pt*(1-TMath::Cos(RazorAnalyzerMerged::deltaPhi(PuppiMET_phi, muonPhi[i]))));
 
         tmpMuon.passVetoId = false;
         Leptons.push_back(tmpMuon);
@@ -812,7 +852,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       
       for( int i = 0; i < nElectrons; i++ )
       {
-        if (!ele_passCutBasedIDLoose[i]) continue;
+        if (!(ele_passCutBasedIDLoose[i] || Electron_mvaIso_WP90[i])) continue; //should comment out next time
         if(elePt[i] < 5) continue; //changed to 5, start of trigger
         if(fabs(eleEta[i]) > 2.5) continue;
 
@@ -827,16 +867,41 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         tmpElectron.lepton.SetPtEtaPhiM(elePt[i],eleEta[i], elePhi[i], ELE_MASS);
         tmpElectron.pdgId = 11 * -1 * eleCharge[i];
         tmpElectron.dZ = ele_dZ[i];
+        tmpElectron.dZErr = Electron_dzErr[i];
+        tmpElectron.dXY = Electron_dxy[i];
+        tmpElectron.dXYErr = Electron_dxyErr[i];
+        if (abs(eleEta[i])<1.479){
+          tmpElectron.passDZ = abs(ele_dZ[i])<0.1;
+          tmpElectron.passDXY = abs(Electron_dxy[i])<0.05;
+        }
+        else{
+          tmpElectron.passDZ = abs(ele_dZ[i])<0.2;
+          tmpElectron.passDXY = abs(Electron_dxy[i])<0.1;
+        }
         tmpElectron.passLooseId = ele_passCutBasedIDLoose[i];
         tmpElectron.passMediumId = ele_passCutBasedIDMedium[i];
         tmpElectron.passTightId = ele_passCutBasedIDTight[i];
+        //add standard pF ISO for cut-based electrons
+        tmpElectron.passLooseIso = Electron_pfRelIso04_all[i]<0.25;
+        tmpElectron.passTightIso = Electron_pfRelIso04_all[i]<0.15;
+        tmpElectron.passVTightIso = Electron_pfRelIso04_all[i]<0.10;
+        tmpElectron.passVVTightIso = Electron_pfRelIso04_all[i]<0.05;
+        //add MVA ID electrons (which include ISO)
+        tmpElectron.MVAISOScore = Electron_mvaIso[i];
+        tmpElectron.passMVAISOWP80 = Electron_mvaIso_WP80[i];
+        tmpElectron.passMVAISOWP90 = Electron_mvaIso_WP90[i];
+        tmpElectron.mT = sqrt(2*elePt[i]*PuppiMET_pt*(1-TMath::Cos(RazorAnalyzerMerged::deltaPhi(PuppiMET_phi, elePhi[i]))));
+
         Leptons.push_back(tmpElectron);
         
       }
 
       sort(Leptons.begin(), Leptons.end(), my_largest_pt);
-      if (isData && option== 2 && !(Leptons.size()>0 && (HLT_CscCluster100_Mu5 || HLT_IsoMu24))) continue;
-      if (isData && option== 1 && !(Leptons.size()>0 && HLT_CscCluster100_Ele5 || HLT_Ele30_WPTight_Gsf)) continue;
+      // if (isData && option== 2 && !(Leptons.size()>0 && (HLT_CscCluster100_Mu5 || HLT_IsoMu24))) continue;
+      // if (isData && option== 1 && !(Leptons.size()>0 && (HLT_CscCluster100_Ele5 || HLT_Ele30_WPTight_Gsf))) continue;
+
+      if (isData && option== 2 && !(Leptons.size()>0 && HLT_CscCluster100_Mu5)) continue;
+      if (isData && option== 1 && !(Leptons.size()>0 && HLT_CscCluster100_Ele5)) continue;
 
       for ( auto &tmp : Leptons )
       {
@@ -846,6 +911,11 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->lepPhi[MuonSystem->nLeptons]    = tmp.lepton.Phi();
         MuonSystem->lepPdgId[MuonSystem->nLeptons]  = tmp.pdgId;
         MuonSystem->lepDZ[MuonSystem->nLeptons]     = tmp.dZ;
+        MuonSystem->lepDXY[MuonSystem->nLeptons]     = tmp.dXY;
+        MuonSystem->lepDZErr[MuonSystem->nLeptons]     = tmp.dZErr;
+        MuonSystem->lepDXYErr[MuonSystem->nLeptons]     = tmp.dXYErr;
+        MuonSystem->lepPassDZ[MuonSystem->nLeptons]     = tmp.passDZ;
+        MuonSystem->lepPassDXY[MuonSystem->nLeptons]     = tmp.passDXY;
         MuonSystem->lepTightId[MuonSystem->nLeptons] = tmp.passTightId;
         MuonSystem->lepMediumId[MuonSystem->nLeptons] = tmp.passMediumId;
         MuonSystem->lepLooseId[MuonSystem->nLeptons] = tmp.passLooseId;
@@ -853,6 +923,10 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->lepPassTightIso[MuonSystem->nLeptons] = tmp.passTightIso;
         MuonSystem->lepPassVTightIso[MuonSystem->nLeptons] = tmp.passVTightIso;
         MuonSystem->lepPassVVTightIso[MuonSystem->nLeptons] = tmp.passVVTightIso;
+        MuonSystem->lepMVAISOScore[MuonSystem->nLeptons] = tmp.MVAISOScore;
+        MuonSystem->lepPassMVAISOWP80[MuonSystem->nLeptons] = tmp.passMVAISOWP80;
+        MuonSystem->lepPassMVAISOWP90[MuonSystem->nLeptons] = tmp.passMVAISOWP90;
+        MuonSystem->lepMt[MuonSystem->nLeptons] = tmp.mT;
         if (!isData){
             MuonSystem->deltaR_GenLepRecoLep[MuonSystem->nLeptons] = RazorAnalyzerMerged::deltaR(tmp.lepton.Eta(), tmp.lepton.Phi(), GenPart_eta[promptLep_idx], GenPart_phi[promptLep_idx]);
       }
@@ -880,6 +954,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         if ( Tau_idDeepTau2018v2p5VSjet[i] >= 7 && Tau_idDeepTau2018v2p5VSe[i] >= 2 && Tau_idDeepTau2018v2p5VSmu[i] == 4 ) MuonSystem->tauIsVTight[MuonSystem->nTaus]   = true;
         if ( Tau_idDeepTau2018v2p5VSjet[i] >=8 && Tau_idDeepTau2018v2p5VSe[i] >= 2 && Tau_idDeepTau2018v2p5VSmu[i] == 4 ) MuonSystem->tauIsVVTight[MuonSystem->nTaus]  = true;
         bool overlap = false;
+        //fix this, why eleEta and phi
         for(auto& lep : Leptons)
         {
           if (RazorAnalyzerMerged::deltaR(eleEta[i],elePhi[i],lep.lepton.Eta(),lep.lepton.Phi()) < 0.3) overlap = true;
@@ -891,8 +966,10 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->tauEta[MuonSystem->nTaus]          = Tau_eta[i];
         MuonSystem->tauPhi[MuonSystem->nTaus]          = Tau_phi[i];
         MuonSystem->tauDz[MuonSystem->nTaus]           = Tau_dz[i];
+        MuonSystem->tauDxy[MuonSystem->nTaus]           = Tau_dxy[i];
         MuonSystem->tauGenPartFlav[MuonSystem->nTaus]  = Tau_genPartFlav[i];
         MuonSystem->tauDecayMode[MuonSystem->nTaus]    = Tau_decayMode[i];
+        MuonSystem->tauMt[MuonSystem->nTaus] = sqrt(2*Tau_pt[i]*PuppiMET_pt*(1-TMath::Cos(RazorAnalyzerMerged::deltaPhi(PuppiMET_phi, Tau_phi[i]))));
         
         //save raw PNET discriminator scores
         MuonSystem->tauPNetVSe[MuonSystem->nTaus] = Tau_rawPNetVSe[i];
@@ -934,7 +1011,10 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       //if (MuonSystem->nTaus+MuonSystem->nLeptons == 0 && isData) continue; //no taus, muons, or electrons found, skip event
       if (isData && option== 3 && !(MuonSystem->nTaus>0 && HLT_CscCluster100_PNetTauhPFJet10_Loose)) continue;
       // for MC bkgs, don't save events that don't fire trigger or have no leptons/taus
-      if (!isData && option>=4 && !(MuonSystem->nTaus+MuonSystem->nLeptons>0 && (HLT_CscCluster100_PNetTauhPFJet10_Loose || HLT_CscCluster100_Ele5 || HLT_CscCluster100_Mu5 || HLT_Ele30_WPTight_Gsf || HLT_IsoMu24))) continue;  
+      if (!isData && option>=4 && option<11 && !(MuonSystem->nTaus+MuonSystem->nLeptons>0 && (HLT_CscCluster100_PNetTauhPFJet10_Loose || HLT_CscCluster100_Ele5 || HLT_CscCluster100_Mu5 || HLT_Ele30_WPTight_Gsf || HLT_IsoMu24))) continue;  
+
+      //found too many events for MC bkgs with the previous statement. Will make it tighter and require the cross trigger
+      if (!isData && option>=4 && option<11 && !(MuonSystem->nTaus+MuonSystem->nLeptons>0 && (HLT_CscCluster100_PNetTauhPFJet10_Loose || HLT_CscCluster100_Ele5 || HLT_CscCluster100_Mu5))) continue;  
       //cout<<"Found Event with Tau: "<<eventNum<<", nTaus: "<<MuonSystem->nTaus<<endl;
     //-----------------------------------------------
     //Select Jets
@@ -996,18 +1076,24 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       //loop over jets to check soft, forward activity for vetoes
       MuonSystem->HTSoftJets2p65to3p139 = 0.0;
       MuonSystem->HTSoftJetsLargerThan2p65 = 0.0;
+      MuonSystem->HTSoftJetsLargerThan3p139 = 0.0;
       MuonSystem->nSoftJets2p65to3p139 = 0;
       MuonSystem->nSoftJetsLargerThan2p65 = 0;
+      MuonSystem->nSoftJetsLargerThan3p139 = 0;
       for (int i = 0; i < nJets; i++) {
         if (jetPt[i] > 50)
           continue;
-        if (fabs(jetEta[i]) > 2.65 && fabs(jetEta[i]) < 3.139) {
+        if (fabs(jetEta[i]) > 2.65 && fabs(jetEta[i]) <= 3.139) {
           MuonSystem->HTSoftJets2p65to3p139 += jetPt[i];
           MuonSystem->nSoftJets2p65to3p139++;
         }
         if (fabs(jetEta[i]) > 2.65) {
           MuonSystem->HTSoftJetsLargerThan2p65 += jetPt[i];
           MuonSystem->nSoftJetsLargerThan2p65++;
+        }
+        if (fabs(jetEta[i]) > 3.139) {
+          MuonSystem->HTSoftJetsLargerThan3p139 += jetPt[i];
+          MuonSystem->nSoftJetsLargerThan3p139++;
         }
       }
 
@@ -1184,6 +1270,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       ds.sort_clusters();
       MuonSystem->nCscRechitClusters = 0;
       MuonSystem->nCscRechitClusters_nocut = 0;
+      bool cluster_matchedMuon=false;
       for ( auto &tmp : ds.clusters  ) {
 	  MuonSystem->nCscRechitClusters_nocut++;
 	  // if (tmp.nCscRechitsChamberPlus11 + tmp.nCscRechitsChamberPlus12 + tmp.nCscRechitsChamberMinus11 + tmp.nCscRechitsChamberMinus12 > 0)continue;
@@ -1343,7 +1430,8 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
               MuonSystem->cscRechitClusterMuonVetoLooseId[MuonSystem->nCscRechitClusters]  = muonIsLoose[i];
             }
             // same computation, but with threshold of 0.8 instead of 0.4
-            if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters],MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.8 && muonPt[i] > MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters] ) {
+            //fix bug here
+            if (RazorAnalyzerMerged::deltaR(muonEta[i], muonPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters],MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.8 && muonPt[i] > MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters] ) {
               MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters]  = muonPt[i];
               MuonSystem->cscRechitClusterMuonVetoE0p8Thresh[MuonSystem->nCscRechitClusters]  = muonE[i];
               MuonSystem->cscRechitClusterMuonVetoGlobal0p8Thresh[MuonSystem->nCscRechitClusters]  = muon_isGlobal[i];
@@ -1437,14 +1525,15 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
           }
         }
 
+          if (MuonSystem->cscRechitClusterMuonVetoPt0p8Thresh[MuonSystem->nCscRechitClusters]>0) cluster_matchedMuon=true;
 
           MuonSystem->nCscRechitClusters++;
       }
 
 
 
-      if (MuonSystem->nCscRechitClusters_nocut == 0 && (isData || option>=4)) continue; 
-
+      if (MuonSystem->nCscRechitClusters_nocut == 0 && (isData || (option>=4 && option<11))) continue; 
+      if (isData && option==2 && cluster_matchedMuon) continue; //too many muon+cluster events otherwise
 
     
     MuonSystem->tree_->Fill();
@@ -1460,12 +1549,12 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     accep_csccsc->Write("acceptance_csccsc");
     accep_cscdt->Write("acceptance_cscdt");
     accep_met->Write("acceptance_met");
-    nCscRechits_matchedLLP->Write("nCscRechits_matchedLLP");
-    nCscRechits_inCluster->Write("nCscRechits_inCluster");
-    fractionOfRechitsInCluster->Write("fractionOfRechitsInCluster");
-    nCscRechits_noLLP->Write("nCscRechits_noLLP");
-    nCscRechits_inCluster_noLLP->Write("nCscRechits_inCluster_noLLP");
-    fractionOfRechitsInCluster_noLLP->Write("fractionOfRechitsInCluster_noLLP");
+    // nCscRechits_matchedLLP->Write("nCscRechits_matchedLLP");
+    // nCscRechits_inCluster->Write("nCscRechits_inCluster");
+    // fractionOfRechitsInCluster->Write("fractionOfRechitsInCluster");
+    // nCscRechits_noLLP->Write("nCscRechits_noLLP");
+    // nCscRechits_inCluster_noLLP->Write("nCscRechits_inCluster_noLLP");
+    // fractionOfRechitsInCluster_noLLP->Write("fractionOfRechitsInCluster_noLLP");
     outFile->Close();
   } else {
     cout << "Filled Total of " << NEvents->GetBinContent(1) << " Events\n";

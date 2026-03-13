@@ -20,3 +20,80 @@ Num_Taus:
   y_label: "Counts"
   title: "Number of Taus Distribution"
   MuonSystem_Branch_Expression: "nTaus"
+
+N_SoftJets_2p65to3p139:
+  nbins: 20
+  xmin: 0
+  xmax: 20
+  underflow: false
+  overflow: false
+  x_label: "N_{jets}"
+  y_label: "Fraction of Events"
+  title: "N_{jets} 2.65<|#eta#|<3.139, p_{T}<50"
+  MuonSystem_Branch_Expression: "nSoftJets2p65to3p139"
+
+N_SoftJets_LargerThan2p65:
+  nbins: 20
+  xmin: 0
+  xmax: 20
+  underflow: false
+  overflow: false
+  x_label: "N_{jets}"
+  y_label: "Fraction of Events"
+  title: "N_{jets} |#eta#|>2.65, p_{T}<50"
+  MuonSystem_Branch_Expression: "nSoftJetsLargerThan2p65"
+
+HT_SoftJets_2p65to3p139: 
+  nbins: 20
+  xmin: 0
+  xmax: 400
+  underflow: false
+  overflow: false
+  x_label: "HT [GeV]"
+  y_label: "Fraction of Events"
+  title: "HT [GeV], 2.65<|#eta#|<3.139, p_{T}<50"
+  MuonSystem_Branch_Expression: HTSoftJets2p65to3p139
+
+HT_SoftJets_LargerThan2p65: 
+  nbins: 20
+  xmin: 0
+  xmax: 400
+  underflow: false
+  overflow: false
+  x_label: "HT [GeV]"
+  y_label: "Fraction of Events"
+  title: "HT [GeV], |#eta#|>2.65, p_{T}<50"
+  MuonSystem_Branch_Expression: HTSoftJetsLargerThan2p65
+
+W_B_pT:
+  nbins: 20
+  xmin: 0
+  xmax: 160
+  underflow: false
+  overflow: false
+  x_label: W/B pT [GeV]
+  y_label: Counts
+  title: pT LLP Mother (W or B)
+  MuonSystem_Branch_Expression: W_B_genPt
+
+W_B_Eta:
+  nbins: 20
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: W/B $\eta$
+  y_label: Counts
+  title: $\eta$ LLP Mother (W or B)
+  MuonSystem_Branch_Expression: W_B_genEta
+
+W_B_Phi:
+  nbins: 20
+  xmin: -3
+  xmax: 3
+  underflow: false
+  overflow: false
+  x_label: W/B $\phi$
+  y_label: Counts
+  title: $\phi$ LLP Mother (W or B)
+  MuonSystem_Branch_Expression: W_B_genPhi

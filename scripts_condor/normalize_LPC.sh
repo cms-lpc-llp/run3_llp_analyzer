@@ -74,10 +74,10 @@ then
         then
 		eval `scramv1 runtime -sh`
 		echo "$CMSSW_BASE/src/run3_llp_analyzer/data/xSections.dat"
-		if [ -f $CMSSW_BASE/src/run3_llp_analyzer/data/xSections.dat ]
+		if [ -f ${runDir}/xSections.dat ]
 		then
 			mkdir -p data
-			cp $CMSSW_BASE/src/run3_llp_analyzer/data/xSections.dat data/xSections.dat
+			cp ${runDir}/xSections.dat ${runDir}/data/xSections.dat
 		else
 			echo "data/xSections.dat doesn't exist"
 
@@ -85,6 +85,7 @@ then
 
 		#create normalization file
 		rm -f $normalize_file
+		echo "${sample} ${runDir}/${output}"
 		echo "${sample} ${runDir}/${output}" > $normalize_file
 		cat $normalize_file
 
@@ -94,9 +95,9 @@ then
 		fi
 
 		#normalize
-		if [ -f $CMSSW_BASE/src/run3_llp_analyzer/NormalizeNtuple ]
+		if [ -f ${runDir}/NormalizeNtuple ]
         	then
-        	        cp $CMSSW_BASE/src/run3_llp_analyzer/NormalizeNtuple ./
+        	    #cp $CMSSW_BASE/src/run3_llp_analyzer/NormalizeNtuple ./
 		        ./NormalizeNtuple ${normalize_file} ${lumi}
 		else
 			echo "NormalizeNtuple not found"
@@ -113,7 +114,8 @@ then
 
 	# copy normalized file back to hadoop
     #eosmkdir -p ${outputDir}
-	xrdcp ${runDir}/${output} root://cmseos.fnal.gov/${outputDir}/${output}
+
+	xrdcp -f ${runDir}/${output} root://cmseos.fnal.gov/${outputDir}/${output}
 
 
 	if [ -f ${outputDir}/${output} ]

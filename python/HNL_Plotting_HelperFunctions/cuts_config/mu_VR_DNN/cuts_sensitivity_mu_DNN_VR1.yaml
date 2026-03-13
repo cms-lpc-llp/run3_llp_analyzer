@@ -1,0 +1,149 @@
+#cuts to apply to signal for building a cutflow
+
+pass_trigger:
+  name: Pass Trigger
+  branch: HLT_CscCluster100_Mu5
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+MET>30GeV:
+  name: "MET>30 GeV"
+  branch: Puppimet
+  minVal: 30
+  maxVal: 10000000
+  collection: event
+  invert: "no"
+
+1_Lepton:
+  name: "nLeptons==1"
+  branch: nLeptons
+  minVal: 1
+  maxVal: 1
+  collection: event
+  invert: "no"
+
+1_Lepton_isMuon:
+  name: "Lepton is Muon"
+  branch: lepPdgId
+  minVal: -12
+  maxVal: 12
+  collection: lepton
+  invert: "yes"
+
+deltaR_muCluster:
+  name: "|DeltaR(cluster,mu)|>0.8"
+  branch: cscRechitClusterPromptMuDeltaR
+  minVal: 0.8
+  maxVal: 10000000000
+  collection: cscCluster
+  invert: "no"
+
+clusterTime:
+  name: "-5ns<clusterTime<12.5ns"
+  branch: cscRechitClusterTimeWeighted
+  minVal: -5
+  maxVal: 12.5
+  collection: cscCluster
+  invert: "no"
+
+cscClusterNoHitsME1112:
+  name: "no hits ME11/12"
+  branch: cscRechitClusterNRechitME1112
+  minVal: 0
+  maxVal: 0
+  collection: cscCluster
+  invert: "no"
+
+MuonVetoPt==0:
+  name: "no matched muon to cluster"
+  branch: cscRechitClusterMuonVetoPt
+  minVal: 0
+  maxVal: 0
+  collection: cscCluster
+  invert: "no"
+
+JetVetoPt<10:
+  name: "JetVetoPt<10 GeV"
+  branch: cscRechitClusterJetVetoPt
+  minVal: 0
+  maxVal: 10
+  collection: cscCluster
+  invert: "no"
+
+dPhi(cluster, MET):
+  name: "|dPhi(cluster, MET)|<1.5"
+  branch: cscRechitClusterPuppiMet_dPhi
+  minVal: -1.5
+  maxVal: 1.5
+  collection: cscCluster
+  invert: "no"
+
+mu_pt>15GeV:
+  name: "muPt>15GeV"
+  branch: lepPt
+  minVal: 15
+  maxVal: 10000000
+  collection: lepton
+  invert: "no"
+
+mu_passTightID:
+  name: "mu pass tightID"
+  branch: lepTightId
+  minVal: 1
+  maxVal: 1
+  collection: lepton
+  invert: "no"
+
+mu_passLoosePFIso:
+  name: mu pass looseISO
+  branch: lepPassLooseIso
+  minVal: 1
+  maxVal: 1
+  collection: lepton
+  invert: "no"
+
+
+deltaEta_muCluster:
+  name: "|DeltaEta(cluster,mu)|<2"
+  branch: cscRechitClusterPromptMuDeltaEta
+  minVal: -2
+  maxVal: 2
+  collection: cscCluster
+  invert: "no"
+
+DNN_Score:
+  name: "0.96<DNN<0.99"
+  branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
+  minVal: 0.96
+  maxVal: 0.99
+  collection: cscCluster
+  invert: "no"
+
+
+# deltaPhi_tauCluster:
+#   name: \|$\Delta$$\phi$(cluster,tau)\|>2
+#   branch: cscRechitClusterPromptTauDeltaPhi
+#   minVal: -2
+#   maxVal: 2
+#   collection: cscCluster
+#   invert: "yes"
+
+# cscClusterSize>160:
+#   name: ">160 rechits in CSC Cluster"
+#   branch: cscRechitClusterSize
+#   minVal: 160
+#   maxVal: 1000000
+#   collection: cscCluster
+#   invert: "no"
+
+
+
+
+
+
+
+
+
+

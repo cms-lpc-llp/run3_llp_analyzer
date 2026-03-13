@@ -1,0 +1,19 @@
+# samples
+  bkg_ZMuMu:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/DYto2Mu_Bin-MLL-50to120_TuneCP5_13p6TeV_powheg-pythia8/normalized/DYto2Mu_Bin-MLL-50to120_TuneCP5_13p6TeV_powheg-pythia8_109080pb_weighted.root"
+    trigger: Mu
+    isMC: true
+    isBkg: true
+    signal_xsec: 1
+    gen_events: 1
+
+  bkg_WMuNu:
+    files: "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/analyzer_update_021726/WtoMuNu-4Jets_TuneCP5_13p6TeV_madgraphMLM-pythia8/normalized/WtoMuNu-4Jets_TuneCP5_13p6TeV_madgraphMLM-pythia8_109080pb_weighted.root"
+    flavor: Mu
+    trigger: Mu
+    isMC: true
+    isBkg: true
+    signal_xsec: 1
+    gen_events: 1
+
+  

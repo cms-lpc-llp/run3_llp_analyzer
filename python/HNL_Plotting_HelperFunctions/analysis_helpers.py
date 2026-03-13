@@ -2,6 +2,13 @@
 
 import sys
 import os
+import warnings
+
+warnings.filterwarnings(
+    "ignore",
+    category=FutureWarning,
+    module="coffea\\.nanoevents\\.schemas\\..*",
+)
 
 import coffea
 import awkward as ak
@@ -20,6 +27,8 @@ import dask.dataframe as dd
 from dask.distributed import Client
 import matplotlib.pyplot as plt
 import ROOT
+
+ROOT.gErrorIgnoreLevel = ROOT.kError
 
 def auto_legend_position(h):
     max_bin = h.GetMaximumBin()
@@ -48,13 +57,17 @@ def get_ROOT_1D_fromhistpkg(hist, fraction=True):
     '''
     edges = hist.axes[0].edges
     #print(edges)
-    hist_counts = hist.view()
+    hist_counts = hist.values()
+    hist_vars = hist.variances()
+    if hist_vars is None:
+        hist_vars = hist_counts
     if fraction:
         total = np.sum(hist_counts)
+        frac = hist_counts / total if total != 0 else hist_counts
+        error = np.sqrt(hist_vars) / total if total != 0 else np.sqrt(hist_vars)
     else:
-        total = 1.0
-    frac = hist_counts / total
-    error = np.sqrt(hist_counts) / total
+        frac = hist_counts
+        error = np.sqrt(hist_vars)
 
 
     root_hist = ROOT.TH1F("num_hist", "numerator hist", np.size(edges)-1, edges)
@@ -66,7 +79,7 @@ def get_ROOT_1D_fromhistpkg(hist, fraction=True):
     return root_hist
         
 
-def hist_dict_to_fraction_dict(hist_dict):
+def hist_dict_to_fraction_dict(hist_dict, fraction=True):
     '''
     Function to convert a dictionary of histograms to a dictionary of fraction histograms
     '''
@@ -74,11 +87,24 @@ def hist_dict_to_fraction_dict(hist_dict):
     
     for key, hist in hist_dict.items():
         #print(hist.metadata['title'])
-        frac_dict[key] = (get_ROOT_1D_fromhistpkg(hist), hist.metadata['title'], hist.metadata['x_label'])
+        frac_dict[key] = (
+            get_ROOT_1D_fromhistpkg(hist, fraction=fraction),
+            hist.metadata['title'],
+            hist.metadata['x_label'],
+            fraction,
+        )
 
     return frac_dict
 
-def plot_one_root_hists(root_hist_1, title, xlabel, label1, logscale=True, fraction=True, outdir='one_hist_plots/'):
+def _unpack_hist_entry(entry):
+    if len(entry) == 3:
+        return entry
+    if len(entry) == 4:
+        root_hist, title, x_label, _ = entry
+        return root_hist, title, x_label
+    raise ValueError(f"Unexpected hist entry length: {len(entry)}")
+
+def plot_one_root_hists(root_hist_1, title, xlabel, label1, logscale=True, fraction=True, outdir='one_hist_plots/', filename=None):
     '''
     Function to take 3 root histograms and plot them on same canvas
     '''
@@ -98,10 +124,16 @@ def plot_one_root_hists(root_hist_1, title, xlabel, label1, logscale=True, fract
     root_hist_1.SetLineWidth(2)
     root_hist_1.Draw("HIST E")
     root_hist_1.SetTitle(f"{title};{xlabel};{fraction_label}")
-    root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    if logscale and fraction:
+        root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    elif fraction and not logscale:
+        root_hist_1.GetYaxis().SetRangeUser(0, 1)
+    else:
+        pass
     legend.AddEntry(root_hist_1, label1, "lp")
     legend.Draw()
-    c.SaveAs(f"{outdir}/{title}.png")
+    save_name = filename if filename is not None else title
+    c.SaveAs(f"{outdir}/{save_name}.png")
 
 
 def plot_hists_one_dicts(hist_dict_1, label1, logscale=True, fraction=True, outdir='one_hist_plots/'):
@@ -111,11 +143,11 @@ def plot_hists_one_dicts(hist_dict_1, label1, logscale=True, fraction=True, outd
     '''
     os.makedirs(outdir, exist_ok=True)
     for key in hist_dict_1.keys():
-        root_hist_1, title, x_label = hist_dict_1[key]
+        root_hist_1, title, x_label = _unpack_hist_entry(hist_dict_1[key])
         plot_one_root_hists(root_hist_1, title, x_label, label1, logscale=logscale, fraction=fraction, outdir=outdir)
     return
 
-def plot_two_root_hists(root_hist_1, root_hist_2, title, xlabel, label1, label2, logscale=True, fraction=True, outdir='three_hist_plots/'):
+def plot_two_root_hists(root_hist_1, root_hist_2, title, xlabel, label1, label2, logscale=True, fraction=True, outdir='three_hist_plots/', filename=None):
     '''
     Function to take 3 root histograms and plot them on same canvas
     '''
@@ -138,11 +170,15 @@ def plot_two_root_hists(root_hist_1, root_hist_2, title, xlabel, label1, label2,
     root_hist_1.Draw("HIST E")
     root_hist_2.Draw("HIST E SAME")
     root_hist_1.SetTitle(f"{title};{xlabel};{fraction_label}")
-    root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    if logscale and fraction:
+        root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    elif fraction and not logscale:
+        root_hist_1.GetYaxis().SetRangeUser(0, 1)
     legend.AddEntry(root_hist_1, label1, "lp")
     legend.AddEntry(root_hist_2, label2, "lp")
     legend.Draw()
-    c.SaveAs(f"{outdir}/{title}.png")
+    save_name = filename if filename is not None else title
+    c.SaveAs(f"{outdir}/{save_name}.png")
 
 
 def plot_hists_2_dicts(hist_dict_1, hist_dict_2, label1, label2, logscale=True, fraction=True, outdir='two_hist_plots/'):
@@ -152,14 +188,14 @@ def plot_hists_2_dicts(hist_dict_1, hist_dict_2, label1, label2, logscale=True, 
     '''
     os.makedirs(outdir, exist_ok=True)
     for key in hist_dict_1.keys():
-        root_hist_1, title, x_label = hist_dict_1[key]
-        root_hist_2, _, _ = hist_dict_2[key]
+        root_hist_1, title, x_label = _unpack_hist_entry(hist_dict_1[key])
+        root_hist_2, _, _ = _unpack_hist_entry(hist_dict_2[key])
         plot_two_root_hists(root_hist_1, root_hist_2, title, x_label, label1, label2, logscale=logscale, fraction=fraction, outdir=outdir)
     return
 
 
 
-def plot_three_root_hists(root_hist_1, root_hist_2, root_hist_3, title, xlabel, label1, label2, label3, logscale=True, fraction=True, outdir='three_hist_plots/'):
+def plot_three_root_hists(root_hist_1, root_hist_2, root_hist_3, title, xlabel, label1, label2, label3, logscale=True, fraction=True, outdir='three_hist_plots/', filename=None):
     '''
     Function to take 3 root histograms and plot them on same canvas
     '''
@@ -185,12 +221,16 @@ def plot_three_root_hists(root_hist_1, root_hist_2, root_hist_3, title, xlabel, 
     root_hist_2.Draw("HIST E SAME")
     root_hist_3.Draw("HIST E SAME")
     root_hist_1.SetTitle(f"{title};{xlabel};{fraction_label}")
-    root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    if logscale and fraction:
+        root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    elif fraction and not logscale:
+        root_hist_1.GetYaxis().SetRangeUser(0, 1)
     legend.AddEntry(root_hist_1, label1, "lp")
     legend.AddEntry(root_hist_2, label2, "lp")
     legend.AddEntry(root_hist_3, label3, "lp")
     legend.Draw()
-    c.SaveAs(f"{outdir}/{title}.png")
+    save_name = filename if filename is not None else title
+    c.SaveAs(f"{outdir}/{save_name}.png")
 
 
 def plot_hists_3_dicts(hist_dict_1, hist_dict_2, hist_dict_3, label1, label2, label3, logscale=True, fraction=True, outdir='three_hist_plots/'):
@@ -200,13 +240,13 @@ def plot_hists_3_dicts(hist_dict_1, hist_dict_2, hist_dict_3, label1, label2, la
     '''
     os.makedirs(outdir, exist_ok=True)
     for key in hist_dict_1.keys():
-        root_hist_1, title, x_label = hist_dict_1[key]
-        root_hist_2, _, _ = hist_dict_2[key]
-        root_hist_3, _, _ = hist_dict_3[key]
+        root_hist_1, title, x_label = _unpack_hist_entry(hist_dict_1[key])
+        root_hist_2, _, _ = _unpack_hist_entry(hist_dict_2[key])
+        root_hist_3, _, _ = _unpack_hist_entry(hist_dict_3[key])
         plot_three_root_hists(root_hist_1, root_hist_2, root_hist_3, title, x_label, label1, label2, label3, logscale=logscale, fraction=fraction, outdir=outdir)
     return
 
-def plot_four_root_hists(root_hist_1, root_hist_2, root_hist_3, root_hist_4, title, xlabel, label1, label2, label3, label4, logscale=True, fraction=True, outdir='four_hist_plots/'):
+def plot_four_root_hists(root_hist_1, root_hist_2, root_hist_3, root_hist_4, title, xlabel, label1, label2, label3, label4, logscale=True, fraction=True, outdir='four_hist_plots/', filename=None):
     '''
     Function to take 4 root histograms and plot them on same canvas
     '''
@@ -235,13 +275,19 @@ def plot_four_root_hists(root_hist_1, root_hist_2, root_hist_3, root_hist_4, tit
     root_hist_3.Draw("HIST E SAME")
     root_hist_4.Draw("HIST E SAME")
     root_hist_1.SetTitle(f"{title};{xlabel};{fraction_label}")
-    root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    if logscale and fraction:
+        root_hist_1.GetYaxis().SetRangeUser(1e-4, 10)
+    elif fraction and not logscale:
+        root_hist_1.GetYaxis().SetRangeUser(0, 1)
+    elif not fraction and not logscale:
+        root_hist_1.GetYaxis().SetRangeUser(0, 200) # for W-peak studies in Mu Category
     legend.AddEntry(root_hist_1, label1, "lp")
     legend.AddEntry(root_hist_2, label2, "lp")
     legend.AddEntry(root_hist_3, label3, "lp")
     legend.AddEntry(root_hist_4, label4, "lp")
     legend.Draw()
-    c.SaveAs(f"{outdir}/{title}.png")
+    save_name = filename if filename is not None else title
+    c.SaveAs(f"{outdir}/{save_name}.png")
 
 
 def plot_hists_4_dicts(hist_dict_1, hist_dict_2, hist_dict_3, hist_dict_4, label1, label2, label3, label4, logscale=True, fraction=True, outdir='four_hist_plots/'):
@@ -251,10 +297,10 @@ def plot_hists_4_dicts(hist_dict_1, hist_dict_2, hist_dict_3, hist_dict_4, label
     '''
     os.makedirs(outdir, exist_ok=True)
     for key in hist_dict_1.keys():
-        root_hist_1, title, x_label = hist_dict_1[key]
-        root_hist_2, _, _ = hist_dict_2[key]
-        root_hist_3, _, _ = hist_dict_3[key]
-        root_hist_4, _, _ = hist_dict_4[key]
+        root_hist_1, title, x_label = _unpack_hist_entry(hist_dict_1[key])
+        root_hist_2, _, _ = _unpack_hist_entry(hist_dict_2[key])
+        root_hist_3, _, _ = _unpack_hist_entry(hist_dict_3[key])
+        root_hist_4, _, _ = _unpack_hist_entry(hist_dict_4[key])
         plot_four_root_hists(root_hist_1, root_hist_2, root_hist_3, root_hist_4, title, x_label, label1, label2, label3, label4, logscale=logscale, fraction=fraction, outdir=outdir)
     return
 
@@ -334,6 +380,36 @@ def make_datacard_2tag(outDataCardsDir,modelName,  signal_rate, norm, bkg_rate, 
     #     text_file.write(bkg_unc_text)
 
     text_file.close()
+
+
+def extract_counts_uncs_from_df(df_ABCD):
+    '''
+    cutflow code returns dataframes with strings for event counts and uncertainties, this converts the relevant strings to floats
+    '''
+    vals = []
+    for i, row in df_ABCD.iterrows():
+        if i==3:continue
+        str_counts = row["Counts"]
+        vals_12 = str(str_counts).split("+-")
+        vals.append(float(vals_12[0].strip()))
+        vals.append(float(vals_12[1].strip()))
+    return vals
+
+
+
+def compute_expected_signal_bin(A, A_unc, B, B_unc, C, C_unc):
+    '''
+    return expected counts and propagated uncertainty from other 3 bins
+    Convention D_exp = B/A*C
+    '''
+    D_exp = B/A*C
+    A_unc = np.sqrt(A)
+    B_unc = np.sqrt(B)
+    C_unc = np.sqrt(C)
+    D_exp_unc = D_exp * np.sqrt((A_unc/A)**2+(B_unc/B)**2 + (C_unc/C)**2)
+
+    return D_exp, D_exp_unc
+
 
 def convert_density_to_fraction():
     pass

@@ -53,3 +53,36 @@ gLLP_ctau:
   y_label: Counts
   title: LLP c$\tau$ Distribution
   MuonSystem_Branch_Expression: gLLP_ctau
+
+# W/B pT:
+#   nbins: 50
+#   xmin: 0
+#   xmax: 200
+#   underflow: false
+#   overflow: false
+#   x_label: W/B pT [GeV]
+#   y_label: Counts
+#   title: pT LLP Mother (W or B)
+#   MuonSystem_Branch_Expression: W_B_genPt
+
+# W/B Eta:
+#   nbins: 20
+#   xmin: -3
+#   xmax: 3
+#   underflow: false
+#   overflow: false
+#   x_label: W/B $\eta$
+#   y_label: Counts
+#   title: $\eta$ LLP Mother (W or B)
+#   MuonSystem_Branch_Expression: W_B_genEta
+
+# W/B Phi:
+#   nbins: 20
+#   xmin: -3
+#   xmax: 3
+#   underflow: false
+#   overflow: false
+#   x_label: W/B $\phi$
+#   y_label: Counts
+#   title: $\phi$ LLP Mother (W or B)
+#   MuonSystem_Branch_Expression: W_B_genPhi

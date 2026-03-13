@@ -41,18 +41,20 @@ data_samples = [
     "Muon1-Run2024I-PromptReco-v2"
     ]
 
-files_XROOTD_Error_Data_e = [
-    "Muon1-Run2024H-PromptReco-v1"
-]
+files_XROOTD_Error_Data = { 'e': [
+    
+],
 
-files_XROOTD_Error_Data_mu = [
-    "Muon0-Run2024H-PromptReco-v1"
-]
+'mu': [
+   
+],
 
-files_XROOTD_Error_Data_tau = []
+'tau': []
+}
 
-path_to_bad_files_e= '/src/run3_llp_analyzer/HNL_Plotting_Scripts/local_copies/e/'
-path_to_bad_files_mu= '/src/run3_llp_analyzer/HNL_Plotting_Scripts/local_copies/mu/'
+path_to_bad_files = {'e': '/src/run3_llp_analyzer/HNL_Plotting_Scripts/local_copies/e/',
+                     'mu': '/src/run3_llp_analyzer/HNL_Plotting_Scripts/local_copies/mu/',
+                    'tau': '/src/run3_llp_analyzer/HNL_Plotting_Scripts/local_copies/tau/'}
 
 def deltaPhi(tau_cscCluster_phi_diffs):
     '''
@@ -103,12 +105,12 @@ def processData_v2(data_path_base: str, hists_to_process: list=None, trigger='ta
     outputs = []
     for sample in data_events_list:
         correction_needed = False
-        for file in files_XROOTD_Error_Data_tau:
+        for file in files_XROOTD_Error_Data['tau']:
             if file in sample:
                 correction_needed = True
                 break
         if correction_needed:
-            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files_tau)
+            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files['tau'])
         else:
             sample_corrected = sample
         print(sample_corrected)
@@ -133,12 +135,12 @@ def processData_v2_e(data_path_base: str, hists_to_process: list=None, trigger='
     outputs = []
     for sample in data_events_list:
         correction_needed = False
-        for file in files_XROOTD_Error_Data_e:
+        for file in files_XROOTD_Error_Data['e']:
             if file in sample:
                 correction_needed = True
                 break
         if correction_needed:
-            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files_e)
+            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files['e'])
         else:
             sample_corrected = sample
         print(sample_corrected)
@@ -163,12 +165,12 @@ def processData_v2_mu(data_path_base: str, hists_to_process: list=None, trigger=
     outputs = []
     for sample in data_events_list:
         correction_needed = False
-        for file in files_XROOTD_Error_Data_mu:
+        for file in files_XROOTD_Error_Data['mu']:
             if file in sample:
                 correction_needed = True
                 break
         if correction_needed:
-            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files_mu)
+            sample_corrected = sample.replace(data_path_base+sample+"/normalized/", os.environ['CMSSW_BASE']+path_to_bad_files['mu'])
         else:
             sample_corrected = sample
         print(sample_corrected)
@@ -185,3 +187,29 @@ def processData_v2_mu(data_path_base: str, hists_to_process: list=None, trigger=
                 output_data[key] = output_data[key]+hist
 
     return output_data
+
+def make_data_list(data_path_base, flavor="tau", XROOTD_Replace=True):
+    '''
+    return lists with data files for each era to read from
+    if XROOTD_Replace is set to true, then the path to local versions of problematic files to read through XROOTD will be pointed too
+    '''
+    data_events_list = [data_path_base+sample+"/normalized/"+sample+"_goodLumi.root" for sample in data_samples]
+    if XROOTD_Replace:
+        corrected_list = []
+        for sample in data_events_list:
+            correction_needed = False
+            for file in files_XROOTD_Error_Data[flavor]:
+                if file in sample:
+                    correction_needed = True
+                    break
+            if correction_needed:
+                sample_corrected = sample.replace(sample[:sample.rfind('/')], os.environ['CMSSW_BASE']+path_to_bad_files[flavor])
+            else:
+                sample_corrected = sample
+            corrected_list.append(sample_corrected)
+    else:
+        return data_events_list
+
+    return corrected_list
+
+

@@ -53,3 +53,25 @@ muon_e:
   y_label: Counts
   title: Muon Energy Distribution
   MuonSystem_Branch_Expression: lepE
+
+muon_dz:
+  nbins: 30
+  xmin: -1
+  xmax: 1
+  underflow: false
+  overflow: true
+  x_label: dZ
+  y_label: Counts
+  title: Muon dZ Distribution
+  MuonSystem_Branch_Expression: lepDZ
+
+muon_MT:
+  nbins: 25
+  xmin: 0
+  xmax: 100
+  underflow: false
+  overflow: true
+  x_label: mT [GeV]
+  y_label: Counts
+  title: Muon MT Distribution
+  MuonSystem_Branch_Expression: lepMt

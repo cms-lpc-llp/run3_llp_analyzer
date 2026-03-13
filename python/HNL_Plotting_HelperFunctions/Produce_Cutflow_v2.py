@@ -66,7 +66,7 @@ def computeEfficiency(cumulative_events, Run, **args):
     return pass_selection, ak.sum(pass_selection.weights)/ak.sum(cumulative_events.weights), args['collection'], mask
 
 
-def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau=1000, reweight_ctau = 1000, ABCD=True, sizeCut=160, dPhiCut=2, dEtaCut=2,blind=True, flavor="Tau", signal_xsec=1, genEvents=1, dEta=False):
+def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau=1000, reweight_ctau = 1000, ABCD=True, sizeCut=160, dPhiCut=2, dEtaCut=2,blind=True, flavor="Tau", signal_xsec=1, genEvents=1, dEta=False, return_branches=False, return_events=False, isBkg=False):
     '''
     code for producing cutflow for HNL+Lepton analyzer
     takes dask-awkward array as input
@@ -78,16 +78,19 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
         numEvents= generated_signalEvents
     else:
         numEvents= genEvents
-    signal_normalization_factor = processed_lumi*signal_xsec/numEvents
+    #signal_normalization_factor = processed_lumi*signal_xsec/numEvents
     #print(signal_normalization_factor.compute())
     #print(len(events.evtNum.compute()))
 
 
     if isMC:
-        weights = sample_ctau/reweight_ctau*np.exp(10*events["gLLP_ctau"][:,0]*(1/sample_ctau-1/reweight_ctau))
-        #print(ak.sum(weights).compute())
-        weights = weights/ak.sum(weights)*ak.count(events.evtNum)
-        weights = weights*events.pileupWeight
+        if not isBkg:
+            weights = sample_ctau/reweight_ctau*np.exp(10*events["gLLP_ctau"][:,0]*(1/sample_ctau-1/reweight_ctau))
+            #print(ak.sum(weights).compute())
+            weights = weights/ak.sum(weights)*ak.count(events.evtNum)
+            weights = weights*events.pileupWeight*events.weight
+        else:
+            weights = events.pileupWeight*events.weight
         #print("about to com0pute weights")
         #print("weights", ak.sum(weights).compute())
         #make L1 weight event level - can't add to generic weight because branch is not filled if there is no cluster
@@ -101,6 +104,8 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
     
 
     events = ak.with_field(events, L1_weights_eventLevel, "L1_weights_eventLevel")
+    if flavor=='tau' or flavor=="Tau" or flavor=="Ele" or flavor=="ele":
+        events = ak.with_field(events, events.HTSoftJetsLargerThan2p65 - events.HTSoftJets2p65to3p139, "HTSoftJetsLargerThan3p139")
     #print(weights.compute())
     #print(ak.sum(weights.compute()))
     events = ak.with_field(events, weights, "weights")
@@ -148,19 +153,25 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
             }
 
     #load in selections
-    print(signal_xsec)
-    if isMC or signal_xsec!=1:
-        with open(cfg_file_path+"/"+cfg_file, 'r') as f:
-            cuts_dict = yaml.safe_load(f)
-        normalization_factor = signal_normalization_factor
-    else:
-        with open(cfg_file_path+"/"+cfg_file, 'r') as f:
-            cuts_dict = yaml.safe_load(f)
+    
+    #old - when reweighting was done in this script according to lumi
+    # if isMC or signal_xsec!=1:
+    #     with open(cfg_file_path+"/"+cfg_file, 'r') as f:
+    #         cuts_dict = yaml.safe_load(f)
+    #     normalization_factor = signal_normalization_factor
+    # else:
+    #     with open(cfg_file_path+"/"+cfg_file, 'r') as f:
+    #         cuts_dict = yaml.safe_load(f)
+    #     normalization_factor = 1
+
+    with open(cfg_file_path+"/"+cfg_file, 'r') as f:
+        cuts_dict = yaml.safe_load(f)
         normalization_factor = 1
 
     names, event_counts, event_counts_unweighted, effs, cumulative_effs = [],[],[],[], []
     for cut, cut_info in cuts_dict.items():
-        
+        if isMC and ("dz" in cut or "dxy" in cut):
+            continue
         #invert=False
         #if Run==2 and (cut_info["collection"]=="tau" or "tau" in cut or "trigger" in cut):
         #    continue
@@ -186,88 +197,12 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
         cumulative_effs.append(current_eff)
     
     client = Client(memory_limit="12GB", n_workers=1, 
-                threads_per_worker=1, local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp")
-    # def configure_uproot():
-    #     import uproot, logging
-    #     try:
-    #         uproot.source.xrootd.global_cache.clear()
-    #     except Exception:
-    #         pass
-    #     uproot.source.xrootd.use_vector_read = False
-
-    #     # Make logging visible on workers
-    #     logging.getLogger("uproot").setLevel(logging.DEBUG)
-    #     logging.getLogger("uproot").handlers[:] = []
-    #     ch = logging.StreamHandler()
-    #     ch.setLevel(logging.DEBUG)
-    #     logging.getLogger("uproot").addHandler(ch)
-    #     # Report status
-    #     return {
-    #         "uproot_version": getattr(uproot, "__version__", "unknown"),
-    #         "use_vector_read": getattr(uproot.source.xrootd, "use_vector_read", "missing"),
-    #     }
-    # bad_path = "root://cmseos.fnal.gov//store/group/lpclonglived/amalbert/HNL_Tau_Search/2024_Data_e/Muon1-Run2024H-PromptReco-v1/normalized/Muon1-Run2024H-PromptReco-v1_goodLumi.root"
-
-    # def worker_test_open(path):
-    #     import uproot, traceback
-    #     out = {"path": path, "ok": False}
-    #     try:
-    #         f = uproot.open(path)
-    #         out["keys"] = list(f.keys())
-    #         tree_name = "MuonSystem"
-    #         if tree_name in f:
-    #             tree = f[tree_name]
-    #             out["n_entries"] = tree.num_entries
-    #             br_name = "cscRechitClusterDNN_bkgMC_plusBeamHalo"
-    #             out["has_branch"] = br_name in tree.keys()
-    #             if out["has_branch"]:
-    #                 br = tree[br_name]
-    #                 # metadata checks
-    #                 try: out["fEntries"] = br.member("fEntries")
-    #                 except Exception as e: out["fEntries_err"] = repr(e)
-    #                 try: out["fNbaskets"] = br.member("fNbaskets")
-    #                 except Exception as e:
-    #                     try: out["fNbaskets"] = br.member("fNbasket")
-    #                     except Exception as e2: out["fNbaskets_err"] = repr(e2)
-    #                 try:
-    #                     seeks = br.member("fBasketSeek")
-    #                     out["len_seeks"] = len(seeks)
-    #                     out["first_5_seeks"] = seeks[:5]
-    #                 except Exception as e:
-    #                     out["fBasketSeek_err"] = repr(e)
-    #                 # small read test
-    #                 try:
-    #                     arr = br.array(entry_start=0, entry_stop=10, library="np")
-    #                     out["small_read_shape"] = getattr(arr, "shape", str(type(arr)))
-    #                 except Exception as e:
-    #                     out["small_read_err"] = repr(e)
-    #         out["ok"] = True
-    #     except Exception as e:
-    #         out["open_err"] = repr(e)
-    #         out["traceback"] = traceback.format_exc()
-    #     return out
-
-    # future = client.submit(worker_test_open, bad_path)
-    # print(future.result())
-
-    # info = client.run(configure_uproot)
-    # print("configure_uproot returned:", info)
+                threads_per_worker=1, local_directory="/uscms/home/amalbert/nobackup/el9_work/CMSSW_14_1_0_pre4/src/run3_llp_analyzer/dask_temp",
+                dashboard_address=":0")
+    
     print("about to compute")
 
-    # event_counts_out, event_counts_unweighted_out, effs_out, cumulative_effs_out = dask.compute(
-    # event_counts,
-    # event_counts_unweighted,
-    # effs,
-    # cumulative_effs
-    # )
-
-    # cuts_efficiencies = pd.DataFrame({
-    #     "Cut Name": names,
-    #     "Number of Weighted Events": event_counts_out,
-    #     "Number of Unweighted Events": event_counts_unweighted_out,
-    #     "Cut Efficiency": effs_out,
-    #     "Cumulative Efficiency": cumulative_effs_out,
-    # })
+    
     cuts_efficiencies = pd.DataFrame({"Cut Name":names, 
             "Number of Weighted Events":dask.compute(*event_counts), 
             "Number of Unweighted Events":dask.compute(*event_counts_unweighted), 
@@ -286,4 +221,10 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
             cuts_efficiencies.iloc[-1] = [names[-1], 'X', 'X', 'X', 'X']
     client.close()
 
-    return cuts_efficiencies, df_ABCD
+    if return_events:
+        return cuts_efficiencies, df_ABCD, cumulative_events, collection_masks['cscCluster']
+    if not return_branches:
+        return cuts_efficiencies, df_ABCD
+    else: #return computed branches for clustersize and deltaPhi for validation region studies
+        deltaPhiBranch = f"cscRechitClusterPrompt{flavor}DeltaPhi"
+        return cuts_efficiencies, df_ABCD, cumulative_events.cscRechitClusterSize.compute(), cumulative_events[deltaPhiBranch].compute()

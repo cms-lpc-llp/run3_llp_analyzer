@@ -9,6 +9,7 @@ else
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer23BPix.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/PileupWeights/PileupReweight_Summer24.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/L1_efficiencies_2022_2023_032625-Hists-TEff.root .
+   cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/METTriggerEff_Summer24.root .
    cp ${CMSSW_BASE}/src/run3_llp_analyzer/data/trigger/HMT_Efficiencies_2024.root .
   
 
