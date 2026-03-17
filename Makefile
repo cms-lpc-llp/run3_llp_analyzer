@@ -7,6 +7,15 @@ ANADIR = analyzers
 BINDIR = bin
 FASTJET = fastjet-install/bin/fastjet-config
 
+# Add CMSSW package roots for includes like DataFormats/... when building
+# this external analyzer with plain g++ (outside scram's build system).
+ifneq ($(strip $(CMSSW_BASE)),)
+	CXXFLAGS += -I$(CMSSW_BASE)/src
+endif
+ifneq ($(strip $(CMSSW_RELEASE_BASE)),)
+	CXXFLAGS += -I$(CMSSW_RELEASE_BASE)/src
+endif
+
 ANALYZERS = $(wildcard $(ANADIR)/*.cc)
 ANALYZERSH = $(ANALYZERS:cc=h)
 ANALYZERSOBJ = $(ANALYZERS:cc=o)

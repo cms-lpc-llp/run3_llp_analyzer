@@ -6,6 +6,7 @@
 #include <cmath>
 #include <limits>
 
+#include "DataFormats/MuonDetId/interface/CSCDetId.h"
 #include "TMath.h"
 /* #endregion */
 
@@ -23,6 +24,46 @@ struct largest_pt_jet {
     return p1.jet.Pt() > p2.jet.Pt();
   }
 } my_largest_pt_jet;
+
+bool trySynthesizeCscDetId(int signedStation, int signedStationRing, int chamber, int& outDetId) {
+  const int stationSign = (signedStation > 0) ? 1 : ((signedStation < 0) ? -1 : 0);
+  const int stationRingSign = (signedStationRing > 0) ? 1 : ((signedStationRing < 0) ? -1 : 0);
+
+  int sign = stationSign;
+  if (sign == 0)
+    sign = stationRingSign;
+  if (sign == 0)
+    return false;
+  if (stationSign != 0 && stationRingSign != 0 && stationSign != stationRingSign)
+    return false;
+
+  const int absStationRing = std::abs(signedStationRing);
+  const int stationFromRing = absStationRing / 10;
+  const int ring = absStationRing % 10;
+  if (ring == 0)
+    return false;
+
+  int station = std::abs(signedStation);
+  if (station == 0)
+    station = stationFromRing;
+  if (station == 0)
+    return false;
+  if (stationFromRing != 0 && station != stationFromRing)
+    return false;
+
+  const int endcap = (sign > 0) ? CSCDetId::minEndcapId() : CSCDetId::maxEndcapId();
+  if (station < CSCDetId::minStationId() || station > CSCDetId::maxStationId())
+    return false;
+  if (ring < CSCDetId::minRingId() || ring > CSCDetId::maxRingId())
+    return false;
+  if (station != 1 && ring > 2)
+    return false;
+  if (chamber < CSCDetId::minChamberId() || chamber > CSCDetId::maxChamberId())
+    return false;
+
+  outDetId = static_cast<int>(CSCDetId::rawIdMaker(endcap, station, ring, chamber, 0));
+  return true;
+}
 
 } // namespace
 /* #endregion */
@@ -404,6 +445,11 @@ void fillRawRechits(
     muonSystem->cscRechits_Quality[i] = cscRechitsQuality[i];
     muonSystem->cscRechits_Chamber[i] = cscRechitsChamber[i];
     muonSystem->cscRechits_Station[i] = cscRechitsStation[i];
+    int synthesizedDetId = 0;
+    if (trySynthesizeCscDetId(
+            cscRechitsStation[i], cscRechitsChamber[i], cscRechitsIChamber[i], synthesizedDetId)) {
+      muonSystem->cscRechits_DetId[i] = synthesizedDetId;
+    }
     muonSystem->cscRechits_Eta[i] = cscRechitsEta[i];
     muonSystem->cscRechits_Phi[i] = cscRechitsPhi[i];
     muonSystem->cscRechits_X[i] = cscRechitsX[i];
