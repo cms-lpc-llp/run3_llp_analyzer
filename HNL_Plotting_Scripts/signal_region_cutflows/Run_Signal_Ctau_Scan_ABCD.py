@@ -184,7 +184,8 @@ def parse_abcd_txt(path: Path) -> Dict[str, float]:
 
 
 def to_datacard_rate_order(counts_by_bin: Dict[str, float]) -> List[float]:
-    # Match historical notebook convention: [D, B, A, C].
+    # Match the historical datacard convention used in the notebooks:
+    # channel order is [signal-region(D), B, A, C].
     return [counts_by_bin["D"], counts_by_bin["B"], counts_by_bin["A"], counts_by_bin["C"]]
 
 
@@ -344,6 +345,7 @@ def main() -> None:
 
     sample_signal_pairs = resolve_sample_name_pairs(args.sample, args.signal_name)
     sample_ctaus = resolve_sample_ctaus(args.sample, args.sample_ctau)
+    skipped_zero_sr: List[str] = []
 
     for (sample, signal_name), sample_ctau in zip(sample_signal_pairs, sample_ctaus):
         print(f"Processing sample={sample} (sample_ctau={sample_ctau:g}) -> signal_name={signal_name}")
@@ -373,11 +375,15 @@ def main() -> None:
             list_signal = to_datacard_rate_order(signal_counts)
 
             signal_rate = {signal_name: list_signal}
-            if signal_rate[signal_name][0] == 0:
-                raise ZeroDivisionError(
-                    f"Signal rate in datacard A-bin is zero for sample={sample}, ctau={ctau:g}; cannot compute norm."
+            sr_rate = signal_rate[signal_name][0]
+            if sr_rate <= 0:
+                skipped_zero_sr.append(f"{sample}: ctau={ctau:g}, SR(D) rate={sr_rate}")
+                print(
+                    f"Skipping datacard for sample={sample}, ctau={ctau:g}: "
+                    f"signal rate in the datacard SR bin (D) is {sr_rate}, so norm=1/rate is undefined."
                 )
-            norm = 1.0 / signal_rate[signal_name][0]
+                continue
+            norm = 1.0 / sr_rate
             bkg_rate = list_data
             observation = bkg_rate
 
@@ -396,6 +402,11 @@ def main() -> None:
                 ctau=ctau,
             )
             print(f"Wrote datacard: {card_path}")
+
+    if skipped_zero_sr:
+        print("\nSkipped datacards with non-positive SR(D) signal rate:")
+        for item in skipped_zero_sr:
+            print(f"  - {item}")
 
 
 if __name__ == "__main__":

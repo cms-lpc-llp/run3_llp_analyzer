@@ -403,9 +403,6 @@ def compute_expected_signal_bin(A, A_unc, B, B_unc, C, C_unc):
     Convention D_exp = B/A*C
     '''
     D_exp = B/A*C
-    A_unc = np.sqrt(A)
-    B_unc = np.sqrt(B)
-    C_unc = np.sqrt(C)
     D_exp_unc = D_exp * np.sqrt((A_unc/A)**2+(B_unc/B)**2 + (C_unc/C)**2)
 
     return D_exp, D_exp_unc

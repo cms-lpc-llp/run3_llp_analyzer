@@ -1,7 +1,0 @@
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_1.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_10.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_100.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_101.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_102.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_103.root
-root://cmsxrootd.fnal.gov//store/group/lpclonglived/displacedJetMuonNtuple/MDSNano/Data2024/v2/Muon0/crab_Muon0-Run2024B-PromptReco-v1-AOD/250410_160649/0000/NANO_PAT_NANO_104.root

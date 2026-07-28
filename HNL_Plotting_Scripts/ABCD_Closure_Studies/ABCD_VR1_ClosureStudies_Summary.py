@@ -241,7 +241,7 @@ def _flatten_branch(arr) -> np.ndarray:
         return np.asarray(arr)
 
 
-def _select_one_cluster_per_event(events, cluster_mask, flavor: str) -> Tuple[np.ndarray, np.ndarray]:
+def _select_one_cluster_per_event(events, cluster_mask, flavor: str) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Match ABCD_bkg_estimation: use max-size selected cluster per event."""
     sizes = events.cscRechitClusterSize
     dphi = abs(events[f"cscRechitClusterPrompt{flavor}DeltaPhi"])
@@ -253,12 +253,14 @@ def _select_one_cluster_per_event(events, cluster_mask, flavor: str) -> Tuple[np
 
     size_sel = size_sel[has_cluster]
     dphi_sel = dphi_sel[has_cluster]
-    return _flatten_branch(size_sel), _flatten_branch(dphi_sel)
+    weight_sel = events.weights[has_cluster]
+    return _flatten_branch(size_sel), _flatten_branch(dphi_sel), _flatten_branch(weight_sel)
 
 
 def _abcd_counts_from_branches(
     cluster_sizes: np.ndarray,
     dphi_vals: np.ndarray,
+    event_weights: np.ndarray,
     size_cut: float,
     dphi_cut: float,
     normalization_factor: float,
@@ -269,15 +271,15 @@ def _abcd_counts_from_branches(
     mask_c = (cluster_sizes >= size_cut) & (np.abs(dphi_vals) < dphi_cut)
     mask_d = (cluster_sizes >= size_cut) & (np.abs(dphi_vals) >= dphi_cut)
 
-    A = float(np.count_nonzero(mask_a)) * normalization_factor
-    B = float(np.count_nonzero(mask_b)) * normalization_factor
-    C = float(np.count_nonzero(mask_c)) * normalization_factor
-    D = float(np.count_nonzero(mask_d)) * normalization_factor
+    A = float(np.sum(event_weights[mask_a])) * normalization_factor
+    B = float(np.sum(event_weights[mask_b])) * normalization_factor
+    C = float(np.sum(event_weights[mask_c])) * normalization_factor
+    D = float(np.sum(event_weights[mask_d])) * normalization_factor
 
-    A_unc = np.sqrt(A)
-    B_unc = np.sqrt(B)
-    C_unc = np.sqrt(C)
-    D_unc = np.sqrt(D)
+    A_unc = float(np.sqrt(np.sum(event_weights[mask_a] ** 2))) * normalization_factor
+    B_unc = float(np.sqrt(np.sum(event_weights[mask_b] ** 2))) * normalization_factor
+    C_unc = float(np.sqrt(np.sum(event_weights[mask_c] ** 2))) * normalization_factor
+    D_unc = float(np.sqrt(np.sum(event_weights[mask_d] ** 2))) * normalization_factor
 
     if A <= 0 or B <= 0 or C <= 0:
         D_exp, D_exp_unc = np.nan, np.nan
@@ -292,6 +294,7 @@ def _abcd_counts_from_branches(
 def scan_thresholds_from_branches(
     cluster_sizes: np.ndarray,
     dphi_vals: np.ndarray,
+    event_weights: np.ndarray,
     size_cuts: Iterable[float],
     dphi_cuts: Iterable[float],
     baseline_size: float,
@@ -304,6 +307,7 @@ def scan_thresholds_from_branches(
         D_exp, D_exp_unc, D_obs, D_obs_unc = _abcd_counts_from_branches(
             cluster_sizes,
             dphi_vals,
+            event_weights,
             size_cut,
             baseline_dphi,
             normalization_factor,
@@ -325,6 +329,7 @@ def scan_thresholds_from_branches(
         D_exp, D_exp_unc, D_obs, D_obs_unc = _abcd_counts_from_branches(
             cluster_sizes,
             dphi_vals,
+            event_weights,
             baseline_size,
             dphi_cut,
             normalization_factor,
@@ -427,7 +432,10 @@ def run_sample(
     flavor = normalize_flavor(cfg.get("flavor", "Tau"))
     trigger = cfg.get("trigger") or flavor_to_trigger(flavor)
     is_mc = _to_bool(cfg.get("isMC", cfg.get("is_mc", False)), default=False)
+    is_bkg = _to_bool(cfg.get("isBkg", cfg.get("is_bkg", False)), default=False)
     is_signal = is_signal_sample(name, cfg)
+
+    print(f"[{name}] isBkg = {is_bkg}")
 
     files = resolve_files(cfg)
     events = MuonSystemReader.loadTree_nanoFactory(files, isMC=is_mc, trigger=trigger)
@@ -457,9 +465,10 @@ def run_sample(
             reweight_ctau=float(cfg.get("reweight_ctau", 1000)),
             signal_xsec=float(cfg.get("signal_xsec", 1)),
             genEvents=float(cfg.get("gen_events", 1)),
+            isBkg=is_bkg,
             return_events=True,
         )
-        cluster_sizes, dphi_vals = _select_one_cluster_per_event(cumulative_events, csc_cluster_mask, flavor)
+        cluster_sizes, dphi_vals, event_weights = _select_one_cluster_per_event(cumulative_events, csc_cluster_mask, flavor)
     else:
         cutflow_df, abcd_df = Produce_Cutflow_v2.makeCutflow(
             events,
@@ -474,6 +483,7 @@ def run_sample(
             reweight_ctau=float(cfg.get("reweight_ctau", 1000)),
             signal_xsec=float(cfg.get("signal_xsec", 1)),
             genEvents=float(cfg.get("gen_events", 1)),
+            isBkg=is_bkg,
         )
 
     cutflow_tag = cutflow_tag_from_path(cutflow_cfg)
@@ -489,6 +499,7 @@ def run_sample(
         scan_size_df, scan_dphi_df = scan_thresholds_from_branches(
             cluster_sizes,
             dphi_vals,
+            event_weights,
             scan_size,
             scan_dphi,
             size_cut,

@@ -188,9 +188,9 @@ deltaEta_tauCluster:
   invert: "no"
 
 DNN_Score:
-  name: "DNN>0.99928"
+  name: "DNN>0.99975"
   branch: cscRechitClusterDNN_bkgMC_plusBeamHalo
-  minVal: 0.99928
+  minVal: 0.99975
   maxVal: 1
   collection: cscCluster
   invert: "no"

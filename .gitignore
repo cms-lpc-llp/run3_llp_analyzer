@@ -13,6 +13,11 @@ model_weights_old
 mds-ml-minmal
 inference_old
 inference
+*.codex
+/*.txt
+/*.root
+*ROC_Curve*_Comparison*
+bin/*
 
 #txt files in main directory
 ./*.txt
@@ -166,3 +171,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+�
+yes/micromamba

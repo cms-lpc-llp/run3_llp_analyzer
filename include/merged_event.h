@@ -338,6 +338,7 @@ class merged_event {
   Float_t Jet_btagRobustParTAK4CvB[150]; //[nJet]
   Float_t Jet_btagRobustParTAK4CvL[150]; //[nJet]
   Float_t Jet_btagRobustParTAK4QG[150]; //[nJet]
+  Float_t Jet_btagUParTAK4B[150]; //[nJet]
   Float_t Jet_chEmEF[150]; //[nJet]
   Float_t Jet_chHEF[150]; //[nJet]
   Float_t Jet_eta[150]; //[nJet]
@@ -2169,6 +2170,7 @@ class merged_event {
   TBranch* b_Jet_btagRobustParTAK4CvB; //!
   TBranch* b_Jet_btagRobustParTAK4CvL; //!
   TBranch* b_Jet_btagRobustParTAK4QG; //!
+  TBranch* b_Jet_btagUParTAK4B;
   TBranch* b_Jet_chEmEF; //!
   TBranch* b_Jet_chHEF; //!
   TBranch* b_Jet_eta; //!
@@ -4068,6 +4070,7 @@ void merged_event::Init(TTree* tree) {
   fChain->SetBranchAddress("Jet_btagRobustParTAK4CvB", Jet_btagRobustParTAK4CvB, &b_Jet_btagRobustParTAK4CvB);
   fChain->SetBranchAddress("Jet_btagRobustParTAK4CvL", Jet_btagRobustParTAK4CvL, &b_Jet_btagRobustParTAK4CvL);
   fChain->SetBranchAddress("Jet_btagRobustParTAK4QG", Jet_btagRobustParTAK4QG, &b_Jet_btagRobustParTAK4QG);
+  fChain->SetBranchAddress("Jet_btagUParTAK4B", Jet_btagUParTAK4B, &b_Jet_btagUParTAK4B);
   fChain->SetBranchAddress("Jet_chEmEF", Jet_chEmEF, &b_Jet_chEmEF);
   fChain->SetBranchAddress("Jet_chHEF", Jet_chHEF, &b_Jet_chHEF);
   fChain->SetBranchAddress("Jet_eta", Jet_eta, &b_Jet_eta);

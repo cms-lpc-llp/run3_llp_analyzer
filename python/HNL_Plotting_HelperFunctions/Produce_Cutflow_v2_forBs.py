@@ -24,6 +24,7 @@ from dask.distributed import Client
 sys.path.append('.')
 import Processing_Helpers
 import ABCD_bkg_estimation_forBs
+import modeling_cut_lookup
 
 cfg_file_path = os.environ["CMSSW_BASE"] + "/src/run3_llp_analyzer/python/HNL_Plotting_HelperFunctions/cuts_config/"
 
@@ -41,6 +42,9 @@ collection_masks = {
 def computeEfficiency(cumulative_events, Run, **args):
     #print("invert id", args['invert'])
     invert = ('yes' in args['invert'] or 'Yes' in args['invert'])
+    # if cumulative_events[args['branch']]=="lepPdgId":
+    #     print("compting pdgs")
+    #     print(cumulative_events['lepPdgId'].compute())
     if Run==2 and args["collection"]=="cscCluster":
         branch = args['branch']
         branch = branch.replace("cscRechitCluster", "cscRechitCluster3")
@@ -170,6 +174,10 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
 
     names, event_counts, event_counts_unweighted, effs, cumulative_effs = [],[],[],[], []
     for cut, cut_info in cuts_dict.items():
+        if isMC and ("dz" in cut or "dxy" in cut):
+            continue
+        if isMC:
+            cut_info = modeling_cut_lookup.remap_cut_info_for_mc(cut, cut_info)
         
         #invert=False
         #if Run==2 and (cut_info["collection"]=="tau" or "tau" in cut or "trigger" in cut):
@@ -213,9 +221,9 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
     if ABCD:
         print("entering ABCD code")
         if not dEta:
-            df_ABCD = ABCD_bkg_estimation_forBs.run_ABCD_from_cutflow(cumulative_events, collection_masks['cscCluster'], sizeCut, dPhiCut, normalization_factor, blind=blind, flavor=flavor)
+            df_ABCD = ABCD_bkg_estimation_forBs.run_ABCD_from_cutflow(cumulative_events, collection_masks['cscCluster'], sizeCut, dPhiCut, normalization_factor, blind=blind, flavor=flavor, isMC=isMC)
         else:
-            df_ABCD = ABCD_bkg_estimation_forBs.run_ABCD_from_cutflow_dEta(cumulative_events, collection_masks['cscCluster'], sizeCut, dEtaCut, normalization_factor, blind=blind, flavor=flavor)
+            df_ABCD = ABCD_bkg_estimation_forBs.run_ABCD_from_cutflow_dEta(cumulative_events, collection_masks['cscCluster'], sizeCut, dEtaCut, normalization_factor, blind=blind, flavor=flavor, isMC=isMC)
         if blind:
             cuts_efficiencies.iloc[-1] = [names[-1], 'X', 'X', 'X', 'X']
     client.close()

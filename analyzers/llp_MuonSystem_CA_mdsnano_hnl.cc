@@ -77,6 +77,7 @@ struct jets {
   float chargedHadronEnergyFraction;
   float neutralHadronEnergyFraction;
   float muonEnergyFraction;
+  float bTag;
 };
 
 //lepton highest pt comparator
@@ -1019,16 +1020,17 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
     //-----------------------------------------------
     //Select Jets
     //-----------------------------------------------
-    /* COMMENT OUT JETS TO KEEP NTUPLES SMALL - REITERATE OVER JETS FOR Cluster JET VETO
+    //COMMENT OUT JETS TO KEEP NTUPLES SMALL - REITERATE OVER JETS FOR Cluster JET VETO
     std::vector<jets> Jets;
     
     for (int i = 0; i < nJets; i++) {
       if (fabs(jetEta[i]) >= 3.0)
         continue;
-      if (jetPt[i] < 20)
-        continue;
-      if (!jetPassIDTight[i] && !jetPassIDTightLepVeto[i])
-        continue;
+      //if (jetPt[i] < 20)
+      //  continue;
+      if (Jet_btagUParTAK4B[i]<0.02466) continue; //only save jets that pass loose BTag WP
+      //if (!jetPassIDTight[i] && !jetPassIDTightLepVeto[i])
+      //  continue;
       //------------------------------------------------------------
       //exclude selected muons and electrons from the jet collection
       //------------------------------------------------------------
@@ -1046,6 +1048,7 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
       jets tmpJet;
       tmpJet.jet = thisJet;
       tmpJet.passId = jetPassIDTightLepVeto[i];
+      tmpJet.bTag = Jet_btagUParTAK4B[i];
 
       Jets.push_back(tmpJet);
 
@@ -1064,11 +1067,12 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
         MuonSystem->jetEta[MuonSystem->nJets] = tmp.jet.Eta();
         MuonSystem->jetPhi[MuonSystem->nJets] = tmp.jet.Phi();
         MuonSystem->jetTightPassId[MuonSystem->nJets] = tmp.passId;
-
+        MuonSystem->jetBTagScore[MuonSystem->nJets] = tmp.bTag;
+        
 
         MuonSystem->nJets++;
       }
-      */
+      
 
 
       TLorentzVector met = makeTLorentzVectorPtEtaPhiM(MuonSystem->Puppimet, 0, MuonSystem->PuppimetPhi, 0);
@@ -1401,6 +1405,8 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
           MuonSystem->cscRechitClusterJetVetoE[MuonSystem->nCscRechitClusters] = 0.0;
           MuonSystem->cscRechitClusterMuonVetoPt[MuonSystem->nCscRechitClusters] = 0.0;
           MuonSystem->cscRechitClusterMuonVetoE[MuonSystem->nCscRechitClusters] = 0.0;
+          MuonSystem->cscRechitClusterBJetVetoPt[MuonSystem->nCscRechitClusters] = 0.0;
+          MuonSystem->cscRechitClusterBJetVetoE[MuonSystem->nCscRechitClusters] = 0.0;
 
 
           // jet veto
@@ -1436,6 +1442,15 @@ void llp_MuonSystem_CA_mdsnano_hnl::Analyze(bool isData, int options, string out
               MuonSystem->cscRechitClusterMuonVetoE0p8Thresh[MuonSystem->nCscRechitClusters]  = muonE[i];
               MuonSystem->cscRechitClusterMuonVetoGlobal0p8Thresh[MuonSystem->nCscRechitClusters]  = muon_isGlobal[i];
               MuonSystem->cscRechitClusterMuonVetoLooseId0p8Thresh[MuonSystem->nCscRechitClusters]  = muonIsLoose[i];
+            }
+          }
+          //check if bjets are matched to cluster within a deltaR of 0.8
+          for (int i = 0; i < MuonSystem->nJets; i++){
+              if (RazorAnalyzerMerged::deltaR(MuonSystem->jetEta[i], MuonSystem->jetPhi[i], MuonSystem->cscRechitClusterEta[MuonSystem->nCscRechitClusters],MuonSystem->cscRechitClusterPhi[MuonSystem->nCscRechitClusters]) < 0.8 && MuonSystem->jetPt[i] > MuonSystem->cscRechitClusterBJetVetoPt[MuonSystem->nCscRechitClusters] ) {
+              MuonSystem->cscRechitClusterBJetVetoPt[MuonSystem->nCscRechitClusters]  = MuonSystem->jetPt[i];
+              MuonSystem->cscRechitClusterBJetVetoE[MuonSystem->nCscRechitClusters]  = MuonSystem->jetE[i];
+              //MuonSystem->cscRechitClusterBJetVetoTightId[MuonSystem->nCscRechitClusters]  = MuonSystem->jetPassIDTight[i];
+
             }
           }
           if(!isData)

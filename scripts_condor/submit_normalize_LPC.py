@@ -78,7 +78,7 @@ tmpCondorJDLFile.write("Error = {}/normalize_{}_$(Cluster).$(Process).err \n".fo
 
 
 tmpCondorJDLFile.write("+JobQueue=\"Short\" \n")
-tmpCondorJDLFile.write("RequestMemory = 8000 \n")
+tmpCondorJDLFile.write("RequestMemory = 4000 \n")
 tmpCondorJDLFile.write("RequestCpus = 1 \n")
 tmpCondorJDLFile.write("RequestDisk = 4 \n")
 

@@ -19,6 +19,7 @@ import dask_awkward as dak
 
 sys.path.append('.')
 import Processing_Helpers
+import modeling_cut_lookup
 
 cfg_file_path = os.environ["CMSSW_BASE"] + "/src/run3_llp_analyzer/python/HNL_Plotting_HelperFunctions/cuts_config/"
 
@@ -166,6 +167,8 @@ def makeCutflow(events, cfg_file, isMC=False, noGenCuts=True, Run=3, sample_ctau
 
     print(normalization_factor)
     for cut, cut_info in cuts_dict.items():
+        if isMC:
+            cut_info = modeling_cut_lookup.remap_cut_info_for_mc(cut, cut_info)
         #if isMC and cut=="pass_trigger":continue
         invert=False
         #print(cut)

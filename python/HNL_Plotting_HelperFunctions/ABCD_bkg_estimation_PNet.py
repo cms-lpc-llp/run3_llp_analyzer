@@ -19,11 +19,17 @@ import dask
 import dask.dataframe as dd
 from dask.distributed import Client
 
+import modeling_cut_lookup
 
-def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, PNetCut, normalization_factor=1, blind=True, flavor="Tau"):
+
+def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, PNetCut, normalization_factor=1, blind=True, flavor="Tau", isMC=False):
     '''
     Code to return dataframe with event in each bin and expected number of events in signal bin
     '''
+    effective_size_cut = sizeCut
+    if isMC:
+        effective_size_cut = modeling_cut_lookup.remap_abcd_size_cut_for_mc(sizeCut, context="ABCD PNet")
+    print(f"[ABCD PNet] Using sizeCut={effective_size_cut}, PNetCut={PNetCut}, isMC={isMC}")
 
     # Ensure each event contributes at most one cluster: pick max-size cluster per event
     sizes = events.cscRechitClusterSize
@@ -45,21 +51,21 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, PNetCut, normalization_
         bin_names = ["bin A (low NHits, low PNetvsE)", "bin B (low NHits, high PNetvsE)", "bin C (high NHits, low PNetvsE)", "bin D (high NHits, high PNetvsE)"]
     
     #bin A
-    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (dphi_sel<PNetCut)])*normalization_factor
+    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<effective_size_cut) & (dphi_sel<PNetCut)])*normalization_factor
     #print(bin_A)
     event_counts.append(bin_A)
     bin_A_unc = bin_A**0.5
     event_counts_unc.append(bin_A_unc)
 
     #bin B
-    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (dphi_sel>=PNetCut)])*normalization_factor
+    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<effective_size_cut) & (dphi_sel>=PNetCut)])*normalization_factor
     print()
     event_counts.append(bin_B)
     bin_B_unc = bin_B**0.5
     event_counts_unc.append(bin_B_unc)
 
     #bin C
-    bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (dphi_sel<PNetCut)])*normalization_factor
+    bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=effective_size_cut) & (dphi_sel<PNetCut)])*normalization_factor
     event_counts.append(bin_C)
     bin_C_unc = bin_C**0.5
     event_counts_unc.append(bin_C_unc)
@@ -71,7 +77,7 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, PNetCut, normalization_
         event_counts.append(bin_D_exp)
         event_counts_unc.append(bin_D_exp_unc)
     else:
-        bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (dphi_sel>=PNetCut)])*normalization_factor
+        bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=effective_size_cut) & (dphi_sel>=PNetCut)])*normalization_factor
         bin_D_unc = bin_D**0.5
         
         event_counts.append(bin_D)
@@ -91,10 +97,14 @@ def run_ABCD_from_cutflow(events, cluster_mask, sizeCut, PNetCut, normalization_
     client.close()
     return pd.DataFrame({"Bin":bin_names, "Counts":bin_counts_strs})
 
-def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normalization_factor=1, blind=True, flavor="Tau"):
+def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normalization_factor=1, blind=True, flavor="Tau", isMC=False):
     '''
     Code to return dataframe with event in each bin and expected number of events in signal bin
     '''
+    effective_size_cut = sizeCut
+    if isMC:
+        effective_size_cut = modeling_cut_lookup.remap_abcd_size_cut_for_mc(sizeCut, context="ABCD PNet dEta")
+    print(f"[ABCD PNet] Using sizeCut={effective_size_cut}, dEtaCut={dEtaCut}, isMC={isMC}")
 
     # Ensure each event contributes at most one cluster: pick max-size cluster per event
     sizes = events.cscRechitClusterSize
@@ -115,21 +125,21 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
         bin_names = ["bin A (low NHits, low dEta)", "bin B (low NHits, high dEta)", "bin C (high NHits, low dEta)", "bin D (high NHits, high dEta)"]
 
     #bin A
-    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (deta_sel<dEtaCut)])*normalization_factor
+    bin_A = ak.sum(events.weights[(has_cluster) & (size_sel<effective_size_cut) & (deta_sel<dEtaCut)])*normalization_factor
     #print(bin_A)
     event_counts.append(bin_A)
     bin_A_unc = bin_A**0.5
     event_counts_unc.append(bin_A_unc)
 
     #bin B
-    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<sizeCut) & (deta_sel>=dEtaCut)])*normalization_factor
+    bin_B = ak.sum(events.weights[(has_cluster) & (size_sel<effective_size_cut) & (deta_sel>=dEtaCut)])*normalization_factor
     print()
     event_counts.append(bin_B)
     bin_B_unc = bin_B**0.5
     event_counts_unc.append(bin_B_unc)
 
     #bin D
-    bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (deta_sel>=dEtaCut)])*normalization_factor
+    bin_D = ak.sum(events.weights[(has_cluster) & (size_sel>=effective_size_cut) & (deta_sel>=dEtaCut)])*normalization_factor
     event_counts.append(bin_D)
     bin_D_unc = bin_D**0.5
     event_counts_unc.append(bin_D_unc)
@@ -141,7 +151,7 @@ def run_ABCD_from_cutflow_dEta(events, cluster_mask, sizeCut, dEtaCut, normaliza
         event_counts.append(bin_C_exp)
         event_counts_unc.append(bin_C_exp_unc)
     else:
-        bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=sizeCut) & (deta_sel<dEtaCut)])*normalization_factor
+        bin_C = ak.sum(events.weights[(has_cluster) & (size_sel>=effective_size_cut) & (deta_sel<dEtaCut)])*normalization_factor
         bin_C_unc = bin_C**0.5
         
         event_counts.append(bin_C)

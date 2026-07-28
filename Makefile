@@ -16,7 +16,9 @@ RUNNERSCC = $(addsuffix .cc,$(addprefix $(ANADIR)/,$(notdir $(RUNNERS))))
 UTILS =$(SRCDIR)/RazorHelper.cc  $(SRCDIR)/DBSCAN.cc   $(SRCDIR)/JetCorrectorParameters.cc \
         $(SRCDIR)/SimpleJetCorrectionUncertainty.cc \
 		$(SRCDIR)/JetCorrectionUncertainty.cc \
-	       	$(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc ${SRCDIR}/TreeMuonSystemCombination_TnP.cc 
+	    $(SRCDIR)/CACluster.cc ${SRCDIR}/TreeMuonSystemCombination.cc \
+		${SRCDIR}/TreeMuonSystemCombination_TnP.cc \
+		${SRCDIR}/TreeMuonSystem_Skim_Merge_TnP.cc
 UTILSOBJ = $(UTILS:cc=o)
 EXECUTABLES = MergeNtuples NormalizeNtuple SkimNtuple $(RUNNERS)
 #EXECUTABLES = $(RUNNERS)

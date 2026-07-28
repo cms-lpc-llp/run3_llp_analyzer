@@ -415,6 +415,8 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     cscRechitClusterMuonVetoE0p8Thresh[i] = 0.0;
     cscRechitClusterMuonVetoLooseId0p8Thresh[i] = false;
     cscRechitClusterMuonVetoGlobal0p8Thresh[i] = false;
+    cscRechitClusterBJetVetoPt[i] = false;
+    cscRechitClusterBJetVetoE[i] = false;
 
     cscRechitClusterNChamber[i] = -999;
     cscRechitClusterMaxChamberRatio[i] = -999.;
@@ -628,6 +630,7 @@ for(int i = 0;i < N_MAX_GPARTICLES;i++)
     jetEta[i] = -999.;
     jetPhi[i] = -999.;
     jetTightPassId[i] = false;
+    jetBTagScore[i] = -999.;
   }
 
   //taus
@@ -971,7 +974,8 @@ void TreeMuonSystemCombination::InitTree() {
     tree_->SetBranchAddress("cscRechitClusterMuonVetoLooseId0p8Thresh",             cscRechitClusterMuonVetoLooseId0p8Thresh);
     tree_->SetBranchAddress("cscRechitClusterMuonVetoGlobal0p8Thresh",             cscRechitClusterMuonVetoGlobal0p8Thresh);
 
-
+    tree_->SetBranchAddress("cscRechitClusterBJetVetoE",          cscRechitClusterBJetVetoE);
+    tree_->SetBranchAddress("cscRechitClusterBJetVetoPt",          cscRechitClusterBJetVetoPt);
 
   tree_->SetBranchAddress("cscRechitClusterSize",             cscRechitClusterSize);
   tree_->SetBranchAddress("cscRechitCluster_match_dtSeg_0p4",             cscRechitCluster_match_dtSeg_0p4);
@@ -1106,6 +1110,7 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("jetEta", jetEta);
   tree_->SetBranchAddress("jetPhi", jetPhi);
   tree_->SetBranchAddress("jetTightPassId", jetTightPassId);
+  tree_->SetBranchAddress("jetBTagScore", jetBTagScore);
 
   //tau
 
@@ -1300,6 +1305,9 @@ void TreeMuonSystemCombination::CreateTree() {
 
   tree_->Branch("cscRechitClusterMuonVetoLooseId0p8Thresh", cscRechitClusterMuonVetoLooseId0p8Thresh, "cscRechitClusterMuonVetoLooseId0p8Thresh[nCscRechitClusters]/O");
   tree_->Branch("cscRechitClusterMuonVetoGlobal0p8Thresh", cscRechitClusterMuonVetoGlobal0p8Thresh, "cscRechitClusterMuonVetoGlobal0p8Thresh[nCscRechitClusters]/O");
+
+  tree_->Branch("cscRechitClusterBJetVetoPt", cscRechitClusterBJetVetoPt, "cscRechitClusterBJetVetoPt[nCscRechitClusters]/F");
+  tree_->Branch("cscRechitClusterBJetVetoE", cscRechitClusterBJetVetoE, "cscRechitClusterBJetVetoE[nCscRechitClusters]/F");
 
   tree_->Branch("cscRechitCluster_match_dtSeg_0p4", cscRechitCluster_match_dtSeg_0p4, "cscRechitCluster_match_dtSeg_0p4[nCscRechitClusters]/I");
   tree_->Branch("cscRechitCluster_match_MB1Seg_0p4", cscRechitCluster_match_MB1Seg_0p4, "cscRechitCluster_match_MB1Seg_0p4[nCscRechitClusters]/I");
@@ -1555,6 +1563,7 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("jetEta", jetEta, "jetEta[nJets]/F");
   tree_->Branch("jetPhi", jetPhi, "jetPhi[nJets]/F");
   tree_->Branch("jetTightPassId", jetTightPassId, "jetTightPassId[nJets]/O");
+  tree_->Branch("jetBTagScore", jetBTagScore, "jetBTagScore[nJets]/F");
 
 
 

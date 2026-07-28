@@ -257,6 +257,9 @@ class TreeMuonSystemCombination {
   bool          cscRechitClusterMuonVetoGlobal0p8Thresh[N_MAX_CSC];
   bool          cscRechitClusterMuonVetoLooseId0p8Thresh[N_MAX_CSC];
 
+  float         cscRechitClusterBJetVetoPt[N_MAX_CSC];
+  float         cscRechitClusterBJetVetoE[N_MAX_CSC];
+
   int           cscRechitCluster_match_dtSeg_0p4[N_MAX_CSC];
   int           cscRechitCluster_match_MB1Seg_0p4[N_MAX_CSC];
   int           cscRechitCluster_match_RE12_0p4[N_MAX_CSC];
@@ -396,6 +399,7 @@ class TreeMuonSystemCombination {
   float jetPhi[N_MAX_JETS];
 
   bool jetTightPassId[N_MAX_JETS];
+  float jetBTagScore[N_MAX_JETS];
   // bool HLTDecision[NTriggersMAX];
 
   int nTaus; //other variable for ID taus

@@ -19,6 +19,7 @@ CMSSW_BASE=$9
 homeDir=${10}
 option=${11}
 currentDir=`pwd`
+echo "in correct executable"
 echo "currentDir: ${currentDir}"
 #user=${homeDir#*/data/}
 #user=${homeDir#*/storage/user/}
