@@ -52,7 +52,8 @@ class TreeMuonSystemCombination {
   float pileupWeight, pileupWeightUp, pileupWeightDown;
   bool HLT_CSCCSC, HLT_CSCDT, jetVeto;
   float met, metPhi, Puppimet, PuppimetPhi;
-  float PuppimetJESUp, PuppimetJESDown, PuppimetPhiJESDown, PuppimetPhiJESUp;
+  float Rawmet, Rawmetphi, RawPuppimet, RawPuppimetPhi;
+float PuppimetJESUp, PuppimetJESDown, PuppimetPhiJESDown, PuppimetPhiJESUp;
   float metJESUp, metJESDown, metPhiJESDown, metPhiJESUp;
   bool Flag_goodVertices, Flag_EcalDeadCellTriggerPrimitiveFilter, Flag_BadPFMuonFilter, Flag_BadPFMuonDzFilter, Flag_globalSuperTightHalo2016Filter,
       Flag_hfNoisyHitsFilter, Flag_eeBadScFilter, Flag_ecalBadCalibFilter, Flag_all;

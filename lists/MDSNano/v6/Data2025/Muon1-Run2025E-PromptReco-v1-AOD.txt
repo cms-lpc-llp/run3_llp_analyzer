@@ -13359,7 +13359,6 @@
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part2_396168-396367/260827_013841/0007/NANO_PAT_NANO_7177.root
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part2_396168-396367/260827_013841/0007/NANO_PAT_NANO_7178.root
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part2_396168-396367/260827_013841/0007/NANO_PAT_NANO_7179.root
-/eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part3_396368-396567/260826_190414/0001/NANO_PAT_NANO_1023.root
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part3_396368-396567/260827_013911/0000/NANO_PAT_NANO_1.root
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part3_396368-396567/260827_013911/0000/NANO_PAT_NANO_10.root
 /eos/uscms/store/group/lpcmds/MDSNano/Data2025/v6/Muon1/crab_Muon1-Run2025E-PromptReco-v1-AOD_part3_396368-396567/260827_013911/0000/NANO_PAT_NANO_100.root

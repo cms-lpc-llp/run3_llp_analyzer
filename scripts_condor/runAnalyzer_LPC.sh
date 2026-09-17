@@ -31,25 +31,7 @@ rm -rf ${runDir}
 echo ${CMSSW_BASE}
 echo homeDir: ${homeDir}
 
-:'
-if [ -f /cvmfs/cms.cern.ch/cmsset_default.sh ]
-then
-	#setup cmssw
-	ls -la
-	cd CMSSW_10_6_20/src/
-	#workDir=`pwd`
-	#echo "entering directory: ${workDir}"
-	ulimit -c 0
-	source /cvmfs/cms.cern.ch/cmsset_default.sh
-	export SCRAM_ARCH=slc7_amd64_gcc630
-	eval `scram runtime -sh`
-	cd ${currentDir}
-	#echo `which root`
 
-	#cd ${runDir}
-	#echo "entering directory: ${runDir}"
-	#echo "${CMSSW_BASE}/src/run3_llp_analyzer/RazorRun"
-'
 #copying LPC commands
 
 echo ${CMSSW_BASE}
@@ -88,17 +70,18 @@ then
 		cp *fficiencies*.root ${runDir} #should get HMT trigger efficiencies files
 		cp *MET*.root ${runDir} #should get MET trigger efficiency files
 		cp SSLTarball.tar.gz ${runDir} #copy OpenSSL libraries
-
+		cp JEC.tar.gz ${runDir}
 		
 
 
 		#get grid proxy
-		export X509_USER_PROXY=${currentDir}/x509up_u57571
-		echo "${currentDir}/x509up_u57571"
+		export X509_USER_PROXY=${currentDir}/x509up_u55602
+		echo "${currentDir}/x509up_u55602"
 		voms-proxy-info
 
 		cd ${runDir}
 		tar -xvf SSLTarball.tar.gz
+		tar -xvf JEC.tar.gz
 		export OPENSSL_HOME=${runDir}/openssl-1.1
 		export LD_LIBRARY_PATH=${OPENSSL_HOME}/lib:${LD_LIBRARY_PATH}
 		export PATH=${OPENSSL_HOME}/bin:${PATH}
@@ -128,7 +111,6 @@ then
 		#	fi
 		#done
 		echo "now sending ls output to new file"
-		#ls *NANO*.root
 		ls ./*NANO*.root ./*Nano*.root ./*Job*.root ./*EXO*.root > inputfilelistForThisJob_${jobnumber}.txt
 		
 		
@@ -150,12 +132,12 @@ then
 
 			if [[ ${isData} == "no" ]]; then #check if it is DY MC, if a signal sample this won't work
 				echo "Running on MC sample"
-				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} -n=${option}
-				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} -n=${option}
+				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} 
+				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag} 
 			else
 				echo "Running on data sample"
-				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag} -n=${option}
-				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag} -n=${option}
+				echo ./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag} 
+				./Run${analysisType} inputfilelistForThisJob_${jobnumber}.txt  --isData -f=${outputfile} -l=${analyzerTag}
 			fi
 			# #./Runllp_MuonSystem_CA_TnP inputfilelistForThisJob_${jobnumber}.txt  --isData  -f=${outputfile}
 			# echo ./${analysisType} inputfilelistForThisJob_${jobnumber}.txt  -f=${outputfile} -l=${analyzerTag}

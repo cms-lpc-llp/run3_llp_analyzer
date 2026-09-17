@@ -515,6 +515,8 @@ class nano_events {
   Float_t PuppiMET_ptUnclusteredDown;
   Float_t PuppiMET_ptUnclusteredUp;
   Float_t PuppiMET_sumEt;
+  Float_t RawPFMET_phi;
+  Float_t RawPFMET_pt;
   Float_t RawMET_phi;
   Float_t RawMET_pt;
   Float_t RawMET_sumEt;
@@ -2198,6 +2200,8 @@ class nano_events {
   TBranch* b_PuppiMET_ptUnclusteredDown; //!
   TBranch* b_PuppiMET_ptUnclusteredUp; //!
   TBranch* b_PuppiMET_sumEt; //!
+  TBranch* b_RawPFMET_phi; //!
+  TBranch* b_RawPFMET_pt; //!
   TBranch* b_RawMET_phi; //!
   TBranch* b_RawMET_pt; //!
   TBranch* b_RawMET_sumEt; //!
@@ -3946,6 +3950,8 @@ void nano_events::Init(TTree* tree) {
   fChain->SetBranchAddress("PuppiMET_ptUnclusteredDown", &PuppiMET_ptUnclusteredDown, &b_PuppiMET_ptUnclusteredDown);
   fChain->SetBranchAddress("PuppiMET_ptUnclusteredUp", &PuppiMET_ptUnclusteredUp, &b_PuppiMET_ptUnclusteredUp);
   fChain->SetBranchAddress("PuppiMET_sumEt", &PuppiMET_sumEt, &b_PuppiMET_sumEt);
+  fChain->SetBranchAddress("RawPFMET_phi", &RawPFMET_phi, &b_RawPFMET_phi);
+  fChain->SetBranchAddress("RawPFMET_pt", &RawPFMET_pt, &b_RawPFMET_pt);
   fChain->SetBranchAddress("RawMET_phi", &RawMET_phi, &b_RawMET_phi);
   fChain->SetBranchAddress("RawMET_pt", &RawMET_pt, &b_RawMET_pt);
   fChain->SetBranchAddress("RawMET_sumEt", &RawMET_sumEt, &b_RawMET_sumEt);

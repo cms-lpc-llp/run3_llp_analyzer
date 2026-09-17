@@ -36,7 +36,10 @@ void TreeMuonSystemCombination::InitVariables() {
   metPhiJESDown = -1;
   metJESUp = -1;
   metPhiJESUp = -1;
-
+  Rawmet=-1; 
+  Rawmetphi=-1; 
+  RawPuppimet=-1; 
+  RawPuppimetPhi=-1;
   HLT_CSCCSC = false;
   HLT_CSCDT = false;
   jetVeto = true;
@@ -737,6 +740,11 @@ void TreeMuonSystemCombination::InitTree() {
   tree_->SetBranchAddress("metPhiJESDown",      &metPhiJESDown);
  tree_->SetBranchAddress("metJESUp",         &metJESUp);
   tree_->SetBranchAddress("metPhiJESUp",      &metPhiJESUp);
+tree_->SetBranchAddress("Rawmet",         &Rawmet);
+  tree_->SetBranchAddress("RawPuppimet",      &RawPuppimet);
+
+ tree_->SetBranchAddress("RawPuppimetPhi",         &RawPuppimetPhi);
+  tree_->SetBranchAddress("Rawmetphi",      &Rawmetphi);
 
 
  tree_->SetBranchAddress("PuppimetJESUp",         &PuppimetJESUp);
@@ -1228,6 +1236,12 @@ void TreeMuonSystemCombination::CreateTree() {
   tree_->Branch("metJESDown", &metJESDown, "metJESDown/F"); // phi(MET)
   tree_->Branch("metPhiJESUp", &metPhiJESUp, "metPhiJESUp/F"); // phi(MET)
   tree_->Branch("metPhiJESDown", &metPhiJESDown, "metPhiJESDown/F"); // phi(MET)
+  tree_->Branch("Rawmet",      &Rawmet,     "Rawmet/F");      // phi(MET)
+  tree_->Branch("RawPuppimet",      &RawPuppimet,     "RawPuppimet/F");      // phi(MET)
+  tree_->Branch("RawPuppimetPhi",      &RawPuppimetPhi,     "RawPuppimetPhi/F");      // phi(MET)
+  tree_->Branch("Rawmetphi",      &Rawmetphi,     "Rawmetphi/F");      // phi(MET)
+
+
 
   tree_->Branch("nSoftJets2p65to3p139", &nSoftJets2p65to3p139, "nSoftJets2p65to3p139/I");
   tree_->Branch("nSoftJetsLargerThan2p65", &nSoftJetsLargerThan2p65, "nSoftJetsLargerThan2p65/I");
